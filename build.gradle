@@ -1,0 +1,29 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.10.1'
+}
+
+pluginBundle {
+    website = 'https://github.com/eirnym/js2p-gradle'
+    vcsUrl = 'https://github.com/eirnym/js2p-gradle'
+    tags = ['json-schema', 'jsonschema', 'generator', 'pojo']
+}
+
+
+gradlePlugin {
+    plugins {
+        jsonschema2pojoPlugin {
+            id = 'com.github.eirnym.js2p'
+            implementationClass = 'com.github.eirnym.js2p.JsonSchemaPlugin'
+            displayName = 'Gradle JsonSchema2Pojo Plugin'
+            description = 'A plugins that generates Java or Scala sources from JsonSchema using jsonschema2pojo. Please, see the GitHub page for details'
+        }
+    }
+}
+dependencies {
+    implementation 'org.jsonschema2pojo:jsonschema2pojo-core:1.0.2'
+
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.30'
+}

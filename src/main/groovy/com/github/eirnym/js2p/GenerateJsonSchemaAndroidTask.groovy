@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jsonschema2pojo.gradle
+package com.github.eirnym.js2p
 
-import org.gradle.api.tasks.Input
+
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.SourceTask
 import org.gradle.api.tasks.TaskAction

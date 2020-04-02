@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jsonschema2pojo.gradle
+package com.github.eirnym.js2p
 
 import org.jsonschema2pojo.AnnotationStyle
 import org.jsonschema2pojo.Annotator
@@ -287,7 +287,7 @@ public class JsonSchemaExtension implements GenerationConfig {
        |includeConstructorPropertiesAnnotation = ${includeConstructorPropertiesAnnotation}
      """.stripMargin()
   }
-  
+
   public boolean isFormatDateTimes() {
     return formatDateTimes
   }
