@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'com.github.eirnym.js2p' version '1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+  compile 'javax.validation:validation-api:1.1.0.CR2'
+  compile 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
+
+  // see src/main/resources/json/external_dependencies.json
+  compile 'joda-time:joda-time:2.2'
+}
+
+jsonSchema2Pojo {
+  targetPackage = 'example'
+  includeJsr303Annotations = true
+  propertyWordDelimiters = ['_'] as char[]
+}
