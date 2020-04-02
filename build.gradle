@@ -15,7 +15,7 @@ ext {
 
 pluginBundle {
     website = 'https://github.com/eirnym/js2p-gradle'
-    vcsUrl = 'https://github.com/eirnym/js2p-gradle'
+    vcsUrl = 'https://github.com/eirnym/js2p-gradle.git'
     tags = ['json-schema', 'jsonschema', 'generator', 'pojo']
 }
 
