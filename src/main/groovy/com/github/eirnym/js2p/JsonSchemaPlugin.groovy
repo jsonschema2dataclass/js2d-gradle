@@ -15,6 +15,7 @@
  */
 package com.github.eirnym.js2p
 
+
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -26,34 +27,38 @@ import org.gradle.api.Project
  */
 class JsonSchemaPlugin implements Plugin<Project> {
 
-  @Override
-  public void apply(Project project) {
-    project.extensions.create('jsonSchema2Pojo', JsonSchemaExtension)
+    @Override
+    public void apply(Project project) {
+        project.extensions.create('jsonSchema2Pojo', JsonSchemaExtension)
+        project.afterEvaluate {
+            if (project.plugins.hasPlugin('java')) {
+                project.tasks.create('generateJsonSchema2Pojo', GenerateJsonSchemaJavaTask)
+            } else if (project.plugins.hasPlugin('com.android.application') || project.plugins.hasPlugin('com.android.library')) {
+                def config = project.jsonSchema2Pojo
+                def variants = null
+                if (project.android.hasProperty('applicationVariants')) {
+                    variants = project.android.applicationVariants
+                } else if (project.android.hasProperty('libraryVariants')) {
+                    variants = project.android.libraryVariants
+                } else {
+                    throw new IllegalStateException('Android project must have applicationVariants or libraryVariants!')
+                }
 
-    if (project.plugins.hasPlugin('java')) {
-      project.tasks.create('generateJsonSchema2Pojo', GenerateJsonSchemaJavaTask)
-    } else if (project.plugins.hasPlugin('com.android.application') || project.plugins.hasPlugin('com.android.library')) {
-      def config = project.jsonSchema2Pojo
-      def variants = null
-      if (project.android.hasProperty('applicationVariants')) {
-        variants = project.android.applicationVariants
-      } else if (project.android.hasProperty('libraryVariants')) {
-        variants = project.android.libraryVariants
-      } else {
-        throw new IllegalStateException('Android project must have applicationVariants or libraryVariants!')
-      }
+                variants.all { variant ->
 
-      variants.all { variant ->
+                    GenerateJsonSchemaAndroidTask task = (GenerateJsonSchemaAndroidTask) project.task(type: GenerateJsonSchemaAndroidTask, "generateJsonSchema2PojoFor${variant.name.capitalize()}") {
+                        source = config.source.collect { it }
+                        outputDir = project.file("$project.buildDir/generated/source/js2p/$variant.flavorName/$variant.buildType.name/")
+                    }
 
-        GenerateJsonSchemaAndroidTask task = (GenerateJsonSchemaAndroidTask) project.task(type: GenerateJsonSchemaAndroidTask, "generateJsonSchema2PojoFor${variant.name.capitalize()}") {
-          source = config.source.collect { it }
-          outputDir = project.file("$project.buildDir/generated/source/js2p/$variant.flavorName/$variant.buildType.name/")
+                    variant.registerJavaGeneratingTask(task, (File) task.outputDir)
+                }
+            } else {
+                for (Plugin<?> plugin : project.plugins) {
+                    project.logger.error(plugin.class.name);
+                }
+                throw new GradleException('generateJsonSchema: Java or Android plugin required')
+            }
         }
-
-        variant.registerJavaGeneratingTask(task, (File) task.outputDir)
-      }
-    } else {
-      throw new GradleException('generateJsonSchema: Java or Android plugin required')
     }
-  }
 }

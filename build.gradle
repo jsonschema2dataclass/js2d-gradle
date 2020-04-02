@@ -4,6 +4,15 @@ plugins {
     id 'com.gradle.plugin-publish' version '0.10.1'
 }
 
+repositories {
+    mavenCentral()
+}
+
+ext {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 pluginBundle {
     website = 'https://github.com/eirnym/js2p-gradle'
     vcsUrl = 'https://github.com/eirnym/js2p-gradle'
@@ -15,6 +24,7 @@ gradlePlugin {
     plugins {
         jsonschema2pojoPlugin {
             id = 'com.github.eirnym.js2p'
+            version = "1.0"
             implementationClass = 'com.github.eirnym.js2p.JsonSchemaPlugin'
             displayName = 'Gradle JsonSchema2Pojo Plugin'
             description = 'A plugins that generates Java or Scala sources from JsonSchema using jsonschema2pojo. Please, see the GitHub page for details'
