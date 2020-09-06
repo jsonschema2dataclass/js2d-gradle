@@ -3,6 +3,7 @@ package com.github.eirnym.js2p
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -113,5 +114,26 @@ class JavaTaskFunctionalTest {
                 .build()
 
         assertEquals(TaskOutcome.UP_TO_DATE, result.task(":generateJsonSchema2Pojo").outcome)
+    }
+
+    @Test
+    @Ignore("this test fails with the version 1.0")
+    void "generateJsonSchema2Pojo task skips if no json file exists"() {
+        Files.writeString(buildFile, """|plugins {
+        |  id 'java'
+        |  id 'com.github.eirnym.js2p'
+        |}
+        |repositories {
+        |  mavenCentral()
+        |}
+        |""".stripMargin())
+
+        def result = GradleRunner.create()
+                .withPluginClasspath()
+                .withProjectDir(testProjectDir.root)
+                .withArguments("generateJsonSchema2Pojo", "--info")
+                .build()
+
+        assertEquals(TaskOutcome.NO_SOURCE, result.task(":generateJsonSchema2Pojo").outcome)
     }
 }
