@@ -20,6 +20,11 @@ import org.gradle.tooling.GradleConnector
 import org.gradle.tooling.ProjectConnection
 import org.junit.Test
 
+import static org.hamcrest.MatcherAssert.assertThat
+import static org.hamcrest.Matchers.is
+import static org.hamcrest.io.FileMatchers.anExistingDirectory
+import static org.hamcrest.io.FileMatchers.anExistingFile
+
 class JsonSchemaPluginSpec {
 
   @Test
@@ -34,10 +39,17 @@ class JsonSchemaPluginSpec {
     ProjectConnection connection = connector.connect()
     try {
       BuildLauncher launcher = connection.newBuild()
-      launcher.forTasks("build")
+      launcher.forTasks("clean", "build")
       launcher.run()
     } finally {
       connection.close()
     }
+
+    def js2p = new File(projectDir, "build/generated-sources/js2p")
+    assertThat(js2p, is(anExistingDirectory()))
+    def packageDir = new File(js2p, "example")
+    assertThat(packageDir, is(anExistingDirectory()))
+    assertThat(new File(packageDir, "Address.java"), is(anExistingFile()))
+    assertThat(new File(packageDir, "ExternalDependencies.java"), is(anExistingFile()))
   }
 }

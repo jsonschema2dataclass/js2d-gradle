@@ -34,6 +34,9 @@ gradlePlugin {
 dependencies {
     implementation 'org.jsonschema2pojo:jsonschema2pojo-core:1.0.2'
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation ('junit:junit:4.13') {
+        exclude group: 'org.hamcrest'
+    }
     testImplementation 'org.slf4j:slf4j-simple:1.7.30'
+    testImplementation 'org.hamcrest:java-hamcrest:2.0.0.0'
 }
