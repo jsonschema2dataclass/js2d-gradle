@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jsonschema2pojo' version '1.1'
+    id 'net.niebes.jsonschema2kotlin' version '1.0'
 }
 
 repositories {
@@ -20,8 +20,7 @@ dependencies {
   compile 'joda-time:joda-time:2.2'
 }
 
-jsonSchema2Pojo {
-  targetPackage = 'example'
-  includeJsr303Annotations = true
-  propertyWordDelimiters = ['_'] as char[]
+jsonSchema2KotlinPojo {
+    isCommentOff = false
+    indent = 4
 }

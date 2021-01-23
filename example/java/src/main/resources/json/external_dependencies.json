@@ -1,7 +1,10 @@
 {
   "description": "An example on how to reference pre-existing classes",
-  "type":        "object",
+  "type": "object",
   "properties": {
-    "a_joda_time_object": { "type": "object", "existingJavaType": "org.joda.time.DateTime" }
+    "a_joda_time_object": {
+      "type": "object",
+      "existingJavaType": "org.joda.time.DateTime"
+    }
   }
 }

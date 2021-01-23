@@ -1,3 +1,9 @@
+ 
+
+
+Gradle plugin for KotlinSchema2Pojo processor.
+
+wrapper plugin to use https://github.com/wuseal/JsonToKotlinClass/blob/master/LIBRARY.md
 # Official [jsonschema2pojo](https://github.com/joelittlejohn/jsonschema2pojo) Gradle plugin.
 
 
