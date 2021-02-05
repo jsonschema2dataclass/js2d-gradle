@@ -2,11 +2,11 @@ package com.github.eirnym.js2p
 
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.Before
-import org.junit.Ignore
-import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.TemporaryFolder
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -16,68 +16,44 @@ import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.io.FileMatchers.anExistingDirectory
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.io.FileMatchers.anExistingFile
-import static org.junit.Assert.assertEquals
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class JavaTaskFunctionalTest {
-    @Rule public final TemporaryFolder testProjectDir = new TemporaryFolder();
+    @TempDir
+    public Path testProjectDir
     private Path buildFile;
 
-    @Before
+    @BeforeEach
     void setup() throws IOException {
-        buildFile = testProjectDir.newFile("build.gradle").toPath()
+        buildFile = testProjectDir.resolve("build.gradle")
     }
 
     @Test
     void withoutExtension() {
-        Files.writeString(buildFile, """|plugins {
-        |  id 'java'
-        |  id 'com.github.eirnym.js2p'
-        |}
-        |repositories {
-        |  mavenCentral()
-        |}
-        |dependencies {
-        |  compile 'com.fasterxml.jackson.core:jackson-annotations:2.11.2'
-        |}
-        |""".stripMargin())
-
-        def jsonDir = testProjectDir.newFolder("src", "main", "resources", "json")
-        def addressJson = new File(jsonDir, "address.json")
-        Files.copy(Paths.get("example", "java", "src", "main", "resources", "json", "address.json"), addressJson.toPath())
+        createBuildFiles()
+        copyAddressJSON()
 
         def result = GradleRunner.create()
             .withPluginClasspath()
-            .withProjectDir(testProjectDir.root)
+            .withProjectDir(testProjectDir.toFile())
             .withArguments("generateJsonSchema2Pojo", "--info")
             .build()
 
-        def js2pDir = testProjectDir.root.toPath().resolve(Paths.get("build", "generated-sources", "js2p"))
+        def js2pDir = testProjectDir.resolve("build/generated-sources/js2p")
         assertEquals(TaskOutcome.SUCCESS, result.task(":generateJsonSchema2Pojo").outcome)
         assertThat(js2pDir.toFile(), is(anExistingDirectory()))
         assertThat(js2pDir.resolve("Address.java").toFile(), is(anExistingFile()))
     }
 
     @Test
-    void "compileJava task depends on generateJsonSchema2Pojo task even when project has no java code"() {
-        Files.writeString(buildFile, """|plugins {
-        |  id 'java'
-        |  id 'com.github.eirnym.js2p'
-        |}
-        |repositories {
-        |  mavenCentral()
-        |}
-        |dependencies {
-        |  compile 'com.fasterxml.jackson.core:jackson-annotations:2.11.2'
-        |}
-        |""".stripMargin())
-
-        def jsonDir = testProjectDir.newFolder("src", "main", "resources", "json")
-        def addressJson = new File(jsonDir, "address.json")
-        Files.copy(Paths.get("example", "java", "src", "main", "resources", "json", "address.json"), addressJson.toPath())
+    @DisplayName("compileJava task depends on generateJsonSchema2Pojo task even when project has no java code")
+    void noJavaCode() {
+        createBuildFiles()
+        copyAddressJSON()
 
         def result = GradleRunner.create()
                 .withPluginClasspath()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments("compileJava", "--info")
                 .build()
 
@@ -85,31 +61,19 @@ class JavaTaskFunctionalTest {
     }
 
     @Test
-    void "generateJsonSchema2Pojo task is cache-able"() {
-        Files.writeString(buildFile, """|plugins {
-        |  id 'java'
-        |  id 'com.github.eirnym.js2p'
-        |}
-        |repositories {
-        |  mavenCentral()
-        |}
-        |dependencies {
-        |  compile 'com.fasterxml.jackson.core:jackson-annotations:2.11.2'
-        |}
-        |""".stripMargin())
-
-        def jsonDir = testProjectDir.newFolder("src", "main", "resources", "json")
-        def addressJson = new File(jsonDir, "address.json")
-        Files.copy(Paths.get("example", "java", "src", "main", "resources", "json", "address.json"), addressJson.toPath())
+    @DisplayName('generateJsonSchema2Pojo task is cache-able')
+    void taskIsCachable() {
+        createBuildFiles()
+        copyAddressJSON()
 
         GradleRunner.create()
                 .withPluginClasspath()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments("generateJsonSchema2Pojo")
                 .build()
         def result = GradleRunner.create()
                 .withPluginClasspath()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments("generateJsonSchema2Pojo", "--info")
                 .build()
 
@@ -117,23 +81,40 @@ class JavaTaskFunctionalTest {
     }
 
     @Test
-    @Ignore("this test fails with the version 1.0")
-    void "generateJsonSchema2Pojo task skips if no json file exists"() {
-        Files.writeString(buildFile, """|plugins {
-        |  id 'java'
-        |  id 'com.github.eirnym.js2p'
-        |}
-        |repositories {
-        |  mavenCentral()
-        |}
-        |""".stripMargin())
+    @Disabled("this test fails with the version 1.0")
+    @DisplayName('generateJsonSchema2Pojo task skips if no json file exists')
+    void noJsonFiles() {
+        createBuildFiles()
 
         def result = GradleRunner.create()
                 .withPluginClasspath()
-                .withProjectDir(testProjectDir.root)
+                .withProjectDir(testProjectDir.toFile())
                 .withArguments("generateJsonSchema2Pojo", "--info")
                 .build()
 
         assertEquals(TaskOutcome.NO_SOURCE, result.task(":generateJsonSchema2Pojo").outcome)
     }
+
+    private void createBuildFiles() {
+        Files.write(buildFile, """|plugins {
+        |  id 'java'
+        |  id 'com.github.eirnym.js2p' version '1.0'
+        |}
+        |repositories {
+        |  mavenCentral()
+        |}
+        |dependencies {
+        |  compile 'com.fasterxml.jackson.core:jackson-annotations:2.11.2'
+        |}
+        |""".stripMargin().bytes)
+        Files.write(testProjectDir.resolve('settings.gradle'), ''.bytes)
+    }
+
+    private void copyAddressJSON() {
+        Path jsonDir = testProjectDir.resolve('src/main/resources/json')
+        new File(jsonDir.toString()).mkdirs();
+        def addressJson = jsonDir.resolve("address.json")
+        Files.copy(Paths.get("example", "java", "src", "main", "resources", "json", "address.json"), addressJson)
+    }
+
 }
