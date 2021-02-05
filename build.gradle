@@ -16,7 +16,7 @@ ext {
 pluginBundle {
     website = 'https://github.com/eirnym/js2p-gradle'
     vcsUrl = 'https://github.com/eirnym/js2p-gradle.git'
-    tags = ['json-schema', 'jsonschema', 'generator', 'pojo']
+    tags = ['json-schema', 'jsonschema', 'generator', 'pojo', 'jsonschema2pojo']
 }
 
 
@@ -24,9 +24,9 @@ gradlePlugin {
     plugins {
         jsonschema2pojoPlugin {
             id = 'org.jsonschema2pojo'
-            version = "1.0"
+            version = "1.1"
             implementationClass = 'com.github.eirnym.js2p.JsonSchemaPlugin'
-            displayName = 'Gradle JsonSchema2Pojo Plugin'
+            displayName = 'Official Gradle JsonSchema2Pojo Plugin'
             description = 'A plugins that generates Java or Scala sources from JsonSchema using jsonschema2pojo. Please, see the GitHub page for details'
         }
     }
