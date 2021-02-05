@@ -98,7 +98,7 @@ class JavaTaskFunctionalTest {
     private void createBuildFiles() {
         Files.write(buildFile, """|plugins {
         |  id 'java'
-        |  id 'com.github.eirnym.js2p' version '1.0'
+        |  id 'org.jsonschema2pojo' version '1.1'
         |}
         |repositories {
         |  mavenCentral()
