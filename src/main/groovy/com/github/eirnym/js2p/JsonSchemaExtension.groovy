@@ -15,6 +15,9 @@
  */
 package com.github.eirnym.js2p
 
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.ProjectLayout
+import org.gradle.api.model.ObjectFactory
 import org.jsonschema2pojo.AnnotationStyle
 import org.jsonschema2pojo.Annotator
 import org.jsonschema2pojo.AllFileFilter
@@ -26,6 +29,8 @@ import org.jsonschema2pojo.SourceSortOrder
 import org.jsonschema2pojo.SourceType
 import org.jsonschema2pojo.rules.RuleFactory
 
+import javax.inject.Inject
+
 /**
  * The configuration properties.
  *
@@ -34,7 +39,7 @@ import org.jsonschema2pojo.rules.RuleFactory
  */
 public class JsonSchemaExtension implements GenerationConfig {
   Iterable<File> sourceFiles
-  File targetDirectory
+  final DirectoryProperty targetDirectory
   String targetPackage
   AnnotationStyle annotationStyle
   boolean useTitleAsClassname
@@ -98,7 +103,8 @@ public class JsonSchemaExtension implements GenerationConfig {
   Language targetLanguage
   Map<String, String> formatTypeMapping
 
-  public JsonSchemaExtension() {
+  @Inject
+  public JsonSchemaExtension(ProjectLayout projectLayout, ObjectFactory objectFactory) {
     // See DefaultGenerationConfig
     generateBuilders = false
     includeJsonTypeInfoAnnotation = false
@@ -156,6 +162,7 @@ public class JsonSchemaExtension implements GenerationConfig {
     refFragmentPathDelimiters = "#/."
     sourceSortOrder = SourceSortOrder.OS
     formatTypeMapping = Collections.emptyMap()
+    targetDirectory = objectFactory.directoryProperty().convention(projectLayout.buildDirectory.dir("generated-sources/js2p"))
   }
 
   @Override
@@ -228,7 +235,7 @@ public class JsonSchemaExtension implements GenerationConfig {
        |includeJsonTypeInfoAnnotation = ${includeJsonTypeInfoAnnotation}
        |usePrimitives = ${usePrimitives}
        |source = ${sourceFiles}
-       |targetDirectory = ${targetDirectory}
+       |targetDirectory = ${getTargetDirectory()}
        |targetPackage = ${targetPackage}
        |propertyWordDelimiters = ${Arrays.toString(propertyWordDelimiters)}
        |useLongIntegers = ${useLongIntegers}
@@ -292,4 +299,11 @@ public class JsonSchemaExtension implements GenerationConfig {
     return formatDateTimes
   }
 
+  public File getTargetDirectory() {
+    return targetDirectory.get().asFile
+  }
+
+  DirectoryProperty getTargetDirectoryProperty() {
+    return targetDirectory
+  }
 }
