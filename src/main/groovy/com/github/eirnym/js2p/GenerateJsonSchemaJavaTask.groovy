@@ -34,15 +34,18 @@ class GenerateJsonSchemaJavaTask extends DefaultTask {
     GenerateJsonSchemaJavaTask() {
         description = 'Generates Java classes from a json schema.'
         group = 'Build'
-        outputs.dir project.getExtensions().getByType(JsonSchemaExtension).targetDirectoryProperty
+        def extension = project.getExtensions().getByType(JsonSchemaExtension)
+        outputs.dir extension.targetDirectoryProperty
 
         dependsOn project.tasks.named('processResources')
         project.tasks.named('compileJava').configure {
             it.dependsOn(this)
         }
         project.plugins.withId('java', {
-            project.sourceSets.main.java.srcDirs project.getExtensions().getByType(JsonSchemaExtension).targetDirectoryProperty
+            project.sourceSets.main.java.srcDirs extension.targetDirectoryProperty
         })
+        inputs.files({ extension.sourceFiles.filter({ it.exists() }) })
+                .skipWhenEmpty()
         project.afterEvaluate {
             configuration = project.jsonSchema2Pojo
 
@@ -53,13 +56,12 @@ class GenerateJsonSchemaJavaTask extends DefaultTask {
             }
 
             inputs.property("configuration", configuration.toString())
-            inputs.files project.files(configuration.sourceFiles)
         }
     }
 
     def configureJava() {
         if (!configuration.source.hasNext()) {
-            configuration.source = project.files("${project.sourceSets.main.output.resourcesDir}/json")
+            configuration.sourceFiles.setFrom project.files("${project.sourceSets.main.output.resourcesDir}/json")
             configuration.sourceFiles.each { it.mkdir() }
         }
     }

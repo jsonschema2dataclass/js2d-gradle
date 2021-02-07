@@ -81,7 +81,6 @@ class JavaTaskFunctionalTest {
     }
 
     @Test
-    @Disabled("this test fails with the version 1.0")
     @DisplayName('generateJsonSchema2Pojo task skips if no json file exists')
     void noJsonFiles() {
         createBuildFiles()

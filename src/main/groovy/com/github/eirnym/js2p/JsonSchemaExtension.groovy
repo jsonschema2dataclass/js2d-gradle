@@ -15,7 +15,9 @@
  */
 package com.github.eirnym.js2p
 
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
 import org.jsonschema2pojo.AnnotationStyle
@@ -38,7 +40,7 @@ import javax.inject.Inject
  * @see https://github.com/joelittlejohn/jsonschema2pojo
  */
 public class JsonSchemaExtension implements GenerationConfig {
-  Iterable<File> sourceFiles
+  final ConfigurableFileCollection sourceFiles
   final DirectoryProperty targetDirectory
   String targetPackage
   AnnotationStyle annotationStyle
@@ -110,7 +112,7 @@ public class JsonSchemaExtension implements GenerationConfig {
     includeJsonTypeInfoAnnotation = false
     useInnerClassBuilders = false
     usePrimitives = false
-    sourceFiles = []
+    sourceFiles = objectFactory.fileCollection()
     targetPackage = ''
     propertyWordDelimiters = ['-', ' ', '_'] as char[]
     useLongIntegers = false
@@ -177,17 +179,11 @@ public class JsonSchemaExtension implements GenerationConfig {
 
   @Override
   public Iterator<URL> getSource() {
-    def urlList = []
-    for (source in sourceFiles) {
-      urlList.add(source.toURI().toURL())
-    }
-    urlList.iterator()
+    sourceFiles.asList().stream().map({ it.toURI().toURL() }).iterator()
   }
 
   public void setSource(Iterable<File> files) {
-    def copy = [] as List
-    files.each { copy.add(it) }
-    sourceFiles = copy
+    sourceFiles.setFrom files
   }
 
   public void setAnnotationStyle(String style) {
@@ -234,7 +230,7 @@ public class JsonSchemaExtension implements GenerationConfig {
     """|generateBuilders = ${generateBuilders}
        |includeJsonTypeInfoAnnotation = ${includeJsonTypeInfoAnnotation}
        |usePrimitives = ${usePrimitives}
-       |source = ${sourceFiles}
+       |source = ${sourceFiles.asList()}
        |targetDirectory = ${getTargetDirectory()}
        |targetPackage = ${targetPackage}
        |propertyWordDelimiters = ${Arrays.toString(propertyWordDelimiters)}
