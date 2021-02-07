@@ -30,9 +30,15 @@ class JsonSchemaPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         project.extensions.create('jsonSchema2Pojo', JsonSchemaExtension)
+        project.plugins.withId('java') {
+            def js2pTask = project.tasks.register('generateJsonSchema2Pojo', GenerateJsonSchemaJavaTask)
+            project.tasks.named('compileJava').configure {
+                it.dependsOn(js2pTask)
+            }
+        }
         project.afterEvaluate {
             if (project.plugins.hasPlugin('java')) {
-                project.tasks.create('generateJsonSchema2Pojo', GenerateJsonSchemaJavaTask)
+                // do nothing
             } else if (project.plugins.hasPlugin('com.android.application') || project.plugins.hasPlugin('com.android.library')) {
                 def config = project.jsonSchema2Pojo
                 def variants = null
