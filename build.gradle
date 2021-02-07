@@ -24,7 +24,7 @@ gradlePlugin {
     plugins {
         jsonschema2pojoPlugin {
             id = 'org.jsonschema2pojo'
-            version = "1.1"
+            version = getTag()
             implementationClass = 'com.github.eirnym.js2p.JsonSchemaPlugin'
             displayName = 'Official Gradle JsonSchema2Pojo Plugin'
             description = 'A plugins that generates Java or Scala sources from JsonSchema using jsonschema2pojo. Please, see the GitHub page for details'
@@ -45,4 +45,25 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+static def getTag() {
+    def tagVersion = "$System.env.VERSION"
+    if (tagVersion == "null") {
+        // with local un-commited changes a -DIRTY is added
+        def processChanges = "git diff-index --name-only HEAD --".execute()
+        def dirty = ""
+        if (!processChanges.text.toString().trim().isEmpty())
+            dirty = "-DIRTY"
+
+        def process = "git describe --tags".execute()
+        tagVersion = process.text.toString().trim() + dirty
+    } else {
+        def tagVersionToken = tagVersion.split("/")
+        if (tagVersionToken.size() > 2)
+            tagVersion = tagVersionToken[2]
+        else
+            tagVersion = tagVersionToken[0]
+    }
+    return tagVersion
 }
