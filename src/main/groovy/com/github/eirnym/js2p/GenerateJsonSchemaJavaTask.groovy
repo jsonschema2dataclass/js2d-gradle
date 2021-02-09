@@ -28,44 +28,26 @@ import org.jsonschema2pojo.Jsonschema2Pojo
  * @author Ben Manes (ben.manes@gmail.com)
  */
 class GenerateJsonSchemaJavaTask extends DefaultTask {
-    @Internal
-    GenerationConfig configuration
-
     GenerateJsonSchemaJavaTask() {
         description = 'Generates Java classes from a json schema.'
         group = 'Build'
-        outputs.dir project.getExtensions().getByType(JsonSchemaExtension).targetDirectoryProperty
-
         dependsOn project.tasks.named('processResources')
-        project.tasks.named('compileJava').configure {
-            it.dependsOn(this)
-        }
-        project.plugins.withId('java', {
-            project.sourceSets.main.java.srcDirs project.getExtensions().getByType(JsonSchemaExtension).targetDirectoryProperty
-        })
-        project.afterEvaluate {
-            configuration = project.jsonSchema2Pojo
 
-            if (project.plugins.hasPlugin('java')) {
-                configureJava()
-            } else {
-                throw new GradleException('generateJsonSchema: Java plugin is required')
-            }
+        def configuration = project.getExtensions().getByType(JsonSchemaExtension)
 
-            inputs.property("configuration", configuration.toString())
-            inputs.files project.files(configuration.sourceFiles)
-        }
-    }
+        project.sourceSets.main.java.srcDirs configuration.targetDirectoryProperty
+        configuration.sourceFiles.setFrom project.files("${project.sourceSets.main.output.resourcesDir}/json")
+        configuration.sourceFiles.each { it.mkdir() }
 
-    def configureJava() {
-        if (!configuration.source.hasNext()) {
-            configuration.source = project.files("${project.sourceSets.main.output.resourcesDir}/json")
-            configuration.sourceFiles.each { it.mkdir() }
-        }
+        inputs.files({ configuration.sourceFiles.filter({ it.exists() }) })
+                .skipWhenEmpty()
+        inputs.property('configuration', { configuration.toString() })
+        outputs.dir configuration.targetDirectoryProperty
     }
 
     @TaskAction
     def generate() {
+        def configuration = project.getExtensions().getByType(JsonSchemaExtension)
         if (Boolean.TRUE == configuration.properties.get("useCommonsLang3")) {
             logger.warn 'useCommonsLang3 is deprecated. Please remove it from your config.'
         }
