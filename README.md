@@ -15,7 +15,7 @@ plugins {
 }
 ```
 
-Please refer [Gradle Plugins page](https://plugins.gradle.org/plugin/org.jsonschema2pojo) for further details.
+Please refer [Gradle Plugins page](https://plugins.gradle.org/plugin/org.jsonschema2dataclass) for further details.
 
 </details>
 

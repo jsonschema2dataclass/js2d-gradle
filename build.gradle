@@ -22,7 +22,7 @@ pluginBundle {
 
 gradlePlugin {
     plugins {
-        jsonschema2pojoPlugin {
+        jsonschema2dataclassPlugin {
             id = 'org.jsonschema2dataclass'
             version = getTag()
             implementationClass = 'com.github.eirnym.js2p.JsonSchemaPlugin'
