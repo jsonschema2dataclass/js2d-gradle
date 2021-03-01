@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  build:
+  publish:
     name: Publish release
     runs-on: ubuntu-latest
     steps:
@@ -35,24 +35,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ github.ref }}
-  publish:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Configure JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-
-      - name: Publish
+      - name: Publish ${{ github.ref }}
         uses: burrunan/gradle-cache-action@v1.6
         with:
           remote-build-cache-proxy-enabled: false
