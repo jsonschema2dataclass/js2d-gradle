@@ -33,7 +33,7 @@ jobs:
           skip-unshallow: 'true'
           commit-ish: HEAD
       - run: |
-          assets=$(find . -name "*${{steps.tagger.outputs.tag}}*.jar" -or -name " *release.aar" | while read -r asset ; do echo "-a $asset" ; done)
+          assets=$(find . -name "*${{steps.tagger.outputs.tag#v}}*.jar" -or -name " *release.aar" | while read -r asset ; do echo "-a $asset" ; done)
           hub release create ${assets} -m "${{steps.tagger.outputs.tag}}" "${{steps.tagger.outputs.tag}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

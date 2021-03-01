@@ -66,5 +66,8 @@ static def getTag() {
         else
             tagVersion = tagVersionToken[0]
     }
+    if (tagVersion.length() > 1 && tagVersion.startsWith('v')){
+        tagVersion = tagVersion.substring(1)
+    }
     return tagVersion
 }
