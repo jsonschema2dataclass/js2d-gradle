@@ -103,7 +103,8 @@ class JavaTaskFunctionalTest {
         |  mavenCentral()
         |}
         |dependencies {
-        |  compile 'com.fasterxml.jackson.core:jackson-annotations:2.11.2'
+        |  implementation 'org.codehaus.groovy:groovy:3.0.7'
+        |  implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.2'
         |}
         |""".stripMargin().bytes)
         Files.write(testProjectDir.resolve('settings.gradle'), ''.bytes)
