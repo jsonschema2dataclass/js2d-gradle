@@ -27,11 +27,10 @@ jobs:
         env:
           VERSION: ${{ github.ref }}
       - run: |
-          assetsAAR=$(find . -name *release.aar | while read -r asset ; do echo "-a $asset" ; done)
-          VERSION=$(echo $VERSION | cut -d'/' -f3)
-          assetsJAR=$(find . -name *${VERSION}*.jar | while read -r asset ; do echo "-a $asset" ; done)
+          VERSION_J=$(echo $VERSION | cut -d'/' -f3)
+          assets=$(find . -name "*${VERSION_J}*.jar" -or -name " *release.aar" | while read -r asset ; do echo "-a $asset" ; done)
           tag_name="${GITHUB_REF##*/}"
-          hub release create ${assetsAAR} ${assetsJAR} -m "$tag_name" "$tag_name"
+          hub release create ${assets} -m "$tag_name" "$tag_name"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ github.ref }}
