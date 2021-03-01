@@ -1,5 +1,3 @@
-rootProject.name = 'gradle-jsonschema2pojo-example'
+rootProject.name = 'gradle-jsonschema2dataclass-example'
 
 includeBuild '../..'
-
-
