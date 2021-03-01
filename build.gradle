@@ -14,16 +14,16 @@ ext {
 }
 
 pluginBundle {
-    website = 'https://github.com/eirnym/js2p-gradle'
-    vcsUrl = 'https://github.com/eirnym/js2p-gradle.git'
-    tags = ['json-schema', 'jsonschema', 'generator', 'pojo', 'jsonschema2pojo']
+    website = 'https://github.com/jsonschema2dataclass/js2d-gradle'
+    vcsUrl = 'https://github.com/jsonschema2dataclass/js2d-gradle.git'
+    tags = ['json-schema', 'jsonschema', 'generator', 'pojo', 'jsonschema2pojo', 'dataclass', 'data', 'json', 'generation', 'jsonschema2dataclass']
 }
 
 
 gradlePlugin {
     plugins {
         jsonschema2pojoPlugin {
-            id = 'org.jsonschema2pojo'
+            id = 'org.jsonschema2dataclass'
             version = getTag()
             implementationClass = 'com.github.eirnym.js2p.JsonSchemaPlugin'
             displayName = 'Official Gradle JsonSchema2Pojo Plugin'
