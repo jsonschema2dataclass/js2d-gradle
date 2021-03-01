@@ -26,15 +26,19 @@ jobs:
         run: ./gradlew build
         env:
           VERSION: ${{ github.ref }}
+      - name: Find Tag
+        id: tagger
+        uses: jimschubert/query-tag-action@v2
+        with:
+          skip-unshallow: 'true'
+          commit-ish: HEAD
       - run: |
-          VERSION_J=$(echo $VERSION | cut -d'/' -f3)
-          assets=$(find . -name "*${VERSION_J}*.jar" -or -name " *release.aar" | while read -r asset ; do echo "-a $asset" ; done)
-          tag_name="${GITHUB_REF##*/}"
-          hub release create ${assets} -m "$tag_name" "$tag_name"
+          assets=$(find . -name "*${{steps.tagger.outputs.tag}}*.jar" -or -name " *release.aar" | while read -r asset ; do echo "-a $asset" ; done)
+          hub release create ${assets} -m "${{steps.tagger.outputs.tag}}" "${{steps.tagger.outputs.tag}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ github.ref }}
-      - name: Publish ${{ github.ref }}
+          VERSION: ${{steps.tagger.outputs.tag}}
+      - name: Publish ${{steps.tagger.outputs.tag}}
         uses: burrunan/gradle-cache-action@v1.6
         with:
           remote-build-cache-proxy-enabled: false
