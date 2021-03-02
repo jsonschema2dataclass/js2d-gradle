@@ -13,7 +13,7 @@ ext {
 }
 
 dependencies {
-    implementation 'javax.validation:validation-api:1.1.0.CR2'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.1'
 
   // see src/main/resources/json/external_dependencies.json
