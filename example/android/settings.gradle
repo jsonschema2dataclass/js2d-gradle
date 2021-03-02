@@ -1,0 +1,3 @@
+rootProject.name = 'js2p-gradle sample'
+
+include ':app', ':lib'
