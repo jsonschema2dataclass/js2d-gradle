@@ -41,7 +41,7 @@ public class JsonSchemaPluginSpec {
             launcher.run();
         }
 
-        File js2p = new File("example/java", "build/generated-sources/js2p");
+        File js2p = new File("example/java", "build/generated/sources/js2d");
         assertThat(js2p, is(anExistingDirectory()));
         File packageDir = new File(js2p, "example");
         assertThat(packageDir, is(anExistingDirectory()));

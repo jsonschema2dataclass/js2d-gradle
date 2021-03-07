@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.jsonschema2dataclass' version '1.2.3'
 }
-
 repositories {
     mavenCentral()
 }
@@ -22,6 +21,5 @@ dependencies {
 
 jsonSchema2Pojo {
   targetPackage = 'example'
-  includeJsr303Annotations = true
-  propertyWordDelimiters = ['_'] as char[]
+  propertyWordDelimiters = '_'
 }

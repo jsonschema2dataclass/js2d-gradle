@@ -15,23 +15,43 @@
  */
 package com.github.eirnym.js2p
 
-
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.plugins.JavaPluginConvention
 
 /**
  * Registers the plugin's tasks.
- *
- * @author Ben Manes (ben.manes@gmail.com)
  */
 class JsonSchemaPlugin implements Plugin<Project> {
+    private static String BASE_FOLDER = 'generated/sources/js2d'
+    public static String TASK_NAME = 'generateJsonSchema2DataClass'
+    public static String COLON_TASK_NAME = ':' + TASK_NAME
 
     @Override
-    public void apply(Project project) {
+    void apply(Project project) {
+
         project.extensions.create('jsonSchema2Pojo', JsonSchemaExtension)
+
         project.plugins.withId('java') {
-            def js2pTask = project.tasks.register('generateJsonSchema2Pojo', GenerateJsonSchemaJavaTask)
+            JsonSchemaExtension config = project.extensions.getByType(JsonSchemaExtension)
+            ConfigurableFileCollection sourceFiles
+            JavaPluginConvention javaConvention = project.getConvention().plugins['java'] as JavaPluginConvention
+
+            if (config.source.isEmpty()) {
+                config.source.setFrom(javaConvention.getSourceSets().getByName('main').output.resourcesDir.toPath().resolve('json'))
+            }
+
+            GenerateFromJsonSchemaTask js2pTask = createJS2DTask(
+                    project,
+                    TASK_NAME,
+                    config.source,
+                    "$BASE_FOLDER"
+            )
+
+            js2pTask.dependsOn('processResources')
+            javaConvention.getSourceSets().getByName('main').allJava.srcDir(js2pTask.targetDirectory)
             project.tasks.named('compileJava').configure {
                 it.dependsOn(js2pTask)
             }
@@ -40,8 +60,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
             if (project.plugins.hasPlugin('java')) {
                 // do nothing
             } else if (project.plugins.hasPlugin('com.android.application') || project.plugins.hasPlugin('com.android.library')) {
-                def config = project.jsonSchema2Pojo
-                def variants = null
+                def variants
                 if (project.android.hasProperty('applicationVariants')) {
                     variants = project.android.applicationVariants
                 } else if (project.android.hasProperty('libraryVariants')) {
@@ -50,21 +69,52 @@ class JsonSchemaPlugin implements Plugin<Project> {
                     throw new IllegalStateException('Android project must have applicationVariants or libraryVariants!')
                 }
 
+                JsonSchemaExtension config = project.extensions.getByType(JsonSchemaExtension)
+                ConfigurableFileCollection sourceFiles
+
+                if (config.source) {
+                    sourceFiles = config.source
+                } else {
+                    // FIXME disaster will happen here as no java plugin is defined :)
+                    JavaPluginConvention javaConvention = project.getConvention().plugins['java'] as JavaPluginConvention
+                    def resourcesDir = javaConvention.getSourceSets().getByName('main').output.resourcesDir.toPath().resolve('json')
+                    sourceFiles = project.objects.fileCollection().from(resourcesDir)
+                }
+
                 variants.all { variant ->
-
-                    GenerateJsonSchemaAndroidTask task = (GenerateJsonSchemaAndroidTask) project.task(type: GenerateJsonSchemaAndroidTask, "generateJsonSchema2PojoFor${variant.name.capitalize()}") {
-                        source = config.source.collect { it }
-                        outputDir = project.file("$project.buildDir/generated/source/js2p/$variant.flavorName/$variant.buildType.name/")
-                    }
-
-                    variant.registerJavaGeneratingTask(task, (File) task.outputDir)
+                    GenerateFromJsonSchemaTask task = createJS2DTask(
+                            project,
+                            "${TASK_NAME}For${variant.name.capitalize()}",
+                            sourceFiles,
+                            "$BASE_FOLDER/${variant.flavorName}/${variant.buildType.name}/"
+                    )
+                    variant.registerJavaGeneratingTask(task, task.targetDirectory.get().asFile)
                 }
             } else {
                 for (Plugin<?> plugin : project.plugins) {
-                    project.logger.error(plugin.class.name);
+                    project.logger.error(plugin.class.name)
                 }
                 throw new GradleException('generateJsonSchema: Java or Android plugin required')
             }
         }
+    }
+
+    private static GenerateFromJsonSchemaTask createJS2DTask(Project project, String taskName, ConfigurableFileCollection sourceFiles, String targetDirectory) {
+        GenerateFromJsonSchemaTask task = (GenerateFromJsonSchemaTask) project.task(
+                [
+                        type       : GenerateFromJsonSchemaTask,
+                        description: 'Generates Java classes from a json schema',
+                        group      : 'Build'
+                ],
+                taskName
+        )
+        task.sourceFiles.setFrom(sourceFiles)
+        task.targetDirectory.set(
+                project.layout.buildDirectory.dir(targetDirectory)
+        )
+        task.inputs.files({ task.sourceFiles.filter({ it.exists() }) })
+                .skipWhenEmpty()
+        task.outputs.dir(task.targetDirectory)
+        return task
     }
 }
