@@ -31,7 +31,7 @@ dependencies {
     // Required for @Generated annotation
     implementation 'org.glassfish:javax.annotation:10.0-b28'
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.squareup.moshi:moshi:1.9.2'
+    implementation 'com.squareup.moshi:moshi:1.11.0'
     // Required if generating JSR-303 annotations
     implementation 'javax.validation:validation-api:1.1.0.CR2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.5.1'
