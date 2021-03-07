@@ -1,6 +1,7 @@
-apply plugin: 'com.android.library'
-apply plugin: "org.jsonschema2dataclass"
-
+plugins {
+    id 'com.android.library'
+    id "org.jsonschema2dataclass"
+}
 
 android {
     compileSdkVersion 30

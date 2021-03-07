@@ -6,8 +6,11 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
-        classpath "gradle.plugin.org.jsonschema2dataclass:jsonschema2dataclass:1.2.3"
     }
+}
+
+plugins {
+    id "org.jsonschema2dataclass" version '1.2.3' apply false
 }
 
 allprojects {
