@@ -1,0 +1,21 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.2'
+    }
+}
+
+plugins {
+    id "org.jsonschema2dataclass" version '1.2.3' apply false
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}

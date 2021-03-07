@@ -20,6 +20,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.tasks.SourceSet
+
+import java.nio.file.Paths
 
 /**
  * Registers the plugin's tasks.
@@ -72,20 +75,27 @@ class JsonSchemaPlugin implements Plugin<Project> {
                 JsonSchemaExtension config = project.extensions.getByType(JsonSchemaExtension)
                 ConfigurableFileCollection sourceFiles
 
-                if (config.source) {
-                    sourceFiles = config.source
-                } else {
-                    // FIXME disaster will happen here as no java plugin is defined :)
-                    JavaPluginConvention javaConvention = project.getConvention().plugins['java'] as JavaPluginConvention
-                    def resourcesDir = javaConvention.getSourceSets().getByName('main').output.resourcesDir.toPath().resolve('json')
-                    sourceFiles = project.objects.fileCollection().from(resourcesDir)
+                if (config.source.isEmpty()) {
+                    def sets
+                    if (project.android.hasProperty('sourceSets')) {
+                        sets = project.android.sourceSets;
+                    } else {
+                        sets = project.android.sourceSetsContainer;
+                    }
+
+                    sets.all { sourceSet ->
+                        if(sourceSet.name.startsWith("main")){
+                            def path = Paths.get(sourceSet.resources.source[0], 'json')
+                            config.source.from(path)
+                        }
+                    }
                 }
 
                 variants.all { variant ->
                     GenerateFromJsonSchemaTask task = createJS2DTask(
                             project,
                             "${TASK_NAME}For${variant.name.capitalize()}",
-                            sourceFiles,
+                            config.source,
                             "$BASE_FOLDER/${variant.flavorName}/${variant.buildType.name}/"
                     )
                     variant.registerJavaGeneratingTask(task, task.targetDirectory.get().asFile)
