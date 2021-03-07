@@ -85,7 +85,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
 
                     sets.all { sourceSet ->
                         if(sourceSet.name.startsWith("main")){
-                            def path = Paths.get(sourceSet.res.source[0], 'json')
+                            def path = Paths.get(sourceSet.resources.source[0], 'json')
                             config.source.from(path)
                         }
                     }
