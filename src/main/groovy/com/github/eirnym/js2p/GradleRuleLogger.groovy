@@ -20,7 +20,6 @@ class GradleRuleLogger extends AbstractRuleLogger {
     Logger Logger
 
     GradleRuleLogger(Logger logger) {
-        super()
         logger.info("Initializing {}", GradleRuleLogger.class)
         this.logger = logger
     }
@@ -31,8 +30,8 @@ class GradleRuleLogger extends AbstractRuleLogger {
     }
 
     @Override
-    protected void doError(String msg) {
-        logger.error(msg)
+    protected void doError(String msg, Throwable e) {
+        logger.error(msg, e)
     }
 
     @Override
@@ -46,8 +45,8 @@ class GradleRuleLogger extends AbstractRuleLogger {
     }
 
     @Override
-    protected void doWarn(String msg) {
-
+    protected void doWarn(String msg, Throwable e) {
+        logger.warn(msg, e)
     }
 
     @Override

@@ -15,291 +15,77 @@
  */
 package com.github.eirnym.js2p
 
+import groovy.transform.ToString
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
-import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
-import org.jsonschema2pojo.AnnotationStyle
-import org.jsonschema2pojo.Annotator
-import org.jsonschema2pojo.AllFileFilter
-import org.jsonschema2pojo.GenerationConfig
-import org.jsonschema2pojo.InclusionLevel
-import org.jsonschema2pojo.Language
-import org.jsonschema2pojo.NoopAnnotator
-import org.jsonschema2pojo.SourceSortOrder
-import org.jsonschema2pojo.SourceType
-import org.jsonschema2pojo.rules.RuleFactory
 
 import javax.inject.Inject
 
-/**
- * The configuration properties.
- *
- * @author Ben Manes (ben.manes@gmail.com)
- * @see https://github.com/joelittlejohn/jsonschema2pojo
- */
-public class JsonSchemaExtension implements GenerationConfig {
-  final ConfigurableFileCollection sourceFiles
-  final DirectoryProperty targetDirectory
-  String targetPackage
-  AnnotationStyle annotationStyle
-  boolean useTitleAsClassname
-  InclusionLevel inclusionLevel
-  String classNamePrefix
-  String classNameSuffix
-  String[] fileExtensions
-  Class<? extends Annotator> customAnnotator
-  Class<? extends RuleFactory> customRuleFactory
-  boolean generateBuilders
-  boolean includeJsonTypeInfoAnnotation
-  boolean useInnerClassBuilders
-  boolean includeConstructorPropertiesAnnotation
-  boolean includeGetters
-  boolean includeSetters
-  boolean includeAdditionalProperties
-  boolean includeDynamicAccessors
-  boolean includeDynamicGetters
-  boolean includeDynamicSetters
-  boolean includeDynamicBuilders
-  boolean includeConstructors
-  boolean constructorsRequiredPropertiesOnly
-  boolean includeRequiredPropertiesConstructor;
-  boolean includeAllPropertiesConstructor;
-  boolean includeCopyConstructor;
-  boolean includeHashcodeAndEquals
-  boolean includeJsr303Annotations
-  boolean includeJsr305Annotations
-  boolean useOptionalForGetters
-  boolean includeToString
-  String[] toStringExcludes
-  boolean initializeCollections
-  String outputEncoding
-  boolean parcelable
-  boolean serializable
-  char[] propertyWordDelimiters
-  boolean removeOldOutput
-  SourceType sourceType
-  String targetVersion
-  boolean useCommonsLang3
-  boolean useDoubleNumbers
-  boolean useBigDecimals
-  boolean useJodaDates
-  boolean useJodaLocalDates
-  boolean useJodaLocalTimes
-  String dateTimeType
-  String dateType
-  String timeType
-  boolean useLongIntegers
-  boolean useBigIntegers
-  boolean usePrimitives
-  FileFilter fileFilter
-  boolean formatDates
-  boolean formatTimes
-  boolean formatDateTimes
-  String customDatePattern
-  String customTimePattern
-  String customDateTimePattern
-  String refFragmentPathDelimiters
-  SourceSortOrder sourceSortOrder
-  Language targetLanguage
-  Map<String, String> formatTypeMapping
-
-  @Inject
-  public JsonSchemaExtension(ProjectLayout projectLayout, ObjectFactory objectFactory) {
-    // See DefaultGenerationConfig
-    generateBuilders = false
-    includeJsonTypeInfoAnnotation = false
-    useInnerClassBuilders = false
-    usePrimitives = false
-    sourceFiles = objectFactory.fileCollection()
-    targetPackage = ''
-    propertyWordDelimiters = ['-', ' ', '_'] as char[]
-    useLongIntegers = false
-    useBigIntegers = false
-    useDoubleNumbers = true
-    useBigDecimals = false
-    includeHashcodeAndEquals = true
-    includeConstructors = false
-    constructorsRequiredPropertiesOnly = false
-    includeRequiredPropertiesConstructor = false
-    includeAllPropertiesConstructor = true
-    includeToString = true
-    toStringExcludes = [] as String[]
-    annotationStyle = AnnotationStyle.JACKSON
-    useTitleAsClassname = false
-    inclusionLevel = InclusionLevel.NON_NULL
-    customAnnotator = NoopAnnotator.class
-    customRuleFactory = RuleFactory.class
-    includeJsr303Annotations = false
-    includeJsr305Annotations = false
-    useOptionalForGetters = false
-    sourceType = SourceType.JSONSCHEMA
-    outputEncoding = 'UTF-8'
-    useJodaDates = false
-    useJodaLocalDates = false
-    useJodaLocalTimes = false
-    dateTimeType = null
-    dateType = null
-    timeType = null
-    useCommonsLang3 = false
-    parcelable = false
-    serializable = false
-    fileFilter = new AllFileFilter()
-    initializeCollections = true
-    classNamePrefix = ''
-    classNameSuffix = ''
-    fileExtensions = [] as String[]
-    includeAdditionalProperties = true
-    includeGetters = true
-    includeSetters = true
-    targetVersion = '1.6'
-    includeDynamicAccessors = false
-    includeDynamicGetters = false
-    includeDynamicSetters = false
-    includeDynamicBuilders = false
-    formatDates = false
-    formatTimes = false
-    formatDateTimes = false
-    refFragmentPathDelimiters = "#/."
-    sourceSortOrder = SourceSortOrder.OS
-    formatTypeMapping = Collections.emptyMap()
-    targetDirectory = objectFactory.directoryProperty().convention(projectLayout.buildDirectory.dir("generated-sources/js2p"))
-  }
-
-  @Override
-  boolean isIncludeTypeInfo() {
-    return includeJsonTypeInfoAnnotation
-  }
-
-  @Override
-  boolean isIncludeConstructorPropertiesAnnotation() {
-    return includeConstructorPropertiesAnnotation
-  }
-
-  @Override
-  public Iterator<URL> getSource() {
-    sourceFiles.asList().stream().map({ it.toURI().toURL() }).iterator()
-  }
-
-  public void setSource(Iterable<File> files) {
-    sourceFiles.setFrom files
-  }
-
-  public void setAnnotationStyle(String style) {
-    annotationStyle = AnnotationStyle.valueOf(style.toUpperCase())
-  }
-
-  public void setInclusionLevel(String level) {
-    inclusionLevel = InclusionLevel.valueOf(level.toUpperCase())
-  }
-  public void setCustomAnnotator(String clazz) {
-    customAnnotator = Class.forName(clazz, true, this.class.classLoader)
-  }
-
-  public void setCustomAnnotator(Class clazz) {
-    customAnnotator = clazz
-  }
-
-  public void setCustomRuleFactory(String clazz) {
-    customRuleFactory = Class.forName(clazz, true, this.class.classLoader)
-  }
-
-  public void setCustomRuleFactory(Class clazz) {
-    customRuleFactory = clazz
-  }
-
-  public void setSourceType(String s) {
-    sourceType = SourceType.valueOf(s.toUpperCase())
-  }
-
-  public void setSourceSortOrder(String sortOrder) {
-    sourceSortOrder = SourceSortOrder.valueOf(sortOrder.toUpperCase())
-  }
-
-  public void setTargetLangauge(String language) {
-    targetLangauge = Langauge.valueOf(language.toUpperCase())
-  }
-
-  public void setIncludeConstructorPropertiesAnnotation(boolean enabled) {
-    includeConstructorPropertiesAnnotation = enabled
-  }
-
-  @Override
-  public String toString() {
-    """|generateBuilders = ${generateBuilders}
-       |includeJsonTypeInfoAnnotation = ${includeJsonTypeInfoAnnotation}
-       |usePrimitives = ${usePrimitives}
-       |source = ${sourceFiles.asList()}
-       |targetDirectory = ${getTargetDirectory()}
-       |targetPackage = ${targetPackage}
-       |propertyWordDelimiters = ${Arrays.toString(propertyWordDelimiters)}
-       |useLongIntegers = ${useLongIntegers}
-       |useBigIntegers = ${useBigIntegers}
-       |useDoubleNumbers = ${useDoubleNumbers}
-       |useBigDecimals = ${useBigDecimals}
-       |includeHashcodeAndEquals = ${includeHashcodeAndEquals}
-       |includeConstructors = ${includeConstructors}
-       |constructorsRequiredPropertiesOnly = ${constructorsRequiredPropertiesOnly}
-       |includeRequiredPropertiesConstructor = ${includeRequiredPropertiesConstructor}
-       |includeAllPropertiesConstructor = ${includeAllPropertiesConstructor}
-       |includeCopyConstructor = ${includeCopyConstructor}
-       |includeToString = ${includeToString}
-       |toStringExcludes = ${Arrays.toString(toStringExcludes)}
-       |annotationStyle = ${annotationStyle.toString().toLowerCase()}
-       |useTitleAsClassname = ${useTitleAsClassname}
-       |inclusionLevel = ${InclusionLevel.toString() }
-       |customAnnotator = ${customAnnotator.getName()}
-       |customRuleFactory = ${customRuleFactory.getName()}
-       |includeJsr303Annotations = ${includeJsr303Annotations}
-       |includeJsr305Annotations = ${includeJsr305Annotations}
-       |useOptionalForGetters = ${useOptionalForGetters}
-       |sourceType = ${sourceType.toString().toLowerCase()}
-       |removeOldOutput = ${removeOldOutput}
-       |outputEncoding = ${outputEncoding}
-       |useJodaDates = ${useJodaDates}
-       |useJodaLocalDates = ${useJodaLocalDates}
-       |useJodaLocalTimes = ${useJodaLocalTimes}
-       |dateTimeType = ${dateTimeType}
-       |dateType = ${dateType}
-       |timeType = ${timeType}
-       |parcelable = ${parcelable}
-       |serializable = ${serializable}
-       |initializeCollections = ${initializeCollections}
-       |classNamePrefix = ${classNamePrefix}
-       |classNameSuffix = ${classNameSuffix}
-       |fileExtensions = ${Arrays.toString(fileExtensions)}
-       |includeGetters = ${includeGetters}
-       |includeSetters = ${includeSetters}
-       |targetVersion = ${targetVersion}
-       |includeDynamicAccessors = ${includeDynamicAccessors}
-       |includeDynamicGetters = ${includeDynamicGetters}
-       |includeDynamicSetters = ${includeDynamicSetters}
-       |includeDynamicBuilders = ${includeDynamicBuilders}
-       |formatDates = ${formatDates}
-       |formatTimes = ${formatTimes}
-       |formatDateTimes = ${formatDateTimes}
-       |customDatePattern = ${customDatePattern}
-       |customTimePattern = ${customTimePattern}
-       |customDateTimePattern = ${customDateTimePattern}
-       |refFragmentPathDelimiters = ${refFragmentPathDelimiters}
-       |sourceSortOrder = ${sourceSortOrder}
-       |targetLanguage = ${targetLanguage}
-       |formatTypeMapping = ${formatTypeMapping}
-       |useInnerClassBuilders = ${useInnerClassBuilders}
-       |includeConstructorPropertiesAnnotation = ${includeConstructorPropertiesAnnotation}
-     """.stripMargin()
-  }
-
-  public boolean isFormatDateTimes() {
-    return formatDateTimes
-  }
-
-  public File getTargetDirectory() {
-    return targetDirectory.get().asFile
-  }
-
-  DirectoryProperty getTargetDirectoryProperty() {
-    return targetDirectory
-  }
+@ToString
+class JsonSchemaExtension {
+    ConfigurableFileCollection source
+    String targetPackage
+    String annotationStyle
+    Boolean useTitleAsClassname
+    String inclusionLevel
+    String classNamePrefix
+    String classNameSuffix
+    List<String> fileExtensions
+    String customAnnotator
+    String customRuleFactory
+    Boolean generateBuilders
+    Boolean includeJsonTypeInfoAnnotation
+    Boolean useInnerClassBuilders
+    Boolean includeConstructorPropertiesAnnotation
+    Boolean includeGetters
+    Boolean includeSetters
+    Boolean includeAdditionalProperties
+    Boolean includeDynamicAccessors
+    Boolean includeDynamicGetters
+    Boolean includeDynamicSetters
+    Boolean includeDynamicBuilders
+    Boolean includeConstructors
+    Boolean constructorsRequiredPropertiesOnly
+    Boolean includeRequiredPropertiesConstructor
+    Boolean includeAllPropertiesConstructor
+    Boolean includeCopyConstructor
+    Boolean includeHashcodeAndEquals
+    Boolean includeJsr303Annotations
+    Boolean includeJsr305Annotations
+    Boolean useOptionalForGetters
+    Boolean includeToString
+    List<String> toStringExcludes
+    Boolean initializeCollections
+    String outputEncoding
+    Boolean parcelable
+    Boolean serializable
+    String propertyWordDelimiters
+    Boolean removeOldOutput
+    String sourceType
+    String targetVersion
+    Boolean useDoubleNumbers
+    Boolean useBigDecimals
+    Boolean useJodaDates
+    Boolean useJodaLocalDates
+    Boolean useJodaLocalTimes
+    String dateTimeType
+    String dateType
+    String timeType
+    Boolean useLongIntegers
+    Boolean useBigIntegers
+    Boolean usePrimitives
+    FileFilter fileFilter
+    Boolean formatDates
+    Boolean formatTimes
+    Boolean formatDateTimes
+    String customDatePattern
+    String customTimePattern
+    String customDateTimePattern
+    String refFragmentPathDelimiters
+    String sourceSortOrder
+    Map<String, String> formatTypeMapping
+    @Inject
+    JsonSchemaExtension(ObjectFactory objectFactory) {
+        this.source = objectFactory.fileCollection()
+    }
 }
