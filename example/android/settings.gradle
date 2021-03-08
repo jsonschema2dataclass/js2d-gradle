@@ -1,4 +1,6 @@
 rootProject.name = 'js2p-gradle sample'
 
-include ':app', ':lib', ':lib2'
+include ':app'
+include ':lib'
+include ':lib2'
 includeBuild '../..'
