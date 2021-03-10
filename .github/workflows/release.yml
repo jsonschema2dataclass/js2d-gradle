@@ -33,8 +33,17 @@ jobs:
           skip-unshallow: 'true'
           commit-ish: HEAD
       - run: |
+          PRE_RELEASE=""
+          string='My long string'
+          if [[ ${{steps.tagger.outputs.tag}} == *"beta"* ]]; then
+            PRE_RELEASE="-p"
+          fi
+          if [[ ${{steps.tagger.outputs.tag}} == *"alpha"* ]]; then
+            PRE_RELEASE="-p"
+          fi
           assets=$(find . -name "*${{steps.tagger.outputs.tag}}*.jar" -or -name " *release.aar" | while read -r asset ; do echo "-a $asset" ; done)
-          hub release create ${assets} -m "${{steps.tagger.outputs.tag}}" "${{steps.tagger.outputs.tag}}"
+          set -x
+          hub release create $PRE_RELEASE ${assets} -m "${{steps.tagger.outputs.tag}}" "${{steps.tagger.outputs.tag}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{steps.tagger.outputs.tag}}
