@@ -20,7 +20,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.plugins.JavaPluginConvention
-import org.gradle.api.tasks.SourceSet
 
 import java.nio.file.Paths
 
@@ -30,7 +29,6 @@ import java.nio.file.Paths
 class JsonSchemaPlugin implements Plugin<Project> {
     private static String BASE_FOLDER = 'generated/sources/js2d'
     public static String TASK_NAME = 'generateJsonSchema2DataClass'
-    public static String COLON_TASK_NAME = ':' + TASK_NAME
 
     @Override
     void apply(Project project) {
