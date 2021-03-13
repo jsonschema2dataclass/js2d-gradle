@@ -7,14 +7,11 @@ import org.gradle.api.file.Directory
 import org.gradle.api.provider.Provider
 import org.jsonschema2pojo.*
 import org.jsonschema2pojo.rules.RuleFactory
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 import java.util.stream.Collectors
 
 @ToString
 class JS2PConfig implements GenerationConfig {
-    private static final Logger logger = LoggerFactory.getLogger(JS2PConfig)
     List<URL> sourceFiles
     File targetDirectory
 

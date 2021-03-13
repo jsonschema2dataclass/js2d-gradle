@@ -34,7 +34,7 @@ class JsonSchemaExtension {
     String customAnnotator
     String customRuleFactory
     Boolean generateBuilders
-    Boolean includeJsonTypeInfoAnnotation
+    Boolean includeTypeInfo
     Boolean useInnerClassBuilders
     Boolean includeConstructorPropertiesAnnotation
     Boolean includeGetters
@@ -54,6 +54,7 @@ class JsonSchemaExtension {
     Boolean includeJsr305Annotations
     Boolean useOptionalForGetters
     Boolean includeToString
+    Boolean includeGeneratedAnnotation
     List<String> toStringExcludes
     Boolean initializeCollections
     String outputEncoding
