@@ -2,23 +2,12 @@ buildscript {
     repositories {
         google()
         jcenter()
-        /*
-         As a standalone Android example you would need this maven repository,
-         but this example is more a development showcase, then a showcase how to use it
-         It uses the plugin from this local repository, by
-         includeBuild '../..'
-         from file settings.gradle
-         To make it clear, from where it comes from, it's commented out
-         */
-        // maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath "gradle.plugin.org.jsonschema2dataclass:jsonschema2dataclass:2.0.0"
     }
-}
-
-plugins {
-    id "org.jsonschema2dataclass" version '2.0.0' apply false
 }
 
 allprojects {
