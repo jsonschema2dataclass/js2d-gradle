@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 8, 11 ]
+        java: [ 8, 11, 15 ]
     steps:
       - uses: actions/checkout@v2
       - uses: gradle/wrapper-validation-action@v1
