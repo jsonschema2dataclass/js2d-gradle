@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: example/java
+        working-directory: demo/java
     strategy:
       matrix:
         java_version: [1.8]

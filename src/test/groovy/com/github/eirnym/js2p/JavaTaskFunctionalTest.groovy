@@ -114,7 +114,7 @@ class JavaTaskFunctionalTest {
         Path jsonDir = testProjectDir.resolve('src/main/resources/json')
         new File(jsonDir.toString()).mkdirs()
         def addressJson = jsonDir.resolve("address.json")
-        Files.copy(Paths.get("example", "java", "src", "main", "resources", "json", "address.json"), addressJson)
+        Files.copy(Paths.get("demo", "java", "src", "main", "resources", "json", "address.json"), addressJson)
     }
 
 }
