@@ -10,15 +10,14 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "example/java"
+    directory: "demo/java"
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "example/android"
+    directory: "demo/android"
     schedule:
       interval: "daily"
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-
