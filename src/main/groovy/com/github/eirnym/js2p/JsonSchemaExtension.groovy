@@ -24,67 +24,69 @@ import javax.inject.Inject
 @ToString
 class JsonSchemaExtension {
     ConfigurableFileCollection source
-    String targetPackage
+
     String annotationStyle
-    Boolean useTitleAsClassname
-    String inclusionLevel
     String classNamePrefix
     String classNameSuffix
-    List<String> fileExtensions
+    Boolean constructorsRequiredPropertiesOnly
     String customAnnotator
+    String customDatePattern
+    String customDateTimePattern
     String customRuleFactory
+    String customTimePattern
+    String dateTimeType
+    String dateType
+    List<String> fileExtensions
+    FileFilter fileFilter
+    Boolean formatDateTimes
+    Boolean formatDates
+    Boolean formatTimes
+    Map<String, String> formatTypeMapping
     Boolean generateBuilders
-    Boolean includeTypeInfo
-    Boolean useInnerClassBuilders
-    Boolean includeConstructorPropertiesAnnotation
-    Boolean includeGetters
-    Boolean includeSetters
     Boolean includeAdditionalProperties
+    Boolean includeAllPropertiesConstructor
+    Boolean includeConstructorPropertiesAnnotation
+    Boolean includeConstructors
+    Boolean includeCopyConstructor
     Boolean includeDynamicAccessors
+    Boolean includeDynamicBuilders
     Boolean includeDynamicGetters
     Boolean includeDynamicSetters
-    Boolean includeDynamicBuilders
-    Boolean includeConstructors
-    Boolean constructorsRequiredPropertiesOnly
-    Boolean includeRequiredPropertiesConstructor
-    Boolean includeAllPropertiesConstructor
-    Boolean includeCopyConstructor
+    Boolean includeGeneratedAnnotation
+    Boolean includeGetters
     Boolean includeHashcodeAndEquals
     Boolean includeJsr303Annotations
     Boolean includeJsr305Annotations
-    Boolean useOptionalForGetters
+    Boolean includeRequiredPropertiesConstructor
+    Boolean includeSetters
     Boolean includeToString
-    Boolean includeGeneratedAnnotation
-    List<String> toStringExcludes
+    Boolean includeTypeInfo
+    String inclusionLevel
     Boolean initializeCollections
     String outputEncoding
     Boolean parcelable
-    Boolean serializable
     String propertyWordDelimiters
+    String refFragmentPathDelimiters
     Boolean removeOldOutput
+    Boolean serializable
+    String sourceSortOrder
     String sourceType
+    String targetPackage
     String targetVersion
-    Boolean useDoubleNumbers
+    String timeType
+    List<String> toStringExcludes
     Boolean useBigDecimals
+    Boolean useBigIntegers
+    Boolean useDoubleNumbers
+    Boolean useInnerClassBuilders
     Boolean useJodaDates
     Boolean useJodaLocalDates
     Boolean useJodaLocalTimes
-    String dateTimeType
-    String dateType
-    String timeType
     Boolean useLongIntegers
-    Boolean useBigIntegers
+    Boolean useOptionalForGetters
     Boolean usePrimitives
-    FileFilter fileFilter
-    Boolean formatDates
-    Boolean formatTimes
-    Boolean formatDateTimes
-    String customDatePattern
-    String customTimePattern
-    String customDateTimePattern
-    String refFragmentPathDelimiters
-    String sourceSortOrder
-    Map<String, String> formatTypeMapping
+    Boolean useTitleAsClassname
+    
     @Inject
     JsonSchemaExtension(ObjectFactory objectFactory) {
         this.source = objectFactory.fileCollection()

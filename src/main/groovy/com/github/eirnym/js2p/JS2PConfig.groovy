@@ -15,67 +15,67 @@ class JS2PConfig implements GenerationConfig {
     List<URL> sourceFiles
     File targetDirectory
 
-    String targetPackage
     AnnotationStyle annotationStyle
-    boolean useTitleAsClassname
-    InclusionLevel inclusionLevel
     String classNamePrefix
     String classNameSuffix
-    String[] fileExtensions
+    boolean constructorsRequiredPropertiesOnly
     Class<? extends Annotator> customAnnotator
+    String customDatePattern
+    String customDateTimePattern
     Class<? extends RuleFactory> customRuleFactory
+    String customTimePattern
+    String dateTimeType
+    String dateType
+    String[] fileExtensions
+    FileFilter fileFilter
+    boolean formatDateTimes
+    boolean formatDates
+    boolean formatTimes
+    Map<String, String> formatTypeMapping
     boolean generateBuilders
-    boolean includeTypeInfo
-    boolean useInnerClassBuilders
-    boolean includeConstructorPropertiesAnnotation
-    boolean includeGetters
-    boolean includeSetters
     boolean includeAdditionalProperties
+    boolean includeAllPropertiesConstructor
+    boolean includeConstructorPropertiesAnnotation
+    boolean includeConstructors
+    boolean includeCopyConstructor
     boolean includeDynamicAccessors
+    boolean includeDynamicBuilders
     boolean includeDynamicGetters
     boolean includeDynamicSetters
-    boolean includeDynamicBuilders
-    boolean includeConstructors
-    boolean constructorsRequiredPropertiesOnly
-    boolean includeRequiredPropertiesConstructor
-    boolean includeAllPropertiesConstructor
-    boolean includeCopyConstructor
+    boolean includeGeneratedAnnotation
+    boolean includeGetters
     boolean includeHashcodeAndEquals
     boolean includeJsr303Annotations
     boolean includeJsr305Annotations
-    boolean useOptionalForGetters
+    boolean includeRequiredPropertiesConstructor
+    boolean includeSetters
     boolean includeToString
-    boolean includeGeneratedAnnotation
-    String[] toStringExcludes
+    boolean includeTypeInfo
+    InclusionLevel inclusionLevel
     boolean initializeCollections
     String outputEncoding
     boolean parcelable
-    boolean serializable
     char[] propertyWordDelimiters
+    String refFragmentPathDelimiters
     boolean removeOldOutput
+    boolean serializable
+    SourceSortOrder sourceSortOrder
     SourceType sourceType
+    String targetPackage
     String targetVersion
-    boolean useDoubleNumbers
+    String timeType
+    String[] toStringExcludes
     boolean useBigDecimals
+    boolean useBigIntegers
+    boolean useDoubleNumbers
+    boolean useInnerClassBuilders
     boolean useJodaDates
     boolean useJodaLocalDates
     boolean useJodaLocalTimes
-    String dateTimeType
-    String dateType
-    String timeType
     boolean useLongIntegers
-    boolean useBigIntegers
+    boolean useOptionalForGetters
     boolean usePrimitives
-    FileFilter fileFilter
-    boolean formatDates
-    boolean formatTimes
-    boolean formatDateTimes
-    String customDatePattern
-    String customTimePattern
-    String customDateTimePattern
-    String refFragmentPathDelimiters
-    SourceSortOrder sourceSortOrder
-    Map<String, String> formatTypeMapping
+    boolean useTitleAsClassname
 
     Iterator<URL> getSource() {
         return sourceFiles.iterator()
