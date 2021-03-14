@@ -130,4 +130,6 @@ jsonSchema2Pojo {
 
     // Whether to initialize Set and List fields as empty collections, or leave them as null.
     boolean initializeCollections = true
+    // Include @Generated annotation
+    boolean includeGeneratedAnnotation = true
 }

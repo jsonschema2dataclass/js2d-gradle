@@ -1,4 +1,4 @@
-rootProject.name = 'js2p-gradle sample'
+rootProject.name = 'js2d-gradle Android sample'
 
 include ':app'
 include ':lib'
