@@ -71,6 +71,11 @@ class JsonSchemaPlugin implements Plugin<Project> {
                 }
 
                 JsonSchemaExtension config = project.extensions.getByType(JsonSchemaExtension)
+
+                if (System.getProperty('java.specification.version').toFloat() >= 9) {
+                    config.includeGeneratedAnnotation = false  // Temporary fixes #71 and upstream issue #1212 (used Generated annotation is not compatible with AGP 7+)
+                }
+
                 ConfigurableFileCollection sourceFiles
 
                 if (config.source.isEmpty()) {
