@@ -1,25 +1,31 @@
 package com.github.eirnym.js2p
 
+import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.NullSource
 
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.stream.Stream
 
-import static com.github.eirnym.js2p.JsonSchemaPlugin.COLON_TASK_NAME
 import static com.github.eirnym.js2p.JsonSchemaPlugin.TASK_NAME
-import static org.hamcrest.CoreMatchers.is
-import static org.hamcrest.io.FileMatchers.anExistingDirectory
-import static org.hamcrest.MatcherAssert.assertThat
-import static org.hamcrest.io.FileMatchers.anExistingFile
-import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.*
 
 class JavaTaskFunctionalTest {
+    private static final String COLON_TASK_NAME = ':' + TASK_NAME
+    private static final List<String> GRADLE_RELEASES = [
+            '5.6.4',      // 5.x for java8-java11 only
+            '6.8.3', '6.8', '6.7.1', '6.6.1', '6.5.1', '6.4.1', '6.3', '6.2.2', '6.2.1', '6.1.1', '6.0.1',  // 6.x
+    ]
+
     @TempDir
     public Path testProjectDir
     private Path buildFile
@@ -29,68 +35,59 @@ class JavaTaskFunctionalTest {
         buildFile = testProjectDir.resolve("build.gradle")
     }
 
-    @Test
-    void withoutExtension() {
+    @ParameterizedTest
+    @NullSource
+    @MethodSource('gradleReleases')
+    void withoutExtension(String gradleVersion) {
         createBuildFiles()
         copyAddressJSON()
 
-        def result = GradleRunner.create()
-            .withPluginClasspath()
-            .withProjectDir(testProjectDir.toFile())
-            .withArguments(TASK_NAME, "--info")
-            .build()
+        def result = executeRunner(gradleVersion, testProjectDir)
 
         def js2pDir = testProjectDir.resolve("build/generated/sources/js2d")
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME).outcome)
-        assertThat(js2pDir.toFile(), is(anExistingDirectory()))
-        assertThat(js2pDir.resolve("Address.java").toFile(), is(anExistingFile()))
+        assertExists(js2pDir.toFile())
+        assertExists(js2pDir.resolve("Address.java").toFile())
     }
 
-    @Test
+
+    @ParameterizedTest
+    @NullSource
+    @MethodSource('gradleReleases')
     @DisplayName("compileJava task depends task even when project has no java code")
-    void noJavaCode() {
+    void noJavaCode(String gradleVersion) {
         createBuildFiles()
         copyAddressJSON()
 
-        def result = GradleRunner.create()
-                .withPluginClasspath()
-                .withProjectDir(testProjectDir.toFile())
-                .withArguments("compileJava", "--info")
-                .build()
+        def result = executeRunner(gradleVersion, testProjectDir, "compileJava")
 
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME).outcome)
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @MethodSource('gradleReleases')
     @DisplayName('task is cache-able')
-    void taskIsCachable() {
+    void taskIsCachable(String gradleVersion) {
         createBuildFiles()
         copyAddressJSON()
 
-        GradleRunner.create()
-                .withPluginClasspath()
-                .withProjectDir(testProjectDir.toFile())
-                .withArguments(TASK_NAME)
-                .build()
-        def result = GradleRunner.create()
-                .withPluginClasspath()
-                .withProjectDir(testProjectDir.toFile())
-                .withArguments(TASK_NAME, "--info")
-                .build()
+        // Run our task twice to be sure that results has been cached
+
+        executeRunner(gradleVersion, testProjectDir)
+        def result = executeRunner(gradleVersion, testProjectDir)
 
         assertEquals(TaskOutcome.UP_TO_DATE, result.task(COLON_TASK_NAME).outcome)
     }
 
-    @Test
+    @ParameterizedTest
+    @NullSource
+    @MethodSource('gradleReleases')
     @DisplayName('task skips if no json file exists')
-    void noJsonFiles() {
+    void noJsonFiles(String gradleVersion) {
         createBuildFiles()
 
-        def result = GradleRunner.create()
-                .withPluginClasspath()
-                .withProjectDir(testProjectDir.toFile())
-                .withArguments(COLON_TASK_NAME, "--info")
-                .build()
+        def result = executeRunner(gradleVersion, testProjectDir)
 
         assertEquals(TaskOutcome.NO_SOURCE, result.task(COLON_TASK_NAME).outcome)
     }
@@ -117,4 +114,46 @@ class JavaTaskFunctionalTest {
         Files.copy(Paths.get("demo", "java", "src", "main", "resources", "json", "address.json"), addressJson)
     }
 
+    private static void assertExists(File file) {
+        assertNotNull(file)
+        assertTrue(file.exists())
+    }
+
+    private static BuildResult executeRunner(String gradleVersion, Path testProjectDir, String task = COLON_TASK_NAME) {
+        def arguments = GradleRunner.create()
+                .withPluginClasspath()
+                .withProjectDir(testProjectDir.toFile())
+                .withArguments(task, "--info")
+
+        if (gradleVersion) {
+            arguments.withGradleVersion(gradleVersion)
+        }
+        return arguments.build()
+    }
+
+    static boolean gradleSupported(String gradleVersion, String javaSpecificationVersion) {
+        def javaVersion = javaSpecificationVersion.toFloat()
+        if ( javaVersion < 13) {  // this includes java '1.8' :)
+            return true
+        }
+
+        def parts = gradleVersion.split(/\./)
+
+        if (parts[0].toInteger() < 6) {
+            return false
+        }
+
+        switch ((int)javaVersion) {
+            case 13: return true
+            case 14: return parts[1].toInteger() >= 3
+            case 15: return parts[1].toInteger() >= 6
+            default: return false // no official information on Gradle compatibility with further versions of Java
+        }
+    }
+
+    static Stream<Arguments> gradleReleases() {
+        String javaSpecificationVersion = System.getProperty('java.specification.version')
+        return GRADLE_RELEASES.stream().filter {it -> gradleSupported(it, javaSpecificationVersion) }
+                .map {it -> Arguments.of(it)} as Stream<Arguments>
+    }
 }
