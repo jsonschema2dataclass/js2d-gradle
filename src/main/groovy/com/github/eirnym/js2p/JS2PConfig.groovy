@@ -83,6 +83,8 @@ class JS2PConfig implements GenerationConfig {
     private static Map<String, Closure<?>> converters = [
             source                : { value -> null },
             targetDirectory       : { value -> null },
+            executions            : { value -> null },
+            name                  : { value -> null },
             fileExtensions        : { List<String> fileExtensions -> fileExtensions.toArray() },
             annotationStyle       : { String annotationStyle -> fromEnum(annotationStyle, AnnotationStyle) },
             inclusionLevel        : { String inclusionLevel -> fromEnum(inclusionLevel, InclusionLevel) },
@@ -94,10 +96,13 @@ class JS2PConfig implements GenerationConfig {
             sourceSortOrder       : { String sourceSortOrder -> fromEnum(sourceSortOrder, SourceSortOrder) },
     ]
 
-    JS2PConfig(JsonSchemaExtension extension, Provider<Directory> targetDirectory, ConfigurableFileCollection sourceFiles) {
+    JS2PConfig(JsonSchemaExtension extension, JsonSchema2PojoPluginConfiguration configuration, Provider<Directory> targetDirectory, ConfigurableFileCollection sourceFiles) {
         // Convert known properties
         Map<String, Object> newValues = [:]
         extension.properties.entrySet().each { Map.Entry<String, Object> entry ->
+            setNewValue(newValues, entry.key, entry.value)
+        }
+        configuration.properties.entrySet().each { Map.Entry<String, Object> entry ->
             setNewValue(newValues, entry.key, entry.value)
         }
         InvokerHelper.setProperties(this, new DefaultGenerationConfig().properties)
