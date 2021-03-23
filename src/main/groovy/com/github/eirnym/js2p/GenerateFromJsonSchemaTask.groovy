@@ -22,18 +22,19 @@ abstract class GenerateFromJsonSchemaTask extends DefaultTask{
     @InputFiles
     final ConfigurableFileCollection sourceFiles = project.objects.fileCollection()
 
+    @Input
+    int execution;
+
     @TaskAction
     def generate(){
-
-        def configuration = project.getExtensions().getByType(JsonSchemaExtension)
+        def extension = project.getExtensions().getByType(JsonSchemaExtension)
         if (project.plugins.hasPlugin('java')) {
             project.sourceSets.main.java.srcDirs targetDirectory
         }
         sourceFiles.each { it.mkdir() }
-
-        logger.info 'Using this configuration:\n{}', configuration
-
-        def jS2PConfig = new JS2PConfig(configuration, targetDirectory, sourceFiles)
+        
+        def jS2PConfig = new JS2PConfig(extension, extension.executions[execution], targetDirectory, sourceFiles)
+        logger.info 'Using this configuration:\n{}', jS2PConfig
         Jsonschema2Pojo.generate(jS2PConfig, new GradleRuleLogger(logger))
     }
 }
