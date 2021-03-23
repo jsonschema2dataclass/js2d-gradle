@@ -26,8 +26,11 @@ class JavaTaskFunctionalTest {
     private static final String COLON_TASK_NAME = ':' + TASK_NAME
     private static final String COLON_TASK_NAME0 = COLON_TASK_NAME + '0'
     private static final String COLON_TASK_NAME1 = COLON_TASK_NAME + '1'
+
     private static final String TARGET_FOLDER_BASE0 = TARGET_FOLDER_BASE + '0'
-    private static final String TARGET_FOLDER_BASE1 = TARGET_FOLDER_BASE + '1'
+    private static final String TARGET_FOLDER_BASE_CUSTOM = TARGET_FOLDER_BASE + 's'
+    private static final String TARGET_FOLDER_BASE_CUSTOM0 = TARGET_FOLDER_BASE_CUSTOM + '0'
+    private static final String TARGET_FOLDER_BASE_CUSTOM1 = TARGET_FOLDER_BASE_CUSTOM + '1'
     private static final List<String> GRADLE_RELEASES = [
             '6.8.3', '6.8', '6.7.1', '6.6.1', '6.5.1', '6.4.1', '6.3', '6.2.2', '6.2.1', '6.1.1', '6.0.1',  // 6.x
     ]
@@ -52,9 +55,7 @@ class JavaTaskFunctionalTest {
         def result = executeRunner(gradleVersion, testProjectDir)
 
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0).outcome)
-        def js2pDir = testProjectDir.resolve("build/${TARGET_FOLDER_BASE0}")
-        assertExists(js2pDir.toFile())
-        assertExists(js2pDir.resolve("Address.java").toFile())
+        addressJavaExists(testProjectDir, "build/${TARGET_FOLDER_BASE0}")
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] {argumentsWithNames}")
@@ -68,9 +69,7 @@ class JavaTaskFunctionalTest {
         def result = executeRunner(gradleVersion, testProjectDir)
 
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0).outcome)
-        def js2pDir = testProjectDir.resolve("build/${TARGET_FOLDER_BASE0}/com/example")
-        assertExists(js2pDir.toFile())
-        assertExists(js2pDir.resolve("Address.java").toFile())
+        addressJavaExists(testProjectDir, "build/${TARGET_FOLDER_BASE0}/com/example")
     }
     @ParameterizedTest(name = "{displayName} [{index}] {argumentsWithNames}")
     @NullSource
@@ -83,9 +82,7 @@ class JavaTaskFunctionalTest {
         def result = executeRunner(gradleVersion, testProjectDir)
 
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0).outcome)
-        def js2pDir = testProjectDir.resolve("build/${TARGET_FOLDER_BASE0}/com/example")
-        assertExists(js2pDir.toFile())
-        assertExists(js2pDir.resolve("Address.java").toFile())
+        addressJavaExists(testProjectDir, "build/${TARGET_FOLDER_BASE0}/com/example")
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] {argumentsWithNames}")
@@ -99,9 +96,7 @@ class JavaTaskFunctionalTest {
         def result = executeRunner(gradleVersion, testProjectDir)
 
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0).outcome)
-        def js2pDir = testProjectDir.resolve("build/${TARGET_FOLDER_BASE0}/com/example")
-        assertExists(js2pDir.toFile())
-        assertExists(js2pDir.resolve("Address.java").toFile())
+        addressJavaExists(testProjectDir, "build/${TARGET_FOLDER_BASE0}/com/example")
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] {argumentsWithNames}")
@@ -114,16 +109,11 @@ class JavaTaskFunctionalTest {
         copyAddressJSON()
 
         def result = executeRunner(gradleVersion, testProjectDir, COLON_TASK_NAME)
-
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0).outcome)
-        def js2pDir0 = testProjectDir.resolve("build/${TARGET_FOLDER_BASE0}/com/example")
-        assertExists(js2pDir0.toFile())
-        assertExists(js2pDir0.resolve("Address.java").toFile())
-
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME1).outcome)
-        def js2pDir1 = testProjectDir.resolve("build/${TARGET_FOLDER_BASE1}/org/example")
-        assertExists(js2pDir1.toFile())
-        assertExists(js2pDir1.resolve("Address.java").toFile())
+
+        addressJavaExists(testProjectDir, "build/${TARGET_FOLDER_BASE_CUSTOM0}/com/example")
+        addressJavaExists(testProjectDir, "build/${TARGET_FOLDER_BASE_CUSTOM1}/org/example")
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] {argumentsWithNames}")
@@ -198,6 +188,7 @@ class JavaTaskFunctionalTest {
     private void createBuildFilesMultiple() {
         Files.write(buildFile, (BUILD_FILE_HEADER + """
         |jsonSchema2Pojo{
+        |   targetDirectoryPrefix = "${TARGET_FOLDER_BASE_CUSTOM}"
         |   executions {
         |     com{
         |       targetPackage = 'com.example'
@@ -254,6 +245,12 @@ class JavaTaskFunctionalTest {
     private static void assertExists(File file) {
         assertNotNull(file)
         assertTrue(file.exists())
+    }
+
+    private static void addressJavaExists(Path testProjectDir, String targetDirectory) {
+        def js2pDir = testProjectDir.resolve(targetDirectory)
+        assertExists(js2pDir.toFile())
+        assertExists(js2pDir.resolve("Address.java").toFile())
     }
 
     private static BuildResult executeRunner(
