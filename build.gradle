@@ -16,7 +16,7 @@ ext {
 pluginBundle {
     website = 'https://github.com/jsonschema2dataclass/js2d-gradle'
     vcsUrl = 'https://github.com/jsonschema2dataclass/js2d-gradle.git'
-    tags = ['json-schema', 'jsonschema', 'generator', 'pojo', 'jsonschema2pojo', 'dataclass', 'data', 'json', 'generation', 'jsonschema2dataclass']
+    tags = ['json-schema', 'jsonschema', 'generator', 'pojo', 'jsonschema2pojo', 'dataclass', 'data', 'json', 'generation', 'jsonschema2dataclass', 'java']
 }
 
 
@@ -26,8 +26,8 @@ gradlePlugin {
             id = 'org.jsonschema2dataclass'
             version = getTag()
             implementationClass = 'com.github.eirnym.js2p.JsonSchemaPlugin'
-            displayName = 'Official Gradle JsonSchema2Pojo Plugin'
-            description = 'A plugins that generates Java or Scala sources from JsonSchema using jsonschema2pojo. Please, see the GitHub page for details'
+            displayName = 'Extended Gradle JsonSchema2Pojo Plugin'
+            description = 'A plugins that generates Java sources from JsonSchema using jsonschema2pojo. Please, see the GitHub page for details'
         }
     }
 }
