@@ -56,7 +56,7 @@ jsonSchema2Pojo {
 
     // Location of the JSON Schema file(s). This may refer to a single file or a directory of files.
     //source = files("${sourceSets.main.output.resourcesDir}/json")
-    source = files("${project.rootDir}/schema")
+    source.setFrom files("${project.rootDir}/schema")
 
     // Target directory for generated Java source files. The plugin will ignore this value for Android projects and will generate the classes into a generated source folder for each build variant and add this directory to the
     // java source set so the compiler will find and compile the newly generated source files.
@@ -119,14 +119,14 @@ jsonSchema2Pojo {
     // that have been generated previously. <strong>Be warned</strong>, when activated this option
     // will cause jsonschema2pojo to <strong>indiscriminately delete the entire contents of the target
     // directory (all files and folders)</strong> before it begins generating sources.
-    boolean removeOldOutput = true
+    removeOldOutput = true
 
     // The character encoding that should be used when writing the generated Java source files
-    String outputEncoding = 'UTF-8'
+    outputEncoding = 'UTF-8'
 
     // Whether to use {@link org.joda.time.DateTime} instead of {@link java.util.Date} when adding
     // date type fields to generated Java types.
-    boolean useJodaDates = false
+    useJodaDates = false
 
     // Whether to initialize Set and List fields as empty collections, or leave them as null.
     boolean initializeCollections = true

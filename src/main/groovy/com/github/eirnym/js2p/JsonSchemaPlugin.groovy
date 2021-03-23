@@ -25,7 +25,6 @@ import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.JavaPluginConvention
-import org.gradle.api.tasks.SourceSet
 import org.gradle.util.GradleVersion
 
 import java.nio.file.Path
@@ -118,14 +117,14 @@ class JsonSchemaPlugin implements Plugin<Project> {
     }
 
     private static Path getAndroidJsonPath(Project project) {
-        Collection<SourceSet> sets
+        def sets
         if (project.android.hasProperty('sourceSets')) {
             sets = project.android.sourceSets;
         } else {
             sets = project.android.sourceSetsContainer;
         }
 
-        SourceSet main = sets.find { it.name.startsWith("main") }
+        def main = sets.find { it.name.startsWith("main") }
         return Paths.get(main.resources.source[0], 'json')
     }
 
