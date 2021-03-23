@@ -1,4 +1,4 @@
-Official https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] Gradle plugin
+Extended https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] Gradle plugin
 ========================================================================================
 :toc:
 :toc-placement: preamble
