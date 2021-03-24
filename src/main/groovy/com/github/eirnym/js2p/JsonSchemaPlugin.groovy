@@ -119,9 +119,9 @@ class JsonSchemaPlugin implements Plugin<Project> {
     private static Path getAndroidJsonPath(Project project) {
         def sets
         if (project.android.hasProperty('sourceSets')) {
-            sets = project.android.sourceSets;
+            sets = project.android.sourceSets
         } else {
-            sets = project.android.sourceSetsContainer;
+            sets = project.android.sourceSetsContainer
         }
 
         def main = sets.find { it.name.startsWith("main") }
@@ -160,6 +160,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
                     taskNameSuffix,
                     execId,
                     execution.source,
+                    extension.targetDirectoryPrefix.get(),
                     targetDirectorySuffix
             )
             postConfigure(task)
@@ -173,6 +174,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
             String taskNameSuffix,
             int executionId,
             ConfigurableFileCollection source,
+            String targetDirectoryPrefix,
             String targetDirectorySuffix
     ) {
 
@@ -187,7 +189,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
         task.execution = executionId
         task.sourceFiles.setFrom(source)
         task.targetDirectory.set(
-                project.layout.buildDirectory.dir("${TARGET_FOLDER_BASE}${executionId}${targetDirectorySuffix}")
+                project.layout.buildDirectory.dir("${targetDirectoryPrefix}${executionId}${targetDirectorySuffix}")
         )
         task.inputs.files({ task.sourceFiles.filter({ it.exists() }) })
                 .skipWhenEmpty()
@@ -214,7 +216,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
             }
         }
     }
-    private void verifyGradleVersion() {
+    private static void verifyGradleVersion() {
         if (GradleVersion.current() < GradleVersion.version(MINIMUM_GRADLE_VERSION)) {
             throw new GradleException("Plugin ${PLUGIN_ID} requires at least Gradle $MINIMUM_GRADLE_VERSION, but you are using ${GradleVersion.current().version}")
         }

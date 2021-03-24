@@ -18,16 +18,21 @@ package com.github.eirnym.js2p
 import groovy.transform.ToString
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 
 import javax.inject.Inject
+
+import static com.github.eirnym.js2p.JsonSchemaPlugin.TARGET_FOLDER_BASE
 
 @ToString
 class JsonSchemaExtension extends JsonSchema2PojoPluginConfiguration {
     final NamedDomainObjectContainer<JsonSchema2PojoPluginConfiguration> executions
+    final Property<String> targetDirectoryPrefix
 
     @Inject
     JsonSchemaExtension(ObjectFactory objectFactory) {
         super("main", objectFactory)
+        targetDirectoryPrefix = objectFactory.property(String.class).convention(TARGET_FOLDER_BASE)
         executions = objectFactory.domainObjectContainer(JsonSchema2PojoPluginConfiguration)
     }
 }
