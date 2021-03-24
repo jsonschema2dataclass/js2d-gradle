@@ -65,6 +65,7 @@ jsonSchema2Pojo {
     //source = files("${sourceSets.main.output.resourcesDir}/json")
     source.setFrom files("${project.rootDir}/schema")
 
+    targetDirectoryPrefix = 'generated/source/jsonschema2dataclass'
     // Target directory for generated Java source files. The plugin will ignore this value for Android projects and will generate the classes into a generated source folder for each build variant and add this directory to the
     // java source set so the compiler will find and compile the newly generated source files.
     // targetDirectory = file("${project.rootDir}/build/generated-sources/js2p")
