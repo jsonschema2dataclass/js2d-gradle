@@ -15,7 +15,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -23,6 +22,14 @@ android {
         exclude 'META-INF/LICENSE.txt'
     }
 
+    sourceSets {
+        main {
+            manifest.srcFile '../../android/lib2/src/main/AndroidManifest.xml'
+            java.srcDirs = ['../../android/lib2/src/main/java']
+            resources.srcDirs = ['../../android/lib2/src/main/resources']
+            res.srcDirs = ['../../android/lib2/src/main/res']
+        }
+    }
 }
 
 dependencies {
@@ -46,10 +53,6 @@ jsonSchema2Pojo {
     // Whether to use primitives (long, double, boolean) instead of wrapper types where possible
     // when generating bean properties (has the side-effect of making those properties non-null).
     usePrimitives = false
-
-    // Location of the JSON Schema file(s). This may refer to a single file or a directory of files.
-    //source = files("${sourceSets.main.output.resourcesDir}/json")
-    source.setFrom files("${project.rootDir}/schema")
 
     // Target directory for generated Java source files. The plugin will ignore this value for Android projects and will generate the classes into a generated source folder for each build variant and add this directory to the
     // java source set so the compiler will find and compile the newly generated source files.

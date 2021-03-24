@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
     id "org.jsonschema2dataclass"
 }
 
@@ -7,7 +7,8 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        minSdkVersion 15
+        applicationId "org.jsonschema2dataclass.android"
+        minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -15,7 +16,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -23,6 +23,19 @@ android {
         exclude 'META-INF/LICENSE.txt'
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile '../../android/app/src/main/AndroidManifest.xml'
+            java.srcDirs = ['../../android/app/src/main/java']
+            resources.srcDirs = ['../../android/app/src/main/resources']
+            res.srcDirs = ['../../android/app/src/main/res']
+        }
+    }
 }
 
 dependencies {
@@ -35,6 +48,7 @@ dependencies {
     // Required if generating JSR-303 annotations
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
+
 }
 
 // Each configuration is set to the default value
@@ -62,7 +76,7 @@ jsonSchema2Pojo {
     // The characters that should be considered as word delimiters when creating Java Bean property
     // names from JSON property names. If blank or not set, JSON properties will be considered to
     // contain a single word when creating Java Bean property names.
-    propertyWordDelimiters = [] as char[]
+    propertyWordDelimiters = ''
 
     // Whether to use the java type long (or Long) instead of int (or Integer) when representing the
     // JSON Schema type 'integer'.
@@ -87,9 +101,8 @@ jsonSchema2Pojo {
     annotationStyle = 'gson'
 
     // A fully qualified class name, referring to a custom annotator class that implements
-    // org.jsonschema2pojo.NoopAnnotator and will be used in addition to the one chosen
     // by annotationStyle. If you want to use the custom annotator alone, set annotationStyle to none.
-    // customAnnotator = 'org.jsonschema2pojo.NoopAnnotator'
+    customAnnotator = 'org.jsonschema2pojo.NoopAnnotator'
 
     // Whether to include JSR-303/349 annotations (for schema rules like minimum, maximum, etc) in
     // generated Java types. Schema rules and the annotation they produce:
@@ -124,4 +137,6 @@ jsonSchema2Pojo {
 
     // Whether to initialize Set and List fields as empty collections, or leave them as null.
     initializeCollections = true
+    // Include @Generated annotation
+    includeGeneratedAnnotation = true
 }

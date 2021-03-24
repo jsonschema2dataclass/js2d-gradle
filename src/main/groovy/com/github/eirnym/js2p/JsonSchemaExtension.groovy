@@ -22,7 +22,7 @@ import org.gradle.api.model.ObjectFactory
 import javax.inject.Inject
 
 @ToString
-class JsonSchemaExtension extends JsonSchema2PojoPluginConfiguration{
+class JsonSchemaExtension extends JsonSchema2PojoPluginConfiguration {
     final NamedDomainObjectContainer<JsonSchema2PojoPluginConfiguration> executions
 
     @Inject

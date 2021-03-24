@@ -15,12 +15,20 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile '../../android/lib/src/main/AndroidManifest.xml'
+            java.srcDirs = ['../../android/lib/src/main/java']
+            resources.srcDirs = ['../../android/lib/src/main/resources']
+            res.srcDirs = ['../../android/lib/src/main/res']
+        }
     }
 
 }
