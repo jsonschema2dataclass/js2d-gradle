@@ -23,6 +23,7 @@ import org.gradle.api.Project
 import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.util.GradleVersion
@@ -37,6 +38,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
 
     private static final String MINIMUM_GRADLE_VERSION = "6.0"
     public static String TARGET_FOLDER_BASE = 'generated/sources/js2d'
+    public static String DEFAULT_EXECUTION_NAME = 'main'
     public static String TASK_NAME = 'generateJsonSchema2DataClass'
     public static String PLUGIN_ID = 'org.jsonschema2dataclass'
 
@@ -46,6 +48,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
 
         project.extensions.create('jsonSchema2Pojo', JsonSchemaExtension)
         JsonSchemaExtension extension = project.extensions.getByType(JsonSchemaExtension)
+        extension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
         project.afterEvaluate {
             if (project.plugins.hasPlugin('java')) {
                 applyJava(extension, project)
@@ -159,8 +162,9 @@ class JsonSchemaPlugin implements Plugin<Project> {
                     project,
                     taskNameSuffix,
                     execId,
+                    execution.name,
                     execution.source,
-                    extension.targetDirectoryPrefix.get(),
+                    extension.targetDirectoryPrefix,
                     targetDirectorySuffix
             )
             postConfigure(task)
@@ -173,8 +177,9 @@ class JsonSchemaPlugin implements Plugin<Project> {
             Project project,
             String taskNameSuffix,
             int executionId,
+            String executionName,
             ConfigurableFileCollection source,
-            String targetDirectoryPrefix,
+            DirectoryProperty targetDirectoryPrefix,
             String targetDirectorySuffix
     ) {
 
@@ -189,7 +194,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
         task.execution = executionId
         task.sourceFiles.setFrom(source)
         task.targetDirectory.set(
-                project.layout.buildDirectory.dir("${targetDirectoryPrefix}${executionId}${targetDirectorySuffix}")
+                targetDirectoryPrefix.dir("${executionName}${targetDirectorySuffix}")
         )
         task.inputs.files({ task.sourceFiles.filter({ it.exists() }) })
                 .skipWhenEmpty()
