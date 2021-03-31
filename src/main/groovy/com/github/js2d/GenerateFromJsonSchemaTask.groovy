@@ -1,10 +1,9 @@
-package com.github.eirnym.js2p
+package com.github.js2d
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
@@ -33,7 +32,7 @@ abstract class GenerateFromJsonSchemaTask extends DefaultTask{
         }
         sourceFiles.each { it.mkdir() }
         
-        def jS2PConfig = new JS2PConfig(extension, extension.executions[execution], targetDirectory, sourceFiles)
+        def jS2PConfig = new Js2dConfig(extension, extension.executions[execution], targetDirectory, sourceFiles)
         logger.info 'Using this configuration:\n{}', jS2PConfig
         Jsonschema2Pojo.generate(jS2PConfig, new GradleRuleLogger(logger))
     }

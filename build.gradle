@@ -25,7 +25,7 @@ gradlePlugin {
         jsonschema2dataclassPlugin {
             id = 'org.jsonschema2dataclass'
             version = getTag()
-            implementationClass = 'com.github.eirnym.js2p.JsonSchemaPlugin'
+            implementationClass = 'com.github.js2d.JsonSchemaPlugin'
             displayName = 'Extended Gradle JsonSchema2Pojo Plugin'
             description = 'A plugins that generates Java sources from JsonSchema using jsonschema2pojo. Please, see the GitHub page for details'
         }

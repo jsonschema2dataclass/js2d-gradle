@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.eirnym.js2p
+package com.github.js2d
 
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
@@ -146,7 +146,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
             JsonSchemaExtension extension,
             String taskNameSuffix,
             String targetDirectorySuffix,
-            @ClosureParams(value = SimpleType, options = ['com.github.eirnym.js2p.GenerateFromJsonSchemaTask']) Closure postConfigure
+            @ClosureParams(value = SimpleType, options = ['com.github.js2d.GenerateFromJsonSchemaTask']) Closure postConfigure
     ) {
 
         Task js2dTask = project.task(
@@ -208,10 +208,10 @@ class JsonSchemaPlugin implements Plugin<Project> {
             config.source.from(path)
         }
         if (config.executions.isEmpty()) {
-            config.executions.add(new JsonSchema2PojoPluginConfiguration("main", objectFactory))
+            config.executions.add(new JsonSchema2dPluginConfiguration("main", objectFactory))
         }
 
-        for (JsonSchema2PojoPluginConfiguration execution : config.executions) {
+        for (JsonSchema2dPluginConfiguration execution : config.executions) {
             if (execution.source.isEmpty()) {
                 execution.source.from(config.source)
             }

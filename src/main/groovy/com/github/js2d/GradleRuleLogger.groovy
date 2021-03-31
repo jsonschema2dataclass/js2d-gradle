@@ -10,7 +10,7 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.github.eirnym.js2p
+package com.github.js2d
 
 import org.gradle.api.logging.Logger
 import org.jsonschema2pojo.AbstractRuleLogger
