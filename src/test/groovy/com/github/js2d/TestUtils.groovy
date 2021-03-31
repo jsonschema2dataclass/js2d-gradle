@@ -1,11 +1,11 @@
-package com.github.eirnym.js2p
+package com.github.js2d
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 
 import java.nio.file.Path
 
-import static com.github.eirnym.js2p.JsonSchemaPlugin.TASK_NAME
+import static com.github.js2d.JsonSchemaPlugin.TASK_NAME
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static org.junit.jupiter.api.Assertions.assertTrue
 

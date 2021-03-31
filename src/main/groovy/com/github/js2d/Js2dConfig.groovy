@@ -1,4 +1,4 @@
-package com.github.eirnym.js2p
+package com.github.js2d
 
 import groovy.transform.ToString
 import org.codehaus.groovy.runtime.InvokerHelper
@@ -11,7 +11,7 @@ import org.jsonschema2pojo.rules.RuleFactory
 import java.util.stream.Collectors
 
 @ToString
-class JS2PConfig implements GenerationConfig {
+class Js2dConfig implements GenerationConfig {
     List<URL> sourceFiles
     File targetDirectory
 
@@ -96,7 +96,7 @@ class JS2PConfig implements GenerationConfig {
             sourceSortOrder       : { String sourceSortOrder -> fromEnum(sourceSortOrder, SourceSortOrder) },
     ]
 
-    JS2PConfig(JsonSchemaExtension extension, JsonSchema2PojoPluginConfiguration configuration, Provider<Directory> targetDirectory, ConfigurableFileCollection sourceFiles) {
+    Js2dConfig(JsonSchemaExtension extension, JsonSchema2dPluginConfiguration configuration, Provider<Directory> targetDirectory, ConfigurableFileCollection sourceFiles) {
         // Convert known properties
         Map<String, Object> newValues = [:]
         extension.properties.entrySet().each { Map.Entry<String, Object> entry ->
@@ -137,6 +137,6 @@ class JS2PConfig implements GenerationConfig {
     }
 
     private static <C> Class<C> findClass(String className) {
-        return (Class<C>) Class.forName(className, true, JS2PConfig.class.classLoader)
+        return (Class<C>) Class.forName(className, true, Js2dConfig.class.classLoader)
     }
 }

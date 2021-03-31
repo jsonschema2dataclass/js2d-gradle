@@ -1,18 +1,14 @@
-package com.github.eirnym.js2p
+package com.github.js2d
 
 import groovy.transform.ToString
-import org.gradle.api.Action
 import org.gradle.api.Named
-import org.gradle.api.attributes.AttributeContainer
-import org.gradle.api.attributes.HasConfigurableAttributes
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.internal.attributes.ImmutableAttributesFactory
 import org.gradle.api.model.ObjectFactory
 
 import javax.inject.Inject
 
 @ToString
-class JsonSchema2PojoPluginConfiguration implements Named {
+class JsonSchema2dPluginConfiguration implements Named {
     final ConfigurableFileCollection source
     final String name
 
@@ -79,7 +75,7 @@ class JsonSchema2PojoPluginConfiguration implements Named {
     Boolean useTitleAsClassname
 
     @Inject
-    JsonSchema2PojoPluginConfiguration(String name, ObjectFactory objectFactory) {
+    JsonSchema2dPluginConfiguration(String name, ObjectFactory objectFactory) {
         this.name = name
         this.source = objectFactory.fileCollection()
     }

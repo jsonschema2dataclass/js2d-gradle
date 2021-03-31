@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.eirnym.js2p
+package com.github.js2d
 
 import groovy.transform.ToString
 import org.gradle.api.NamedDomainObjectContainer
@@ -22,17 +22,17 @@ import org.gradle.api.model.ObjectFactory
 
 import javax.inject.Inject
 
-import static com.github.eirnym.js2p.JsonSchemaPlugin.DEFAULT_EXECUTION_NAME
+import static JsonSchemaPlugin.DEFAULT_EXECUTION_NAME
 
 @ToString
-class JsonSchemaExtension extends JsonSchema2PojoPluginConfiguration {
-    final NamedDomainObjectContainer<JsonSchema2PojoPluginConfiguration> executions
+class JsonSchemaExtension extends JsonSchema2dPluginConfiguration {
+    final NamedDomainObjectContainer<JsonSchema2dPluginConfiguration> executions
     final DirectoryProperty targetDirectoryPrefix
 
     @Inject
     JsonSchemaExtension(ObjectFactory objectFactory) {
         super(DEFAULT_EXECUTION_NAME, objectFactory)
         targetDirectoryPrefix = objectFactory.directoryProperty()
-        executions = objectFactory.domainObjectContainer(JsonSchema2PojoPluginConfiguration)
+        executions = objectFactory.domainObjectContainer(JsonSchema2dPluginConfiguration)
     }
 }

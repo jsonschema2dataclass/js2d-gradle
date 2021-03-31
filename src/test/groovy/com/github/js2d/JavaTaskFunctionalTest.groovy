@@ -1,4 +1,4 @@
-package com.github.eirnym.js2p
+package com.github.js2d
 
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.DisplayName
@@ -11,11 +11,11 @@ import org.junit.jupiter.params.provider.NullSource
 import java.nio.file.Path
 import java.util.stream.Stream
 
-import static com.github.eirnym.js2p.JsonSchemaPlugin.DEFAULT_EXECUTION_NAME
-import static com.github.eirnym.js2p.JsonSchemaPlugin.TARGET_FOLDER_BASE
+import static com.github.js2d.JsonSchemaPlugin.DEFAULT_EXECUTION_NAME
+import static com.github.js2d.JsonSchemaPlugin.TARGET_FOLDER_BASE
 
-import static com.github.eirnym.js2p.TestCasesGenerator.*
-import static com.github.eirnym.js2p.TestUtils.*
+import static TestCasesGenerator.*
+import static TestUtils.*
 
 import static org.junit.jupiter.api.Assertions.*
 
