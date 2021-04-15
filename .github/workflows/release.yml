@@ -29,7 +29,8 @@ jobs:
         with:
           skip-unshallow: 'true'
           commit-ish: HEAD
-      - run: |
+      - name: Create Github release
+        run: |
           PRE_RELEASE=""
           if [[ ${{steps.tagger.outputs.tag}} == *"beta"* ]]; then
             PRE_RELEASE="-p"
@@ -43,7 +44,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{steps.tagger.outputs.tag}}
-      - name: Publish ${{steps.tagger.outputs.tag}}
+      - name: Publish
         uses: burrunan/gradle-cache-action@v1.10
         with:
           remote-build-cache-proxy-enabled: false
