@@ -1,3 +1,5 @@
+image:https://img.shields.io/github/v/release/jsonschema2dataclass/js2d-gradle[GitHub release (latest by date)]
+
 Extended https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] Gradle plugin
 ========================================================================================
 :toc:
@@ -20,7 +22,7 @@ Please note, that JSR305 is purely supported, and present only if you don't want
 [source,gradle]
 ----
 plugins {
-  id "org.jsonschema2dataclass" version "2.1.0" // Please update version as new versions are out
+  id "org.jsonschema2dataclass" version "$latestRelease"
 }
 ----
 
@@ -38,7 +40,7 @@ To start using a plugin you need follow this recipe:
 [source,gradle]
 ----
 plugins{
-    id "org.jsonschema2dataclass" version "2.1.0" // Please update version as new versions are out
+    id "org.jsonschema2dataclass" version "$latestRelease"
 }
 
 jsonschema2pojo {
