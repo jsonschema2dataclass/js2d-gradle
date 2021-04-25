@@ -1,1 +1,1 @@
-rootProject.name = 'jsonschema2dataclass'
+rootProject.name = "jsonschema2dataclass"
