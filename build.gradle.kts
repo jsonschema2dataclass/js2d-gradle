@@ -62,12 +62,11 @@ fun shellExec(line: String):String {
 }
 
 fun getTag(): String {
-    val systemVersion = System.getenv("VERSION")
-    if (systemVersion != null) {
-        return systemVersion
+    System.getenv("VERSION")?.let {
+        return it
     }
 
-    val gitVersion = shellExec("/usr/bin/env git describe --tags --dirty --long").trim()
+    val gitVersion = shellExec("git describe --tags --dirty --long").trim()
     val parts = gitVersion.split("-")
     if (parts.size < 3) {
         throw GradleException("Unknown git version \"${gitVersion}\"")
@@ -83,7 +82,7 @@ fun getTag(): String {
                 gitVersion
             }
         } catch (e: NumberFormatException) {
-            throw GradleException("Unknown git version2 \"${gitVersion}\"", e)
+            throw GradleException("Unknown git version \"${gitVersion}\"", e)
         }
     }
 }
