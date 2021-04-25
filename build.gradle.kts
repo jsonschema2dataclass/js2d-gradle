@@ -67,7 +67,7 @@ fun getTag(): String {
         return systemVersion
     }
 
-    val gitVersion = shellExec("git describe --tags --dirty --long").trim()
+    val gitVersion = shellExec("/usr/bin/env git describe --tags --dirty --long").trim()
     val parts = gitVersion.split("-")
     if (parts.size < 3) {
         throw GradleException("Unknown git version \"${gitVersion}\"")
