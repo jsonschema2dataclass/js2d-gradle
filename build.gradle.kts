@@ -73,5 +73,5 @@ fun getTag(): String {
             return tagVersionToken[0]
     }
 
-    return "0.0.0"
+    return "0.0.0-no-git-version"
 }
