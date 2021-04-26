@@ -54,16 +54,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-
-fun shellExec(line: String): String {
-    val os = ByteArrayOutputStream()
-    project.exec {
-        commandLine = line.split(" ")
-        standardOutput = os
-    }
-    return os.toString("UTF-8")
-}
-
 fun getTag(): String {
     System.getenv("VERSION")?.let {
         val tagVersionToken = it.split("/")
