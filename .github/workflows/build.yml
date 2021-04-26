@@ -29,5 +29,3 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - run: ./gradlew build
-      - env:
-          VERSION: "0.0.0"

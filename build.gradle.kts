@@ -66,26 +66,12 @@ fun shellExec(line: String): String {
 
 fun getTag(): String {
     System.getenv("VERSION")?.let {
-        return it
+        val tagVersionToken = it.split("/")
+        if (tagVersionToken.size > 2)
+            return tagVersionToken[2]
+        else
+            return tagVersionToken[0]
     }
 
-    val gitVersion = shellExec("git describe --tags --dirty --long").trim()
-    val parts = gitVersion.split("-")
-    if (parts.size < 3) {
-        throw GradleException("Unknown git version \"${gitVersion}\"")
-    }
-    return if (parts[parts.size - 1] == "dirty") {
-        gitVersion
-    } else {
-        try {
-            val count = parts[parts.size - 2].toInt()
-            if (count == 0) {
-                parts.subList(0, parts.size - 2).joinToString("-")
-            } else {
-                gitVersion
-            }
-        } catch (e: NumberFormatException) {
-            throw GradleException("Unknown git version \"${gitVersion}\"", e)
-        }
-    }
+    return "0.0.0"
 }
