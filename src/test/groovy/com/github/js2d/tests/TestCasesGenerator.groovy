@@ -1,11 +1,10 @@
-package com.github.js2d
+package com.github.js2d.tests
 
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-import static com.github.js2d.JsonSchemaPlugin.PLUGIN_ID
-import static com.github.js2d.JsonSchemaPlugin.TARGET_FOLDER_BASE
+import static com.github.js2d.ko.plugin.Constants.Companion.*
 
 class TestCasesGenerator {
     public static final String TARGET_FOLDER_BASE_CUSTOM = TARGET_FOLDER_BASE + 's'

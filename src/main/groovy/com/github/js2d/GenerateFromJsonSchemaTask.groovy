@@ -9,7 +9,7 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.jsonschema2pojo.Jsonschema2Pojo
 
-abstract class GenerateFromJsonSchemaTask extends DefaultTask{
+class GenerateFromJsonSchemaTask extends DefaultTask{
     /**
      * Directory to save generated files to.
      */

@@ -30,25 +30,17 @@ import org.gradle.util.GradleVersion
 
 import java.nio.file.Path
 import java.nio.file.Paths
-
 /**
  * Registers the plugin's tasks.
  */
 class JsonSchemaPlugin implements Plugin<Project> {
-
-    private static final String MINIMUM_GRADLE_VERSION = "6.0"
-    public static String TARGET_FOLDER_BASE = 'generated/sources/js2d'
-    public static String DEFAULT_EXECUTION_NAME = 'main'
-    public static String TASK_NAME = 'generateJsonSchema2DataClass'
-    public static String PLUGIN_ID = 'org.jsonschema2dataclass'
-
     @Override
     void apply(Project project) {
         verifyGradleVersion()
 
         project.extensions.create('jsonSchema2Pojo', JsonSchemaExtension)
         JsonSchemaExtension extension = project.extensions.getByType(JsonSchemaExtension)
-        extension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
+        extension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(Constants.TARGET_FOLDER_BASE))
         project.afterEvaluate {
             if (project.plugins.hasPlugin('java')) {
                 applyJava(extension, project)
@@ -58,7 +50,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
                 for (Plugin<?> plugin : project.plugins) {
                     project.logger.error(plugin.class.name)
                 }
-                throw new ProjectConfigurationException("${TASK_NAME}: Java or Android plugin required", [])
+                throw new ProjectConfigurationException("${Constants.TASK_NAME}: Java or Android plugin required", [])
             }
         }
     }
@@ -85,7 +77,6 @@ class JsonSchemaPlugin implements Plugin<Project> {
     }
 
     private static void applyAndroid(JsonSchemaExtension extension, Project project) {
-
         setupConfigExecutions(
                 project.objects,
                 extension,
@@ -109,7 +100,6 @@ class JsonSchemaPlugin implements Plugin<Project> {
     }
 
     private static Path getJavaJsonPath(JavaPluginConvention javaPluginConvention) {
-
         return javaPluginConvention
                 .getSourceSets()
                 .getByName('main')
@@ -141,89 +131,10 @@ class JsonSchemaPlugin implements Plugin<Project> {
         }
     }
 
-    private static Task createJS2DTask(
-            Project project,
-            JsonSchemaExtension extension,
-            String taskNameSuffix,
-            String targetDirectorySuffix,
-            @ClosureParams(value = SimpleType, options = ['com.github.js2d.GenerateFromJsonSchemaTask']) Closure postConfigure
-    ) {
 
-        Task js2dTask = project.task(
-                [
-                        description: 'Generates Java classes from a json schema using JsonSchema2Pojo. ',
-                        group      : 'Build'
-                ],
-                "${TASK_NAME}${taskNameSuffix}"
-        )
-
-        extension.executions.eachWithIndex { execution, execId ->
-            GenerateFromJsonSchemaTask task = createJS2DTaskExecution(
-                    project,
-                    taskNameSuffix,
-                    execId,
-                    execution.name,
-                    execution.source,
-                    extension.targetDirectoryPrefix,
-                    targetDirectorySuffix
-            )
-            postConfigure(task)
-            js2dTask.dependsOn(task)
-        }
-        return js2dTask
-    }
-
-    private static GenerateFromJsonSchemaTask createJS2DTaskExecution(
-            Project project,
-            String taskNameSuffix,
-            int executionId,
-            String executionName,
-            ConfigurableFileCollection source,
-            DirectoryProperty targetDirectoryPrefix,
-            String targetDirectorySuffix
-    ) {
-
-        GenerateFromJsonSchemaTask task = (GenerateFromJsonSchemaTask) project.task(
-                [
-                        type       : GenerateFromJsonSchemaTask,
-                        description: "Generates Java classes from a json schema using JsonSchema2Pojo. Execution ${executionId}",
-                        group      : 'Build'
-                ],
-                "${TASK_NAME}${executionId}${taskNameSuffix}"
-        )
-        task.execution = executionId
-        task.sourceFiles.setFrom(source)
-        task.targetDirectory.set(
-                targetDirectoryPrefix.dir("${executionName}${targetDirectorySuffix}")
-        )
-        task.inputs.files({ task.sourceFiles.filter({ it.exists() }) })
-                .skipWhenEmpty()
-        task.outputs.dir(task.targetDirectory)
-        return task
-    }
-
-    private static void setupConfigExecutions(
-            ObjectFactory objectFactory, JsonSchemaExtension config, Path path, boolean excludeGenerated) {
-        if (config.source.isEmpty()) {
-            config.source.from(path)
-        }
-        if (config.executions.isEmpty()) {
-            config.executions.add(new JsonSchema2dPluginConfiguration("main", objectFactory))
-        }
-
-        for (JsonSchema2dPluginConfiguration execution : config.executions) {
-            if (execution.source.isEmpty()) {
-                execution.source.from(config.source)
-            }
-            if (excludeGenerated) {
-                execution.includeGeneratedAnnotation = false
-                // Temporary fixes #71 and upstream issue #1212 (used Generated annotation is not compatible with AGP 7+)
-            }
-        }
-    }
     private static void verifyGradleVersion() {
-        if (GradleVersion.current() < GradleVersion.version(MINIMUM_GRADLE_VERSION)) {
-            throw new GradleException("Plugin ${PLUGIN_ID} requires at least Gradle $MINIMUM_GRADLE_VERSION, but you are using ${GradleVersion.current().version}")
+        if (GradleVersion.current() < GradleVersion.version(Constants.MINIMUM_GRADLE_VERSION)) {
+            throw new GradleException("Plugin ${Constants.PLUGIN_ID} requires at least Gradle $Constants.MINIMUM_GRADLE_VERSION, but you are using ${GradleVersion.current().version}")
         }
     }
 }

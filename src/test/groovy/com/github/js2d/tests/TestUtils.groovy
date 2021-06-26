@@ -1,21 +1,23 @@
-package com.github.js2d
+package com.github.js2d.tests
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 
 import java.nio.file.Path
 
-import static com.github.js2d.JsonSchemaPlugin.TASK_NAME
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static org.junit.jupiter.api.Assertions.assertTrue
 
+import com.github.js2d.ko.plugin.Constants.Companion.TARGET_FOLDER_BASE
+import com.github.js2d.ko.plugin.Constants.Companion.TASK_NAME
+
 class TestUtils {
-    public static final String COLON_TASK_NAME = ':' + TASK_NAME
+    public static final String COLON_TASK_NAME = ":" + TASK_NAME
     /**
      * Supported gradle releases
      */
     public static final List<String> GRADLE_RELEASES = [
-            '6.8.3', '6.8', '6.7.1', '6.6.1', '6.5.1', '6.4.1', '6.3', '6.2.2', '6.2.1', '6.1.1', '6.0.1',  // 6.x
+            "6.8.3", "6.8", "6.7.1", "6.6.1", "6.5.1", "6.4.1", "6.3", "6.2.2", "6.2.1", "6.1.1", "6.0.1",  // 6.x
     ]
 
     static void assertExists(File file) {
@@ -34,7 +36,7 @@ class TestUtils {
         def arguments = GradleRunner.create()
                 .withPluginClasspath()
                 .withProjectDir(testProjectDir.toFile())
-                .withArguments(task, '-S', '--info')
+                .withArguments(task, "-S", "--info")
 
         if (gradleVersion) {
             arguments.withGradleVersion(gradleVersion)
@@ -47,7 +49,7 @@ class TestUtils {
 
     static boolean gradleSupported(String gradleVersion, String javaSpecificationVersion) {
         def javaVersion = javaSpecificationVersion.toFloat()
-        if (javaVersion <= 13) {  // this includes java '1.8' :)
+        if (javaVersion <= 13) {  // this includes java "1.8" :)
             return true
         }
 
