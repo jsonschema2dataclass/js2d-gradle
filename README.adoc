@@ -46,7 +46,7 @@ plugins{
 jsonschema2pojo {
     targetPackage = 'org.example.api' // specify package for your needs
     
-    source.setFrom files("${sourceSets.main.output.resourcesDir}/json/schema")
+    source.setFrom files("${project.rootDir}/src/main/resources/json")
     
     // ... — add other supported options as you need
 }
