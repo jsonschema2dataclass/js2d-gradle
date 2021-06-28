@@ -11,8 +11,8 @@ import org.junit.jupiter.params.provider.NullSource
 import java.nio.file.Path
 import java.util.stream.Stream
 
-import static com.github.js2d.JsonSchemaPlugin.DEFAULT_EXECUTION_NAME
-import static com.github.js2d.JsonSchemaPlugin.TARGET_FOLDER_BASE
+import static com.github.js2d.plugin.PluginDefinitions.DEFAULT_EXECUTION_NAME
+import static com.github.js2d.plugin.PluginDefinitions.TARGET_FOLDER_BASE
 
 import static TestCasesGenerator.*
 import static TestUtils.*
