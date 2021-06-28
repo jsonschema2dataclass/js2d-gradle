@@ -1,6 +1,5 @@
 package com.github.js2d.ko.plugin
 
-import com.github.js2d.JsonSchemaExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.ProjectConfigurationException
@@ -12,8 +11,8 @@ class JsonSchemaPlugin: Plugin<Project> {
     override fun apply(project: Project) {
         verifyGradleVersion()
 
-        project.extensions.create("jsonSchema2Pojo", JsonSchemaExtension.javaClass)
-        val extension:JsonSchemaExtension = project.extensions.getByType(JsonSchemaExtension.javaClass)
+        project.extensions.create("jsonSchema2Pojo", JsonSchemaExtension::class.java)
+        val extension:JsonSchemaExtension = project.extensions.getByType(JsonSchemaExtension::class.java)
         extension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
         project.afterEvaluate {
             if (project.plugins.hasPlugin("java")) {
@@ -24,7 +23,7 @@ class JsonSchemaPlugin: Plugin<Project> {
                 project.plugins.forEach{
                     project.logger.error(it.javaClass.name)
                 }
-                throw  ProjectConfigurationException("${TASK_NAME}: Java or Android plugin required", [])
+                throw ProjectConfigurationException("${TASK_NAME}: Java or Android plugin required", List.of())
             }
         }
     }

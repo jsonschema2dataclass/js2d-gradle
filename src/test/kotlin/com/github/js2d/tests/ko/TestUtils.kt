@@ -1,4 +1,4 @@
-package com.github.js2d
+package com.github.js2d.tests.ko
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import java.io.File
 import java.nio.file.Path
-import java.util.stream.Collectors
+import com.github.js2d.ko.plugin.Constants
 
-class TestUtils2 {
+class TestUtils {
     companion object {
         val COLON_TASK_NAME: String = ":" + Constants.TASK_NAME
         val GRADLE_SUPPORTED_RELEASES = supportedReleases()
@@ -38,8 +38,8 @@ class TestUtils2 {
         }
 
         private val GRADLE_RELEASES: List<String> = listOf(
-            // "7.0",
-            "6.8.3", "6.8", "6.7.1", "6.6.1", "6.5.1", "6.4.1", "6.3", "6.2.2", "6.2.1", "6.1.1", "6.0.1",  // 6.x
+            // "7.0", "7.1"  // 7.x
+            "6.8.3", "6.8", "6.7.1", "6.6.1", "6.5.1", "6.4.1", "6.3", "6.2.2", "6.2.1", "6.1.1", "6.0.1"  // 6.x
         )
 
         private fun supportedReleases(): List<String> {

@@ -1,7 +1,6 @@
-import java.io.ByteArrayOutputStream
-
 plugins {
-    groovy
+//    groovy
+//    java
     `java-gradle-plugin`
     kotlin("jvm") version "1.5.20"
     id("com.gradle.plugin-publish") version "0.15.0"
@@ -11,10 +10,17 @@ repositories {
     mavenCentral()
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>() {
-    kotlinOptions {
-        jvmTarget = "1.8"
+tasks {
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>() {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
     }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 pluginBundle {
@@ -40,8 +46,9 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation("org.codehaus.groovy:groovy-all:3.0.8")
+//    implementation("org.codehaus.groovy:groovy-all:3.0.8")
     implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.20")
 
     testImplementation(platform("org.junit:junit-bom:5.7.2"))
 

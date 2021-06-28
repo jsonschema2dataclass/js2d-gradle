@@ -1,12 +1,14 @@
-package com.github.js2d
+package com.github.js2d.tests.ko
 
+import com.github.js2d.ko.plugin.Constants.Companion.PLUGIN_ID
+import com.github.js2d.ko.plugin.Constants.Companion.TARGET_FOLDER_BASE
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-class TestCasesGenerator2 {
+class TestCasesGenerator {
     companion object {
         val TARGET_FOLDER_BASE_CUSTOM: String = TARGET_FOLDER_BASE + "s"
 
@@ -52,7 +54,7 @@ class TestCasesGenerator2 {
             writeBuildFiles(
                 testProjectDir, shouldCopyAddressJSON, """
                 |jsonSchema2Pojo{
-                |   targetDirectoryPrefix = project.file("$\{buildDir}/${TARGET_FOLDER_BASE_CUSTOM}")
+                |   targetDirectoryPrefix = project.file("$\{buildDir}/$TARGET_FOLDER_BASE_CUSTOM")
                 |   executions {
                 |     com{
                 |       targetPackage = "com.example"
@@ -91,7 +93,7 @@ class TestCasesGenerator2 {
             writeBuildFiles(
                 testProjectDir, shouldCopyAddressJSON, """
                 |jsonSchema2Pojo{
-                |   source.setFrom files("${project.rootDir}/src/main/resources/json")
+                |   source.setFrom files("$\{project.rootDir}/src/main/resources/json")
                 |   executions {
                 |     com{
                 |       targetPackage = "com.example"
@@ -100,7 +102,7 @@ class TestCasesGenerator2 {
                 |}
                 """
             )
-            Files.write(testProjectDir.resolve("settings.gradle"), "".bytes)
+            Files.write(testProjectDir.resolve("settings.gradle"), "".toByteArray())
         }
 
         private fun copyAddressJSON(testProjectDir: Path) {

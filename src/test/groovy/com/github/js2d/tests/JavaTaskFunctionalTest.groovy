@@ -1,6 +1,6 @@
 package com.github.js2d.tests
 
-import com.github.js2d.TestCasesGenerator2
+import com.github.js2d.TestCasesGenerator
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.io.TempDir
@@ -12,16 +12,13 @@ import org.junit.jupiter.params.provider.NullSource
 import java.nio.file.Path
 import java.util.stream.Stream
 
-import static com.github.js2d.JsonSchemaPlugin.DEFAULT_EXECUTION_NAME
 import static TestUtils.*
-
-import static org.junit.jupiter.api.Assertions.*
 
 class JavaTaskFunctionalTest {
     private static final String COLON_TASK_NAME0 = COLON_TASK_NAME + '0'
     private static final String COLON_TASK_NAME1 = COLON_TASK_NAME + '1'
 
-    private static final String TARGET_FOLDER_CUSTOM = 'build/' + TestCasesGenerator2.TARGET_FOLDER_BASE_CUSTOM
+    private static final String TARGET_FOLDER_CUSTOM = 'build/' + TestCasesGenerator.TARGET_FOLDER_BASE_CUSTOM
     private static final String TARGET_FOLDER_DEFAULT = 'build/' + Constants.TARGET_FOLDER_BASE
     private static final String PACKAGE_EMPTY = ''
 
