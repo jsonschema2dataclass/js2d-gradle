@@ -15,6 +15,7 @@ class TestUtils {
      * Supported gradle releases
      */
     public static final List<String> GRADLE_RELEASES = [
+            '7.0.2', '7.1', // 7.x
             '6.8.3', '6.8', '6.7.1', '6.6.1', '6.5.1', '6.4.1', '6.3', '6.2.2', '6.2.1', '6.1.1', '6.0.1',  // 6.x
     ]
 
@@ -52,10 +53,13 @@ class TestUtils {
         }
 
         def parts = gradleVersion.split(/\./)
+        int major = parts[0].toInteger()
+        int minor = parts[1].toInteger()
 
         switch ((int) javaVersion) {
-            case 14: return parts[1].toInteger() >= 3
-            case 15: return parts[1].toInteger() >= 6
+            case 14: return major >= 7 || (major == 6 && minor >= 3)
+            case 15: return major >= 7 || (major == 6 && minor >= 6)
+            case 16: return major >= 7
             default: return false // no official information on Gradle compatibility with further versions of Java
         }
     }
