@@ -17,6 +17,10 @@ updates:
     directory: "demo/android"
     schedule:
       interval: "daily"
+  - package-ecosystem: "gradle" # See documentation for possible values
+    directory: "demo/androidDev"
+    schedule:
+      interval: "daily"
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     schedule:
