@@ -46,13 +46,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
-}
-
 // Each configuration is set to the default value
 jsonSchema2Pojo {
     // Whether to generate builder-style methods of the form withXxx(value) (that return this),
