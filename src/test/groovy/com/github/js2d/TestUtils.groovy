@@ -5,7 +5,7 @@ import org.gradle.testkit.runner.GradleRunner
 
 import java.nio.file.Path
 
-import static com.github.js2d.JsonSchemaPlugin.TASK_NAME
+import static com.github.js2d.plugin.PluginDefinitions.TASK_NAME
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static org.junit.jupiter.api.Assertions.assertTrue
 
@@ -35,7 +35,7 @@ class TestUtils {
         def arguments = GradleRunner.create()
                 .withPluginClasspath()
                 .withProjectDir(testProjectDir.toFile())
-                .withArguments(task, '-S', '--info')
+                .withArguments(task, '-S', '--debug')
 
         if (gradleVersion) {
             arguments.withGradleVersion(gradleVersion)

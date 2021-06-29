@@ -1,6 +1,8 @@
-package com.github.js2d
+package com.github.js2d.plugin
 
 import groovy.transform.ToString
+import om.github.js2d.plugin.JsonSchema2dPluginConfiguration
+import om.github.js2d.plugin.JsonSchemaExtension
 import org.codehaus.groovy.runtime.InvokerHelper
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
@@ -12,6 +14,7 @@ import java.util.stream.Collectors
 
 @ToString
 class Js2dConfig implements GenerationConfig {
+
     List<URL> sourceFiles
     File targetDirectory
 

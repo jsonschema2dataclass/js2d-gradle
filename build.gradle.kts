@@ -1,9 +1,8 @@
-import java.io.ByteArrayOutputStream
-
 plugins {
     groovy
+    java
     `java-gradle-plugin`
-    kotlin("jvm") version "1.5.20"
+    id("io.freefair.lombok") version "6.0.0-m2"
     id("com.gradle.plugin-publish") version "0.15.0"
 }
 
@@ -29,7 +28,7 @@ gradlePlugin {
     plugins {
         create("jsonschema2dataclassPlugin") {
             id = "org.jsonschema2dataclass"
-            implementationClass = "com.github.js2d.JsonSchemaPlugin"
+            implementationClass = "com.github.js2d.plugin.JsonSchemaPlugin2"
             displayName = "Extended Gradle JsonSchema2Pojo Plugin"
             description = "A plugins that generates Java sources from JsonSchema using jsonschema2pojo." +
                     " Please, see the GitHub page for details"
@@ -39,7 +38,7 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation("org.codehaus.groovy:groovy-all:3.0.8")
+    implementation("org.codehaus.groovy:groovy-all:3.0.7")
     implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
 
     testImplementation(platform("org.junit:junit-bom:5.7.2"))
