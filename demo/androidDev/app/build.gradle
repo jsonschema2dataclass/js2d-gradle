@@ -44,7 +44,7 @@ dependencies {
     // Required if generating JSR-303 annotations
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 // Each configuration is set to the default value
