@@ -54,14 +54,39 @@ tasks.test {
     useJUnitPlatform()
 }
 
-fun getTag(): String {
-    System.getenv("VERSION")?.let {
-        val tagVersionToken = it.split("/")
-        if (tagVersionToken.size > 2)
-            return tagVersionToken[2]
-        else
-            return tagVersionToken[0]
-    }
+println("Gradle uses Java ${org.gradle.internal.jvm.Jvm.current()}")
+println("Build for version ${getTag()}")
 
-    return "0.0.0-no-git-version"
+fun String.runCommand(workingDir: File = file("./")): String {
+    val parts = this.split("\\s".toRegex())
+    val proc = ProcessBuilder(*parts.toTypedArray())
+        .directory(workingDir)
+        .redirectOutput(ProcessBuilder.Redirect.PIPE)
+        .redirectError(ProcessBuilder.Redirect.PIPE)
+        .start()
+
+    proc.waitFor(1, TimeUnit.MINUTES)
+    return proc.inputStream.bufferedReader().readText().trim()
+}
+
+fun getTag(): String {
+    val gitVersion = "git describe --tags --dirty --long".runCommand()
+    val parts = gitVersion.split("-")
+    if (parts.size < 3) {
+        throw GradleException("Unknown git version version=\"${gitVersion}\"")
+    }
+    return if (parts[parts.size - 1] == "dirty") {
+        gitVersion
+    } else {
+        try {
+            val count = parts[parts.size - 2].toInt()
+            if (count == 0) {
+                parts.subList(0, parts.size - 2).joinToString("-")
+            } else {
+                gitVersion
+            }
+        } catch (e: NumberFormatException) {
+            throw GradleException("Unknown git version \"${gitVersion}\"", e)
+        }
+    }
 }
