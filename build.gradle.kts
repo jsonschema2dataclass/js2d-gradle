@@ -42,7 +42,7 @@ dependencies {
     implementation("org.codehaus.groovy:groovy-all:3.0.8")
     implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
 
-    testImplementation(platform("org.junit:junit-bom:5.7.2"))
+    testImplementation(platform("org.junit:junit-bom:5.8.0"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
