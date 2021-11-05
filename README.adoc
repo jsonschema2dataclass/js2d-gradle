@@ -43,7 +43,7 @@ plugins{
     id "org.jsonschema2dataclass" version "$latestRelease"
 }
 
-jsonschema2pojo {
+jsonschema2Pojo {
     targetPackage = 'org.example.api' // specify package for your needs
     
     source.setFrom files("${project.rootDir}/src/main/resources/json")
@@ -63,7 +63,7 @@ Help wanted for this task
 [CAUTION]
 ⚠️ Formatting is broken in some cells, I need help to fix it up
 
-.Accepted parameters for jsonschema2pojo configuration block
+.Accepted parameters for jsonschema2Pojo configuration block
 |====
 | Name | Type | Default | Description
 
@@ -114,7 +114,7 @@ Help wanted for this task
 | source | ConfigurableFileCollection | | Location of the JSON Schema file(s). Note: this may refer to a single file or a directory of files.
 | sourceSortOrder | String | OS | The sort order to be applied when recursively processing the source files. By default the OS can influence the processing order. Supported values: OS (Let the OS influence the order the source files are processed.) FILES_FIRST (Case sensitive sort, visit the files first. The source files are processed in a breadth first sort order.) SUBDIRS_FIRST (Case sensitive sort, visit the sub-directories before the files. The source files are processed in a depth first sort order.)
 | sourceType | String | jsonschema | The type of input documents that will be read Supported values: jsonschema (schema documents, containing formal rules that describe the structure of JSON data) json (documents that represent an example of the kind of JSON data that the generated Java types will be mapped to) yamlschema (JSON schema documents, represented as YAML) yaml (documents that represent an example of the kind of YAML (or JSON) data that the generated Java types will be mapped to)
-| targetDirecotryPrefix | String | $buildDir/generated/source/js2d | Directory prefix under build directory where underlying tool will generate sources
+| targetDirectoryPrefix | String | $buildDir/generated/source/js2d | Directory prefix under build directory where underlying tool will generate sources
 | targetPackage | String | | Package name used for generated Java classes (for types where a fully qualified name has not been supplied in the schema using the 'javaType' property).
 | targetVersion | String | | The target version for generated source files.
 | timeType | String | | What type to use instead of string when adding string type fields of format time (not date-time) to generated Java types.
