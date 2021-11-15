@@ -3,7 +3,7 @@ import java.io.ByteArrayOutputStream
 plugins {
     groovy
     `java-gradle-plugin`
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.6.0"
     id("com.gradle.plugin-publish") version "0.15.0"
 }
 
