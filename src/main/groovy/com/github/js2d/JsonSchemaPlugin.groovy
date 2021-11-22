@@ -15,8 +15,6 @@
  */
 package com.github.js2d
 
-import groovy.transform.stc.ClosureParams
-import groovy.transform.stc.SimpleType
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -25,7 +23,7 @@ import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.util.GradleVersion
 
 import java.nio.file.Path
@@ -65,12 +63,12 @@ class JsonSchemaPlugin implements Plugin<Project> {
 
     private static void applyJava(JsonSchemaExtension extension, Project project) {
         project.plugins.withId('java') {
-            JavaPluginConvention javaPluginConvention = project.getConvention().plugins['java'] as JavaPluginConvention
+            JavaPluginExtension javaPluginExtension = project.extensions.getByType(JavaPluginExtension)
 
             setupConfigExecutions(
                     project.objects,
                     extension,
-                    getJavaJsonPath(javaPluginConvention),
+                    getJavaJsonPath(javaPluginExtension),
                     false
             )
             def js2pTask = createJS2DTask(project, extension, "", "",
@@ -108,15 +106,14 @@ class JsonSchemaPlugin implements Plugin<Project> {
         }
     }
 
-    private static Path getJavaJsonPath(JavaPluginConvention javaPluginConvention) {
-
-        return javaPluginConvention
-                .getSourceSets()
-                .getByName('main')
-                .output
-                .resourcesDir
-                .toPath()
-                .resolve('json')
+    private static Path getJavaJsonPath(JavaPluginExtension javaPluginExtension) {
+        return javaPluginExtension
+                .sourceSets
+        .getByName("main")
+        .output
+        .resourcesDir
+        .toPath()
+        .resolve("json")
     }
 
     private static Path getAndroidJsonPath(Project project) {
@@ -146,7 +143,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
             JsonSchemaExtension extension,
             String taskNameSuffix,
             String targetDirectorySuffix,
-            @ClosureParams(value = SimpleType, options = ['com.github.js2d.GenerateFromJsonSchemaTask']) Closure postConfigure
+            Closure postConfigure
     ) {
 
         Task js2dTask = project.task(
@@ -182,7 +179,6 @@ class JsonSchemaPlugin implements Plugin<Project> {
             DirectoryProperty targetDirectoryPrefix,
             String targetDirectorySuffix
     ) {
-
         GenerateFromJsonSchemaTask task = (GenerateFromJsonSchemaTask) project.task(
                 [
                         type       : GenerateFromJsonSchemaTask,
