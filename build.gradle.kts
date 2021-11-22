@@ -39,7 +39,7 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation("org.codehaus.groovy:groovy-all:3.0.8")
+    implementation("org.codehaus.groovy:groovy-all:3.0.9")
     implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
 
     testImplementation(platform("org.junit:junit-bom:5.7.2"))
