@@ -74,7 +74,7 @@ class JsonSchemaPlugin implements Plugin<Project> {
             def js2pTask = createJS2DTask(project, extension, "", "",
                     { js2pTaskExecution ->
                         js2pTaskExecution.dependsOn('processResources')
-                        javaPluginConvention.getSourceSets().getByName('main').allJava.srcDir(js2pTaskExecution.targetDirectory)
+                        javaPluginExtension.getSourceSets().getByName('main').allJava.srcDir(js2pTaskExecution.targetDirectory)
                     })
             project.tasks.named('compileJava').configure {
                 it.dependsOn(js2pTask)
