@@ -13,7 +13,7 @@ jobs:
     name: "Validation Plugin"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.0
       - uses: gradle/wrapper-validation-action@v1
   validationJavaSample:
     name: "Validation Java Sample"
@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: demo/java
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.0
       - uses: gradle/wrapper-validation-action@v1
   validationAndroidSample:
     name: "Validation Android Sample"
@@ -31,7 +31,7 @@ jobs:
       run:
         working-directory: demo/android
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.0
       - uses: gradle/wrapper-validation-action@v1
   validationAndroidDev:
     name: "Validation Android development"
@@ -40,5 +40,5 @@ jobs:
       run:
         working-directory: demo/androidDev
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.0
       - uses: gradle/wrapper-validation-action@v1
