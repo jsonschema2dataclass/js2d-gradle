@@ -1,8 +1,20 @@
 plugins {
     id 'java'
-    id 'org.jsonschema2dataclass' version '3.2.1'
+    id 'org.jsonschema2dataclass' version '4.0.0-RC'
 }
+
 repositories {
+        google().content {
+            includeGroup("com.android")
+            includeGroup ("android.arch.lifecycle")
+            includeGroup ("android.arch.core")
+            includeGroupByRegex("com\\.android\\..*")
+            includeGroupByRegex("com\\.google\\..*")
+            includeGroupByRegex("androidx\\..*")
+            includeModuleByRegex("com\\.android\\..*", "com\\.android\\..*")
+            includeModuleByRegex("com\\.google\\..*","com\\.google\\..*")
+            includeModuleByRegex("androidx\\..*", "androidx\\..*")
+        }
     mavenCentral()
 }
 

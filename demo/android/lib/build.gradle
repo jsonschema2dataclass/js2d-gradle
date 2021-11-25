@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 15
@@ -65,7 +65,7 @@ jsonSchema2Pojo {
     // The characters that should be considered as word delimiters when creating Java Bean property
     // names from JSON property names. If blank or not set, JSON properties will be considered to
     // contain a single word when creating Java Bean property names.
-    propertyWordDelimiters = [] as char[]
+    propertyWordDelimiters = ""
 
     // Whether to use the java type long (or Long) instead of int (or Integer) when representing the
     // JSON Schema type 'integer'.

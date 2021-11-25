@@ -1,26 +1,33 @@
 name: Java Sample
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
 
 jobs:
   buildTest:
-    name: Build JDK ${{ matrix.java_version }}
+    name: Build Java Demo JDK ${{ matrix.java_version }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: demo/java
     strategy:
+      fail-fast: false
       matrix:
-        java_version: [8, 11, 15, 17]
+        java_version: [8, 11, 17]
+        distribution: ["zulu", "temurin"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
       - name: Install JDK ${{ matrix.java_version }}
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v2.4.0
         with:
-          distribution: 'adopt'
+          distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
       - name: Build project
         run: ./gradlew assemble
