@@ -1,7 +1,10 @@
+import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
+
 plugins {
     groovy
     `java-gradle-plugin`
     id("com.gradle.plugin-publish") version "0.18.0"
+    id("com.diffplug.spotless") version "6.0.1"
 }
 
 repositories {
@@ -33,7 +36,7 @@ gradlePlugin {
             implementationClass = "com.github.js2d.JsonSchemaPlugin"
             displayName = "Extended Gradle JsonSchema2Pojo Plugin"
             description = "A plugins that generates Java sources from JsonSchema using jsonschema2pojo." +
-                    " Please, see the GitHub page for details"
+                " Please, see the GitHub page for details"
             version = getTag()
         }
     }
@@ -64,4 +67,35 @@ fun getTag(): String {
     }
 
     return "0.0.0-no-git-version"
+}
+
+spotless {
+    kotlin {
+        target("demo/**/*.kt", "src/**/*.kt")
+        ktlint()
+        endWithNewline()
+    }
+    kotlinGradle {
+        target("*.gradle.kts")
+        ktlint()
+        endWithNewline()
+    }
+    java {
+        target("demo/**/*.java", "src/**/*.java")
+        googleJavaFormat()
+        endWithNewline()
+    }
+    json {
+        target("demo/**/*.json", "src/**/*.json")
+        simple()
+        endWithNewline()
+    }
+    groovy {
+        greclipse()
+        endWithNewline()
+    }
+    format("xml") {
+        target("demo/**/*.xml", "src/**/*.xml")
+        eclipseWtp(EclipseWtpFormatterStep.XML)
+    }
 }

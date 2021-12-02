@@ -17,60 +17,60 @@ import org.jsonschema2pojo.AbstractRuleLogger
 
 class GradleRuleLogger extends AbstractRuleLogger {
 
-    Logger Logger
+	Logger Logger
 
-    GradleRuleLogger(Logger logger) {
-        logger.info("Initializing {}", GradleRuleLogger.class)
-        this.logger = logger
-    }
+	GradleRuleLogger(Logger logger) {
+		logger.info("Initializing {}", GradleRuleLogger.class)
+		this.logger = logger
+	}
 
-    @Override
-    void doDebug(String msg) {
-        logger.debug(msg)
-    }
+	@Override
+	void doDebug(String msg) {
+		logger.debug(msg)
+	}
 
-    @Override
-    protected void doError(String msg, Throwable e) {
-        logger.error(msg, e)
-    }
+	@Override
+	protected void doError(String msg, Throwable e) {
+		logger.error(msg, e)
+	}
 
-    @Override
-    void doInfo(String msg) {
-        logger.info(msg)
-    }
+	@Override
+	void doInfo(String msg) {
+		logger.info(msg)
+	}
 
-    @Override
-    void doTrace(String msg) {
-        logger.trace(msg)
-    }
+	@Override
+	void doTrace(String msg) {
+		logger.trace(msg)
+	}
 
-    @Override
-    protected void doWarn(String msg, Throwable e) {
-        logger.warn(msg, e)
-    }
+	@Override
+	protected void doWarn(String msg, Throwable e) {
+		logger.warn(msg, e)
+	}
 
-    @Override
-    boolean isDebugEnabled() {
-        return logger.isDebugEnabled()
-    }
+	@Override
+	boolean isDebugEnabled() {
+		return logger.isDebugEnabled()
+	}
 
-    @Override
-    boolean isErrorEnabled() {
-        return logger.isErrorEnabled()
-    }
+	@Override
+	boolean isErrorEnabled() {
+		return logger.isErrorEnabled()
+	}
 
-    @Override
-    boolean isInfoEnabled() {
-        return logger.isInfoEnabled()
-    }
+	@Override
+	boolean isInfoEnabled() {
+		return logger.isInfoEnabled()
+	}
 
-    @Override
-    boolean isTraceEnabled() {
-        return logger.isTraceEnabled()
-    }
+	@Override
+	boolean isTraceEnabled() {
+		return logger.isTraceEnabled()
+	}
 
-    @Override
-    boolean isWarnEnabled() {
-        return logger.isWarnEnabled()
-    }
+	@Override
+	boolean isWarnEnabled() {
+		return logger.isWarnEnabled()
+	}
 }
