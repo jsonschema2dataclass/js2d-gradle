@@ -8,9 +8,9 @@ import static com.github.js2d.JsonSchemaPlugin.PLUGIN_ID
 import static com.github.js2d.JsonSchemaPlugin.TARGET_FOLDER_BASE
 
 class TestCasesGenerator {
-    public static final String TARGET_FOLDER_BASE_CUSTOM = TARGET_FOLDER_BASE + 's'
+	public static final String TARGET_FOLDER_BASE_CUSTOM = TARGET_FOLDER_BASE + 's'
 
-    public static final String BUILD_FILE_HEADER = """|plugins {
+	public static final String BUILD_FILE_HEADER = """|plugins {
         |  id 'java'
         |  id '${PLUGIN_ID}' version '1.2.3'
         |}
@@ -22,31 +22,31 @@ class TestCasesGenerator {
         |}
         """
 
-    private static void writeBuildFiles(Path testProjectDir, boolean shouldCopyAddressJSON, String suffix) {
-        Files.write(testProjectDir.resolve("build.gradle"), (BUILD_FILE_HEADER + suffix).stripMargin().bytes)
-        Files.write(testProjectDir.resolve('settings.gradle'), ''.bytes)
-        if (shouldCopyAddressJSON) {
-            copyAddressJSON(testProjectDir)
-        }
-    }
+	private static void writeBuildFiles(Path testProjectDir, boolean shouldCopyAddressJSON, String suffix) {
+		Files.write(testProjectDir.resolve("build.gradle"), (BUILD_FILE_HEADER + suffix).stripMargin().bytes)
+		Files.write(testProjectDir.resolve('settings.gradle'), ''.bytes)
+		if (shouldCopyAddressJSON) {
+			copyAddressJSON(testProjectDir)
+		}
+	}
 
-    static void createBuildFilesSingleSimple(Path testProjectDir, boolean shouldCopyAddressJSON) {
-        writeBuildFiles(testProjectDir, shouldCopyAddressJSON, """
+	static void createBuildFilesSingleSimple(Path testProjectDir, boolean shouldCopyAddressJSON) {
+		writeBuildFiles(testProjectDir, shouldCopyAddressJSON, """
             |jsonSchema2Pojo{
             |  targetPackage = 'com.example'
             |}
             |""")
-    }
+	}
 
-    static void createBuildFilesSingleNoExtension(Path testProjectDir, boolean shouldCopyAddressJSON) {
-        writeBuildFiles(testProjectDir, shouldCopyAddressJSON, '')
-    }
+	static void createBuildFilesSingleNoExtension(Path testProjectDir, boolean shouldCopyAddressJSON) {
+		writeBuildFiles(testProjectDir, shouldCopyAddressJSON, '')
+	}
 
-    /**
-     * Multiple executions
-     */
-    static void createBuildFilesMultiple(Path testProjectDir, boolean shouldCopyAddressJSON) {
-        writeBuildFiles(testProjectDir, shouldCopyAddressJSON, """
+	/**
+	 * Multiple executions
+	 */
+	static void createBuildFilesMultiple(Path testProjectDir, boolean shouldCopyAddressJSON) {
+		writeBuildFiles(testProjectDir, shouldCopyAddressJSON, """
             |jsonSchema2Pojo{
             |   targetDirectoryPrefix = project.file("\${buildDir}/${TARGET_FOLDER_BASE_CUSTOM}")
             |   executions {
@@ -59,13 +59,13 @@ class TestCasesGenerator {
             |  }
             |}
             |""")
-    }
+	}
 
-    /**
-     * Single with execution
-     */
-    static void createBuildFilesSingle(Path testProjectDir, boolean shouldCopyAddressJSON) {
-        writeBuildFiles(testProjectDir, shouldCopyAddressJSON, '''
+	/**
+	 * Single with execution
+	 */
+	static void createBuildFilesSingle(Path testProjectDir, boolean shouldCopyAddressJSON) {
+		writeBuildFiles(testProjectDir, shouldCopyAddressJSON, '''
             |jsonSchema2Pojo{
             |   executions {
             |     com{
@@ -75,12 +75,12 @@ class TestCasesGenerator {
             |  }
             |}
             |''')
-    }
-    /**
-     * Single with execution, inherited
-     */
-    static void createBuildFilesSingleSourceInherit(Path testProjectDir, boolean shouldCopyAddressJSON) {
-        writeBuildFiles(testProjectDir, shouldCopyAddressJSON, '''
+	}
+	/**
+	 * Single with execution, inherited
+	 */
+	static void createBuildFilesSingleSourceInherit(Path testProjectDir, boolean shouldCopyAddressJSON) {
+		writeBuildFiles(testProjectDir, shouldCopyAddressJSON, '''
             |jsonSchema2Pojo{
             |   source.setFrom files("${project.rootDir}/src/main/resources/json")
             |   executions {
@@ -90,13 +90,13 @@ class TestCasesGenerator {
             |  }
             |}
             |''')
-        Files.write(testProjectDir.resolve('settings.gradle'), ''.bytes)
-    }
+		Files.write(testProjectDir.resolve('settings.gradle'), ''.bytes)
+	}
 
-    private static void copyAddressJSON(testProjectDir) {
-        Path jsonDir = testProjectDir.resolve('src/main/resources/json')
-        new File(jsonDir.toString()).mkdirs()
-        def addressJson = jsonDir.resolve("address.json")
-        Files.copy(Paths.get("demo", "java", "src", "main", "resources", "json", "address.json"), addressJson)
-    }
+	private static void copyAddressJSON(testProjectDir) {
+		Path jsonDir = testProjectDir.resolve('src/main/resources/json')
+		new File(jsonDir.toString()).mkdirs()
+		def addressJson = jsonDir.resolve("address.json")
+		Files.copy(Paths.get("demo", "java", "src", "main", "resources", "json", "address.json"), addressJson)
+	}
 }

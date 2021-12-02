@@ -26,13 +26,13 @@ import static JsonSchemaPlugin.DEFAULT_EXECUTION_NAME
 
 @ToString
 class JsonSchemaExtension extends JsonSchema2dPluginConfiguration {
-    final NamedDomainObjectContainer<JsonSchema2dPluginConfiguration> executions
-    final DirectoryProperty targetDirectoryPrefix
+	final NamedDomainObjectContainer<JsonSchema2dPluginConfiguration> executions
+	final DirectoryProperty targetDirectoryPrefix
 
-    @Inject
-    JsonSchemaExtension(ObjectFactory objectFactory) {
-        super(DEFAULT_EXECUTION_NAME, objectFactory)
-        targetDirectoryPrefix = objectFactory.directoryProperty()
-        executions = objectFactory.domainObjectContainer(JsonSchema2dPluginConfiguration)
-    }
+	@Inject
+	JsonSchemaExtension(ObjectFactory objectFactory) {
+		super(DEFAULT_EXECUTION_NAME, objectFactory)
+		targetDirectoryPrefix = objectFactory.directoryProperty()
+		executions = objectFactory.domainObjectContainer(JsonSchema2dPluginConfiguration)
+	}
 }
