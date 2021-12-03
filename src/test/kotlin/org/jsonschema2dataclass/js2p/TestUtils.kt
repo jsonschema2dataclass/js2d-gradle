@@ -36,7 +36,7 @@ fun executeRunner(
         .withDebug(true)
         .withPluginClasspath()
         .withProjectDir(testProjectDir.toFile())
-        .withArguments(task, "-S", "--info", "--debug")
+        .withArguments(task, "-S", "--debug")
 
     if (gradleVersion != null) {
         arguments.withGradleVersion(gradleVersion)

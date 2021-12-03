@@ -5,26 +5,27 @@ on:
     branches:
       - master
   pull_request:
-    types: [assigned, opened, synchronize, reopened]
+    types: [ assigned, opened, synchronize, reopened ]
     branches:
       - main
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
+  GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   build-and-test:
+    name: Build Plugin JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        java: [ 8, 11, 17]
-        distribution: ["zulu", "temurin"]
+        java: [ 8, 11, 17 ]
+        distribution: [ "zulu", "temurin" ]
     steps:
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
-      - name: Set up JDK ${{ matrix.java }}
+      - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
         uses: actions/setup-java@v2.4.0
         with:
           distribution: ${{ matrix.distribution }}
@@ -39,11 +40,11 @@ jobs:
             ${{ runner.os }}-v2-gradle-build-
             ${{ runner.os }}-v2-gradle-
       - run: ./gradlew build
-      - name: Upload Unit Test Results (${{ matrix.distribution }}-${{ matrix.java }})
+      - name: Upload Unit Test Results ${{ matrix.distribution }}-${{ matrix.java }}
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: Unit Test Results
+          name: Unit Test Results ${{ matrix.distribution }}-${{ matrix.java }}
           path: build/test-results/**/*.xml
 
   publish-test-results:
@@ -56,7 +57,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: artifacts
-
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:

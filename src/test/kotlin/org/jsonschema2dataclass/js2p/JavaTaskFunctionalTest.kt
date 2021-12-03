@@ -113,7 +113,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-    @MethodSource("gradleReleases")
+//    @MethodSource("gradleReleases")
     @DisplayName("multiple executions")
     fun multipleExecutions(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
