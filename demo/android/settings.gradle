@@ -3,3 +3,7 @@ rootProject.name = 'js2d-gradle Android sample'
 include ':app'
 include ':lib'
 include ':lib2'
+
+// Take plugin from root folder instead of downloading it from plugins.gradle.org
+// Remove this line for normal projects
+includeBuild '../..'

@@ -7,38 +7,37 @@ on:
   pull_request:
     branches:
       - master
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
 
 jobs:
   validationPlugin:
-    name: "Validation Plugin"
+    name: "Wrapper validation: Plugin"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
-      - uses: gradle/wrapper-validation-action@v1
+        with:
+          fetch-depth: 0
+      - uses: gradle/wrapper-validation-action@v1.0.4
   validationJavaSample:
-    name: "Validation Java Sample"
+    name: "Wrapper validation: Java Sample"
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: demo/java
     steps:
       - uses: actions/checkout@v2.4.0
-      - uses: gradle/wrapper-validation-action@v1
+        with:
+          fetch-depth: 0
+      - uses: gradle/wrapper-validation-action@v1.0.4
   validationAndroidSample:
-    name: "Validation Android Sample"
+    name: "Wrapper validation: Android Sample"
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: demo/android
     steps:
       - uses: actions/checkout@v2.4.0
-      - uses: gradle/wrapper-validation-action@v1
-  validationAndroidDev:
-    name: "Validation Android development"
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: demo/androidDev
-    steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: gradle/wrapper-validation-action@v1
+        with:
+          fetch-depth: 0
+      - uses: gradle/wrapper-validation-action@v1.0.4

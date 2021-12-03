@@ -1,23 +1,25 @@
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 
 plugins {
-    groovy
     `java-gradle-plugin`
+    kotlin("jvm") version "1.6.0"
     id("com.gradle.plugin-publish") version "0.18.0"
     id("com.diffplug.spotless") version "6.0.1"
 }
 
 repositories {
+    google().content {
+        includeGroup("com.android")
+        includeGroup("android.arch.lifecycle")
+        includeGroup("android.arch.core")
+        includeGroupByRegex("com\\.android\\..*")
+        includeGroupByRegex("com\\.google\\..*")
+        includeGroupByRegex("androidx\\..*")
+        includeModuleByRegex("com\\.android\\..*", "com\\.android\\..*")
+        includeModuleByRegex("com\\.google\\..*", "com\\.google\\..*")
+        includeModuleByRegex("androidx\\..*", "androidx\\..*")
+    }
     mavenCentral()
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks.withType<JavaCompile> {
-    options.release.set(8)
 }
 
 pluginBundle {
@@ -33,7 +35,7 @@ gradlePlugin {
     plugins {
         create("jsonschema2dataclassPlugin") {
             id = "org.jsonschema2dataclass"
-            implementationClass = "com.github.js2d.JsonSchemaPlugin"
+            implementationClass = "org.jsonschema2dataclass.js2p.Js2pPlugin"
             displayName = "Extended Gradle JsonSchema2Pojo Plugin"
             description = "A plugins that generates Java sources from JsonSchema using jsonschema2pojo." +
                 " Please, see the GitHub page for details"
@@ -43,6 +45,9 @@ gradlePlugin {
 }
 
 dependencies {
+
+    compileOnlyApi("com.android.tools.build:gradle:7.0.3")
+
     implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
@@ -69,6 +74,15 @@ fun getTag(): String {
     return "0.0.0-no-git-version"
 }
 
+configurations.all {
+    resolutionStrategy {
+        dependencySubstitution {
+            val ktlintVersion = "0.43.1"
+            substitute(module("com.pinterest:ktlint")).using(module("com.pinterest:ktlint:$ktlintVersion"))
+        }
+    }
+}
+
 spotless {
     kotlin {
         target("demo/**/*.kt", "src/**/*.kt")
@@ -80,18 +94,9 @@ spotless {
         ktlint()
         endWithNewline()
     }
-    java {
-        target("demo/**/*.java", "src/**/*.java")
-        googleJavaFormat()
-        endWithNewline()
-    }
     json {
         target("demo/**/*.json", "src/**/*.json")
         simple()
-        endWithNewline()
-    }
-    groovy {
-        greclipse()
         endWithNewline()
     }
     format("xml") {

@@ -1,52 +1,32 @@
 name: Android Sample
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
 
 jobs:
   buildDemo:
-    name: Build Demo JDK ${{ matrix.java_version }}
+    name: Build Android Demo JDK ${{ matrix.java_version }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: demo/android
     strategy:
+      fail-fast: false
       matrix:
-        java_version: [11, 15, 17]
+        java_version: [11, 17]
+        distribution: ["zulu", "temurin"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
       - name: Install JDK ${{ matrix.java_version }}
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v2.4.0
         with:
-          distribution: 'adopt'
+          distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
       - name: Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.1.1
-      - name: Build project
-        run: ./gradlew assembleDebug
-
-  buildDevelopment:
-    name: Build Dev JDK ${{ matrix.java_version }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: demo/androidDev
-    strategy:
-      matrix:
-        java_version: [11, 15, 17]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.4.0
-        with:
-          fetch-depth: 0
-      - name: Install JDK ${{ matrix.java_version }}
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: ${{ matrix.java_version }}
-      - name: Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.1.1
+        uses: malinskiy/action-android/install-sdk@release/0.1.2
       - name: Build project
         run: ./gradlew assembleDebug
