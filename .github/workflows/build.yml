@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   build-and-test:
@@ -39,9 +39,25 @@ jobs:
             ${{ runner.os }}-v2-gradle-build-
             ${{ runner.os }}-v2-gradle-
       - run: ./gradlew build
-      - name: Upload Unit Test Results
+      - name: Upload Unit Test Results (${{ matrix.distribution }}-${{ matrix.java }})
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: Unit Test Results
           path: build/test-results/**/*.xml
+
+  publish-test-results:
+    name: "Publish Unit Tests Results"
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          files: artifacts/**/*.xml

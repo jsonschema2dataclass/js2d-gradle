@@ -4,6 +4,9 @@ on:
   pull_request:
     types: [assigned, opened, synchronize, reopened]
 
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
+
 jobs:
   buildDemo:
     name: Build Android Demo JDK ${{ matrix.java_version }}

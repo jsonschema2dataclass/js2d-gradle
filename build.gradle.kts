@@ -37,6 +37,7 @@ gradlePlugin {
     plugins {
         create("jsonschema2dataclassPlugin") {
             id = "org.jsonschema2dataclass"
+
             implementationClass = "org.jsonschema2dataclass.js2p.Js2pPlugin"
             displayName = "Extended Gradle JsonSchema2Pojo Plugin"
             description = "A plugins that generates Java sources from JsonSchema using jsonschema2pojo." +
@@ -45,9 +46,15 @@ gradlePlugin {
     }
 }
 
+val provided by configurations.creating
+sourceSets {
+    main {
+        this.compileClasspath += provided
+    }
+}
 dependencies {
 
-    compileOnlyApi("com.android.tools.build:gradle:7.0.3")
+    provided("com.android.tools.build:gradle:7.0.3")
 
     implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
 
