@@ -77,7 +77,7 @@ fun getTag(): String {
 configurations.all {
     resolutionStrategy {
         dependencySubstitution {
-            val ktlintVersion = "0.43.1"
+            val ktlintVersion = "0.43.2"
             substitute(module("com.pinterest:ktlint")).using(module("com.pinterest:ktlint:$ktlintVersion"))
         }
     }
