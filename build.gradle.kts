@@ -7,6 +7,8 @@ plugins {
     id("com.diffplug.spotless") version "6.0.1"
 }
 
+version = gitVersion(project)
+
 repositories {
     google().content {
         includeGroup("com.android")
@@ -39,7 +41,6 @@ gradlePlugin {
             displayName = "Extended Gradle JsonSchema2Pojo Plugin"
             description = "A plugins that generates Java sources from JsonSchema using jsonschema2pojo." +
                 " Please, see the GitHub page for details"
-            version = getTag()
         }
     }
 }
@@ -60,18 +61,6 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-}
-
-fun getTag(): String {
-    System.getenv("VERSION")?.let {
-        val tagVersionToken = it.split("/")
-        if (tagVersionToken.size > 2)
-            return tagVersionToken[2]
-        else
-            return tagVersionToken[0]
-    }
-
-    return "0.0.0-no-git-version"
 }
 
 configurations.all {

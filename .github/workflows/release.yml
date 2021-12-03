@@ -31,7 +31,6 @@ jobs:
           commit-ish: HEAD
       - name: Create Github release
         run: |
-          VERSION_J=$(echo $VERSION | cut -d'/' -f3)
           PRE_RELEASE=""
           if [[ ${{steps.tagger.outputs.tag}} == *"beta"* ]]; then
             PRE_RELEASE="-p"
