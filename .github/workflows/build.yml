@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   build-and-test:
@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-v2-gradle-build-
             ${{ runner.os }}-v2-gradle-
       - run: ./gradlew build
-      - name: Upload Unit Test Results
+      - name: Upload Unit Test Results (${{ matrix.distribution }}-${{ matrix.java }})
         if: always()
         uses: actions/upload-artifact@v2
         with:
