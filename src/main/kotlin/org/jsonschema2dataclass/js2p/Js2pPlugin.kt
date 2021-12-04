@@ -1,24 +1,21 @@
 package org.jsonschema2dataclass.js2p
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.ProjectOptionService
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.Directory
+import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.util.GradleVersion
 import java.nio.file.Path
-import java.nio.file.Paths
-import java.util.Locale
 import java.util.UUID
 
 internal const val MINIMUM_GRADLE_VERSION = "6.0"
@@ -38,111 +35,19 @@ class Js2pPlugin : Plugin<Project> {
         project.extensions.create("jsonSchema2Pojo", Js2pExtension::class.java)
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
-        project.afterEvaluate {
-            if (javaPlugins.any { project.plugins.hasPlugin(it) }) {
+        if (javaPlugins.any { project.plugins.hasPlugin(it) }) {
+            project.afterEvaluate {
                 applyInternalJava(pluginExtension, project)
-            } else if (androidPlugins.any { project.plugins.hasPlugin(it) }) {
-                applyInternalAndroid(pluginExtension, project)
-            } else {
-                throw ProjectConfigurationException("$TASK_NAME: Java or Android plugin required", listOf())
             }
+        } else if (androidPlugins.any { project.plugins.hasPlugin(it) }) {
+            applyInternalAndroid(pluginExtension, project)
+        } else {
+            throw ProjectConfigurationException("$TASK_NAME: Java or Android plugin required", listOf())
         }
     }
 }
 
-private fun applyInternalJava(extension: Js2pExtension, project: Project) {
-
-    val mainSourceSet = obtainJavaSourceSet(project)
-
-    setupConfigExecutions(
-        extension,
-        getJavaJsonPath(mainSourceSet),
-        false
-    )
-
-    val javaSourceSet = mainSourceSet.java
-    val js2pTask = createJS2DTask(
-        project,
-        extension,
-        "",
-        ""
-    ) { generationTask ->
-        generationTask.dependsOn("processResources")
-        javaSourceSet.srcDirs(generationTask.targetDirectory)
-        javaSourceSet.sourceDirectories.plus(generationTask.targetDirectory)
-    }
-    project.tasks.withType(JavaCompile::class.java) {
-        it.dependsOn(js2pTask)
-    }
-}
-
-private fun getJavaJsonPath(sourceSet: SourceSet): Path? {
-    return sourceSet
-        .output
-        .resourcesDir
-        ?.toPath()
-        ?.resolve("json")
-}
-
-private fun applyInternalAndroid(extension: Js2pExtension, project: Project) {
-
-    setupConfigExecutions(
-        extension,
-        getAndroidJsonPath(project),
-        System.getProperty("java.specification.version").toFloat() >= 9
-    )
-
-    obtainAndroidLibraryVariants(project).all {
-        createTasksForVariant(project, extension, it)
-    }
-
-    obtainAndroidApplicationVariants(project).all {
-        createTasksForVariant(project, extension, it)
-    }
-}
-
-private fun createTasksForVariant(project: Project, extension: Js2pExtension, variant: BaseVariant): Boolean {
-    val capitalized = variant.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-    val task = createJS2DTask(
-        project,
-        extension,
-        "For$capitalized",
-        "${variant.flavorName}/${variant.buildType.name}/"
-    ) { genTask ->
-        @Suppress("DEPRECATION") // TODO: migrate to TaskGenerator
-        variant.registerJavaGeneratingTask(genTask, genTask.targetDirectory.get().asFile)
-    }
-    @Suppress("DEPRECATION", "unused") // TODO: migrate to TaskGenerator
-    variant.registerJavaGeneratingTask(task)
-    return true
-}
-
-private fun getAndroidJsonPath(project: Project): Path =
-    Paths.get(
-        project.extensions
-            .getByType(BaseExtension::class.java)
-            .sourceSets.find { it.name.startsWith("main") }
-            ?.resources
-            ?.srcDirs
-            ?.first()
-            ?.toString()
-            ?: "", // hmm. is it what we want?
-        "json"
-    )
-
-@Suppress("DEPRECATION") // we have to support BaseVariant
-private fun obtainAndroidLibraryVariants(project: Project): Set<BaseVariant> =
-    project.extensions
-        .findByType(LibraryExtension::class.java)
-        ?.libraryVariants ?: setOf()
-
-@Suppress("DEPRECATION") // we have to support BaseVariant
-private fun obtainAndroidApplicationVariants(project: Project): Set<BaseVariant> =
-    project.extensions
-        .findByType(AppExtension::class.java)
-        ?.applicationVariants ?: setOf()
-
-private fun setupConfigExecutions(
+internal fun setupConfigExecutions(
     extension: Js2pExtension,
     defaultSourcePath: Path?,
     excludeGeneratedOption: Boolean,
@@ -165,33 +70,44 @@ private fun setupConfigExecutions(
     }
 }
 
-private fun createJS2DTask(
+internal fun applyInternalAndroid(extension: Js2pExtension, project: Project) {
+    val optionService = ProjectOptionService.RegistrationAction(project).execute().get()
+
+    if (optionService.projectOptions.get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
+        applyInternalAndroidNewDSL(extension, project)
+    } else {
+        applyInternalAndroidHistorical(extension, project)
+    }
+}
+
+internal fun createJS2DTask(
     project: Project,
     extension: Js2pExtension,
     taskNameSuffix: String,
     targetDirectorySuffix: String,
-    postConfigure: (task: Js2pGenerationTask) -> Unit,
-): Task {
-    val js2dTask = project.task(
-        mapOf(
-            Pair("description", "Generates Java classes from a json schema using JsonSchema2Pojo."),
-            Pair("group", "Build"),
-        ),
-        "${TASK_NAME}$taskNameSuffix"
-    )
+    postConfigure: (task: TaskProvider<out Js2pGenerationTask>, Provider<Directory>) -> Unit,
+): TaskProvider<Task> {
+
+    val js2dTask = project.tasks.register("${TASK_NAME}$taskNameSuffix", Task::class.java) {
+        it.description = "Generates Java classes from a json schema using JsonSchema2Pojo."
+        it.group = "Build"
+    }
 
     extension.executions.forEachIndexed { configurationId, configuration ->
-        val task = createJS2DTaskExecution(
+        val targetPath = extension.targetDirectoryPrefix.dir("${configuration.name}$targetDirectorySuffix")
+        val taskProvider = createJS2DTaskExecution(
             project,
             configurationId,
             taskNameSuffix,
             configuration.name,
             configuration.source,
-            extension.targetDirectoryPrefix,
-            targetDirectorySuffix
+            targetPath,
         )
-        postConfigure(task)
-        js2dTask.dependsOn(task)
+
+        postConfigure(taskProvider, targetPath)
+        js2dTask.configure {
+            it.dependsOn(taskProvider)
+        }
     }
 
     return js2dTask
@@ -204,34 +120,35 @@ private fun createJS2DTaskExecution(
     taskNameSuffix: String,
     configurationName: String,
     source: ConfigurableFileCollection,
-    targetDirectoryPrefix: DirectoryProperty,
-    targetDirectorySuffix: String,
+    targetPath: Provider<Directory>,
+): TaskProvider<out Js2pGenerationTask> {
+    val taskName = "${TASK_NAME}${configurationId}$taskNameSuffix"
+    return project.tasks.register(taskName, Js2pGenerationTask::class.java) { task ->
+        task.description = "Generates Java classes from a json schema using JsonSchema2Pojo for configuration $configurationName"
+        task.group = "Build"
 
-): Js2pGenerationTask {
-    val task: Js2pGenerationTask = project.task(
-        mapOf(
-            Pair("type", Js2pGenerationTask::class.java),
-            Pair("description", "Generates Java classes from a json schema using JsonSchema2Pojo. Configuration $configurationName"),
-            Pair("group", "Build")
-        ),
-        "${TASK_NAME}${configurationId}$taskNameSuffix"
-    ) as Js2pGenerationTask
-    val targetPath = targetDirectoryPrefix.dir("${configurationName}$targetDirectorySuffix")
+        task.sourceFiles.setFrom(source.filter { it.exists() })
+        task.configurationName = configurationName
+        task.uuid = UUID.randomUUID()
+        task.targetDirectory.set(targetPath)
 
-    task.sourceFiles.setFrom(source.filter { it.exists() })
-    task.configurationName = configurationName
-    task.uuid = UUID.randomUUID()
-    task.targetDirectory.set(targetPath)
+        skipInputWhenEmpty(task, task.sourceFiles)
 
-    skipInputWhenEmpty(task, task.sourceFiles)
-
-    task.sourceFiles.forEach { it.mkdirs() }
-
-    return task
+        task.sourceFiles.forEach { it.mkdirs() }
+    }
 }
 
 private fun verifyGradleVersion() {
     if (GradleVersion.current() < GradleVersion.version(MINIMUM_GRADLE_VERSION)) {
         throw GradleException("Plugin $PLUGIN_ID requires at least Gradle $MINIMUM_GRADLE_VERSION, but you are using ${GradleVersion.current().version}")
+    }
+}
+
+private fun skipInputWhenEmpty(task: Task, sourceFiles: FileCollection) {
+    val input = task.inputs.files(sourceFiles)
+        .skipWhenEmpty()
+
+    if (GradleVersion.current() >= GradleVersion.version("6.8")) {
+        input.ignoreEmptyDirectories()
     }
 }

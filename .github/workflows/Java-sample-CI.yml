@@ -5,11 +5,11 @@ on:
     types: [assigned, opened, synchronize, reopened]
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
+  GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   buildTest:
-    name: Build Java Demo JDK ${{ matrix.java_version }}
+    name: Build Java Demo JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -24,10 +24,10 @@ jobs:
         uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
-      - name: Install JDK ${{ matrix.java_version }}
+      - name: Install JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
         uses: actions/setup-java@v2.4.0
         with:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
       - name: Build project
-        run: ./gradlew assemble
+        run: ./gradlew assemble -S

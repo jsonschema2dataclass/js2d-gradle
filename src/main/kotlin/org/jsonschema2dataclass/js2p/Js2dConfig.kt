@@ -1,5 +1,6 @@
 package org.jsonschema2dataclass.js2p
 
+import org.gradle.api.GradleScriptException
 import org.gradle.api.provider.Property
 import org.jsonschema2pojo.AnnotationStyle
 import org.jsonschema2pojo.Annotator
@@ -99,7 +100,7 @@ internal data class Js2dConfig(
                 @Suppress("UNCHECKED_CAST")
                 Class.forName(className, true, Js2dConfig::class.java.classLoader) as Class<C>
             } catch (e: ClassNotFoundException) {
-                throw RuntimeException(e)
+                throw GradleScriptException("Unable to find class $className", e)
             }
         }
 
