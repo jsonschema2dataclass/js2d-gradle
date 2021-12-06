@@ -4,7 +4,7 @@ plugins {
     `java-gradle-plugin`
     kotlin("jvm") version "1.6.0"
     id("com.gradle.plugin-publish") version "0.18.0"
-    id("com.diffplug.spotless") version "6.0.1"
+    id("com.diffplug.spotless") version "6.0.2"
 }
 
 version = gitVersion(project)
