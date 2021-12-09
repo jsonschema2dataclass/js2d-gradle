@@ -1,13 +1,10 @@
 package org.jsonschema2dataclass.js2p
 
-import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.ProjectOptionService
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.Task
-import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaLibraryPlugin
@@ -15,6 +12,8 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.util.GradleVersion
+import org.jsonschema2dataclass.js2p.support.applyInternalAndroid
+import org.jsonschema2dataclass.js2p.support.applyInternalJava
 import java.nio.file.Path
 import java.util.UUID
 
@@ -52,31 +51,23 @@ internal fun setupConfigExecutions(
     defaultSourcePath: Path?,
     excludeGeneratedOption: Boolean,
 ) {
-    if (extension.source.isEmpty) {
-        extension.source.from(defaultSourcePath)
+    if (extension.source.isEmpty && defaultSourcePath != null) {
+        extension.source.setFrom(defaultSourcePath.toFile())
     }
+
     if (extension.executions.isEmpty()) {
         extension.executions.create(DEFAULT_EXECUTION_NAME)
     }
-    extension.executions.forEach { config: Js2pConfiguration ->
-        if (config.source.isEmpty) {
-            config.source.from(extension.source)
+
+    extension.executions.forEach { configuration: Js2pConfiguration ->
+        if (configuration.source.isEmpty) {
+            configuration.source.setFrom(extension.source)
         }
 
         // Temporary fixes #71 and upstream issue #1212 (used Generated annotation is not compatible with AGP 7+)
         if (excludeGeneratedOption) {
-            config.includeGeneratedAnnotation.set(false)
+            configuration.includeGeneratedAnnotation.set(false)
         }
-    }
-}
-
-internal fun applyInternalAndroid(extension: Js2pExtension, project: Project) {
-    val optionService = ProjectOptionService.RegistrationAction(project).execute().get()
-
-    if (optionService.projectOptions.get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
-        applyInternalAndroidNewDSL(extension, project)
-    } else {
-        applyInternalAndroidHistorical(extension, project)
     }
 }
 
@@ -85,7 +76,10 @@ internal fun createJS2DTask(
     extension: Js2pExtension,
     taskNameSuffix: String,
     targetDirectorySuffix: String,
-    postConfigure: (task: TaskProvider<out Js2pGenerationTask>, Provider<Directory>) -> Unit,
+    postConfigure: (
+        task: TaskProvider<out Js2pGenerationTask>,
+        Provider<Directory>
+    ) -> Unit,
 ): TaskProvider<Task> {
 
     val js2dTask = project.tasks.register("${TASK_NAME}$taskNameSuffix", Task::class.java) {
@@ -100,7 +94,7 @@ internal fun createJS2DTask(
             configurationId,
             taskNameSuffix,
             configuration.name,
-            configuration.source,
+            configuration.source.filter { it.exists() },
             targetPath,
         )
 
@@ -113,28 +107,26 @@ internal fun createJS2DTask(
     return js2dTask
 }
 
-// TODO: use TaskProvider, e.g. tasks.register() {}
 private fun createJS2DTaskExecution(
     project: Project,
     configurationId: Int,
     taskNameSuffix: String,
     configurationName: String,
-    source: ConfigurableFileCollection,
+    source: FileCollection,
     targetPath: Provider<Directory>,
 ): TaskProvider<out Js2pGenerationTask> {
     val taskName = "${TASK_NAME}${configurationId}$taskNameSuffix"
     return project.tasks.register(taskName, Js2pGenerationTask::class.java) { task ->
-        task.description = "Generates Java classes from a json schema using JsonSchema2Pojo for configuration $configurationName"
+        task.description =
+            "Generates Java classes from a json schema using JsonSchema2Pojo for configuration $configurationName"
         task.group = "Build"
 
-        task.sourceFiles.setFrom(source.filter { it.exists() })
         task.configurationName = configurationName
         task.uuid = UUID.randomUUID()
         task.targetDirectory.set(targetPath)
 
-        skipInputWhenEmpty(task, task.sourceFiles)
-
-        task.sourceFiles.forEach { it.mkdirs() }
+        skipInputWhenEmpty(task, source)
+        source.forEach { it.mkdirs() }
     }
 }
 

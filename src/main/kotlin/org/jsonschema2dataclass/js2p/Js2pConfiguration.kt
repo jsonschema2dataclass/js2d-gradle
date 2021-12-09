@@ -5,7 +5,7 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
-import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
@@ -19,7 +19,7 @@ internal abstract class Js2pConfiguration @Inject constructor(
     @Internal
     override fun getName(): String = name
 
-    @get: InputDirectory
+    @get: InputFiles
     @get: PathSensitive(PathSensitivity.RELATIVE)
     abstract val source: ConfigurableFileCollection
 

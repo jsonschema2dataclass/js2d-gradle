@@ -1,4 +1,6 @@
-package org.jsonschema2dataclass.js2p
+@file:Suppress("DEPRECATION")
+
+package org.jsonschema2dataclass.js2p.support
 
 // DEPRECATION: to support Gradle 6.0 - 7.0.2
 import org.gradle.api.Project
@@ -8,6 +10,9 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.util.GradleVersion
+import org.jsonschema2dataclass.js2p.Js2pExtension
+import org.jsonschema2dataclass.js2p.createJS2DTask
+import org.jsonschema2dataclass.js2p.setupConfigExecutions
 import java.nio.file.Path
 
 internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
@@ -28,6 +33,7 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
         ""
     ) { generationTaskProvider, targetPath ->
 
+        @Suppress("UnstableApiUsage")
         project.tasks.withType(ProcessResources::class.java) {
             generationTaskProvider.configure { generationTask ->
 
@@ -61,7 +67,6 @@ internal fun obtainJavaSourceSet(project: Project): SourceSet =
 /**
  * Obtain java source sets in Gradle 6.0 - 7.0.2
  */
-@Suppress("DEPRECATION") // Deprecation is supposed to be here
 private fun obtainJavaSourceSetContainerV6(project: Project): SourceSet =
     (project.convention.plugins["java"]!! as JavaPluginConvention)
         .sourceSets.named("main")

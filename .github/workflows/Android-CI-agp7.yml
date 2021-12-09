@@ -10,8 +10,8 @@ env:
 jobs:
   buildDemo:
     name: Build Android Demo JDK ${{ matrix.distribution }} ${{ matrix.java }}
-    if: ${{ false }}
     runs-on: ubuntu-latest
+    if: ${{ false }}
     defaults:
       run:
         working-directory: demo/android/agp7

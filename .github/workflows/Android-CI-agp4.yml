@@ -12,6 +12,7 @@ jobs:
   buildDemo:
     name: Build Android Demo JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
     runs-on: ubuntu-latest
+    if: ${{ false }}
     defaults:
       run:
         working-directory: demo/android/agp4
