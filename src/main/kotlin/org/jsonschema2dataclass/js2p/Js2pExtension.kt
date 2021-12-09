@@ -7,7 +7,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import javax.inject.Inject
 
-internal abstract class Js2pExtension @Inject constructor(
+abstract class Js2pExtension @Inject constructor(
     name: String = DEFAULT_EXECUTION_NAME,
 ) : Js2pConfiguration(name) {
 

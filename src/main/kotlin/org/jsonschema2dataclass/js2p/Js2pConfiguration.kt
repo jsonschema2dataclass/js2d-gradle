@@ -13,7 +13,7 @@ import org.gradle.api.tasks.PathSensitivity
 import java.io.FileFilter
 import javax.inject.Inject
 
-internal abstract class Js2pConfiguration @Inject constructor(
+abstract class Js2pConfiguration @Inject constructor(
     private val name: String,
 ) : Named {
     @Internal
