@@ -1,8 +1,9 @@
 name: Android Sample
 
 on:
+
   pull_request:
-    types: [assigned, opened, synchronize, reopened]
+    types: [ assigned, opened, synchronize, reopened ]
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
@@ -13,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: demo/android
+        working-directory: demo/android/agp4
     strategy:
       fail-fast: false
       matrix:
-        java_version: [11, 17]
-        distribution: ["zulu", "temurin"]
+        java_version: [ 8 ]
+        distribution: [ "zulu", "temurin" ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2.4.0
