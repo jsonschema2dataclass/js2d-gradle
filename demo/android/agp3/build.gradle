@@ -1,0 +1,26 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+
+        /* TODO: for integration tests use this:
+        classpath files('../../../build/libs/JsonSchema2DataClass-latest.jar')
+        classpath "org.jsonschema2pojo:jsonschema2pojo-core:1.1.1"
+        */
+        classpath "gradle.plugin.org.jsonschema2dataclass:jsonschema2dataclass:4.0.1"
+        classpath "com.android.tools.build:gradle:3.6.4"
+    }
+}
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

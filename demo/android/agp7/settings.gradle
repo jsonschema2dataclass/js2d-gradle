@@ -1,0 +1,5 @@
+rootProject.name = 'js2d-gradle Android sample'
+
+include ':app'
+include ':lib'
+include ':lib2'

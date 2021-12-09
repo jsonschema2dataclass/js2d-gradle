@@ -1,25 +1,24 @@
-name: Java Sample
+name: Android Sample
 
 on:
   pull_request:
-    types: [assigned, opened, synchronize, reopened]
+    types: [ assigned, opened, synchronize, reopened ]
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
-  buildTest:
-    name: Build Java Demo JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
-    if: ${{ false }}
+  buildDemo:
+    name: Build Android Demo JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: demo/java
+        working-directory: demo/android/agp3
     strategy:
       fail-fast: false
       matrix:
-        java_version: [8, 11, 17]
-        distribution: ["zulu", "temurin"]
+        java_version: [ 8 ]
+        distribution: [ "zulu", "temurin" ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2.4.0
@@ -30,5 +29,7 @@ jobs:
         with:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.1.2
       - name: Build project
-        run: ./gradlew assemble -S
+        run: ./gradlew assembleDebug -S
