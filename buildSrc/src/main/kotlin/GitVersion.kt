@@ -15,13 +15,13 @@ fun gitVersion(project: Project): String =
 private fun processVersionString(value: String): String {
     if (!regex.matches(value)) {
         val now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd.HH-mm-ss", Locale.US))
-        return "0.0.0-${now}"
+        return "0.0.0-$now"
     }
     val match = regex.find(value)!!.groupValues
 
     val version = match[1]
     val commitsAfterTag = match[2]
-    val revision  = match[3]
+    val revision = match[3]
     val dirty = match[4]
 
     if (commitsAfterTag == "0") {

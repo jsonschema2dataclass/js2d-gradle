@@ -40,13 +40,13 @@ gradlePlugin {
 
             implementationClass = "org.jsonschema2dataclass.js2p.Js2pPlugin"
             displayName = "Extended Gradle JsonSchema2Pojo Plugin"
-            description = "A plugins that generates Java sources from JsonSchema using jsonschema2pojo." +
-                " Please, see the GitHub page for details"
+            description =
+                "A plugins that generates Java sources from JsonSchema using jsonschema2pojo. Please, see the GitHub page for details"
         }
     }
 }
 
-val provided by configurations.creating
+val provided: Configuration by configurations.creating
 sourceSets {
     main {
         this.compileClasspath += provided
@@ -83,22 +83,30 @@ configurations.all {
 
 spotless {
     kotlin {
-        target("demo/**/*.kt", "src/**/*.kt")
-        ktlint()
+        targetExclude(".idea", "**/.idea", "build", "**/build")
+        target("**/*.kt")
+        ktlint().userData(
+            mapOf(
+                "disabled_rules" to "no-wildcard-imports"
+            )
+        )
         endWithNewline()
     }
     kotlinGradle {
+        targetExclude(".idea", "**/.idea", "build", "**/build")
         target("*.gradle.kts")
         ktlint()
         endWithNewline()
     }
     json {
+        targetExclude(".idea", "**/.idea", "build", "**/build")
         target("demo/**/*.json", "src/**/*.json")
         simple()
         endWithNewline()
     }
     format("xml") {
-        target("demo/**/*.xml", "src/**/*.xml")
+        targetExclude(".idea", "**/.idea", "build", "**/build")
+        target("demo/**src/**/*.xml", "src/**/*.xml")
         eclipseWtp(EclipseWtpFormatterStep.XML)
     }
 }
