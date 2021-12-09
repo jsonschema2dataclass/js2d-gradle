@@ -54,7 +54,7 @@ sourceSets {
 }
 dependencies {
 
-    provided("com.android.tools.build:gradle:7.0.3")
+    provided("com.android.tools.build:gradle:7.0.4")
 
     implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
 
