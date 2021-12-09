@@ -109,8 +109,8 @@ internal data class Js2dConfig(
             defaultValue: Array<String>?,
             vFunction: Function<DefaultGenerationConfig, Array<String>>,
         ): Array<String> {
-            if (value == null || value.isEmpty()) {
-                if (defaultValue == null || defaultValue.isEmpty()) {
+            if (value == null) {
+                if (defaultValue == null) {
                     return vFunction.apply(defaultConfiguration)
                 }
                 return defaultValue

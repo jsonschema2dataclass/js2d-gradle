@@ -5,8 +5,10 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.params.provider.Arguments
 import java.io.File
 import java.nio.file.Path
+import java.util.stream.Stream
 
 const val COLON_TASK_NAME = ":$TASK_NAME"
 val GRADLE_RELEASES = listOf(
@@ -66,3 +68,26 @@ fun gradleSupported(gradleVersion: Pair<Int, Int>): Boolean =
         JavaVersion.VERSION_17 -> gradleVersion.first >= 8 || (gradleVersion.first == 7 && gradleVersion.second >= 3)
         else -> false // no official information on Gradle compatibility with further versions of Java
     }
+
+/**
+ * Holder class for gradle releases version to test against current java version
+ */
+class TestGradleVersionHolder {
+    companion object {
+        @JvmStatic
+        fun gradleReleasesForTests(): Stream<Arguments> {
+/*
+            if (System.getProperties()["Hello"] == null) {
+                return Stream.of()
+            }
+*/
+
+            return GRADLE_RELEASES.stream()
+                .filter {
+                    val gradleVersionParts = it.split(".")
+                    gradleSupported(Pair(gradleVersionParts[0].toInt(), gradleVersionParts[1].toInt()))
+                }
+                .map { Arguments.of(it) } as Stream<Arguments>
+        }
+    }
+}

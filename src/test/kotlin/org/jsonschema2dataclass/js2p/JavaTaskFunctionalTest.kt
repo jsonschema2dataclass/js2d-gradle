@@ -6,11 +6,9 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.NullSource
 import java.nio.file.Path
-import java.util.stream.Stream
 
 const val COLON_TASK_NAME0 = COLON_TASK_NAME + "0"
 const val COLON_TASK_NAME1 = COLON_TASK_NAME + "1"
@@ -33,7 +31,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-    @MethodSource("gradleReleases")
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single execution, no extension")
     fun withoutExtension(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
@@ -52,7 +50,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-    @MethodSource("gradleReleases")
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single execution")
     fun singleExtension(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
@@ -72,7 +70,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-    @MethodSource("gradleReleases")
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single execution")
     fun singleExtensionInherited(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
@@ -92,7 +90,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-    @MethodSource("gradleReleases")
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single extension simple")
     fun singleExtensionSimple(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
@@ -113,7 +111,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-//    @MethodSource("gradleReleases")
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("multiple executions")
     fun multipleExecutions(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
@@ -140,7 +138,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-    @MethodSource("gradleReleases")
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("compileJava task depends task even when project has no java code")
     fun noJavaCode(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
@@ -154,7 +152,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-    @MethodSource("gradleReleases")
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("task is cache-able")
     @Disabled("Generation task. To be decided later")
     fun taskIsCacheable(gradleVersion: String?) {
@@ -171,7 +169,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
     @NullSource
-    @MethodSource("gradleReleases")
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("task skips if no json file exists")
     fun noJsonFiles(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
@@ -181,17 +179,5 @@ class JavaTaskFunctionalTest {
         val result = executeRunner(gradleVersion, testProjectDir)
 
         assertEquals(TaskOutcome.NO_SOURCE, result.task(COLON_TASK_NAME0)?.outcome)
-    }
-
-    companion object {
-        @JvmStatic
-        fun gradleReleases(): Stream<Arguments> {
-            return GRADLE_RELEASES.stream()
-                .filter {
-                    val gradleVersionParts = it.split(".")
-                    gradleSupported(Pair(gradleVersionParts[0].toInt(), gradleVersionParts[1].toInt()))
-                }
-                .map { Arguments.of(it) } as Stream<Arguments>
-        }
     }
 }
