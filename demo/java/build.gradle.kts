@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.jsonschema2dataclass") version "4.0.1"
+    id("org.jsonschema2dataclass") version "4.1.0"
 }
 
 repositories {
