@@ -3,18 +3,24 @@ name: Build Plugin
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
-    branches:
-      - main
+    paths:
+      - 'src/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   build-and-test:
-    name: Build Plugin JDK ${{ matrix.distribution }} ${{ matrix.java }}
+    name: Build Plugin
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

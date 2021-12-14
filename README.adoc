@@ -45,14 +45,14 @@ plugins{
 
 jsonSchema2Pojo {
     targetPackage = 'org.example.api' // specify package for your needs
-    
+
     source.setFrom files("${project.rootDir}/src/main/resources/json")
-    
+
     // ... — add other supported options as you need
 }
 ----
 
-Additionally you can copy one of sample Java and Android projects you can find in https://github.com/jsonschema2dataclass/js2d-gradle/tree/master/demo[demo] folder
+Additionally you can copy one of sample Java (Kotlin and Groovy DSL) and Android (AGP 3, AGP 4 and AGP 7) projects you can find in https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo[demo] folder
 
 
 == Accepted parameters documentation

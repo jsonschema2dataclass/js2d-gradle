@@ -3,10 +3,10 @@ name: "Validate Gradle Wrapper"
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
 
@@ -19,23 +19,56 @@ jobs:
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1.0.4
-  validationJavaSample:
-    name: "Wrapper validation: Java Sample"
+  validationJavaKotlinSample:
+    name: "Wrapper validation: Java Kotlin DSL Sample"
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: demo/java
+        working-directory: demo/java/kotlin
     steps:
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1.0.4
-  validationAndroidSample:
-    name: "Wrapper validation: Android Sample"
+  validationJavaGroovySample:
+    name: "Wrapper validation: Java Groovy DSL Sample"
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: demo/android
+        working-directory: demo/java/groovy
+    steps:
+      - uses: actions/checkout@v2.4.0
+        with:
+          fetch-depth: 0
+      - uses: gradle/wrapper-validation-action@v1.0.4
+  validationAndroidAgp7Sample:
+    name: "Wrapper validation: Android AGP 7 Sample"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/android/agp7
+    steps:
+      - uses: actions/checkout@v2.4.0
+        with:
+          fetch-depth: 0
+      - uses: gradle/wrapper-validation-action@v1.0.4
+  validationAndroidAgp4Sample:
+    name: "Wrapper validation: Android AGP 4 Sample"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/android/agp4
+    steps:
+      - uses: actions/checkout@v2.4.0
+        with:
+          fetch-depth: 0
+      - uses: gradle/wrapper-validation-action@v1.0.4
+  validationAndroidAgp3Sample:
+    name: "Wrapper validation: Android AGP 3 Sample"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/android/agp3
     steps:
       - uses: actions/checkout@v2.4.0
         with:
