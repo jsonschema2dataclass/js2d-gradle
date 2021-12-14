@@ -7,10 +7,6 @@ repositories {
     mavenCentral()
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.release.set(8)
-}
-
 dependencies {
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
@@ -23,4 +19,5 @@ jsonSchema2Pojo {
     targetPackage.set("example")
     propertyWordDelimiters.set("_")
     source.setFrom(files("${project.rootDir}/src/main/resources/json"))
+    includeGeneratedAnnotation.set(false)
 }

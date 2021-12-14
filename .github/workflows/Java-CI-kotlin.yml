@@ -1,20 +1,22 @@
-name: Java Sample
+name: Java Kotlin DSL Demo
 
 on:
   pull_request:
     types: [assigned, opened, synchronize, reopened]
+    paths:
+      - 'demo/java/kotlin/**'
+      - '.github/Java-CI-kotlin.yml'
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   buildTest:
-    name: Build Java Demo JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
-    if: ${{ false }}
+    name: Build Java Kotlin DSL Demo
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: demo/java
+        working-directory: demo/java/kotlin
     strategy:
       fail-fast: false
       matrix:

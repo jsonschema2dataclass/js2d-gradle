@@ -3,15 +3,16 @@ name: Android Sample
 on:
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
-
+    paths:
+      - 'demo/android/agp3'
+      - '.github/Android-CI-agp3.yml'
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   buildDemo:
-    name: Build Android Demo JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
+    name: Build Android AGP 3 Demo JDK
     runs-on: ubuntu-latest
-    if: ${{ false }}
     defaults:
       run:
         working-directory: demo/android/agp3
