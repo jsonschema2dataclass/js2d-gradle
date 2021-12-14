@@ -2,7 +2,7 @@ import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 
 plugins {
     `java-gradle-plugin`
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version "1.6.10"
     id("com.gradle.plugin-publish") version "0.18.0"
     id("com.diffplug.spotless") version "6.0.4"
 }
