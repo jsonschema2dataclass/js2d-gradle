@@ -4,19 +4,19 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.oosocial.clarityn.rest.clarityn.model.Entry_schema
+import com.oosocial.clarityn.rest.clarityn.model.EntrySchema
 import com.oosocial.clarityn.rest.clarityn.model.Storage
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var schema: Entry_schema
+    private lateinit var schema: EntrySchema
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        schema = Entry_schema()
+        schema = EntrySchema()
         schema.readonly = false
-        schema.fstype = Entry_schema.Fstype.EXT_4
+        schema.fstype = EntrySchema.Fstype.EXT_4
         schema.storage = Storage()
     }
 
