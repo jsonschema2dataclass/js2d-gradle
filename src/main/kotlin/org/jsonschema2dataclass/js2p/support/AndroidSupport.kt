@@ -19,10 +19,14 @@ internal fun applyInternalAndroid(extension: Js2pExtension, project: Project) {
         getAndroidJsonPath(project),
         JavaVersion.current() >= JavaVersion.VERSION_1_9
     )
-
+    val experimental = project.properties["org.jsonschema2dataclass.agp7.experimental"]?.toString().toBoolean()
     when (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.split(".")[0].toInt()) {
         3, 4 -> applyInternalAndroidAgp3(extension, project)
-        7 -> applyInternalAndroidAgp7(extension, project)
+        7 -> if (experimental) {
+            applyInternalAndroidAgp7(extension, project)
+        } else {
+            applyInternalAndroidAgp3(extension, project)
+        }
         else -> throw ProjectConfigurationException("$TASK_NAME: Plugin supports AGP 3.x, 4.x or 7.x", listOf())
     }
 }
