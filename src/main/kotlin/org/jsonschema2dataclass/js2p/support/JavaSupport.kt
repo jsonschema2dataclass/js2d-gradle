@@ -36,7 +36,6 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
         @Suppress("UnstableApiUsage")
         project.tasks.withType(ProcessResources::class.java) {
             generationTaskProvider.configure { generationTask ->
-
                 generationTask.dependsOn(it)
             }
         }

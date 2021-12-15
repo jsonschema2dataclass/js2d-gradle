@@ -5,11 +5,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.Task
-import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.js2p.support.applyInternalAndroid
@@ -34,6 +33,7 @@ class Js2pPlugin : Plugin<Project> {
         project.extensions.create("jsonSchema2Pojo", Js2pExtension::class.java)
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
+
         if (javaPlugins.any { project.plugins.hasPlugin(it) }) {
             project.afterEvaluate {
                 applyInternalJava(pluginExtension, project)
@@ -78,7 +78,7 @@ internal fun createJS2DTask(
     targetDirectorySuffix: String,
     postConfigure: (
         task: TaskProvider<out Js2pGenerationTask>,
-        Provider<Directory>
+        DirectoryProperty
     ) -> Unit,
 ): TaskProvider<Task> {
 
@@ -88,7 +88,8 @@ internal fun createJS2DTask(
     }
 
     extension.executions.forEachIndexed { configurationId, configuration ->
-        val targetPath = extension.targetDirectoryPrefix.dir("${configuration.name}$targetDirectorySuffix")
+        val targetPath = project.objects.directoryProperty()
+        targetPath.set(extension.targetDirectoryPrefix.dir("${configuration.name}$targetDirectorySuffix"))
         val taskProvider = createJS2DTaskExecution(
             project,
             configurationId,
@@ -113,7 +114,7 @@ private fun createJS2DTaskExecution(
     taskNameSuffix: String,
     configurationName: String,
     source: FileCollection,
-    targetPath: Provider<Directory>,
+    targetPath: DirectoryProperty,
 ): TaskProvider<out Js2pGenerationTask> {
     val taskName = "${TASK_NAME}${configurationId}$taskNameSuffix"
     return project.tasks.register(taskName, Js2pGenerationTask::class.java) { task ->

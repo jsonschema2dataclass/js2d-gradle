@@ -4,6 +4,8 @@ import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
+import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
+import com.android.build.gradle.tasks.JavaPreCompileTask
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
@@ -20,15 +22,24 @@ internal fun applyInternalAndroidAgp7(extension: Js2pExtension, project: Project
 
 private fun createTasksForVariant7(project: Project, extension: Js2pExtension, variant: Variant) {
     val capitalizedName = variant.name.capitalization()
-    KotlinVersion.CURRENT
     createJS2DTask(
         project,
         extension,
         "For$capitalizedName",
         "${variant.flavorName}/${variant.buildType}/"
-    ) { genTask, _ ->
-        variant.artifacts.use(genTask).wiredWith { it.targetDirectory }
+    ) { genTask, targetDirectory ->
+        variant.artifacts.use(genTask).wiredWith { targetDirectory }
             .toCreate(ArtifactType7.SINGLE_DIRECTORY_ARTIFACT)
+
+        project.tasks.withType(JavaPreCompileTask::class.java) {
+            it.dependsOn(genTask)
+        }
+
+        project.tasks.withType(LinkApplicationAndroidResourcesTask::class.java) {
+            genTask.configure { task ->
+                task.dependsOn(it)
+            }
+        }
     }
 }
 
