@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'
-        classpath "gradle.plugin.org.jsonschema2dataclass:jsonschema2dataclass:4.0.1"
+        classpath "gradle.plugin.org.jsonschema2dataclass:JsonSchema2DataClass:4.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }

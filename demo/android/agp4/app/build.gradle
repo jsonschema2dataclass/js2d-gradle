@@ -31,8 +31,6 @@ dependencies {
 
     // Required for @Generated annotation
     implementation 'org.glassfish:javax.annotation:10.0-b28'
-    implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'com.squareup.moshi:moshi:1.12.0'
     // Required if generating JSR-303 annotations
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
@@ -87,7 +85,7 @@ jsonSchema2Pojo {
     //  - gson (apply annotations from the Gson library)
     //  - moshi1 (apply annotations from the Moshi 1.x library)
     //  - none (apply no annotations at all)
-    annotationStyle = 'gson'
+    annotationStyle = 'jackson'
 
     // A fully qualified class name, referring to a custom annotator class that implements
     // by annotationStyle. If you want to use the custom annotator alone, set annotationStyle to none.
