@@ -35,8 +35,9 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
 
         @Suppress("UnstableApiUsage")
         project.tasks.withType(ProcessResources::class.java) {
-            generationTaskProvider.configure { generationTask ->
-                generationTask.dependsOn(it)
+            val processResources = this
+            generationTaskProvider.configure {
+                this.dependsOn(processResources)
             }
         }
 
@@ -44,7 +45,7 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
         javaSourceSet.sourceDirectories.plus(targetPath)
     }
     project.tasks.withType(JavaCompile::class.java) {
-        it.dependsOn(js2pTask)
+        this.dependsOn(js2pTask)
     }
 }
 
@@ -56,7 +57,7 @@ private fun getJavaJsonPath(sourceSet: SourceSet): Path? {
         ?.resolve("json")
 }
 
-internal fun obtainJavaSourceSet(project: Project): SourceSet =
+private fun obtainJavaSourceSet(project: Project): SourceSet =
     if (GradleVersion.current() < GradleVersion.version("7.1")) {
         obtainJavaSourceSetContainerV6(project)
     } else {

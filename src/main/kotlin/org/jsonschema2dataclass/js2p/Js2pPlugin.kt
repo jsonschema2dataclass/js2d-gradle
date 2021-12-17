@@ -24,12 +24,12 @@ internal const val PLUGIN_ID = "org.jsonschema2dataclass"
 
 @Suppress("unused")
 class Js2pPlugin : Plugin<Project> {
+
     private val javaPlugins = listOf(JavaPlugin::class.java, JavaLibraryPlugin::class.java)
     private val androidPlugins = listOf("com.android.application", "com.android.library")
 
     override fun apply(project: Project) {
         verifyGradleVersion()
-
         project.extensions.create("jsonSchema2Pojo", Js2pExtension::class.java)
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
@@ -83,8 +83,8 @@ internal fun createJS2DTask(
 ): TaskProvider<Task> {
 
     val js2dTask = project.tasks.register("${TASK_NAME}$taskNameSuffix", Task::class.java) {
-        it.description = "Generates Java classes from a json schema using JsonSchema2Pojo."
-        it.group = "Build"
+        description = "Generates Java classes from a json schema using JsonSchema2Pojo."
+        group = "Build"
     }
 
     extension.executions.forEachIndexed { configurationId, configuration ->
@@ -101,7 +101,7 @@ internal fun createJS2DTask(
 
         postConfigure(taskProvider, targetPath)
         js2dTask.configure {
-            it.dependsOn(taskProvider)
+            dependsOn(taskProvider)
         }
     }
 
@@ -117,16 +117,16 @@ private fun createJS2DTaskExecution(
     targetPath: DirectoryProperty,
 ): TaskProvider<out Js2pGenerationTask> {
     val taskName = "${TASK_NAME}${configurationId}$taskNameSuffix"
-    return project.tasks.register(taskName, Js2pGenerationTask::class.java) { task ->
-        task.description =
+    return project.tasks.register(taskName, Js2pGenerationTask::class.java) {
+        this.description =
             "Generates Java classes from a json schema using JsonSchema2Pojo for configuration $configurationName"
-        task.group = "Build"
+        this.group = "Build"
 
-        task.configurationName = configurationName
-        task.uuid = UUID.randomUUID()
-        task.targetDirectory.set(targetPath)
+        this.configurationName = configurationName
+        this.uuid = UUID.randomUUID()
+        this.targetDirectory.set(targetPath)
 
-        skipInputWhenEmpty(task, source)
+        skipInputWhenEmpty(this, source)
         source.forEach { it.mkdirs() }
     }
 }

@@ -85,7 +85,7 @@ internal data class Js2dConfig(
         private val defaultConfiguration = DefaultGenerationConfig()
 
         private fun <E : Enum<E>?> fromEnum(value: String?, enumClass: Class<E>): E? {
-            return if (value == null || value.isEmpty()) null else java.lang.Enum.valueOf(enumClass, value.uppercase())
+            return if (value == null || value.isEmpty()) null else java.lang.Enum.valueOf(enumClass, value.toUpperCase())
         }
 
         private fun <E : Enum<E>> fromEnum(value: Property<String>, enumClass: Class<E>): E? {
