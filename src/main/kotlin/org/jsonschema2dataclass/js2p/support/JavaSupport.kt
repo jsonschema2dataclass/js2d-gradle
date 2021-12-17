@@ -4,6 +4,7 @@ package org.jsonschema2dataclass.js2p.support
 
 // DEPRECATION: to support Gradle 6.0 - 7.0.2
 import org.gradle.api.Project
+import org.gradle.api.UnknownTaskException
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
@@ -46,6 +47,15 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
     }
     project.tasks.withType(JavaCompile::class.java) {
         this.dependsOn(js2pTask)
+    }
+
+    /* attach to Kotlin compilation task if exists */
+
+    try {
+        project.tasks.named("compileKotlin") {
+            this.dependsOn(js2pTask)
+        }
+    } catch (_: UnknownTaskException) {
     }
 }
 

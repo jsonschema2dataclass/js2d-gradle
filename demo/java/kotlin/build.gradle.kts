@@ -1,5 +1,5 @@
 plugins {
-    java
+    kotlin("jvm") version "1.6.0"
     id("org.jsonschema2dataclass") version "4.1.0"
 }
 
@@ -18,6 +18,5 @@ dependencies {
 jsonSchema2Pojo {
     targetPackage.set("example")
     propertyWordDelimiters.set("_")
-    source.setFrom(files("${project.rootDir}/src/main/resources/json"))
     includeGeneratedAnnotation.set(false)
 }
