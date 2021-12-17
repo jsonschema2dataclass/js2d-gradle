@@ -4,9 +4,20 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'gradle/**'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'demo/*/*/gradle/**'
+      - 'demo/*/*/gradlew'
+      - 'demo/*/*/gradlew.bat'
+      - 'buildSrc/gradle*'
   pull_request:
     branches:
       - main
+    paths:
+      - 'gradle/**'
+      - 'gradlew*'
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
 
