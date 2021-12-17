@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.6.10"
-    id("org.jsonschema2dataclass") version "4.1.1"
+    id("org.jsonschema2dataclass") version "4.2.0"
 }
 
 repositories {
