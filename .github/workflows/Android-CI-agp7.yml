@@ -14,7 +14,6 @@ jobs:
   buildDemo:
     name: Build Android AGP 7 Demo JDK
     runs-on: ubuntu-latest
-    if: ${{ false }}
     defaults:
       run:
         working-directory: demo/android/agp7
