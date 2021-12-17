@@ -3,7 +3,6 @@ package org.jsonschema2dataclass.js2p
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.writeText
 
 const val TARGET_FOLDER_BASE_CUSTOM = TARGET_FOLDER_BASE + "s"
 val BUILD_FILE_HEADER = """
@@ -126,5 +125,5 @@ fun createBuildFilesSingleSourceInherit(testProjectDir: Path, shouldCopyAddressJ
 private fun copyAddressJSON(testProjectDir: Path) {
     val jsonDir = testProjectDir.resolve("src/main/resources/json")
     File(jsonDir.toString()).mkdirs()
-    jsonDir.resolve("address.json").writeText(ADDRESS_JSON)
+    jsonDir.resolve("address.json").toFile().writeText(ADDRESS_JSON)
 }

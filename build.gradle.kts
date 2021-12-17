@@ -2,7 +2,8 @@ import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 
 plugins {
     `java-gradle-plugin`
-    kotlin("jvm") version "1.6.10"
+    `kotlin-dsl`
+    `kotlin-dsl-precompiled-script-plugins`
     id("com.gradle.plugin-publish") version "0.18.0"
     id("com.diffplug.spotless") version "6.0.4"
 }
@@ -46,6 +47,17 @@ gradlePlugin {
     }
 }
 
+if (JavaVersion.current() > JavaVersion.VERSION_11) {
+    tasks.withType<JavaCompile> {
+        options.release.set(8)
+    }
+} else {
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
 val provided: Configuration by configurations.creating
 sourceSets {
     main {
@@ -54,7 +66,9 @@ sourceSets {
 }
 dependencies {
 
-    provided("com.android.tools.build:gradle:7.0.4")
+    provided("com.android.tools.build:gradle:7.0.4") {
+        exclude(group = "org.jetbrains.kotlin")
+    }
 
     implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
 

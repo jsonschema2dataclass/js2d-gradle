@@ -32,12 +32,13 @@ private fun createTasksForVariant7(project: Project, extension: Js2pExtension, v
             .toCreate(ArtifactType7.SINGLE_DIRECTORY_ARTIFACT)
 
         project.tasks.withType(JavaPreCompileTask::class.java) {
-            it.dependsOn(genTask)
+            this.dependsOn(genTask)
         }
 
         project.tasks.withType(LinkApplicationAndroidResourcesTask::class.java) {
-            genTask.configure { task ->
-                task.dependsOn(it)
+            val linkAppResourcesTask = this
+            genTask.configure {
+                this.dependsOn(linkAppResourcesTask)
             }
         }
     }
