@@ -4,6 +4,17 @@ on:
   push:
     branches:
       - main
+    tags-ignore:
+      - '*'
+    paths:
+      - .github/workflows/build.yml
+      - 'src/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
