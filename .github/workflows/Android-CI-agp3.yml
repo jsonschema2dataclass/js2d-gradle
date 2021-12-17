@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
-      - 'demo/android/agp3'
+      - 'demo/android/agp3/**'
       - '.github/Android-CI-agp3.yml'
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false

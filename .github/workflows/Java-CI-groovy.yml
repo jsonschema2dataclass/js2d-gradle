@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [assigned, opened, synchronize, reopened]
     paths:
-      - 'demo/java/groovy'
+      - 'demo/java/groovy/**'
       - '.github/Java-CI-groovy.yml'
 
 env:
