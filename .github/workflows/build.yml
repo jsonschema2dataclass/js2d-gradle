@@ -45,4 +45,4 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-v2-gradle-build-
             ${{ runner.os }}-v2-gradle-
-      - run: ./gradlew build
+      - run: ./gradlew build --warning-mode all
