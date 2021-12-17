@@ -33,4 +33,4 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
       - name: Build project
-        run: ./gradlew assemble -S
+        run: ./gradlew assemble -S --warning-mode all
