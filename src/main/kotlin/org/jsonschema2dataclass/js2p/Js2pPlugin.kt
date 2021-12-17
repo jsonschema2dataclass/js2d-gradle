@@ -1,9 +1,9 @@
 package org.jsonschema2dataclass.js2p
 
+import com.android.build.gradle.internal.crash.afterEvaluate
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
@@ -34,14 +34,18 @@ class Js2pPlugin : Plugin<Project> {
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
 
-        if (javaPlugins.any { project.plugins.hasPlugin(it) }) {
-            project.afterEvaluate {
-                applyInternalJava(pluginExtension, project)
+        javaPlugins.forEach {
+            project.plugins.withType(it) {
+                afterEvaluate {
+                    applyInternalJava(pluginExtension, project)
+                }
             }
-        } else if (androidPlugins.any { project.plugins.hasPlugin(it) }) {
-            applyInternalAndroid(pluginExtension, project)
-        } else {
-            throw ProjectConfigurationException("$TASK_NAME: Java or Android plugin required", listOf())
+        }
+
+        androidPlugins.forEach {
+            project.plugins.withId(it) {
+                applyInternalAndroid(pluginExtension, project)
+            }
         }
     }
 }
