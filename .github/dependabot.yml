@@ -5,19 +5,31 @@
 
 version: 2
 updates:
-  - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "gradle"
+    directory: "/"
     schedule:
       interval: "daily"
-  - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "demo/java"
+  - package-ecosystem: "gradle"
+    directory: "demo/java/groovy"
     schedule:
       interval: "daily"
-  - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "demo/android"
+  - package-ecosystem: "gradle"
+    directory: "demo/java/kotlin"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "demo/android/agp3"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "demo/android/agp4"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "demo/android/agp7"
     schedule:
       interval: "daily"
   - package-ecosystem: "github-actions"
-    directory: "/" # Location of package manifests
+    directory: "/"
     schedule:
       interval: "daily"
