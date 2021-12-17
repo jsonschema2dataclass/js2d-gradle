@@ -21,14 +21,27 @@ updates:
     directory: "demo/android/agp3"
     schedule:
       interval: "daily"
+    - allow:
+        - dependency-type: all
+    - ignore:
+        - dependency-name: com.android.tools.build:gradle
+          update-types: major
   - package-ecosystem: "gradle"
     directory: "demo/android/agp4"
     schedule:
       interval: "daily"
+    - allow:
+        - dependency-type: all
+    - ignore:
+        - dependency-name: com.android.tools.build:gradle
+          update-types: major
   - package-ecosystem: "gradle"
     directory: "demo/android/agp7"
     schedule:
       interval: "daily"
+    - ignore:
+        - dependency-name: com.android.tools.build:gradle
+          update-types: major
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
