@@ -12,7 +12,7 @@ buildscript {
         classpath "org.jsonschema2pojo:jsonschema2pojo-core:1.1.1"
         */
         classpath "gradle.plugin.org.jsonschema2dataclass:JsonSchema2DataClass:4.1.0"
-        classpath "com.android.tools.build:gradle:3.6.4"
+        classpath "com.android.tools.build:gradle:7.0.4"
     }
 }
 allprojects {
