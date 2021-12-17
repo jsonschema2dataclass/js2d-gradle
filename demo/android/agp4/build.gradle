@@ -6,7 +6,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.android.tools.build:gradle:7.0.4'
 
         /* TODO: for integration tests use this:
         classpath files('../../../build/libs/JsonSchema2DataClass-latest.jar')
