@@ -12,6 +12,7 @@ on:
       - 'demo/*/*/gradlew'
       - 'demo/*/*/gradlew.bat'
       - 'buildSrc/gradle*'
+      - .github/workflows/gradle-wrapper-validation.yml
   pull_request:
     branches:
       - main
@@ -29,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@v1.0.4
+      - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
   validationJavaKotlinSample:
     name: "Wrapper validation: Java Kotlin DSL Sample"
     runs-on: ubuntu-latest
@@ -40,7 +41,7 @@ jobs:
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@v1.0.4
+      - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
   validationJavaGroovySample:
     name: "Wrapper validation: Java Groovy DSL Sample"
     runs-on: ubuntu-latest
@@ -51,7 +52,7 @@ jobs:
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@v1.0.4
+      - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
   validationAndroidAgp7Sample:
     name: "Wrapper validation: Android AGP 7 Sample"
     runs-on: ubuntu-latest
@@ -62,7 +63,7 @@ jobs:
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@v1.0.4
+      - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
   validationAndroidAgp4Sample:
     name: "Wrapper validation: Android AGP 4 Sample"
     runs-on: ubuntu-latest
@@ -73,7 +74,7 @@ jobs:
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@v1.0.4
+      - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
   validationAndroidAgp3Sample:
     name: "Wrapper validation: Android AGP 3 Sample"
     runs-on: ubuntu-latest
@@ -84,4 +85,4 @@ jobs:
       - uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@v1.0.4
+      - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
