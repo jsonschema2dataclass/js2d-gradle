@@ -23,23 +23,21 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: com.android.tools.build:gradle
-        update-types:
-        - "version-update:semver-major"
+        update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "gradle"
     directory: "demo/android/agp4"
     schedule:
       interval: "daily"
     ignore:
       - dependency-name: com.android.tools.build:gradle
-        update-types:
-        - "version-update:semver-major"
+        update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "gradle"
     directory: "demo/android/agp7"
     schedule:
       interval: "daily"
     ignore:
       - dependency-name: com.android.tools.build:gradle
-        update-types: major
+        update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
