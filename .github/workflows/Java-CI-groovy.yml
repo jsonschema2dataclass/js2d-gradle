@@ -5,7 +5,7 @@ on:
     types: [assigned, opened, synchronize, reopened]
     paths:
       - 'demo/java/groovy/**'
-      - .github/Java-CI-groovy.yml
+      - .github/workflows/Java-CI-groovy.yml
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
