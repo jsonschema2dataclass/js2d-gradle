@@ -5,7 +5,7 @@ on:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
       - 'demo/android/agp4/**'
-      - '.github/Android-CI-agp4.yml'
+      - .github/Android-CI-agp4.yml
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
