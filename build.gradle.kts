@@ -123,9 +123,11 @@ spotless {
         target("demo/**src/**/*.xml", "src/**/*.xml")
         eclipseWtp(EclipseWtpFormatterStep.XML)
     }
-    java {
-        targetExclude(".idea", "**/.idea", "build", "**/build")
-        target("demo/**src/**/*.java", "src/**/*.java")
-        googleJavaFormat("1.13.0")
+    if (JavaVersion.current() > JavaVersion.VERSION_11) {
+        java {
+            targetExclude(".idea", "**/.idea", "build", "**/build")
+            target("demo/**src/**/*.java", "src/**/*.java")
+            googleJavaFormat("1.13.0")
+        }
     }
 }
