@@ -16,7 +16,7 @@ val BUILD_FILE_HEADER = """
         |dependencies {
         |  implementation "com.fasterxml.jackson.core:jackson-annotations:2.11.2"
         |}
-        """.trimMargin()
+""".trimMargin()
 val ADDRESS_JSON = """
     |{
     |  "description": "An Address following the convention of http://microformats.org/wiki/hcard",
@@ -53,7 +53,7 @@ fun createBuildFilesSingleSimple(testProjectDir: Path, shouldCopyAddressJSON: Bo
             |jsonSchema2Pojo{
             |  targetPackage.set("com.example")
             |}
-            """.trimMargin()
+        """.trimMargin()
     )
 }
 
@@ -79,7 +79,7 @@ fun createBuildFilesMultiple(testProjectDir: Path, shouldCopyAddressJSON: Boolea
             |     }
             |  }
             |}
-            """.trimMargin()
+        """.trimMargin()
     )
 }
 
@@ -98,7 +98,7 @@ fun createBuildFilesSingle(testProjectDir: Path, shouldCopyAddressJSON: Boolean)
          |    }
          |  }
          |}
-         """.trimMargin()
+        """.trimMargin()
     )
 }
 
@@ -117,7 +117,7 @@ fun createBuildFilesSingleSourceInherit(testProjectDir: Path, shouldCopyAddressJ
          |    }
          |  }
          |}
-    """.trimMargin()
+        """.trimMargin()
     )
     Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
 }
