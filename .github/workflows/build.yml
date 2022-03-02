@@ -40,7 +40,7 @@ jobs:
         java: [ 8, 11, 17 ]
         distribution: [ "zulu", "temurin" ]
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}

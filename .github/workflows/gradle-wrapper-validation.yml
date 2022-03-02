@@ -27,7 +27,7 @@ jobs:
     name: "Wrapper validation: Plugin"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
@@ -38,7 +38,7 @@ jobs:
       run:
         working-directory: demo/java/kotlin
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
@@ -49,7 +49,7 @@ jobs:
       run:
         working-directory: demo/java/groovy
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
@@ -60,7 +60,7 @@ jobs:
       run:
         working-directory: demo/android/agp7
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
@@ -71,7 +71,7 @@ jobs:
       run:
         working-directory: demo/android/agp4
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d
@@ -82,7 +82,7 @@ jobs:
       run:
         working-directory: demo/android/agp3
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@84d7e182ae7c7a37f200c184f64038fb0e62dd7d

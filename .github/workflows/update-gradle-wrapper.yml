@@ -9,7 +9,7 @@ jobs:
     name: "Update Gradle Wrapper: Plugin"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Update Gradle Wrapper
@@ -24,7 +24,7 @@ jobs:
       run:
         working-directory: demo/java/kotlin
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Update Gradle Wrapper
@@ -39,7 +39,7 @@ jobs:
       run:
         working-directory: demo/java/groovy
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Update Gradle Wrapper
@@ -54,7 +54,7 @@ jobs:
       run:
         working-directory: demo/android/agp7
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Update Gradle Wrapper
@@ -68,7 +68,7 @@ jobs:
       run:
         working-directory: demo/android/agp4
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Update Gradle Wrapper
@@ -82,7 +82,7 @@ jobs:
       run:
         working-directory: demo/android/agp3
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Update Gradle Wrapper
