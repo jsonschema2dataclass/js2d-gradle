@@ -89,7 +89,7 @@ tasks.test {
 configurations.all {
     resolutionStrategy {
         dependencySubstitution {
-            val ktlintVersion = "0.44.0"
+            val ktlintVersion = "0.45.1"
             substitute(module("com.pinterest:ktlint")).using(module("com.pinterest:ktlint:$ktlintVersion"))
         }
     }
