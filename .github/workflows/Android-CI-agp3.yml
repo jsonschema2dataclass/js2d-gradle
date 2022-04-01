@@ -27,11 +27,12 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
-        uses: actions/setup-java@v3.0.0
+        uses: actions/setup-java@v3.1.0
         with:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
-      - name: Install Android SDK
+      - name: Install Android SDK and build project
         uses: malinskiy/action-android/install-sdk@release/0.1.2
-      - name: Build project
-        run: ./gradlew assembleDebug -S --warning-mode all
+        with:
+          cmd: ./gradlew assembleDebug -S --warning-mode all
+          api: 26
