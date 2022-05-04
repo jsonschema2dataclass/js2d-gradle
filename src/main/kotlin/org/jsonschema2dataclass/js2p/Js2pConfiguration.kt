@@ -205,4 +205,7 @@ abstract class Js2pConfiguration @Inject constructor(
 
     @get: Optional
     abstract val useTitleAsClassname: Property<Boolean>
+
+    @get: Optional
+    abstract val useJakartaValidation: Property<Boolean>
 }

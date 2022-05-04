@@ -80,6 +80,7 @@ internal data class Js2dConfig(
     private val useOptionalForGetters: Boolean,
     private val usePrimitives: Boolean,
     private val useTitleAsClassname: Boolean,
+    private val useJakartaValidation: Boolean,
 ) : GenerationConfig {
     companion object {
         private val defaultConfiguration = DefaultGenerationConfig()
@@ -294,6 +295,7 @@ internal data class Js2dConfig(
                     defaultConfig.useOptionalForGetters
                 ) { obj: DefaultGenerationConfig -> obj.isUseOptionalForGetters },
                 maybeDefault(config.usePrimitives, defaultConfig.usePrimitives) { obj: DefaultGenerationConfig -> obj.isUsePrimitives },
+                maybeDefault(config.useJakartaValidation, defaultConfig.useJakartaValidation) { obj: DefaultGenerationConfig -> obj.isUseJakartaValidation },
                 maybeDefault(
                     config.useTitleAsClassname,
                     defaultConfig.useTitleAsClassname
@@ -363,6 +365,7 @@ internal data class Js2dConfig(
     override fun getSourceSortOrder(): SourceSortOrder = sourceSortOrder
     override fun getFormatTypeMapping(): Map<String, String> = formatTypeMapping
     override fun isIncludeGeneratedAnnotation(): Boolean = includeGeneratedAnnotation
+    override fun isUseJakartaValidation(): Boolean = useJakartaValidation
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -432,6 +435,7 @@ internal data class Js2dConfig(
         if (useOptionalForGetters != other.useOptionalForGetters) return false
         if (usePrimitives != other.usePrimitives) return false
         if (useTitleAsClassname != other.useTitleAsClassname) return false
+        if (useJakartaValidation != other.useJakartaValidation) return false
 
         return true
     }
@@ -500,6 +504,7 @@ internal data class Js2dConfig(
         result = 31 * result + useOptionalForGetters.hashCode()
         result = 31 * result + usePrimitives.hashCode()
         result = 31 * result + useTitleAsClassname.hashCode()
+        result = 31 * result + useJakartaValidation.hashCode()
         return result
     }
 }

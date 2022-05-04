@@ -70,7 +70,7 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin")
     }
 
-    implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.1")
+    implementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.2")
 
     testImplementation(platform("org.junit:junit-bom:5.8.2"))
 
