@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{steps.tagger.outputs.tag}}
       - name: Publish
-        uses: burrunan/gradle-cache-action@v1.11
+        uses: burrunan/gradle-cache-action@v1.12
         with:
           remote-build-cache-proxy-enabled: false
           properties: |
