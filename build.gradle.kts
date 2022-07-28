@@ -5,7 +5,7 @@ plugins {
     `kotlin-dsl`
     `kotlin-dsl-precompiled-script-plugins`
     id("com.gradle.plugin-publish") version "1.0.0"
-    id("com.diffplug.spotless") version "6.8.0"
+    id("com.diffplug.spotless") version "6.9.0"
 }
 
 version = gitVersion(project)
