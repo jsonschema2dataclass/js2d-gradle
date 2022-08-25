@@ -3,12 +3,9 @@ package org.jsonschema2dataclass.js2p
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.plugins.JavaLibraryPlugin
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.js2p.support.applyInternalAndroid
@@ -25,7 +22,7 @@ internal const val PLUGIN_ID = "org.jsonschema2dataclass"
 @Suppress("unused")
 class Js2pPlugin : Plugin<Project> {
 
-    private val javaPlugins = listOf(JavaPlugin::class.java, JavaLibraryPlugin::class.java)
+    private val javaPlugins = listOf("java", "java-library")
     private val androidPlugins = listOf("com.android.application", "com.android.library")
 
     override fun apply(project: Project) {
@@ -34,14 +31,19 @@ class Js2pPlugin : Plugin<Project> {
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
 
-        if (javaPlugins.any { project.plugins.hasPlugin(it) }) {
-            project.afterEvaluate {
-                applyInternalJava(pluginExtension, project)
+        for (pluginId in listOf("java", "java-library")) {
+            project.plugins.withId(pluginId) {
+                project.afterEvaluate {
+                    applyInternalJava(pluginExtension, project)
+                }
             }
-        } else if (androidPlugins.any { project.plugins.hasPlugin(it) }) {
-            applyInternalAndroid(pluginExtension, project)
-        } else {
-            throw ProjectConfigurationException("$TASK_NAME: Java or Android plugin required", listOf())
+        }
+        for (pluginId in androidPlugins) {
+            project.plugins.withId(pluginId) {
+                project.afterEvaluate {
+                    applyInternalAndroid(pluginExtension, project)
+                }
+            }
         }
     }
 }
