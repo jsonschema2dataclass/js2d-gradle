@@ -7,6 +7,8 @@ import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.the
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.js2p.support.applyInternalAndroid
 import org.jsonschema2dataclass.js2p.support.applyInternalJava
@@ -33,17 +35,29 @@ class Js2pPlugin : Plugin<Project> {
 
         for (pluginId in listOf("java", "java-library")) {
             project.plugins.withId(pluginId) {
-                project.afterEvaluate {
-                    applyInternalJava(pluginExtension, project)
-                }
+                project.apply<Js2pJavaPlugin>()
             }
         }
         for (pluginId in androidPlugins) {
             project.plugins.withId(pluginId) {
-                project.afterEvaluate {
-                    applyInternalAndroid(pluginExtension, project)
-                }
+                project.apply<Js2pAndroidPlugin>()
             }
+        }
+    }
+}
+
+internal class Js2pJavaPlugin : Plugin<Project> {
+    override fun apply(project: Project) {
+        project.afterEvaluate {
+            applyInternalJava(the(), project)
+        }
+    }
+}
+
+internal class Js2pAndroidPlugin : Plugin<Project> {
+    override fun apply(project: Project) {
+        project.afterEvaluate {
+            applyInternalAndroid(the(), project)
         }
     }
 }

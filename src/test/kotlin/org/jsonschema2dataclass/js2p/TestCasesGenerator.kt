@@ -1,5 +1,6 @@
 package org.jsonschema2dataclass.js2p
 
+import org.intellij.lang.annotations.Language
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -44,6 +45,10 @@ fun writeBuildFiles(testProjectDir: Path, shouldCopyAddressJSON: Boolean, suffix
     if (shouldCopyAddressJSON) {
         copyAddressJSON(testProjectDir)
     }
+}
+
+fun writeBuildGradle(testProjectDir: Path, @Language("Groovy") string: String) {
+    testProjectDir.resolve("build.gradle").toFile().writeText(string)
 }
 
 fun createBuildFilesSingleSimple(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
@@ -122,7 +127,7 @@ fun createBuildFilesSingleSourceInherit(testProjectDir: Path, shouldCopyAddressJ
     Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
 }
 
-private fun copyAddressJSON(testProjectDir: Path) {
+internal fun copyAddressJSON(testProjectDir: Path) {
     val jsonDir = testProjectDir.resolve("src/main/resources/json")
     File(jsonDir.toString()).mkdirs()
     jsonDir.resolve("address.json").toFile().writeText(ADDRESS_JSON)
