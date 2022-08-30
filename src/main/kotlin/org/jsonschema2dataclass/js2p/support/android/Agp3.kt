@@ -6,6 +6,7 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.api.BaseVariant
 import org.gradle.api.Project
+import org.gradle.api.UnknownTaskException
 import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.js2p.createJS2DTask
 
@@ -30,6 +31,12 @@ private fun createTasksForVariant(project: Project, extension: Js2pExtension, va
         "${variant.flavorName}/${variant.buildType.name}/"
     ) { genTask, targetPath ->
         variant.registerJavaGeneratingTask(genTask.get(), targetPath.get().asFile)
+        try {
+            project.tasks.named("compile${capitalizedName}Kotlin") {
+                this.dependsOn(genTask)
+            }
+        } catch (_: UnknownTaskException) {
+        }
     }
     variant.registerJavaGeneratingTask(task.get())
     return true
