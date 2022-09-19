@@ -185,12 +185,12 @@ private fun setTaskConfiguration(project: Project, task: Js2pGenerationTask, con
     task.customTimePattern = maybeDefault(project, configuration.customTimePattern, defaults.customTimePattern)
     task.dateTimeType = maybeDefault(project, configuration.dateTimeType, defaults.dateTimeType)
     task.dateType = maybeDefault(project, configuration.dateType, defaults.dateType)
-    task.fileExtensions = maybeDefault(project, configuration.fileExtensions, defaults.fileExtensions)
+    task.fileExtensions = maybeDefaultSet(project, configuration.fileExtensions, defaults.fileExtensions)
     task.fileFilter = maybeDefault(project, configuration.fileFilter, defaults.fileFilter)
     task.formatDateTimes = maybeDefault(project, configuration.formatDateTimes, defaults.formatDateTimes)
     task.formatDates = maybeDefault(project, configuration.formatDates, defaults.formatDates)
     task.formatTimes = maybeDefault(project, configuration.formatTimes, defaults.formatTimes)
-    task.formatTypeMapping = maybeDefault(project, configuration.formatTypeMapping, defaults.formatTypeMapping)
+    task.formatTypeMapping = maybeDefaultMap(project, configuration.formatTypeMapping, defaults.formatTypeMapping)
     task.generateBuilders = maybeDefault(project, configuration.generateBuilders, defaults.generateBuilders)
     task.includeAdditionalProperties = maybeDefault(project, configuration.includeAdditionalProperties, defaults.includeAdditionalProperties)
     task.includeAllPropertiesConstructor = maybeDefault(project, configuration.includeAllPropertiesConstructor, defaults.includeAllPropertiesConstructor)
@@ -223,7 +223,7 @@ private fun setTaskConfiguration(project: Project, task: Js2pGenerationTask, con
     task.targetPackage = maybeDefault(project, configuration.targetPackage, defaults.targetPackage)
     task.targetVersion = maybeDefault(project, configuration.targetVersion, defaults.targetVersion)
     task.timeType = maybeDefault(project, configuration.timeType, defaults.timeType)
-    task.toStringExcludes = maybeDefault(project, configuration.toStringExcludes, defaults.toStringExcludes)
+    task.toStringExcludes = maybeDefaultSet(project, configuration.toStringExcludes, defaults.toStringExcludes)
     task.useBigDecimals = maybeDefault(project, configuration.useBigDecimals, defaults.useBigDecimals)
     task.useBigIntegers = maybeDefault(project, configuration.useBigIntegers, defaults.useBigIntegers)
     task.useDoubleNumbers = maybeDefault(project, configuration.useDoubleNumbers, defaults.useDoubleNumbers)
@@ -238,8 +238,39 @@ private fun setTaskConfiguration(project: Project, task: Js2pGenerationTask, con
     task.useJakartaValidation = maybeDefault(project, configuration.useJakartaValidation, defaults.useJakartaValidation)
 }
 
-private fun <V> maybeDefault(project: Project,value: Provider<V>, valueDefault: Provider<V>): Provider<V> {
-    return project.provider{
-            value.orNull ?: valueDefault.orNull
+private fun <V> maybeDefault(
+        project: Project,
+        left: Provider<V>,
+        right: Provider<V>): Provider<V> {
+    return project.provider {
+        left.orNull ?: right.orNull
+    }
+}
+
+private fun <V, K> maybeDefaultMap(
+        project: Project,
+        left: Provider<Map<V, K>>,
+        right: Provider<Map<V, K>>): Provider<Map<V, K>> {
+    return project.provider {
+        val value = left.orNull
+        if (value?.isEmpty() == false) {
+            value
+        } else {
+            right.orNull
+        }
+    }
+}
+
+private fun <V> maybeDefaultSet(
+        project: Project,
+        left: Provider<Set<V>>,
+        right: Provider<Set<V>>): Provider<Set<V>> {
+    return project.provider {
+        val value = left.orNull
+        if (value?.isEmpty() == false) {
+            value
+        } else {
+            right.orNull
+        }
     }
 }
