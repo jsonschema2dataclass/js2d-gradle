@@ -5,7 +5,7 @@ plugins {
     `kotlin-dsl`
     `kotlin-dsl-precompiled-script-plugins`
     id("com.gradle.plugin-publish") version "1.0.0"
-    id("com.diffplug.spotless") version "6.10.0"
+    id("com.diffplug.spotless") version "6.11.0"
 }
 
 group = "org.jsonschema2dataclass"
@@ -90,7 +90,7 @@ tasks.test {
 configurations.all {
     resolutionStrategy {
         dependencySubstitution {
-            val ktlintVersion = "0.45.2"
+            val ktlintVersion = "0.47.1"
             substitute(module("com.pinterest:ktlint")).using(module("com.pinterest:ktlint:$ktlintVersion"))
         }
     }
@@ -100,11 +100,6 @@ spotless {
     kotlin {
         targetExclude(".idea", "**/.idea", "build", "**/build")
         target("**/*.kt")
-        ktlint().userData(
-            mapOf(
-                "disabled_rules" to "no-wildcard-imports"
-            )
-        )
         endWithNewline()
     }
     kotlinGradle {
