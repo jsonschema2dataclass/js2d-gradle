@@ -8,18 +8,22 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.*
 import org.gradle.work.DisableCachingByDefault
+import org.gradle.work.NormalizeLineEndings
 import org.jsonschema2pojo.Jsonschema2Pojo
 import org.jsonschema2pojo.RuleLogger
 import java.io.FileFilter
 import java.util.UUID
 import javax.inject.Inject
 
-@DisableCachingByDefault
+@CacheableTask
 internal abstract class Js2pGenerationTask : DefaultTask() {
     @get:OutputDirectory
     abstract val targetDirectory: DirectoryProperty
 
     @get:InputFiles
+    @get:IgnoreEmptyDirectories
+    @get:NormalizeLineEndings
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val source: ConfigurableFileCollection
 
     @get:Input
@@ -76,250 +80,201 @@ internal abstract class Js2pGenerationTask : DefaultTask() {
 
     @get:Input
     @get: Optional
-
     abstract var formatDateTimes: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var formatDates: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var formatTimes: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var formatTypeMapping: Provider<Map<String, String>>
 
     @get:Input
     @get: Optional
-
     abstract var generateBuilders: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeAdditionalProperties: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeAllPropertiesConstructor: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeConstructorPropertiesAnnotation: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeConstructors: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeCopyConstructor: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeDynamicAccessors: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeDynamicBuilders: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeDynamicGetters: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeDynamicSetters: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeGeneratedAnnotation: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeGetters: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeHashcodeAndEquals: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeJsr303Annotations: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeJsr305Annotations: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeRequiredPropertiesConstructor: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeSetters: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeToString: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var includeTypeInfo: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var inclusionLevel: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var initializeCollections: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var outputEncoding: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var parcelable: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var propertyWordDelimiters: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var refFragmentPathDelimiters: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var removeOldOutput: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var serializable: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var sourceSortOrder: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var sourceType: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var targetPackage: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var targetVersion: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var timeType: Provider<String>
 
     @get:Input
     @get: Optional
-
     abstract var toStringExcludes: Provider<Set<String>>
 
     @get:Input
     @get: Optional
-
     abstract var useBigDecimals: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useBigIntegers: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useDoubleNumbers: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useInnerClassBuilders: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useJodaDates: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useJodaLocalDates: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useJodaLocalTimes: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useLongIntegers: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useOptionalForGetters: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var usePrimitives: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useTitleAsClassname: Provider<Boolean>
 
     @get:Input
     @get: Optional
-
     abstract var useJakartaValidation: Provider<Boolean>
 
-    @get: Input
+    @get: Internal
     abstract var uuid: UUID
 
     @TaskAction
@@ -389,6 +344,7 @@ internal abstract class Js2pGenerationTask : DefaultTask() {
                 useTitleAsClassname,
                 useJakartaValidation,
                 targetDirectory.asFile.get())
+
         logger.trace("Using this configuration:\n{}", config)
         Jsonschema2Pojo.generate(config, GradleRuleLogWrapper(logger))
     }

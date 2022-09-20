@@ -52,13 +52,16 @@ fun executeRunner(
 
 /**
  * Supported gradle versions per java:
+ *
  * | Java version | Gradle version |
- * |  <= 13       |    >= 6.0      |
+ * |--------------|----------------|
+ * |   1.8 - 13   |    >= 6.0      |
  * |    14        |    >= 6.3      |
  * |    15        |    >= 6.3      |
  * |    16        |    >= 7.0      |
  * |    17        |    >= 7.3      |
- * |     other    | not supported  |
+ * |    18        |    >= 7.5      |
+ * |   other      | not supported  |
  */
 fun gradleSupported(gradleVersion: Pair<Int, Int>): Boolean =
     when (JavaVersion.current()) {
