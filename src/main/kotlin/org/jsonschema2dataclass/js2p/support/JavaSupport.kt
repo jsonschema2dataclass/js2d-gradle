@@ -4,10 +4,12 @@ package org.jsonschema2dataclass.js2p.support
 
 // DEPRECATION: to support Gradle 6.0 - 7.0.2
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.UnknownTaskException
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.util.GradleVersion
@@ -45,14 +47,20 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
         javaSourceSet.srcDirs(targetPath)
         javaSourceSet.sourceDirectories.plus(targetPath)
     }
+
     project.tasks.withType(JavaCompile::class.java) {
         this.dependsOn(js2pTask)
     }
 
     /* attach to Kotlin compilation task if exists */
 
+    dependsOnJs2p(project, "compileKotlin", js2pTask)
+    dependsOnJs2p(project, "generateEffectiveLombokConfig", js2pTask)
+}
+
+private fun dependsOnJs2p(project:Project, name: String, js2pTask: TaskProvider<Task>) {
     try {
-        project.tasks.named("compileKotlin") {
+        project.tasks.named(name) {
             this.dependsOn(js2pTask)
         }
     } catch (_: UnknownTaskException) {
