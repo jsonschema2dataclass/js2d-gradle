@@ -5,11 +5,7 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.*
 import java.io.FileFilter
 import javax.inject.Inject
 
@@ -24,188 +20,250 @@ abstract class Js2pConfiguration @Inject constructor(
     abstract val source: ConfigurableFileCollection
 
     @get: Optional
+    @get:Input
     abstract val annotationStyle: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val classNamePrefix: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val classNameSuffix: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val constructorsRequiredPropertiesOnly: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val customAnnotator: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val customDatePattern: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val customDateTimePattern: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val customRuleFactory: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val customTimePattern: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val dateTimeType: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val dateType: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val fileExtensions: SetProperty<String>
 
     @get: Optional
+    @get:Input
     abstract val fileFilter: Property<FileFilter>
 
     @get: Optional
+    @get:Input
     abstract val formatDateTimes: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val formatDates: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val formatTimes: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val formatTypeMapping: MapProperty<String, String>
 
     @get: Optional
+    @get:Input
     abstract val generateBuilders: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeAdditionalProperties: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeAllPropertiesConstructor: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeConstructorPropertiesAnnotation: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeConstructors: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeCopyConstructor: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeDynamicAccessors: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeDynamicBuilders: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeDynamicGetters: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeDynamicSetters: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeGeneratedAnnotation: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeGetters: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeHashcodeAndEquals: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeJsr303Annotations: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeJsr305Annotations: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeRequiredPropertiesConstructor: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeSetters: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeToString: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val includeTypeInfo: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val inclusionLevel: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val initializeCollections: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val outputEncoding: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val parcelable: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val propertyWordDelimiters: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val refFragmentPathDelimiters: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val removeOldOutput: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val serializable: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val sourceSortOrder: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val sourceType: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val targetPackage: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val targetVersion: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val timeType: Property<String>
 
     @get: Optional
+    @get:Input
     abstract val toStringExcludes: SetProperty<String>
 
     @get: Optional
+    @get:Input
     abstract val useBigDecimals: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useBigIntegers: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useDoubleNumbers: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useInnerClassBuilders: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useJodaDates: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useJodaLocalDates: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useJodaLocalTimes: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useLongIntegers: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useOptionalForGetters: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val usePrimitives: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useTitleAsClassname: Property<Boolean>
 
     @get: Optional
+    @get:Input
     abstract val useJakartaValidation: Property<Boolean>
 }
