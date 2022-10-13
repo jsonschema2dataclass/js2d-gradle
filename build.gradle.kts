@@ -67,7 +67,7 @@ sourceSets {
 }
 dependencies {
 
-    provided("com.android.tools.build:gradle:7.3.0") {
+    provided("com.android.tools.build:gradle:7.3.1") {
         exclude(group = "org.jetbrains.kotlin")
     }
 
