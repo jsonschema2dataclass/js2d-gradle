@@ -81,8 +81,8 @@ internal data class Js2dConfig(
         private val useLongIntegers: Boolean,
         private val useOptionalForGetters: Boolean,
         private val usePrimitives: Boolean,
-        private val useTitleAsClassname: Boolean,
         private val useJakartaValidation: Boolean,
+        private val useTitleAsClassname: Boolean,
 ) : GenerationConfig, java.io.Serializable {
     companion object {
         private val defaultConfiguration = DefaultGenerationConfig()
