@@ -44,7 +44,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
-        uses: actions/setup-java@v3.5.1
+        uses: actions/setup-java@v3.6.0
         with:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
