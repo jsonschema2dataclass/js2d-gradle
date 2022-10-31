@@ -12,7 +12,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4.2")
 
     // see src/main/resources/json/external_dependencies.json
-    implementation("joda-time:joda-time:2.12.0")
+    implementation("joda-time:joda-time:2.12.1")
 }
 
 jsonSchema2Pojo {
