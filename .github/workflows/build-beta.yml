@@ -1,0 +1,62 @@
+name: Build Plugin with latest beta release
+
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+    paths:
+      - .github/workflows/build.yml
+      - 'src/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
+  pull_request:
+    types: [ assigned, opened, synchronize, reopened ]
+    paths:
+      - .github/workflows/build.yml
+      - 'src/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
+
+jobs:
+  build-and-test:
+    name: Build Plugin
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [ 8, 11, 17, 18 ]
+        distribution: [ "zulu", "temurin" ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Download a file
+        run: curl -o "gradle/wrapper/gradle-wrapper.properties" https://github.com/gradle/gradle/raw/release/gradle/wrapper/gradle-wrapper.properties
+      - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
+        uses: actions/setup-java@v3.9.0
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-v2-gradle-build-${{ hashFiles('**/*') }}
+          restore-keys: |
+            ${{ runner.os }}-v2-gradle-build-
+            ${{ runner.os }}-v2-gradle-
+      - run: ./gradlew build --warning-mode all
