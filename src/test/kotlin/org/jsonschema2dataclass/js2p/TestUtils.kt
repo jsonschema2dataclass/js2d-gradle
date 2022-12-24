@@ -62,6 +62,7 @@ fun executeRunner(
  * |    16        |    >= 7.0      |
  * |    17        |    >= 7.3      |
  * |    18        |    >= 7.5      |
+ * |    19        |    >= 7.6      |
  * |   other      | not supported  |
  */
 fun gradleSupported(gradleVersion: Pair<Int, Int>): Boolean =
@@ -72,6 +73,7 @@ fun gradleSupported(gradleVersion: Pair<Int, Int>): Boolean =
         JavaVersion.VERSION_16 -> gradleVersion.first >= 7
         JavaVersion.VERSION_17 -> gradleVersion.first >= 8 || (gradleVersion.first == 7 && gradleVersion.second >= 3)
         JavaVersion.VERSION_18 -> gradleVersion.first >= 8 || (gradleVersion.first == 7 && gradleVersion.second >= 5)
+        JavaVersion.VERSION_19 -> gradleVersion.first >= 8 || (gradleVersion.first == 7 && gradleVersion.second >= 6)
         else -> false // no official information on Gradle compatibility with further versions of Java
     }
 
