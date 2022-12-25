@@ -4,7 +4,6 @@ package org.jsonschema2dataclass.js2p.support
 
 // DEPRECATION: to support Gradle 6.0 - 7.0.2
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.UnknownTaskException
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.JavaPluginExtension
@@ -16,25 +15,20 @@ import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.js2p.Js2pWrapperTask
 import org.jsonschema2dataclass.js2p.createJS2DTask
-import org.jsonschema2dataclass.js2p.setupConfigExecutions
 import java.nio.file.Path
 
 internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
 
     val mainSourceSet = obtainJavaSourceSet(project)
 
-    setupConfigExecutions(
-        extension,
-        getJavaJsonPath(mainSourceSet),
-        false
-    )
-
     val javaSourceSet = mainSourceSet.java
     val js2pTask = createJS2DTask(
         project,
         extension,
+        getJavaJsonPath(mainSourceSet),
         "",
-        ""
+        "",
+        false
     ) { generationTaskProvider, targetPath ->
 
         @Suppress("UnstableApiUsage")

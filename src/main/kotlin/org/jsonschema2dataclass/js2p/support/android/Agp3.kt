@@ -5,10 +5,12 @@ package org.jsonschema2dataclass.js2p.support.android
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.api.BaseVariant
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.UnknownTaskException
 import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.js2p.createJS2DTask
+import org.jsonschema2dataclass.js2p.support.getAndroidJsonPath
 
 internal fun applyInternalAndroidAgp3(extension: Js2pExtension, project: Project) {
     project.afterEvaluate {
@@ -27,8 +29,10 @@ private fun createTasksForVariant(project: Project, extension: Js2pExtension, va
     val task = createJS2DTask(
         project,
         extension,
+        getAndroidJsonPath(project),
         "For$capitalizedName",
-        "${variant.flavorName}/${variant.buildType.name}/"
+        "${variant.flavorName}/${variant.buildType.name}/",
+        JavaVersion.current() >= JavaVersion.VERSION_1_9
     ) { genTask, targetPath ->
         variant.registerJavaGeneratingTask(genTask.get(), targetPath.get().asFile)
         try {

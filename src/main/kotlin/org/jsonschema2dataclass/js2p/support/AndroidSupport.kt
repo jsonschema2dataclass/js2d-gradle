@@ -14,11 +14,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 internal fun applyInternalAndroid(extension: Js2pExtension, project: Project) {
-    setupConfigExecutions(
-        extension,
-        getAndroidJsonPath(project),
-        JavaVersion.current() >= JavaVersion.VERSION_1_9
-    )
     val experimental = project.properties["org.jsonschema2dataclass.agp7.experimental"]?.toString().toBoolean()
     when (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.split(".")[0].toInt()) {
         3, 4 -> applyInternalAndroidAgp3(extension, project)
@@ -27,11 +22,12 @@ internal fun applyInternalAndroid(extension: Js2pExtension, project: Project) {
         } else {
             applyInternalAndroidAgp3(extension, project)
         }
+
         else -> throw ProjectConfigurationException("$TASK_NAME: Plugin supports AGP 3.x, 4.x or 7.x", listOf())
     }
 }
 
-private fun getAndroidJsonPath(project: Project): Path =
+internal fun getAndroidJsonPath(project: Project): Path =
     Paths.get(
         project.extensions
             .getByType(BaseExtension::class.java)

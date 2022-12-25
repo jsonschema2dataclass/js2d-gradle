@@ -6,12 +6,14 @@ import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.tasks.JavaPreCompileTask
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.js2p.createJS2DTask
 import org.jsonschema2dataclass.js2p.support.capitalization
+import org.jsonschema2dataclass.js2p.support.getAndroidJsonPath
 
 internal fun applyInternalAndroidAgp7(extension: Js2pExtension, project: Project) {
     val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
@@ -25,8 +27,10 @@ private fun createTasksForVariant7(project: Project, extension: Js2pExtension, v
     createJS2DTask(
         project,
         extension,
+        getAndroidJsonPath(project),
         "For$capitalizedName",
-        "${variant.flavorName}/${variant.buildType}/"
+        "${variant.flavorName}/${variant.buildType}/",
+        JavaVersion.current() >= JavaVersion.VERSION_1_9
     ) { genTask, targetDirectory ->
         variant.artifacts.use(genTask).wiredWith { targetDirectory }
             .toCreate(ArtifactType7.SINGLE_DIRECTORY_ARTIFACT)

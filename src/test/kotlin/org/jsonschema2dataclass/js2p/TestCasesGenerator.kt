@@ -56,7 +56,11 @@ fun createBuildFilesSingleSimple(testProjectDir: Path, shouldCopyAddressJSON: Bo
         testProjectDir, shouldCopyAddressJSON,
         """
             |jsonSchema2Pojo{
-            |  targetPackage.set("com.example")
+            |  executions {
+            |    main {
+            |      targetPackage.set("com.example")
+            |    }
+            |  }
             |}
         """.trimMargin()
     )

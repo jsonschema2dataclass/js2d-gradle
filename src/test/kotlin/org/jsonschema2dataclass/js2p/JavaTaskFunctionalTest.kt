@@ -2,6 +2,7 @@ package org.jsonschema2dataclass.js2p
 
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -38,13 +39,7 @@ class JavaTaskFunctionalTest {
 
         val result = executeRunner(gradleVersion, testProjectDir)
 
-        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0)?.outcome)
-        addressJavaExists(
-            testProjectDir,
-            TARGET_FOLDER_DEFAULT,
-            DEFAULT_EXECUTION_NAME,
-            PACKAGE_EMPTY
-        )
+        assertNull(result.task(COLON_TASK_NAME0)?.outcome)
     }
 
     @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
