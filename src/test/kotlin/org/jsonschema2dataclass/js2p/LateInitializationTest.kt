@@ -34,12 +34,6 @@ class LateInitializationTest {
 
         val result = executeRunner(gradleVersion, testProjectDir)
 
-        Assertions.assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0)?.outcome)
-        addressJavaExists(
-            testProjectDir,
-            TARGET_FOLDER_DEFAULT,
-            DEFAULT_EXECUTION_NAME,
-            PACKAGE_EMPTY
-        )
+        Assertions.assertNull( result.task(COLON_TASK_NAME0)?.outcome)
     }
 }

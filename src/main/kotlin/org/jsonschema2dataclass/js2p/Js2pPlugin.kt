@@ -6,7 +6,9 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.provider.Provider
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.the
@@ -15,7 +17,9 @@ import org.jsonschema2dataclass.js2p.support.applyInternalAndroid
 import org.jsonschema2dataclass.js2p.support.applyInternalJava
 import java.nio.file.Path
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicInteger
 
+internal const val EXTENSION_NAME = "jsonSchema2Pojo"
 internal const val MINIMUM_GRADLE_VERSION = "6.0"
 internal const val TARGET_FOLDER_BASE = "generated/sources/js2d"
 internal const val DEFAULT_EXECUTION_NAME = "main"
@@ -30,7 +34,7 @@ class Js2pPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         verifyGradleVersion()
-        project.extensions.create("jsonSchema2Pojo", Js2pExtension::class.java)
+        project.extensions.create(EXTENSION_NAME, Js2pExtension::class.java)
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
 
@@ -49,9 +53,8 @@ class Js2pPlugin : Plugin<Project> {
 
 internal class Js2pJavaPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.afterEvaluate {
-            applyInternalJava(the(), project)
-        }
+        val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
+        applyInternalJava(pluginExtension, project)
     }
 }
 
@@ -64,58 +67,50 @@ internal class Js2pAndroidPlugin : Plugin<Project> {
 }
 
 internal fun setupConfigExecutions(
-        extension: Js2pExtension,
-        defaultSourcePath: Path?,
-        excludeGeneratedOption: Boolean,
+    extension: Js2pExtension,
+    defaultSourcePath: Path?,
+
 ) {
     if (extension.source.isEmpty && defaultSourcePath != null) {
         extension.source.setFrom(defaultSourcePath.toFile())
     }
-
-    if (extension.executions.isEmpty()) {
-        extension.executions.create(DEFAULT_EXECUTION_NAME)
-    }
-
-    extension.executions.forEach { configuration: Js2pConfiguration ->
-        if (configuration.source.isEmpty) {
-            configuration.source.setFrom(extension.source)
-        }
-
-        // Temporary fixes #71 and upstream issue #1212 (used Generated annotation is not compatible with AGP 7+)
-        if (excludeGeneratedOption) {
-            configuration.includeGeneratedAnnotation.set(false)
-        }
-    }
 }
 
 internal fun createJS2DTask(
-        project: Project,
-        extension: Js2pExtension,
-        taskNameSuffix: String,
-        targetDirectorySuffix: String,
-        postConfigure: (
-                task: TaskProvider<out Js2pGenerationTask>,
-                DirectoryProperty
-        ) -> Unit,
-): TaskProvider<Task> {
+    project: Project,
+    extension: Js2pExtension,
+    defaultSourcePath: Path?,
+    taskNameSuffix: String,
+    targetDirectorySuffix: String,
+    excludeGeneratedOption: Boolean,
+    postConfigure: (
+        task: TaskProvider<out Js2pGenerationTask>,
+        DirectoryProperty
+    ) -> Unit,
+): TaskProvider<Js2pWrapperTask> {
 
-    val js2dTask = project.tasks.register("${TASK_NAME}$taskNameSuffix", Task::class.java) {
+    val js2dTask = project.tasks.register("${TASK_NAME}$taskNameSuffix", Js2pWrapperTask::class.java) {
         description = "Generates Java classes from a json schema using JsonSchema2Pojo."
         group = "Build"
     }
 
-    extension.executions.forEachIndexed { configurationId, configuration ->
+    val configurationId = AtomicInteger(-1)
+    extension.executions.all {
+        configurationId.incrementAndGet()
+        val configuration = this
         val targetPath = project.objects.directoryProperty()
         targetPath.set(extension.targetDirectoryPrefix.dir("${configuration.name}$targetDirectorySuffix"))
         val taskProvider = createJS2DTaskExecution(
-                project,
-                configurationId,
-                taskNameSuffix,
-                configuration.name,
-                configuration,
-                extension,
-                configuration.source.filter { it.exists() },
-                targetPath,
+            project,
+            configurationId.get(),
+            taskNameSuffix,
+            configuration.name,
+            configuration,
+            extension,
+            configuration.source.filter { it.exists() },
+            targetPath,
+            defaultSourcePath,
+            excludeGeneratedOption
         )
 
         postConfigure(taskProvider, targetPath)
@@ -128,22 +123,25 @@ internal fun createJS2DTask(
 }
 
 private fun createJS2DTaskExecution(
-        project: Project,
-        configurationId: Int,
-        taskNameSuffix: String,
-        configurationName: String,
-        configuration: Js2pConfiguration,
-        pluginExtension: Js2pConfiguration,
-        source: FileCollection,
-        targetPath: DirectoryProperty,
+    project: Project,
+    configurationId: Int,
+    taskNameSuffix: String,
+    configurationName: String,
+    configuration: Js2pConfiguration,
+    pluginExtension: Js2pExtension,
+    source: FileCollection,
+    targetPath: DirectoryProperty,
+    defaultSourcePath: Path?,
+    excludeGeneratedOption: Boolean,
 ): TaskProvider<out Js2pGenerationTask> {
     val taskName = "${TASK_NAME}${configurationId}$taskNameSuffix"
+
+    copyConfiguration(pluginExtension, configuration, excludeGeneratedOption, defaultSourcePath)
     return project.tasks.register(taskName, Js2pGenerationTask::class.java) {
         this.description =
-                "Generates Java classes from a json schema using JsonSchema2Pojo for configuration $configurationName"
+            "Generates Java classes from a json schema using JsonSchema2Pojo for configuration $configurationName"
         this.group = "Build"
-
-        setTaskConfiguration(project, this, configuration, pluginExtension)
+        this.configuration = configuration
         this.uuid = UUID.randomUUID()
         this.targetDirectory.set(targetPath)
 
@@ -160,117 +158,117 @@ private fun verifyGradleVersion() {
 
 private fun skipInputWhenEmpty(task: Task, sourceFiles: FileCollection) {
     val input = task.inputs.files(sourceFiles)
-            .skipWhenEmpty()
+        .skipWhenEmpty()
 
     if (GradleVersion.current() >= GradleVersion.version("6.8")) {
         input.ignoreEmptyDirectories()
     }
 }
 
-private fun setTaskConfiguration(project: Project, task: Js2pGenerationTask, configuration: Js2pConfiguration, defaults: Js2pConfiguration) {
-    task.source.setFrom(if (configuration.source.isEmpty) {
-        defaults.source
+private fun <V> copyProperty(
+    left: Property<V>,
+    right: Property<V>
+) {
+    if(!left.isPresent && right.isPresent) {
+        left.set(right)
+    }
+}
+
+private fun <V> copyProperty(
+    left: SetProperty<V>,
+    right: SetProperty<V>
+) {
+    if(!left.isPresent && right.isPresent) {
+        left.set(right)
+    }
+}
+
+private fun <K, V> copyProperty(
+    left: MapProperty<K, V>,
+    right: MapProperty<K, V>
+) {
+    if(!left.isPresent && right.isPresent) {
+        left.set(right)
+    }
+}
+
+internal fun copyConfiguration(
+    extension: Js2pExtension,
+    configuration: Js2pConfiguration,
+    excludeGeneratedOption: Boolean,
+    defaultSourcePath: Path?
+) {
+    if (configuration.source.isEmpty) {
+        if (extension.source.isEmpty) {
+            configuration.source.setFrom(defaultSourcePath)
+        } else {
+            configuration.source.setFrom(extension.source)
+        }
+    }
+    copyProperty(configuration.annotationStyle, extension.annotationStyle)
+    copyProperty(configuration.classNamePrefix, extension.classNamePrefix)
+    copyProperty(configuration.classNameSuffix, extension.classNameSuffix)
+    copyProperty(configuration.customAnnotator, extension.customAnnotator)
+    copyProperty(configuration.customDatePattern, extension.customDatePattern)
+    copyProperty(configuration.customDateTimePattern, extension.customDateTimePattern)
+    copyProperty(configuration.customRuleFactory, extension.customRuleFactory)
+    copyProperty(configuration.customTimePattern, extension.customTimePattern)
+    copyProperty(configuration.dateTimeType, extension.dateTimeType)
+    copyProperty(configuration.dateType, extension.dateType)
+    copyProperty(configuration.fileExtensions, extension.fileExtensions)
+    copyProperty(configuration.fileFilter, extension.fileFilter)
+    copyProperty(configuration.formatDateTimes, extension.formatDateTimes)
+    copyProperty(configuration.formatDates, extension.formatDates)
+    copyProperty(configuration.formatTimes, extension.formatTimes)
+    copyProperty(configuration.formatTypeMapping, extension.formatTypeMapping)
+    copyProperty(configuration.generateBuilders, extension.generateBuilders)
+    copyProperty(configuration.includeAdditionalProperties, extension.includeAdditionalProperties)
+    copyProperty(configuration.includeAllPropertiesConstructor, extension.includeAllPropertiesConstructor)
+    copyProperty(configuration.includeConstructorPropertiesAnnotation, extension.includeConstructorPropertiesAnnotation)
+    copyProperty(configuration.includeConstructors, extension.includeConstructors)
+    copyProperty(configuration.includeCopyConstructor, extension.includeCopyConstructor)
+    copyProperty(configuration.includeDynamicAccessors, extension.includeDynamicAccessors)
+    copyProperty(configuration.includeDynamicBuilders, extension.includeDynamicBuilders)
+    copyProperty(configuration.includeDynamicGetters, extension.includeDynamicGetters)
+    copyProperty(configuration.includeDynamicSetters, extension.includeDynamicSetters)
+    if(excludeGeneratedOption) {
+        // Temporary fixes #71 and upstream issue #1212 (used Generated annotation is not compatible with AGP 7+)
+        configuration.includeGeneratedAnnotation.set(false)
     } else {
-        configuration.source
+        copyProperty(configuration.includeGeneratedAnnotation, extension.includeGeneratedAnnotation)
     }
-    )
-    task.annotationStyle = maybeDefault(project, configuration.annotationStyle, defaults.annotationStyle)
-    task.classNamePrefix = maybeDefault(project, configuration.classNamePrefix, defaults.classNamePrefix)
-    task.classNameSuffix = maybeDefault(project, configuration.classNameSuffix, defaults.classNameSuffix)
-    task.constructorsRequiredPropertiesOnly = maybeDefault(project, configuration.constructorsRequiredPropertiesOnly, defaults.constructorsRequiredPropertiesOnly)
-    task.customAnnotator = maybeDefault(project, configuration.customAnnotator, defaults.customAnnotator)
-    task.customDatePattern = maybeDefault(project, configuration.customDatePattern, defaults.customDatePattern)
-    task.customDateTimePattern = maybeDefault(project, configuration.customDateTimePattern, defaults.customDateTimePattern)
-    task.customRuleFactory = maybeDefault(project, configuration.customRuleFactory, defaults.customRuleFactory)
-    task.customTimePattern = maybeDefault(project, configuration.customTimePattern, defaults.customTimePattern)
-    task.dateTimeType = maybeDefault(project, configuration.dateTimeType, defaults.dateTimeType)
-    task.dateType = maybeDefault(project, configuration.dateType, defaults.dateType)
-    task.fileExtensions = maybeDefaultSet(project, configuration.fileExtensions, defaults.fileExtensions)
-    task.fileFilter = maybeDefault(project, configuration.fileFilter, defaults.fileFilter)
-    task.formatDateTimes = maybeDefault(project, configuration.formatDateTimes, defaults.formatDateTimes)
-    task.formatDates = maybeDefault(project, configuration.formatDates, defaults.formatDates)
-    task.formatTimes = maybeDefault(project, configuration.formatTimes, defaults.formatTimes)
-    task.formatTypeMapping = maybeDefaultMap(project, configuration.formatTypeMapping, defaults.formatTypeMapping)
-    task.generateBuilders = maybeDefault(project, configuration.generateBuilders, defaults.generateBuilders)
-    task.includeAdditionalProperties = maybeDefault(project, configuration.includeAdditionalProperties, defaults.includeAdditionalProperties)
-    task.includeAllPropertiesConstructor = maybeDefault(project, configuration.includeAllPropertiesConstructor, defaults.includeAllPropertiesConstructor)
-    task.includeConstructorPropertiesAnnotation = maybeDefault(project, configuration.includeConstructorPropertiesAnnotation, defaults.includeConstructorPropertiesAnnotation)
-    task.includeConstructors = maybeDefault(project, configuration.includeConstructors, defaults.includeConstructors)
-    task.includeCopyConstructor = maybeDefault(project, configuration.includeCopyConstructor, defaults.includeCopyConstructor)
-    task.includeDynamicAccessors = maybeDefault(project, configuration.includeDynamicAccessors, defaults.includeDynamicAccessors)
-    task.includeDynamicBuilders = maybeDefault(project, configuration.includeDynamicBuilders, defaults.includeDynamicBuilders)
-    task.includeDynamicGetters = maybeDefault(project, configuration.includeDynamicGetters, defaults.includeDynamicGetters)
-    task.includeDynamicSetters = maybeDefault(project, configuration.includeDynamicSetters, defaults.includeDynamicSetters)
-    task.includeGeneratedAnnotation = maybeDefault(project, configuration.includeGeneratedAnnotation, defaults.includeGeneratedAnnotation)
-    task.includeGetters = maybeDefault(project, configuration.includeGetters, defaults.includeGetters)
-    task.includeHashcodeAndEquals = maybeDefault(project, configuration.includeHashcodeAndEquals, defaults.includeHashcodeAndEquals)
-    task.includeJsr303Annotations = maybeDefault(project, configuration.includeJsr303Annotations, defaults.includeJsr303Annotations)
-    task.includeJsr305Annotations = maybeDefault(project, configuration.includeJsr305Annotations, defaults.includeJsr305Annotations)
-    task.includeRequiredPropertiesConstructor = maybeDefault(project, configuration.includeRequiredPropertiesConstructor, defaults.includeRequiredPropertiesConstructor)
-    task.includeSetters = maybeDefault(project, configuration.includeSetters, defaults.includeSetters)
-    task.includeToString = maybeDefault(project, configuration.includeToString, defaults.includeToString)
-    task.includeTypeInfo = maybeDefault(project, configuration.includeTypeInfo, defaults.includeTypeInfo)
-    task.inclusionLevel = maybeDefault(project, configuration.inclusionLevel, defaults.inclusionLevel)
-    task.initializeCollections = maybeDefault(project, configuration.initializeCollections, defaults.initializeCollections)
-    task.outputEncoding = maybeDefault(project, configuration.outputEncoding, defaults.outputEncoding)
-    task.parcelable = maybeDefault(project, configuration.parcelable, defaults.parcelable)
-    task.propertyWordDelimiters = maybeDefault(project, configuration.propertyWordDelimiters, defaults.propertyWordDelimiters)
-    task.refFragmentPathDelimiters = maybeDefault(project, configuration.refFragmentPathDelimiters, defaults.refFragmentPathDelimiters)
-    task.removeOldOutput = maybeDefault(project, configuration.removeOldOutput, defaults.removeOldOutput)
-    task.serializable = maybeDefault(project, configuration.serializable, defaults.serializable)
-    task.sourceSortOrder = maybeDefault(project, configuration.sourceSortOrder, defaults.sourceSortOrder)
-    task.sourceType = maybeDefault(project, configuration.sourceType, defaults.sourceType)
-    task.targetPackage = maybeDefault(project, configuration.targetPackage, defaults.targetPackage)
-    task.targetVersion = maybeDefault(project, configuration.targetVersion, defaults.targetVersion)
-    task.timeType = maybeDefault(project, configuration.timeType, defaults.timeType)
-    task.toStringExcludes = maybeDefaultSet(project, configuration.toStringExcludes, defaults.toStringExcludes)
-    task.useBigDecimals = maybeDefault(project, configuration.useBigDecimals, defaults.useBigDecimals)
-    task.useBigIntegers = maybeDefault(project, configuration.useBigIntegers, defaults.useBigIntegers)
-    task.useDoubleNumbers = maybeDefault(project, configuration.useDoubleNumbers, defaults.useDoubleNumbers)
-    task.useInnerClassBuilders = maybeDefault(project, configuration.useInnerClassBuilders, defaults.useInnerClassBuilders)
-    task.useJodaDates = maybeDefault(project, configuration.useJodaDates, defaults.useJodaDates)
-    task.useJodaLocalDates = maybeDefault(project, configuration.useJodaLocalDates, defaults.useJodaLocalDates)
-    task.useJodaLocalTimes = maybeDefault(project, configuration.useJodaLocalTimes, defaults.useJodaLocalTimes)
-    task.useLongIntegers = maybeDefault(project, configuration.useLongIntegers, defaults.useLongIntegers)
-    task.useOptionalForGetters = maybeDefault(project, configuration.useOptionalForGetters, defaults.useOptionalForGetters)
-    task.usePrimitives = maybeDefault(project, configuration.usePrimitives, defaults.usePrimitives)
-    task.useTitleAsClassname = maybeDefault(project, configuration.useTitleAsClassname, defaults.useTitleAsClassname)
-    task.useJakartaValidation = maybeDefault(project, configuration.useJakartaValidation, defaults.useJakartaValidation)
-}
-
-private fun <V> maybeDefault(
-        project: Project,
-        left: Provider<V>,
-        right: Provider<V>): Provider<V> {
-    return project.provider {
-        left.orNull ?: right.orNull
-    }
-}
-
-private fun <V, K> maybeDefaultMap(
-        project: Project,
-        left: Provider<Map<V, K>>,
-        right: Provider<Map<V, K>>): Provider<Map<V, K>> {
-    return project.provider {
-        val value = left.orNull
-        if (value?.isEmpty() == false) {
-            value
-        } else {
-            right.orNull
-        }
-    }
-}
-
-private fun <V> maybeDefaultSet(
-        project: Project,
-        left: Provider<Set<V>>,
-        right: Provider<Set<V>>): Provider<Set<V>> {
-    return project.provider {
-        val value = left.orNull
-        if (value?.isEmpty() == false) {
-            value
-        } else {
-            right.orNull
-        }
-    }
+    copyProperty(configuration.includeGetters, extension.includeGetters)
+    copyProperty(configuration.includeHashcodeAndEquals, extension.includeHashcodeAndEquals)
+    copyProperty(configuration.includeJsr303Annotations, extension.includeJsr303Annotations)
+    copyProperty(configuration.includeJsr305Annotations, extension.includeJsr305Annotations)
+    copyProperty(configuration.includeRequiredPropertiesConstructor, extension.includeRequiredPropertiesConstructor)
+    copyProperty(configuration.includeSetters, extension.includeSetters)
+    copyProperty(configuration.includeToString, extension.includeToString)
+    copyProperty(configuration.includeTypeInfo, extension.includeTypeInfo)
+    copyProperty(configuration.inclusionLevel, extension.inclusionLevel)
+    copyProperty(configuration.initializeCollections, extension.initializeCollections)
+    copyProperty(configuration.outputEncoding, extension.outputEncoding)
+    copyProperty(configuration.parcelable, extension.parcelable)
+    copyProperty(configuration.propertyWordDelimiters, extension.propertyWordDelimiters)
+    copyProperty(configuration.refFragmentPathDelimiters, extension.refFragmentPathDelimiters)
+    copyProperty(configuration.removeOldOutput, extension.removeOldOutput)
+    copyProperty(configuration.serializable, extension.serializable)
+    copyProperty(configuration.sourceSortOrder, extension.sourceSortOrder)
+    copyProperty(configuration.sourceType, extension.sourceType)
+    copyProperty(configuration.targetPackage, extension.targetPackage)
+    copyProperty(configuration.targetVersion, extension.targetVersion)
+    copyProperty(configuration.timeType, extension.timeType)
+    copyProperty(configuration.toStringExcludes, extension.toStringExcludes)
+    copyProperty(configuration.useBigDecimals, extension.useBigDecimals)
+    copyProperty(configuration.useBigIntegers, extension.useBigIntegers)
+    copyProperty(configuration.useDoubleNumbers, extension.useDoubleNumbers)
+    copyProperty(configuration.useInnerClassBuilders, extension.useInnerClassBuilders)
+    copyProperty(configuration.useJodaDates, extension.useJodaDates)
+    copyProperty(configuration.useJodaLocalDates, extension.useJodaLocalDates)
+    copyProperty(configuration.useJodaLocalTimes, extension.useJodaLocalTimes)
+    copyProperty(configuration.useLongIntegers, extension.useLongIntegers)
+    copyProperty(configuration.useOptionalForGetters, extension.useOptionalForGetters)
+    copyProperty(configuration.usePrimitives, extension.usePrimitives)
+    copyProperty(configuration.useTitleAsClassname, extension.useTitleAsClassname)
+    copyProperty(configuration.useJakartaValidation, extension.useJakartaValidation)
 }
