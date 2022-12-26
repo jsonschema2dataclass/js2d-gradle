@@ -3,6 +3,7 @@ package org.jsonschema2dataclass.js2p
 import org.gradle.api.JavaVersion
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.util.GradleVersion
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.params.provider.Arguments
@@ -91,6 +92,9 @@ class TestGradleVersionHolder {
 */
 
             return GRADLE_RELEASES.stream()
+                .filter{
+                    GradleVersion.current().version != it // don't test on the same gradle version twice
+                }
                 .filter {
                     val gradleVersionParts = it.split(".")
                     gradleSupported(Pair(gradleVersionParts[0].toInt(), gradleVersionParts[1].toInt()))
