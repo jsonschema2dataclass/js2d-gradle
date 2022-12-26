@@ -1,13 +1,11 @@
 package org.jsonschema2dataclass.js2p.support
 
 import com.android.build.gradle.BaseExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.tasks.SourceSet
 import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.js2p.TASK_NAME
-import org.jsonschema2dataclass.js2p.setupConfigExecutions
 import org.jsonschema2dataclass.js2p.support.android.applyInternalAndroidAgp3
 import org.jsonschema2dataclass.js2p.support.android.applyInternalAndroidAgp7
 import java.nio.file.Path

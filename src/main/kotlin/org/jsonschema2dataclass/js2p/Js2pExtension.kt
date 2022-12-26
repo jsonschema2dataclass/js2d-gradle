@@ -8,7 +8,7 @@ import org.gradle.api.tasks.PathSensitivity
 import javax.inject.Inject
 
 abstract class Js2pExtension @Inject constructor(
-    name: String = DEFAULT_EXECUTION_NAME,
+    name: String = "not used",
 ) : Js2pConfiguration(name) {
 
     @get: Optional
