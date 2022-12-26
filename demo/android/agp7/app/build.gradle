@@ -7,6 +7,8 @@ plugins {
 }
 
 android {
+    namespace "org.jsonschema2dataclass.android"
+
     compileSdkVersion 33
     sourceSets {
         debug.java.srcDirs +='build/generated/sources/js2d/main/debug'

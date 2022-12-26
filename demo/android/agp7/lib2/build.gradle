@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace "org.jsonschema2dataclass.lib2"
     compileSdkVersion 33
 
     defaultConfig {
