@@ -17,8 +17,12 @@ dependencies {
 }
 
 jsonSchema2Pojo {
-    targetPackage = 'example'
-    propertyWordDelimiters = '_'
-    includeGeneratedAnnotation = false
-    source.setFrom files("${project.rootDir}/src/main/resources/json")
+    executions{
+        main {
+            targetPackage = 'example'
+            propertyWordDelimiters = '_'
+            includeGeneratedAnnotation = false
+            source.setFrom files("${project.rootDir}/src/main/resources/json")
+        }
+    }
 }
