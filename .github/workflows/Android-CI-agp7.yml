@@ -1,4 +1,4 @@
-name: Android Sample
+name: Android Sample 7
 
 on:
   pull_request:
