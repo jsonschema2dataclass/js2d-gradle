@@ -4,10 +4,8 @@ import org.gradle.api.JavaVersion
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.util.GradleVersion
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.params.provider.Arguments
-import java.io.File
 import java.nio.file.Path
 import java.util.stream.Stream
 
@@ -78,6 +76,7 @@ fun gradleSupported(gradleVersion: Pair<Int, Int>): Boolean =
 /**
  * Holder class for gradle releases version to test against current java version
  */
+@Suppress("unused")
 class TestGradleVersionHolder {
     companion object {
         @JvmStatic
