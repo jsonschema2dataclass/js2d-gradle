@@ -20,7 +20,6 @@ import java.util.*
 internal const val EXTENSION_NAME = "jsonSchema2Pojo"
 internal const val MINIMUM_GRADLE_VERSION = "6.0"
 internal const val TARGET_FOLDER_BASE = "generated/sources/js2d"
-internal const val DEFAULT_EXECUTION_NAME = "main"
 internal const val TASK_NAME = "generateJsonSchema2DataClass"
 internal const val PLUGIN_ID = "org.jsonschema2dataclass"
 private val configurationNameRegex = "[a-z][A-Za-z0-9_]*".toRegex()

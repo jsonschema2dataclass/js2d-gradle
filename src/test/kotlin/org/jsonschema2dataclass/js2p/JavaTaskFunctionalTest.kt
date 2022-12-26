@@ -8,14 +8,11 @@ import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.junit.jupiter.params.provider.NullSource
+import java.io.File
 import java.nio.file.Path
-
-const val COLON_TASK_NAME0 = COLON_TASK_NAME + "0"
-const val COLON_TASK_NAME1 = COLON_TASK_NAME + "1"
 
 const val TARGET_FOLDER_CUSTOM = "build/$TARGET_FOLDER_BASE_CUSTOM"
 const val TARGET_FOLDER_DEFAULT = "build/$TARGET_FOLDER_BASE"
-const val PACKAGE_EMPTY = ""
 
 const val EXECUTION_NAME_COM = "com"
 const val PACKAGE_COM_EXAMPLE = "com/example"
@@ -39,7 +36,7 @@ class JavaTaskFunctionalTest {
 
         val result = executeRunner(gradleVersion, testProjectDir)
 
-        assertNull(result.task(COLON_TASK_NAME0)?.outcome)
+        assertNull(result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
     }
 
     @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
@@ -53,7 +50,7 @@ class JavaTaskFunctionalTest {
 
         val result = executeRunner(gradleVersion, testProjectDir)
 
-        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0)?.outcome)
+        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
         addressJavaExists(
             testProjectDir,
             TARGET_FOLDER_DEFAULT,
@@ -65,7 +62,7 @@ class JavaTaskFunctionalTest {
     @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
-    @DisplayName("single execution")
+    @DisplayName("single execution (inherited)")
     fun singleExtensionInherited(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
 
@@ -73,7 +70,7 @@ class JavaTaskFunctionalTest {
 
         val result = executeRunner(gradleVersion, testProjectDir)
 
-        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0)?.outcome)
+        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
         addressJavaExists(
             testProjectDir,
             TARGET_FOLDER_DEFAULT,
@@ -93,12 +90,12 @@ class JavaTaskFunctionalTest {
 
         val result = executeRunner(gradleVersion, testProjectDir)
 
-        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0)?.outcome)
+        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
 
         addressJavaExists(
             testProjectDir,
             TARGET_FOLDER_DEFAULT,
-            DEFAULT_EXECUTION_NAME,
+            EXECUTION_NAME_COM,
             PACKAGE_COM_EXAMPLE
         )
     }
@@ -113,8 +110,8 @@ class JavaTaskFunctionalTest {
         createBuildFilesMultiple(testProjectDir, true)
 
         val result = executeRunner(gradleVersion, testProjectDir, COLON_TASK_NAME)
-        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0)?.outcome)
-        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME1)?.outcome)
+        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
+        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME_FOR_ORG)?.outcome)
 
         addressJavaExists(
             testProjectDir,
@@ -141,7 +138,7 @@ class JavaTaskFunctionalTest {
 
         val result = executeRunner(gradleVersion, testProjectDir, "compileJava")
 
-        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0)?.outcome)
+        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
     }
 
     @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
@@ -157,7 +154,7 @@ class JavaTaskFunctionalTest {
         executeRunner(gradleVersion, testProjectDir)
         val result = executeRunner(gradleVersion, testProjectDir)
 
-        assertEquals(TaskOutcome.UP_TO_DATE, result.task(COLON_TASK_NAME0)?.outcome)
+        assertEquals(TaskOutcome.UP_TO_DATE, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
     }
 
     @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
@@ -171,6 +168,37 @@ class JavaTaskFunctionalTest {
 
         val result = executeRunner(gradleVersion, testProjectDir)
 
-        assertEquals(TaskOutcome.NO_SOURCE, result.task(COLON_TASK_NAME0)?.outcome)
+        assertEquals(TaskOutcome.NO_SOURCE, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
+    }
+
+
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
+    @NullSource
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
+    @DisplayName("java-library applied after org.jsonschema2dataclass")
+    fun lazyWithoutExtension(gradleVersion: String?) {
+        val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
+
+        createBuildFilesLazyInit(testProjectDir, true)
+        val result = executeRunner(gradleVersion, testProjectDir)
+        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
+
+        addressJavaExists(
+            testProjectDir,
+            TARGET_FOLDER_DEFAULT,
+            EXECUTION_NAME_COM,
+            PACKAGE_COM_EXAMPLE
+        )
+    }
+
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
+    @NullSource
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
+    @DisplayName("plugin applies even without java plugin")
+    fun onlyPlugin(gradleVersion: String?) {
+        val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
+
+        createBuildFilesEmpty(testProjectDir, false)
+        executeRunner(gradleVersion, testProjectDir, task="build")
     }
 }

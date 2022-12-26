@@ -1,6 +1,5 @@
 package org.jsonschema2dataclass.js2p
 
-import org.intellij.lang.annotations.Language
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -8,7 +7,7 @@ import java.nio.file.Path
 const val TARGET_FOLDER_BASE_CUSTOM = TARGET_FOLDER_BASE + "s"
 val BUILD_FILE_HEADER = """
         |plugins {
-        |  id "java"
+        |  id "java-library"
         |  id "$PLUGIN_ID" version "1.2.3"
         |}
         |repositories {
@@ -18,6 +17,31 @@ val BUILD_FILE_HEADER = """
         |  implementation "com.fasterxml.jackson.core:jackson-annotations:2.11.2"
         |}
 """.trimMargin()
+
+val BUILD_FILE_HEADER_PLUGIN_ONLY = """
+        |plugins {
+        |  id "$PLUGIN_ID" version "1.2.3"
+        |}
+""".trimMargin()
+
+val BUILD_FILE_HEADER_LAZY = """
+        |plugins {
+        |  id "$PLUGIN_ID" version "1.2.3"
+        |}
+        |
+        |// apply plugin: 'org.jsonschema2dataclass'
+        |// Even though it is not recommended to use apply syntax, we use it here
+        |// to ensure java-library plugin is applied after org.jsonschema2dataclass
+        |apply plugin: 'java-library'
+        |
+        |repositories {
+        |  mavenCentral()
+        |}
+        |dependencies {
+        |  implementation "com.fasterxml.jackson.core:jackson-annotations:2.11.2"
+        |}
+""".trimMargin()
+
 val ADDRESS_JSON = """
     |{
     |  "description": "An Address following the convention of http://microformats.org/wiki/hcard",
@@ -39,16 +63,19 @@ val ADDRESS_JSON = """
     |}
 """.trimMargin()
 
-fun writeBuildFiles(testProjectDir: Path, shouldCopyAddressJSON: Boolean, suffix: String) {
-    Files.write(testProjectDir.resolve("build.gradle"), (BUILD_FILE_HEADER + "\n" + suffix).trimIndent().toByteArray())
+fun writeBuildFiles(
+    testProjectDir: Path,
+    shouldCopyAddressJSON: Boolean,
+    suffix: String,
+    buildFileHeader: String = BUILD_FILE_HEADER
+) {
+    Files.write(
+        testProjectDir.resolve("build.gradle"), (buildFileHeader + "\n" + suffix).trimIndent().toByteArray()
+    )
     Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
     if (shouldCopyAddressJSON) {
         copyAddressJSON(testProjectDir)
     }
-}
-
-fun writeBuildGradle(testProjectDir: Path, @Language("Groovy") string: String) {
-    testProjectDir.resolve("build.gradle").toFile().writeText(string)
 }
 
 fun createBuildFilesSingleSimple(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
@@ -57,7 +84,7 @@ fun createBuildFilesSingleSimple(testProjectDir: Path, shouldCopyAddressJSON: Bo
         """
             |jsonSchema2Pojo{
             |  executions {
-            |    main {
+            |    com {
             |      targetPackage.set("com.example")
             |    }
             |  }
@@ -127,6 +154,38 @@ fun createBuildFilesSingleSourceInherit(testProjectDir: Path, shouldCopyAddressJ
          |  }
          |}
         """.trimMargin()
+    )
+    Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
+}
+
+/**
+ * Single with execution, inherited
+ */
+fun createBuildFilesLazyInit(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
+    writeBuildFiles(
+        testProjectDir, shouldCopyAddressJSON,
+        suffix = """
+         |jsonSchema2Pojo {
+         |  executions {
+         |    com {
+         |      source.setFrom files ("${'$'}{project.rootDir}/src/main/resources/json")
+         |      targetPackage = "com.example"
+         |    }
+         |  }
+         |}
+        """.trimMargin(),
+        buildFileHeader = BUILD_FILE_HEADER_LAZY
+    )
+    Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
+}
+/**
+ * Single with execution, inherited
+ */
+fun createBuildFilesEmpty(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
+    writeBuildFiles(
+        testProjectDir, shouldCopyAddressJSON,
+        suffix = "",
+        buildFileHeader = BUILD_FILE_HEADER_PLUGIN_ONLY
     )
     Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
 }

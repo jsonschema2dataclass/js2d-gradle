@@ -11,8 +11,10 @@ import java.io.File
 import java.nio.file.Path
 import java.util.stream.Stream
 
-const val COLON_TASK_NAME = ":$TASK_NAME"
-val GRADLE_RELEASES = listOf(
+internal const val COLON_TASK_NAME = ":$TASK_NAME"
+internal const val COLON_TASK_NAME_FOR_COM = ":${TASK_NAME}ConfigCom"
+internal const val COLON_TASK_NAME_FOR_ORG = ":${TASK_NAME}ConfigOrg"
+private val GRADLE_RELEASES = listOf<String>(
     "7.6", "7.5.1",   // 7.5 - 7.6
     "7.4.2", "7.3.3", "7.2", "7.1.1", "7.0.2", // 7.0 - 7.4
     "6.9.1", "6.8.3", "6.7.1", "6.6.1", // 6.6 - 6.9
@@ -20,15 +22,10 @@ val GRADLE_RELEASES = listOf(
     "6.2.2", "6.2.1", "6.1.1", "6.0.1", // 6.0 - 6.2
 )
 
-fun assertExists(file: File) {
-    assertNotNull(file)
-    assertTrue(file.exists())
-}
-
 fun addressJavaExists(testProjectDir: Path, targetDirectoryPrefix: String, executionName: String, subfolder: String) {
     val js2pDir = testProjectDir.resolve(targetDirectoryPrefix).resolve(executionName).resolve(subfolder)
-    assertExists(js2pDir.toFile())
-    assertExists(js2pDir.resolve("Address.java").toFile())
+    assertTrue(js2pDir.toFile().exists())
+    assertTrue(js2pDir.resolve("Address.java").toFile().exists())
 }
 
 fun executeRunner(
