@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.logging.Logger
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -23,6 +24,15 @@ internal const val TARGET_FOLDER_BASE = "generated/sources/js2d"
 internal const val TASK_NAME = "generateJsonSchema2DataClass"
 internal const val PLUGIN_ID = "org.jsonschema2dataclass"
 private val configurationNameRegex = "[a-z][A-Za-z0-9_]*".toRegex()
+private const val DEPRECATION_PROPERTY_USAGE_MESSAGE =
+    "Using property settings from the extension $EXTENSION_NAME is deprecated and will be removed " +
+            "in plugin $PLUGIN_ID version 6.x. " +
+            "Please, move all properties to defined executions."
+
+private const val DEPRECATION_NO_EXECUTION =
+    "No executions defined, behavior to with default execution has been deprecated and removed " +
+            "in plugin $PLUGIN_ID version 5.0. " +
+            "Please, consider follow migration guide to upgrade plugin properly"
 
 @Suppress("unused")
 class Js2pPlugin : Plugin<Project> {
@@ -35,7 +45,7 @@ class Js2pPlugin : Plugin<Project> {
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
 
-        for (pluginId in listOf("java", "java-library")) {
+        for (pluginId in javaPlugins) {
             project.plugins.withId(pluginId) {
                 project.apply<Js2pJavaPlugin>()
             }
@@ -43,6 +53,12 @@ class Js2pPlugin : Plugin<Project> {
         for (pluginId in androidPlugins) {
             project.plugins.withId(pluginId) {
                 project.apply<Js2pAndroidPlugin>()
+            }
+        }
+
+        project.afterEvaluate { // this can be reported only after evaluation
+            if (pluginExtension.executions.size == 0) {
+                project.logger.warn(DEPRECATION_NO_EXECUTION)
             }
         }
     }
@@ -130,7 +146,7 @@ private fun createJS2DTaskExecution(
 ): TaskProvider<out Js2pGenerationTask> {
     val (taskName, taskDescription) = createTaskNameDescription(androidVariant, configuration.name)
 
-    copyConfiguration(pluginExtension, configuration, excludeGeneratedOption, defaultSourcePath)
+    copyConfiguration(project, pluginExtension, configuration, excludeGeneratedOption, defaultSourcePath)
     return project.tasks.register(taskName, Js2pGenerationTask::class.java) {
         this.description = taskDescription
         this.group = "Build"
@@ -140,6 +156,15 @@ private fun createJS2DTaskExecution(
 
         skipInputWhenEmpty(this, source)
         source.forEach { it.mkdirs() }
+    }
+}
+
+private fun skipInputWhenEmpty(task: Task, sourceFiles: FileCollection) {
+    val input = task.inputs.files(sourceFiles)
+        .skipWhenEmpty()
+
+    if (GradleVersion.current() >= GradleVersion.version("6.8")) {
+        input.ignoreEmptyDirectories()
     }
 }
 
@@ -155,48 +180,46 @@ private fun verifyConfigurationName(configurationName: String) {
     if (!configurationNameRegex.matches(configurationName)) {
         throw GradleException(
             "Plugin $PLUGIN_ID doesn't support configuration name \"$configurationName\" provided. " +
-                    "Please rename to match regex \"$configurationNameRegex\""
+                    "Please, rename to match regex \"$configurationNameRegex\""
         )
     }
 }
 
-private fun skipInputWhenEmpty(task: Task, sourceFiles: FileCollection) {
-    val input = task.inputs.files(sourceFiles)
-        .skipWhenEmpty()
-
-    if (GradleVersion.current() >= GradleVersion.version("6.8")) {
-        input.ignoreEmptyDirectories()
-    }
-}
-
 private fun <V> copyProperty(
+    logger: Logger,
     left: Property<V>,
     right: Property<V>
 ) {
     if (!left.isPresent && right.isPresent) {
         left.set(right)
+        logger.warn(DEPRECATION_PROPERTY_USAGE_MESSAGE)
     }
 }
 
 private fun <V> copyProperty(
+    logger: Logger,
     left: SetProperty<V>,
     right: SetProperty<V>
 ) {
     if (!left.isPresent && right.isPresent) {
         left.set(right)
+        logger.warn(DEPRECATION_PROPERTY_USAGE_MESSAGE)
     }
 }
 
 private fun <K, V> copyProperty(
+    logger: Logger,
     left: MapProperty<K, V>,
     right: MapProperty<K, V>
 ) {
     if (!left.isPresent && right.isPresent) {
         left.set(right)
+        logger.warn(DEPRECATION_PROPERTY_USAGE_MESSAGE)
     }
 }
 
 internal fun copyConfiguration(
+    project: Project,
     extension: Js2pExtension,
     configuration: Js2pConfiguration,
     excludeGeneratedOption: Boolean,
@@ -207,72 +230,85 @@ internal fun copyConfiguration(
             configuration.source.setFrom(defaultSourcePath)
         } else {
             configuration.source.setFrom(extension.source)
+            project.logger.warn(DEPRECATION_PROPERTY_USAGE_MESSAGE)
         }
     }
-    copyProperty(configuration.annotationStyle, extension.annotationStyle)
-    copyProperty(configuration.classNamePrefix, extension.classNamePrefix)
-    copyProperty(configuration.classNameSuffix, extension.classNameSuffix)
-    copyProperty(configuration.customAnnotator, extension.customAnnotator)
-    copyProperty(configuration.customDatePattern, extension.customDatePattern)
-    copyProperty(configuration.customDateTimePattern, extension.customDateTimePattern)
-    copyProperty(configuration.customRuleFactory, extension.customRuleFactory)
-    copyProperty(configuration.customTimePattern, extension.customTimePattern)
-    copyProperty(configuration.dateTimeType, extension.dateTimeType)
-    copyProperty(configuration.dateType, extension.dateType)
-    copyProperty(configuration.fileExtensions, extension.fileExtensions)
-    copyProperty(configuration.fileFilter, extension.fileFilter)
-    copyProperty(configuration.formatDateTimes, extension.formatDateTimes)
-    copyProperty(configuration.formatDates, extension.formatDates)
-    copyProperty(configuration.formatTimes, extension.formatTimes)
-    copyProperty(configuration.formatTypeMapping, extension.formatTypeMapping)
-    copyProperty(configuration.generateBuilders, extension.generateBuilders)
-    copyProperty(configuration.includeAdditionalProperties, extension.includeAdditionalProperties)
-    copyProperty(configuration.includeAllPropertiesConstructor, extension.includeAllPropertiesConstructor)
-    copyProperty(configuration.includeConstructorPropertiesAnnotation, extension.includeConstructorPropertiesAnnotation)
-    copyProperty(configuration.includeConstructors, extension.includeConstructors)
-    copyProperty(configuration.includeCopyConstructor, extension.includeCopyConstructor)
-    copyProperty(configuration.includeDynamicAccessors, extension.includeDynamicAccessors)
-    copyProperty(configuration.includeDynamicBuilders, extension.includeDynamicBuilders)
-    copyProperty(configuration.includeDynamicGetters, extension.includeDynamicGetters)
-    copyProperty(configuration.includeDynamicSetters, extension.includeDynamicSetters)
+    copyProperty(project.logger, configuration.annotationStyle, extension.annotationStyle)
+    copyProperty(project.logger, configuration.classNamePrefix, extension.classNamePrefix)
+    copyProperty(project.logger, configuration.classNameSuffix, extension.classNameSuffix)
+    copyProperty(project.logger, configuration.customAnnotator, extension.customAnnotator)
+    copyProperty(project.logger, configuration.customDatePattern, extension.customDatePattern)
+    copyProperty(project.logger, configuration.customDateTimePattern, extension.customDateTimePattern)
+    copyProperty(project.logger, configuration.customRuleFactory, extension.customRuleFactory)
+    copyProperty(project.logger, configuration.customTimePattern, extension.customTimePattern)
+    copyProperty(project.logger, configuration.dateTimeType, extension.dateTimeType)
+    copyProperty(project.logger, configuration.dateType, extension.dateType)
+    copyProperty(project.logger, configuration.fileExtensions, extension.fileExtensions)
+    copyProperty(project.logger, configuration.fileFilter, extension.fileFilter)
+    copyProperty(project.logger, configuration.formatDateTimes, extension.formatDateTimes)
+    copyProperty(project.logger, configuration.formatDates, extension.formatDates)
+    copyProperty(project.logger, configuration.formatTimes, extension.formatTimes)
+    copyProperty(project.logger, configuration.formatTypeMapping, extension.formatTypeMapping)
+    copyProperty(project.logger, configuration.generateBuilders, extension.generateBuilders)
+    copyProperty(project.logger, configuration.includeAdditionalProperties, extension.includeAdditionalProperties)
+    copyProperty(
+        project.logger,
+        configuration.includeAllPropertiesConstructor,
+        extension.includeAllPropertiesConstructor
+    )
+    copyProperty(
+        project.logger,
+        configuration.includeConstructorPropertiesAnnotation,
+        extension.includeConstructorPropertiesAnnotation
+    )
+    copyProperty(project.logger, configuration.includeConstructors, extension.includeConstructors)
+    copyProperty(project.logger, configuration.includeCopyConstructor, extension.includeCopyConstructor)
+    copyProperty(project.logger, configuration.includeDynamicAccessors, extension.includeDynamicAccessors)
+    copyProperty(project.logger, configuration.includeDynamicBuilders, extension.includeDynamicBuilders)
+    copyProperty(project.logger, configuration.includeDynamicGetters, extension.includeDynamicGetters)
+    copyProperty(project.logger, configuration.includeDynamicSetters, extension.includeDynamicSetters)
     if (excludeGeneratedOption) {
         // Temporary fixes #71 and upstream issue #1212 (used Generated annotation is not compatible with AGP 7+)
         configuration.includeGeneratedAnnotation.set(false)
     } else {
-        copyProperty(configuration.includeGeneratedAnnotation, extension.includeGeneratedAnnotation)
+        copyProperty(project.logger, configuration.includeGeneratedAnnotation, extension.includeGeneratedAnnotation)
     }
-    copyProperty(configuration.includeGetters, extension.includeGetters)
-    copyProperty(configuration.includeHashcodeAndEquals, extension.includeHashcodeAndEquals)
-    copyProperty(configuration.includeJsr303Annotations, extension.includeJsr303Annotations)
-    copyProperty(configuration.includeJsr305Annotations, extension.includeJsr305Annotations)
-    copyProperty(configuration.includeRequiredPropertiesConstructor, extension.includeRequiredPropertiesConstructor)
-    copyProperty(configuration.includeSetters, extension.includeSetters)
-    copyProperty(configuration.includeToString, extension.includeToString)
-    copyProperty(configuration.includeTypeInfo, extension.includeTypeInfo)
-    copyProperty(configuration.inclusionLevel, extension.inclusionLevel)
-    copyProperty(configuration.initializeCollections, extension.initializeCollections)
-    copyProperty(configuration.outputEncoding, extension.outputEncoding)
-    copyProperty(configuration.parcelable, extension.parcelable)
-    copyProperty(configuration.propertyWordDelimiters, extension.propertyWordDelimiters)
-    copyProperty(configuration.refFragmentPathDelimiters, extension.refFragmentPathDelimiters)
-    copyProperty(configuration.removeOldOutput, extension.removeOldOutput)
-    copyProperty(configuration.serializable, extension.serializable)
-    copyProperty(configuration.sourceSortOrder, extension.sourceSortOrder)
-    copyProperty(configuration.sourceType, extension.sourceType)
-    copyProperty(configuration.targetPackage, extension.targetPackage)
-    copyProperty(configuration.targetVersion, extension.targetVersion)
-    copyProperty(configuration.timeType, extension.timeType)
-    copyProperty(configuration.toStringExcludes, extension.toStringExcludes)
-    copyProperty(configuration.useBigDecimals, extension.useBigDecimals)
-    copyProperty(configuration.useBigIntegers, extension.useBigIntegers)
-    copyProperty(configuration.useDoubleNumbers, extension.useDoubleNumbers)
-    copyProperty(configuration.useInnerClassBuilders, extension.useInnerClassBuilders)
-    copyProperty(configuration.useJodaDates, extension.useJodaDates)
-    copyProperty(configuration.useJodaLocalDates, extension.useJodaLocalDates)
-    copyProperty(configuration.useJodaLocalTimes, extension.useJodaLocalTimes)
-    copyProperty(configuration.useLongIntegers, extension.useLongIntegers)
-    copyProperty(configuration.useOptionalForGetters, extension.useOptionalForGetters)
-    copyProperty(configuration.usePrimitives, extension.usePrimitives)
-    copyProperty(configuration.useTitleAsClassname, extension.useTitleAsClassname)
-    copyProperty(configuration.useJakartaValidation, extension.useJakartaValidation)
+    copyProperty(project.logger, configuration.includeGetters, extension.includeGetters)
+    copyProperty(project.logger, configuration.includeHashcodeAndEquals, extension.includeHashcodeAndEquals)
+    copyProperty(project.logger, configuration.includeJsr303Annotations, extension.includeJsr303Annotations)
+    copyProperty(project.logger, configuration.includeJsr305Annotations, extension.includeJsr305Annotations)
+    copyProperty(
+        project.logger,
+        configuration.includeRequiredPropertiesConstructor,
+        extension.includeRequiredPropertiesConstructor
+    )
+    copyProperty(project.logger, configuration.includeSetters, extension.includeSetters)
+    copyProperty(project.logger, configuration.includeToString, extension.includeToString)
+    copyProperty(project.logger, configuration.includeTypeInfo, extension.includeTypeInfo)
+    copyProperty(project.logger, configuration.inclusionLevel, extension.inclusionLevel)
+    copyProperty(project.logger, configuration.initializeCollections, extension.initializeCollections)
+    copyProperty(project.logger, configuration.outputEncoding, extension.outputEncoding)
+    copyProperty(project.logger, configuration.parcelable, extension.parcelable)
+    copyProperty(project.logger, configuration.propertyWordDelimiters, extension.propertyWordDelimiters)
+    copyProperty(project.logger, configuration.refFragmentPathDelimiters, extension.refFragmentPathDelimiters)
+    copyProperty(project.logger, configuration.removeOldOutput, extension.removeOldOutput)
+    copyProperty(project.logger, configuration.serializable, extension.serializable)
+    copyProperty(project.logger, configuration.sourceSortOrder, extension.sourceSortOrder)
+    copyProperty(project.logger, configuration.sourceType, extension.sourceType)
+    copyProperty(project.logger, configuration.targetPackage, extension.targetPackage)
+    copyProperty(project.logger, configuration.targetVersion, extension.targetVersion)
+    copyProperty(project.logger, configuration.timeType, extension.timeType)
+    copyProperty(project.logger, configuration.toStringExcludes, extension.toStringExcludes)
+    copyProperty(project.logger, configuration.useBigDecimals, extension.useBigDecimals)
+    copyProperty(project.logger, configuration.useBigIntegers, extension.useBigIntegers)
+    copyProperty(project.logger, configuration.useDoubleNumbers, extension.useDoubleNumbers)
+    copyProperty(project.logger, configuration.useInnerClassBuilders, extension.useInnerClassBuilders)
+    copyProperty(project.logger, configuration.useJodaDates, extension.useJodaDates)
+    copyProperty(project.logger, configuration.useJodaLocalDates, extension.useJodaLocalDates)
+    copyProperty(project.logger, configuration.useJodaLocalTimes, extension.useJodaLocalTimes)
+    copyProperty(project.logger, configuration.useLongIntegers, extension.useLongIntegers)
+    copyProperty(project.logger, configuration.useOptionalForGetters, extension.useOptionalForGetters)
+    copyProperty(project.logger, configuration.usePrimitives, extension.usePrimitives)
+    copyProperty(project.logger, configuration.useTitleAsClassname, extension.useTitleAsClassname)
+    copyProperty(project.logger, configuration.useJakartaValidation, extension.useJakartaValidation)
 }
