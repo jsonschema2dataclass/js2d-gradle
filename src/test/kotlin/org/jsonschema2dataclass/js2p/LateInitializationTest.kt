@@ -13,7 +13,7 @@ class LateInitializationTest {
     @TempDir
     lateinit var testProjectDir: Path
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("java-library applied after org.jsonschema2dataclass")

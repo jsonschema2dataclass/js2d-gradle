@@ -29,7 +29,7 @@ class JavaTaskFunctionalTest {
     @JvmField
     var testProjectDirPath: Path? = null
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single execution, no extension")
@@ -42,7 +42,7 @@ class JavaTaskFunctionalTest {
         assertNull(result.task(COLON_TASK_NAME0)?.outcome)
     }
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single execution")
@@ -62,7 +62,7 @@ class JavaTaskFunctionalTest {
         )
     }
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single execution")
@@ -82,7 +82,7 @@ class JavaTaskFunctionalTest {
         )
     }
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single extension simple")
@@ -103,7 +103,7 @@ class JavaTaskFunctionalTest {
         )
     }
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("multiple executions")
@@ -130,7 +130,7 @@ class JavaTaskFunctionalTest {
         )
     }
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("compileJava task depends task even when project has no java code")
@@ -144,7 +144,7 @@ class JavaTaskFunctionalTest {
         assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME0)?.outcome)
     }
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("task is cache-able")
@@ -160,7 +160,7 @@ class JavaTaskFunctionalTest {
         assertEquals(TaskOutcome.UP_TO_DATE, result.task(COLON_TASK_NAME0)?.outcome)
     }
 
-    @ParameterizedTest(name = "[{index}]({argumentsWithNames}) {displayName}")
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("task skips if no json file exists")
