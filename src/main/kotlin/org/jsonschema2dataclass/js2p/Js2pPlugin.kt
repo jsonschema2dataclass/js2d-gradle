@@ -11,13 +11,11 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.the
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.js2p.support.applyInternalAndroid
 import org.jsonschema2dataclass.js2p.support.applyInternalJava
 import java.nio.file.Path
-import java.util.UUID
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.*
 
 internal const val EXTENSION_NAME = "jsonSchema2Pojo"
 internal const val MINIMUM_GRADLE_VERSION = "6.0"
@@ -25,10 +23,10 @@ internal const val TARGET_FOLDER_BASE = "generated/sources/js2d"
 internal const val DEFAULT_EXECUTION_NAME = "main"
 internal const val TASK_NAME = "generateJsonSchema2DataClass"
 internal const val PLUGIN_ID = "org.jsonschema2dataclass"
+private val configurationNameRegex = "[a-z][A-Za-z0-9_]*".toRegex()
 
 @Suppress("unused")
 class Js2pPlugin : Plugin<Project> {
-
     private val javaPlugins = listOf("java", "java-library")
     private val androidPlugins = listOf("com.android.application", "com.android.library")
 
@@ -60,27 +58,30 @@ internal class Js2pJavaPlugin : Plugin<Project> {
 
 internal class Js2pAndroidPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.afterEvaluate {
-            applyInternalAndroid(the(), project)
-        }
+        val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
+        applyInternalAndroid(pluginExtension, project)
     }
 }
 
-internal fun setupConfigExecutions(
-    extension: Js2pExtension,
-    defaultSourcePath: Path?,
+internal fun createTaskNameDescription(
+    androidVariant: String?,
+    configurationName: String?
+): Pair<String, String> {
 
-) {
-    if (extension.source.isEmpty && defaultSourcePath != null) {
-        extension.source.setFrom(defaultSourcePath.toFile())
-    }
+    val androidVariantSuffix = if (androidVariant == null) "" else "For${androidVariant.capitalize()}"
+    val androidVariantMessage = if (androidVariant == null) "" else " for variant ${androidVariant.capitalize()}"
+    val configurationNameSuffix = if (configurationName == null) "" else "Config${configurationName.capitalize()}"
+    val configurationNameMessage = if (configurationName == null) "" else "for configuration $configurationName"
+
+    return "$TASK_NAME$androidVariantSuffix$configurationNameSuffix" to
+            "Generates Java classes from a json schema using JsonSchema2Pojo$configurationNameMessage$androidVariantMessage."
 }
 
 internal fun createJS2DTask(
     project: Project,
     extension: Js2pExtension,
     defaultSourcePath: Path?,
-    taskNameSuffix: String,
+    androidVariant: String?,
     targetDirectorySuffix: String,
     excludeGeneratedOption: Boolean,
     postConfigure: (
@@ -88,23 +89,19 @@ internal fun createJS2DTask(
         DirectoryProperty
     ) -> Unit,
 ): TaskProvider<Js2pWrapperTask> {
-
-    val js2dTask = project.tasks.register("${TASK_NAME}$taskNameSuffix", Js2pWrapperTask::class.java) {
-        description = "Generates Java classes from a json schema using JsonSchema2Pojo."
+    val (taskName, taskDescription) = createTaskNameDescription(androidVariant, null)
+    val js2dTask = project.tasks.register(taskName, Js2pWrapperTask::class.java) {
+        description = taskDescription
         group = "Build"
     }
-
-    val configurationId = AtomicInteger(-1)
     extension.executions.all {
-        configurationId.incrementAndGet()
         val configuration = this
+        verifyConfigurationName(configuration.name)
         val targetPath = project.objects.directoryProperty()
         targetPath.set(extension.targetDirectoryPrefix.dir("${configuration.name}$targetDirectorySuffix"))
         val taskProvider = createJS2DTaskExecution(
             project,
-            configurationId.get(),
-            taskNameSuffix,
-            configuration.name,
+            androidVariant,
             configuration,
             extension,
             configuration.source.filter { it.exists() },
@@ -124,9 +121,7 @@ internal fun createJS2DTask(
 
 private fun createJS2DTaskExecution(
     project: Project,
-    configurationId: Int,
-    taskNameSuffix: String,
-    configurationName: String,
+    androidVariant: String?,
     configuration: Js2pConfiguration,
     pluginExtension: Js2pExtension,
     source: FileCollection,
@@ -134,12 +129,11 @@ private fun createJS2DTaskExecution(
     defaultSourcePath: Path?,
     excludeGeneratedOption: Boolean,
 ): TaskProvider<out Js2pGenerationTask> {
-    val taskName = "${TASK_NAME}${configurationId}$taskNameSuffix"
+    val (taskName, taskDescription) = createTaskNameDescription(androidVariant, configuration.name)
 
     copyConfiguration(pluginExtension, configuration, excludeGeneratedOption, defaultSourcePath)
     return project.tasks.register(taskName, Js2pGenerationTask::class.java) {
-        this.description =
-            "Generates Java classes from a json schema using JsonSchema2Pojo for configuration $configurationName"
+        this.description = taskDescription
         this.group = "Build"
         this.configuration = configuration
         this.uuid = UUID.randomUUID()
@@ -152,7 +146,18 @@ private fun createJS2DTaskExecution(
 
 private fun verifyGradleVersion() {
     if (GradleVersion.current() < GradleVersion.version(MINIMUM_GRADLE_VERSION)) {
-        throw GradleException("Plugin $PLUGIN_ID requires at least Gradle $MINIMUM_GRADLE_VERSION, but you are using ${GradleVersion.current().version}")
+        throw GradleException(
+            "Plugin $PLUGIN_ID requires at least Gradle $MINIMUM_GRADLE_VERSION, but you are using ${GradleVersion.current().version}"
+        )
+    }
+}
+
+private fun verifyConfigurationName(configurationName: String) {
+    if (!configurationNameRegex.matches(configurationName)) {
+        throw GradleException(
+            "Plugin $PLUGIN_ID doesn't support configuration name \"$configurationName\" provided. " +
+                    "Please rename to match regex \"$configurationNameRegex\""
+        )
     }
 }
 
@@ -169,7 +174,7 @@ private fun <V> copyProperty(
     left: Property<V>,
     right: Property<V>
 ) {
-    if(!left.isPresent && right.isPresent) {
+    if (!left.isPresent && right.isPresent) {
         left.set(right)
     }
 }
@@ -178,7 +183,7 @@ private fun <V> copyProperty(
     left: SetProperty<V>,
     right: SetProperty<V>
 ) {
-    if(!left.isPresent && right.isPresent) {
+    if (!left.isPresent && right.isPresent) {
         left.set(right)
     }
 }
@@ -187,7 +192,7 @@ private fun <K, V> copyProperty(
     left: MapProperty<K, V>,
     right: MapProperty<K, V>
 ) {
-    if(!left.isPresent && right.isPresent) {
+    if (!left.isPresent && right.isPresent) {
         left.set(right)
     }
 }
@@ -231,7 +236,7 @@ internal fun copyConfiguration(
     copyProperty(configuration.includeDynamicBuilders, extension.includeDynamicBuilders)
     copyProperty(configuration.includeDynamicGetters, extension.includeDynamicGetters)
     copyProperty(configuration.includeDynamicSetters, extension.includeDynamicSetters)
-    if(excludeGeneratedOption) {
+    if (excludeGeneratedOption) {
         // Temporary fixes #71 and upstream issue #1212 (used Generated annotation is not compatible with AGP 7+)
         configuration.includeGeneratedAnnotation.set(false)
     } else {

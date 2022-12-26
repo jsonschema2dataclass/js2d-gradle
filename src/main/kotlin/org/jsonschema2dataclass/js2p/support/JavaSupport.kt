@@ -26,7 +26,7 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
         project,
         extension,
         getJavaJsonPath(mainSourceSet),
-        "",
+        null,
         "",
         false
     ) { generationTaskProvider, targetPath ->
