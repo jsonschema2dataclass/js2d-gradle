@@ -1,0 +1,210 @@
+:toc:
+:toc-placement: preamble
+:toclevels: 2
+:showtitle:
+
+= Migration guide from 4.5.0 to 5.0
+
+This guide highlights major changes and shows how to change a project to use new plugin.
+
+== Execution list
+
+Previously, it was possible to define execution without an execution.
+Now it's important to define executions for every single project.
+
+The reason is plugin doesn't know if extension is applied or not.
+This eliminates possibilities some important extensions from being implemented and some refactoring done.
+
+Examples:
+
+.No Extension defined example
+[options=header,cols="1,5"]
+|=====
+| DSL language | DSL
+// ------------------------------
+| Groovy
+
+Old version (prior 5.x),
+a|
+[source,gradle]
+-----
+plugins {
+    id "java"
+    id "org.jsonschema2dataclass" version "x.y.z"
+}
+-----
+// ------------------------------
+| Groovy
+
+Recommended new version (5.x)
+a|
+[source,gradle]
+-----
+plugins {
+    id "java"
+    id "org.jsonschema2dataclass" version "x.y.z"
+}
+
+jsonSchema2Pojo {
+    executions {
+        main {}
+    }
+}
+-----
+// ------------------------------
+| Kotlin
+
+Old version (prior 5.x),
+a|
+[source,gradle]
+-----
+plugins {
+    `java`
+    id("org.jsonschema2dataclass") version "x.y.z"
+}
+-----
+// ------------------------------
+| Kotlin
+
+Recommended new version (5.x)
+a|
+[source,gradle]
+-----
+plugins {
+    `java`
+    id("org.jsonschema2dataclass") version "x.y.z"
+}
+
+jsonSchema2Pojo {
+    executions {
+        create("main")
+    }
+}
+-----
+// ------------------------------
+|=====
+
+.No execution defined in extension
+[options=header,cols="1,5"]
+|=====
+| DSL language | DSL
+// ------------------------------
+| Groovy
+
+Old version (prior 5.x),
+a|
+[source,gradle]
+-----
+plugins {
+    id "java"
+    id "org.jsonschema2dataclass" version "x.y.z"
+}
+
+jsonSchema2Pojo {
+    targetPackage = 'example'
+}
+-----
+// ------------------------------
+| Groovy
+
+Recommended new version (5.x)
+a|
+[source,gradle]
+-----
+plugins {
+    id "java"
+    id "org.jsonschema2dataclass" version "x.y.z"
+}
+
+jsonSchema2Pojo {
+    executions {
+        main {
+            targetPackage = 'example'
+        }
+    }
+}
+-----
+// ------------------------------
+| Kotlin
+
+Old version (prior 5.x),
+a|
+[source,gradle]
+-----
+plugins {
+    `java`
+    id("org.jsonschema2dataclass") version "x.y.z"
+}
+jsonSchema2Pojo {
+    targetPackage.set("example")
+}
+-----
+// ------------------------------
+| Kotlin
+
+Recommended new version (5.x)
+a|
+[source,gradle]
+-----
+plugins {
+    `java`
+    id("org.jsonschema2dataclass") version "x.y.z"
+}
+
+jsonSchema2Pojo {
+    executions {
+        create("main") {
+            targetPackage.set("example")
+        }
+    }
+}
+-----
+// ------------------------------
+|=====
+
+
+== Task naming
+
+Version 5.0 renames tasks to more readable.
+
+. Configuration name is used as part of task name instead of a sequence number.
+  * Gradle API provides a set of configurations instead of list and never guarantees, which configuration will be first.
+  * Using configuration names is more readable when a developer refers to it.
+. Android variant part is shifted toward beginning.
+  * This way it's easier to read task list.
+
+[options=header]
+|=====
+| Old name | New name | Notes
+// ------------------------------
+| generateJsonSchema2DataClass0
+| generateJsonSchema2DataClassConfigMain
+| Configuration name at the end
+// ------------------------------
+| generateJsonSchema2DataClassForRelease
+| generateJsonSchema2DataClassForRelease
+| Common task with Android variant is the same
+// ------------------------------
+| generateJsonSchema2DataClass0ForRelease
+| generateJsonSchema2DataClassForReleaseConfigMain
+| Android variant part shifted
+// ------------------------------
+|=====
+
+== Task hooking
+
+From 5.x onwards the plugin applies itself and generate tasks as soon as possible.
+Thus, it's possible to directly hook the tasks if needed.
+
+Previously, it was possible create only indirect hooks for tasks (which is still the preferred way to hook):
+* generateJsonSchema2DataClass depends on resource processing tasks
+* compilation and Lombok plugin tasks depend on generateJsonSchema2DataClass
+
+== AGP 3 demo is removed, AGP 4 demo is unmaintained.
+
+I have no machine to build the demo. It requires build tools `30.0.3` at the most and can't use newer ones.
+Google provides binaries incompatible with my computer and CPU architecture.
+
+Additionally, I was unable to find live Android library or application projects on GitHub.
+
+This project is using and maintaining AGP3 API and will abandon it when Google decides to remove support of it.
