@@ -7,13 +7,20 @@
 
 This guide highlights major changes and shows how to change a project to use new plugin.
 
-== Execution list
+== Default execution is deprecated and removed
 
 Previously, it was possible to define execution without an execution.
 Now it's important to define executions for every single project.
 
-The reason is plugin doesn't know if extension is applied or not.
-This eliminates possibilities some important extensions from being implemented and some refactoring done.
+Improperly upgraded projects using the old model will receive a warning
+during the build briefly explaining actions required.
+
+The reasons of deprecation and removal of this feature is:
+
+* There's no way to tell how and if extension has been applied.
+* Plugin features can't be extended as much as they planned.
+* Configuration refactoring can't be done as easy as it could be.
+* A lot of spaghetti, generated and copy-paste code in the plugin makes it hard to maintain and catch an error.
 
 Examples:
 
@@ -162,10 +169,9 @@ jsonSchema2Pojo {
 // ------------------------------
 |=====
 
+== Subtasks changed their names
 
-== Task naming
-
-Version 5.0 renames tasks to more readable.
+Version 5.0 renames sub-tasks to more readable values. Main tasks still have the same name as before.
 
 . Configuration name is used as part of task name instead of a sequence number.
   * Gradle API provides a set of configurations instead of list and never guarantees, which configuration will be first.
@@ -191,7 +197,7 @@ Version 5.0 renames tasks to more readable.
 // ------------------------------
 |=====
 
-== Task hooking
+== Ability to hook for any task in gradle scripts and other plugins
 
 From 5.x onwards the plugin applies itself and generate tasks as soon as possible.
 Thus, it's possible to directly hook the tasks if needed.
@@ -208,3 +214,11 @@ Google provides binaries incompatible with my computer and CPU architecture.
 Additionally, I was unable to find live Android library or application projects on GitHub.
 
 This project is using and maintaining AGP3 API and will abandon it when Google decides to remove support of it.
+
+=== AGP 3 demo is removed
+
+It doesn't build on CI for a little while and I can't build on my computer as well.
+
+=== AGP 4 demo is unmaintained
+
+Mostly because of lack of build tools on my computer.
