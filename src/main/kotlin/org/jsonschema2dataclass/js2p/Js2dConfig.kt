@@ -1,101 +1,98 @@
 package org.jsonschema2dataclass.js2p
 
 import org.gradle.api.GradleScriptException
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
-import org.jsonschema2pojo.AnnotationStyle
-import org.jsonschema2pojo.Annotator
-import org.jsonschema2pojo.DefaultGenerationConfig
-import org.jsonschema2pojo.GenerationConfig
-import org.jsonschema2pojo.InclusionLevel
-import org.jsonschema2pojo.SourceSortOrder
-import org.jsonschema2pojo.SourceType
+import org.jsonschema2pojo.*
 import org.jsonschema2pojo.rules.RuleFactory
 import java.io.File
 import java.io.FileFilter
 import java.net.URL
 import java.util.function.Function
+import kotlin.reflect.KFunction1
 
 internal data class Js2dConfig(
-        private val targetDirectory: File,
-        private val sourceFiles: List<URL>,
+    private val targetDirectory: File,
+    private val sourceFiles: List<URL>,
 
-        private val annotationStyle: AnnotationStyle,
-        private val classNamePrefix: String?,
-        private val classNameSuffix: String?,
-        private val constructorsRequiredPropertiesOnly: Boolean,
-        private val customAnnotator: Class<out Annotator>,
-        private val customDatePattern: String?,
-        private val customDateTimePattern: String?,
-        private val customRuleFactory: Class<out RuleFactory>,
-        private val customTimePattern: String?,
-        private val dateTimeType: String?,
-        private val dateType: String?,
-        private val fileExtensions: Array<String>,
-        private val fileFilter: FileFilter,
-        private val formatDateTimes: Boolean,
-        private val formatDates: Boolean,
-        private val formatTimes: Boolean,
-        private val formatTypeMapping: Map<String, String>,
-        private val generateBuilders: Boolean,
-        private val includeAdditionalProperties: Boolean,
-        private val includeAllPropertiesConstructor: Boolean,
-        private val includeConstructorPropertiesAnnotation: Boolean,
-        private val includeConstructors: Boolean,
-        private val includeCopyConstructor: Boolean,
-        private val includeDynamicAccessors: Boolean,
-        private val includeDynamicBuilders: Boolean,
-        private val includeDynamicGetters: Boolean,
-        private val includeDynamicSetters: Boolean,
-        private val includeGeneratedAnnotation: Boolean,
-        private val includeGetters: Boolean,
-        private val includeHashcodeAndEquals: Boolean,
-        private val includeJsr303Annotations: Boolean,
-        private val includeJsr305Annotations: Boolean,
-        private val includeRequiredPropertiesConstructor: Boolean,
-        private val includeSetters: Boolean,
-        private val includeToString: Boolean,
-        private val includeTypeInfo: Boolean,
-        private val inclusionLevel: InclusionLevel,
-        private val initializeCollections: Boolean,
-        private val outputEncoding: String?,
-        private val parcelable: Boolean,
-        private val propertyWordDelimiters: CharArray,
-        private val refFragmentPathDelimiters: String?,
-        private val removeOldOutput: Boolean,
-        private val serializable: Boolean,
-        private val sourceSortOrder: SourceSortOrder,
-        private val sourceType: SourceType,
-        private val targetPackage: String?,
-        private val targetVersion: String?,
-        private val timeType: String?,
-        private val toStringExcludes: Array<String>,
-        private val useBigDecimals: Boolean,
-        private val useBigIntegers: Boolean,
-        private val useDoubleNumbers: Boolean,
-        private val useInnerClassBuilders: Boolean,
-        private val useJodaDates: Boolean,
-        private val useJodaLocalDates: Boolean,
-        private val useJodaLocalTimes: Boolean,
-        private val useLongIntegers: Boolean,
-        private val useOptionalForGetters: Boolean,
-        private val usePrimitives: Boolean,
-        private val useJakartaValidation: Boolean,
-        private val useTitleAsClassname: Boolean,
+    private val annotationStyle: AnnotationStyle,
+    private val classNamePrefix: String?,
+    private val classNameSuffix: String?,
+    private val constructorsRequiredPropertiesOnly: Boolean,
+    private val customAnnotator: Class<out Annotator>,
+    private val customDatePattern: String?,
+    private val customDateTimePattern: String?,
+    private val customRuleFactory: Class<out RuleFactory>,
+    private val customTimePattern: String?,
+    private val dateTimeType: String?,
+    private val dateType: String?,
+    private val fileExtensions: Array<String>,
+    private val fileFilter: FileFilter,
+    private val formatDateTimes: Boolean,
+    private val formatDates: Boolean,
+    private val formatTimes: Boolean,
+    private val formatTypeMapping: Map<String, String>,
+    private val generateBuilders: Boolean,
+    private val includeAdditionalProperties: Boolean,
+    private val includeAllPropertiesConstructor: Boolean,
+    private val includeConstructorPropertiesAnnotation: Boolean,
+    private val includeConstructors: Boolean,
+    private val includeCopyConstructor: Boolean,
+    private val includeDynamicAccessors: Boolean,
+    private val includeDynamicBuilders: Boolean,
+    private val includeDynamicGetters: Boolean,
+    private val includeDynamicSetters: Boolean,
+    private val includeGeneratedAnnotation: Boolean,
+    private val includeGetters: Boolean,
+    private val includeHashcodeAndEquals: Boolean,
+    private val includeJsr303Annotations: Boolean,
+    private val includeJsr305Annotations: Boolean,
+    private val includeRequiredPropertiesConstructor: Boolean,
+    private val includeSetters: Boolean,
+    private val includeToString: Boolean,
+    private val includeTypeInfo: Boolean,
+    private val inclusionLevel: InclusionLevel,
+    private val initializeCollections: Boolean,
+    private val outputEncoding: String?,
+    private val parcelable: Boolean,
+    private val propertyWordDelimiters: CharArray,
+    private val refFragmentPathDelimiters: String?,
+    private val removeOldOutput: Boolean,
+    private val serializable: Boolean,
+    private val sourceSortOrder: SourceSortOrder,
+    private val sourceType: SourceType,
+    private val targetPackage: String?,
+    private val targetVersion: String?,
+    private val timeType: String?,
+    private val toStringExcludes: Array<String>,
+    private val useBigDecimals: Boolean,
+    private val useBigIntegers: Boolean,
+    private val useDoubleNumbers: Boolean,
+    private val useInnerClassBuilders: Boolean,
+    private val useJodaDates: Boolean,
+    private val useJodaLocalDates: Boolean,
+    private val useJodaLocalTimes: Boolean,
+    private val useLongIntegers: Boolean,
+    private val useOptionalForGetters: Boolean,
+    private val usePrimitives: Boolean,
+    private val useJakartaValidation: Boolean,
+    private val useTitleAsClassname: Boolean,
 ) : GenerationConfig, java.io.Serializable {
     companion object {
         private val defaultConfiguration = DefaultGenerationConfig()
 
-        private fun <E : Enum<E>?> fromEnum(value: String?, enumClass: Class<E>): E? {
-            return if (value == null || value.isEmpty()) null else java.lang.Enum.valueOf(enumClass, value.toUpperCase())
+        private fun <E : Enum<E>?> fromEnum(provider: Provider<String>, enumClass: Class<E>): E? {
+            val value = provider.orNull
+            return if (value == null || value.isEmpty()) {
+                null
+            } else {
+                java.lang.Enum.valueOf(
+                    enumClass,
+                    value.toUpperCase()
+                )
+            }
         }
 
-        private fun <E : Enum<E>> fromEnum(value: Property<String>, enumClass: Class<E>): E? {
-            return fromEnum(value.orNull, enumClass)
-        }
-
-        private fun <C> findClass(className: String?): Class<C>? {
+        private fun <C> findClass(className: String?): Class<out C>? {
             if (className == null || className.isEmpty()) {
                 return null
             }
@@ -107,222 +104,108 @@ internal data class Js2dConfig(
             }
         }
 
-        private fun maybeDefaultArray(
-                value: Array<String>?,
-                vFunction: Function<DefaultGenerationConfig, Array<String>>,
-        ): Array<String> {
-            if (value == null) {
-                return vFunction.apply(defaultConfiguration)
-            }
-            return value
-        }
-
         private fun <V> maybeDefaultRaw(value: V?, vFunction: Function<DefaultGenerationConfig, V>): V {
             return value ?: vFunction.apply(defaultConfiguration)
         }
 
-        private fun maybeDefaultChar(value: String?, vFunction: Function<DefaultGenerationConfig, CharArray>): CharArray {
+        private fun maybeDefaultChar(
+            provider: Provider<String>,
+            vFunction: Function<DefaultGenerationConfig, CharArray>
+        ): CharArray {
+            val value = provider.orNull
             return if (value == null || value.isEmpty()) {
                 vFunction.apply(defaultConfiguration)
-            } else value.toCharArray()
+            } else {
+                value.toCharArray()
+            }
         }
 
         private fun <V> maybeDefault(value: Provider<V>, vFunction: Function<DefaultGenerationConfig, V>): V {
             return maybeDefaultRaw(value.orNull, vFunction)
         }
 
-        fun fromConfig(source: ConfigurableFileCollection,
-                       annotationStyle: Provider<String>,
-                       classNamePrefix: Provider<String>,
-                       classNameSuffix: Provider<String>,
-                       constructorsRequiredPropertiesOnly: Provider<Boolean>,
-                       customAnnotator: Provider<String>,
-                       customDatePattern: Provider<String>,
-                       customDateTimePattern: Provider<String>,
-                       customRuleFactory: Provider<String>,
-                       customTimePattern: Provider<String>,
-                       dateTimeType: Provider<String>,
-                       dateType: Provider<String>,
-                       fileExtensions: Provider<Set<String>>,
-                       fileFilter: Provider<FileFilter>,
-                       formatDateTimes: Provider<Boolean>,
-                       formatDates: Provider<Boolean>,
-                       formatTimes: Provider<Boolean>,
-                       formatTypeMapping: Provider<Map<String, String>>,
-                       generateBuilders: Provider<Boolean>,
-                       includeAdditionalProperties: Provider<Boolean>,
-                       includeAllPropertiesConstructor: Provider<Boolean>,
-                       includeConstructorPropertiesAnnotation: Provider<Boolean>,
-                       includeConstructors: Provider<Boolean>,
-                       includeCopyConstructor: Provider<Boolean>,
-                       includeDynamicAccessors: Provider<Boolean>,
-                       includeDynamicBuilders: Provider<Boolean>,
-                       includeDynamicGetters: Provider<Boolean>,
-                       includeDynamicSetters: Provider<Boolean>,
-                       includeGeneratedAnnotation: Provider<Boolean>,
-                       includeGetters: Provider<Boolean>,
-                       includeHashcodeAndEquals: Provider<Boolean>,
-                       includeJsr303Annotations: Provider<Boolean>,
-                       includeJsr305Annotations: Provider<Boolean>,
-                       includeRequiredPropertiesConstructor: Provider<Boolean>,
-                       includeSetters: Provider<Boolean>,
-                       includeToString: Provider<Boolean>,
-                       includeTypeInfo: Provider<Boolean>,
-                       inclusionLevel: Provider<String>,
-                       initializeCollections: Provider<Boolean>,
-                       outputEncoding: Provider<String>,
-                       parcelable: Provider<Boolean>,
-                       propertyWordDelimiters: Provider<String>,
-                       refFragmentPathDelimiters: Provider<String>,
-                       removeOldOutput: Provider<Boolean>,
-                       serializable: Provider<Boolean>,
-                       sourceSortOrder: Provider<String>,
-                       sourceType: Provider<String>,
-                       targetPackage: Provider<String>,
-                       targetVersion: Provider<String>,
-                       timeType: Provider<String>,
-                       toStringExcludes: Provider<Set<String>>,
-                       useBigDecimals: Provider<Boolean>,
-                       useBigIntegers: Provider<Boolean>,
-                       useDoubleNumbers: Provider<Boolean>,
-                       useInnerClassBuilders: Provider<Boolean>,
-                       useJodaDates: Provider<Boolean>,
-                       useJodaLocalDates: Provider<Boolean>,
-                       useJodaLocalTimes: Provider<Boolean>,
-                       useLongIntegers: Provider<Boolean>,
-                       useOptionalForGetters: Provider<Boolean>,
-                       usePrimitives: Provider<Boolean>,
-                       useTitleAsClassname: Provider<Boolean>,
-                       useJakartaValidation: Provider<Boolean>,
-                       targetDirectory: File): Js2dConfig =
-                Js2dConfig(
-                        targetDirectory,
-                        source.map { it.toURI().toURL() },
-                        maybeDefaultRaw(
-                                fromEnum(annotationStyle.orNull, AnnotationStyle::class.java),
-                        ) { obj: DefaultGenerationConfig -> obj.annotationStyle },
-                        maybeDefault(classNamePrefix) { obj: DefaultGenerationConfig -> obj.classNamePrefix },
-                        maybeDefault(classNameSuffix) { obj: DefaultGenerationConfig -> obj.classNameSuffix },
-                        maybeDefault(
-                                constructorsRequiredPropertiesOnly,
-                        ) { obj: DefaultGenerationConfig -> obj.isConstructorsRequiredPropertiesOnly },
-                        maybeDefaultRaw(
-                                findClass(customAnnotator.orNull),
-                        ) { obj: DefaultGenerationConfig -> obj.customAnnotator },
-                        maybeDefault(customDatePattern) { obj: DefaultGenerationConfig -> obj.customDatePattern },
-                        maybeDefault(
-                                customDateTimePattern,
-                        ) { obj: DefaultGenerationConfig -> obj.customDateTimePattern },
-                        maybeDefaultRaw(
-                                findClass(customRuleFactory.orNull),
-                        ) { obj: DefaultGenerationConfig -> obj.customRuleFactory },
-                        maybeDefault(customTimePattern) { obj: DefaultGenerationConfig -> obj.customTimePattern },
-                        maybeDefault(dateTimeType) { obj: DefaultGenerationConfig -> obj.dateTimeType },
-                        maybeDefault(dateType) { obj: DefaultGenerationConfig -> obj.dateType },
-                        maybeDefaultArray(
-                                fileExtensions.orNull?.toTypedArray(),
-                        ) { obj: DefaultGenerationConfig -> obj.fileExtensions },
-                        maybeDefault(fileFilter) { obj: DefaultGenerationConfig -> obj.fileFilter },
-                        maybeDefault(formatDateTimes) { obj: DefaultGenerationConfig -> obj.isFormatDateTimes },
-                        maybeDefault(formatDates) { obj: DefaultGenerationConfig -> obj.isFormatDates },
-                        maybeDefault(formatTimes) { obj: DefaultGenerationConfig -> obj.isFormatTimes },
-                        maybeDefaultRaw(
-                                formatTypeMapping.orNull,
-                        ) { obj: DefaultGenerationConfig -> obj.formatTypeMapping },
-                        maybeDefault(generateBuilders) { obj: DefaultGenerationConfig -> obj.isGenerateBuilders },
-                        maybeDefault(
-                                includeAdditionalProperties,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeAdditionalProperties },
-                        maybeDefault(
-                                includeAllPropertiesConstructor,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeAllPropertiesConstructor },
-                        maybeDefault(
-                                includeConstructorPropertiesAnnotation,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeConstructorPropertiesAnnotation },
-                        maybeDefault(
-                                includeConstructors,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeConstructors },
-                        maybeDefault(
-                                includeCopyConstructor,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeCopyConstructor },
-                        maybeDefault(
-                                includeDynamicAccessors,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeDynamicAccessors },
-                        maybeDefault(
-                                includeDynamicBuilders,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeDynamicBuilders },
-                        maybeDefault(
-                                includeDynamicGetters,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeDynamicGetters },
-                        maybeDefault(
-                                includeDynamicSetters,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeDynamicSetters },
-                        maybeDefault(
-                                includeGeneratedAnnotation,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeGeneratedAnnotation },
-                        maybeDefault(includeGetters) { obj: DefaultGenerationConfig -> obj.isIncludeGetters },
-                        maybeDefault(
-                                includeHashcodeAndEquals,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeHashcodeAndEquals },
-                        maybeDefault(
-                                includeJsr303Annotations,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeJsr303Annotations },
-                        maybeDefault(
-                                includeJsr305Annotations,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeJsr305Annotations },
-                        maybeDefault(
-                                includeRequiredPropertiesConstructor,
-                        ) { obj: DefaultGenerationConfig -> obj.isIncludeRequiredPropertiesConstructor },
-                        maybeDefault(includeSetters) { obj: DefaultGenerationConfig -> obj.isIncludeSetters },
-                        maybeDefault(includeToString) { obj: DefaultGenerationConfig -> obj.isIncludeToString },
-                        maybeDefault(includeTypeInfo) { obj: DefaultGenerationConfig -> obj.isIncludeTypeInfo },
-                        maybeDefaultRaw(
-                                fromEnum(inclusionLevel.orNull, InclusionLevel::class.java),
-                        ) { obj: DefaultGenerationConfig -> obj.inclusionLevel },
-                        maybeDefault(
-                                initializeCollections,
-                        ) { obj: DefaultGenerationConfig -> obj.isInitializeCollections },
-                        maybeDefault(outputEncoding) { obj: DefaultGenerationConfig -> obj.outputEncoding },
-                        maybeDefault(parcelable) { obj: DefaultGenerationConfig -> obj.isParcelable },
-                        maybeDefaultChar(
-                                propertyWordDelimiters.getOrElse(""),
-                        ) { obj: DefaultGenerationConfig -> obj.propertyWordDelimiters },
-                        maybeDefault(
-                                refFragmentPathDelimiters,
-                        ) { obj: DefaultGenerationConfig -> obj.refFragmentPathDelimiters },
-                        maybeDefault(removeOldOutput) { obj: DefaultGenerationConfig -> obj.isRemoveOldOutput },
-                        maybeDefault(serializable) { obj: DefaultGenerationConfig -> obj.isSerializable },
-                        maybeDefaultRaw(
-                                fromEnum(sourceSortOrder.orNull, SourceSortOrder::class.java),
-                        ) { obj: DefaultGenerationConfig -> obj.sourceSortOrder },
-                        maybeDefaultRaw(
-                                fromEnum(sourceType.orNull, SourceType::class.java),
-                        ) { obj: DefaultGenerationConfig -> obj.sourceType },
-                        maybeDefault(targetPackage) { obj: DefaultGenerationConfig -> obj.targetPackage },
-                        maybeDefault(targetVersion) { obj: DefaultGenerationConfig -> obj.targetVersion },
-                        maybeDefault(timeType) { obj: DefaultGenerationConfig -> obj.timeType },
-                        maybeDefaultArray(
-                                toStringExcludes.orNull?.toTypedArray(),
-                        ) { obj: DefaultGenerationConfig -> obj.toStringExcludes },
-                        maybeDefault(useBigDecimals) { obj: DefaultGenerationConfig -> obj.isUseBigDecimals },
-                        maybeDefault(useBigIntegers) { obj: DefaultGenerationConfig -> obj.isUseBigIntegers },
-                        maybeDefault(useDoubleNumbers) { obj: DefaultGenerationConfig -> obj.isUseDoubleNumbers },
-                        maybeDefault(
-                                useInnerClassBuilders,
-                        ) { obj: DefaultGenerationConfig -> obj.isUseInnerClassBuilders },
-                        maybeDefault(useJodaDates) { obj: DefaultGenerationConfig -> obj.isUseJodaDates },
-                        maybeDefault(useJodaLocalDates) { obj: DefaultGenerationConfig -> obj.isUseJodaLocalDates },
-                        maybeDefault(useJodaLocalTimes) { obj: DefaultGenerationConfig -> obj.isUseJodaLocalTimes },
-                        maybeDefault(useLongIntegers) { obj: DefaultGenerationConfig -> obj.isUseLongIntegers },
-                        maybeDefault(
-                                useOptionalForGetters,
-                        ) { obj: DefaultGenerationConfig -> obj.isUseOptionalForGetters },
-                        maybeDefault(usePrimitives) { obj: DefaultGenerationConfig -> obj.isUsePrimitives },
-                        maybeDefault(useJakartaValidation) { obj: DefaultGenerationConfig -> obj.isUseJakartaValidation },
-                        maybeDefault(
-                                useTitleAsClassname,
-                        ) { obj: DefaultGenerationConfig -> obj.isUseTitleAsClassname }
-                )
+        private inline fun <reified K> maybeDefaultClass(value: Provider<String>, vFunction: Function<DefaultGenerationConfig, Class<out K>>): Class<out K> {
+            return maybeDefaultRaw(findClass(value.orNull), vFunction)
+        }
+
+        private inline fun <reified V> maybeDefaultArray(value: Provider<Set<V>>, vFunction: Function<DefaultGenerationConfig, Array<V>>): Array<V> {
+            return maybeDefaultRaw(value.orNull?.toTypedArray(), vFunction)
+        }
+
+        private inline fun <reified V: Enum<V>?> maybeDefaultEnum(value: Provider<String>, vFunction: Function<DefaultGenerationConfig, V>): V {
+            return fromEnum(value, V::class.java) ?: vFunction.apply(defaultConfiguration)
+        }
+
+        fun fromConfig(
+            config: Js2pConfiguration,
+            targetDirectory: File
+        ): Js2dConfig =
+            Js2dConfig(
+                targetDirectory,
+                config.source.map { it.toURI().toURL() },
+                maybeDefaultEnum(config.annotationStyle) {it.annotationStyle },
+                maybeDefault(config.classNamePrefix) {it.classNamePrefix },
+                maybeDefault(config.classNameSuffix) {it.classNameSuffix },
+                maybeDefault(config.constructorsRequiredPropertiesOnly) {it.isConstructorsRequiredPropertiesOnly },
+                maybeDefaultClass(config.customAnnotator) {it.customAnnotator },
+                maybeDefault(config.customDatePattern) {it.customDatePattern },
+                maybeDefault(config.customDateTimePattern) {it.customDateTimePattern },
+                maybeDefaultClass(config.customRuleFactory) {it.customRuleFactory },
+                maybeDefault(config.customTimePattern) {it.customTimePattern },
+                maybeDefault(config.dateTimeType) {it.dateTimeType },
+                maybeDefault(config.dateType) {it.dateType },
+                maybeDefaultArray(config.fileExtensions) {it.fileExtensions },
+                maybeDefault(config.fileFilter) {it.fileFilter },
+                maybeDefault(config.formatDateTimes) {it.isFormatDateTimes },
+                maybeDefault(config.formatDates) {it.isFormatDates },
+                maybeDefault(config.formatTimes) {it.isFormatTimes },
+                maybeDefault(config.formatTypeMapping) {it.formatTypeMapping },
+                maybeDefault(config.generateBuilders) {it.isGenerateBuilders },
+                maybeDefault(config.includeAdditionalProperties) {it.isIncludeAdditionalProperties },
+                maybeDefault(config.includeAllPropertiesConstructor) {it.isIncludeAllPropertiesConstructor },
+                maybeDefault(config.includeConstructorPropertiesAnnotation) {it.isIncludeConstructorPropertiesAnnotation },
+                maybeDefault(config.includeConstructors) {it.isIncludeConstructors },
+                maybeDefault(config.includeCopyConstructor) {it.isIncludeCopyConstructor },
+                maybeDefault(config.includeDynamicAccessors) {it.isIncludeDynamicAccessors },
+                maybeDefault(config.includeDynamicBuilders) {it.isIncludeDynamicBuilders },
+                maybeDefault(config.includeDynamicGetters) {it.isIncludeDynamicGetters },
+                maybeDefault(config.includeDynamicSetters) {it.isIncludeDynamicSetters },
+                maybeDefault(config.includeGeneratedAnnotation) {it.isIncludeGeneratedAnnotation },
+                maybeDefault(config.includeGetters) {it.isIncludeGetters },
+                maybeDefault(config.includeHashcodeAndEquals) {it.isIncludeHashcodeAndEquals },
+                maybeDefault(config.includeJsr303Annotations) {it.isIncludeJsr303Annotations },
+                maybeDefault(config.includeJsr305Annotations) {it.isIncludeJsr305Annotations },
+                maybeDefault(config.includeRequiredPropertiesConstructor) {it.isIncludeRequiredPropertiesConstructor },
+                maybeDefault(config.includeSetters) {it.isIncludeSetters },
+                maybeDefault(config.includeToString) {it.isIncludeToString },
+                maybeDefault(config.includeTypeInfo) {it.isIncludeTypeInfo },
+                maybeDefaultEnum(config.inclusionLevel) {it.inclusionLevel },
+                maybeDefault(config.initializeCollections) {it.isInitializeCollections },
+                maybeDefault(config.outputEncoding) {it.outputEncoding },
+                maybeDefault(config.parcelable) {it.isParcelable },
+                maybeDefaultChar(config.propertyWordDelimiters) {it.propertyWordDelimiters },
+                maybeDefault(config.refFragmentPathDelimiters) {it.refFragmentPathDelimiters },
+                maybeDefault(config.removeOldOutput) {it.isRemoveOldOutput },
+                maybeDefault(config.serializable) {it.isSerializable },
+                maybeDefaultEnum(config.sourceSortOrder) {it.sourceSortOrder },
+                maybeDefaultEnum(config.sourceType) {it.sourceType },
+                maybeDefault(config.targetPackage) {it.targetPackage },
+                maybeDefault(config.targetVersion) {it.targetVersion },
+                maybeDefault(config.timeType) {it.timeType },
+                maybeDefaultArray(config.toStringExcludes) {it.toStringExcludes },
+                maybeDefault(config.useBigDecimals) {it.isUseBigDecimals },
+                maybeDefault(config.useBigIntegers) {it.isUseBigIntegers },
+                maybeDefault(config.useDoubleNumbers) {it.isUseDoubleNumbers },
+                maybeDefault(config.useInnerClassBuilders) {it.isUseInnerClassBuilders },
+                maybeDefault(config.useJodaDates) {it.isUseJodaDates },
+                maybeDefault(config.useJodaLocalDates) {it.isUseJodaLocalDates },
+                maybeDefault(config.useJodaLocalTimes) {it.isUseJodaLocalTimes },
+                maybeDefault(config.useLongIntegers) {it.isUseLongIntegers },
+                maybeDefault(config.useOptionalForGetters) {it.isUseOptionalForGetters },
+                maybeDefault(config.usePrimitives) {it.isUsePrimitives },
+                maybeDefault(config.useJakartaValidation) {it.isUseJakartaValidation },
+                maybeDefault(config.useTitleAsClassname) {it.isUseTitleAsClassname }
+            )
     }
 
     override fun isGenerateBuilders(): Boolean = generateBuilders
