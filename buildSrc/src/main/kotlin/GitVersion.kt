@@ -7,10 +7,10 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 private val regex = Regex("""^v?([0-9.]*(?:-rc\d+)?)-(\d+)-g([0-9a-f]+)(-dirty)?$""")
-private const val defaultVersion = "-.-.--0-g00000000-dirty"
+private const val DEFAULT_VERSION = "-.-.--0-g00000000-dirty"
 
 fun gitVersion(project: Project): String =
-    processVersionString(commandVersion(project) ?: defaultVersion)
+    processVersionString(commandVersion(project) ?: DEFAULT_VERSION)
 
 private fun processVersionString(value: String): String {
     if (!regex.matches(value)) {

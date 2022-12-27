@@ -22,7 +22,7 @@ internal fun applyInternalAndroidAgp3(extension: Js2pExtension, project: Project
     }
 }
 
-private fun <T: BaseVariant> createTasksForVariant(project: Project, extension: Js2pExtension, variant: T): Boolean {
+private fun <T: BaseVariant> createTasksForVariant(project: Project, extension: Js2pExtension, variant: T) {
     val task = createJS2DTask(
         project,
         extension,
@@ -40,7 +40,6 @@ private fun <T: BaseVariant> createTasksForVariant(project: Project, extension: 
         }
     }
     variant.registerJavaGeneratingTask(task.get())
-    return true
 }
 
 private fun obtainAndroidLibraryVariants(project: Project): DomainObjectCollection<LibraryVariant>? =
