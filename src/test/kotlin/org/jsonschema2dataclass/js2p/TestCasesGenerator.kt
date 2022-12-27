@@ -85,7 +85,7 @@ fun createBuildFilesSingleSimple(testProjectDir: Path, shouldCopyAddressJSON: Bo
             |jsonSchema2Pojo{
             |  executions {
             |    com {
-            |      targetPackage.set("com.example")
+            |      klass.targetPackage.set("com.example")
             |    }
             |  }
             |}
@@ -108,10 +108,10 @@ fun createBuildFilesMultiple(testProjectDir: Path, shouldCopyAddressJSON: Boolea
             |   targetDirectoryPrefix = project.file("${'$'}{buildDir}/$TARGET_FOLDER_BASE_CUSTOM")
             |   executions {
             |     com{
-            |       targetPackage = "com.example"
+            |       klass.targetPackage = "com.example"
             |     }
             |     org{
-            |       targetPackage = "org.example"
+            |       klass.targetPackage = "org.example"
             |     }
             |  }
             |}
@@ -129,8 +129,8 @@ fun createBuildFilesSingle(testProjectDir: Path, shouldCopyAddressJSON: Boolean)
          |jsonSchema2Pojo {
          |  executions {
          |    com {
-         |      source.setFrom files ("${'$'}{project.rootDir}/src/main/resources/json")
-         |      targetPackage = "com.example"
+         |      io.source.setFrom files ("${'$'}{project.rootDir}/src/main/resources/json")
+         |      klass.targetPackage = "com.example"
          |    }
          |  }
          |}
@@ -148,8 +148,8 @@ fun createBuildFilesLazyInit(testProjectDir: Path, shouldCopyAddressJSON: Boolea
          |jsonSchema2Pojo {
          |  executions {
          |    com {
-         |      source.setFrom files ("${'$'}{project.rootDir}/src/main/resources/json")
-         |      targetPackage = "com.example"
+         |      io.source.setFrom files ("${'$'}{project.rootDir}/src/main/resources/json")
+         |      klass.targetPackage = "com.example"
          |    }
          |  }
          |}

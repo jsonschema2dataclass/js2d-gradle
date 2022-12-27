@@ -7,8 +7,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 
 abstract class Js2pExtension{
-
-    @get: Optional
     abstract val executions: NamedDomainObjectContainer<Js2pConfiguration>
 
     @get: PathSensitive(PathSensitivity.RELATIVE)
