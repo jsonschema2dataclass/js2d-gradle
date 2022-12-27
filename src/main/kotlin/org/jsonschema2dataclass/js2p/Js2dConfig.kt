@@ -8,7 +8,6 @@ import java.io.File
 import java.io.FileFilter
 import java.net.URL
 import java.util.function.Function
-import kotlin.reflect.KFunction1
 
 internal data class Js2dConfig(
     private val targetDirectory: File,
@@ -82,7 +81,7 @@ internal data class Js2dConfig(
 
         private fun <E : Enum<E>?> fromEnum(provider: Provider<String>, enumClass: Class<E>): E? {
             val value = provider.orNull
-            return if (value == null || value.isEmpty()) {
+            return if (value.isNullOrEmpty()) {
                 null
             } else {
                 java.lang.Enum.valueOf(
@@ -93,7 +92,7 @@ internal data class Js2dConfig(
         }
 
         private fun <C> findClass(className: String?): Class<out C>? {
-            if (className == null || className.isEmpty()) {
+            if (className.isNullOrEmpty()) {
                 return null
             }
             return try {
@@ -113,7 +112,7 @@ internal data class Js2dConfig(
             vFunction: Function<DefaultGenerationConfig, CharArray>
         ): CharArray {
             val value = provider.orNull
-            return if (value == null || value.isEmpty()) {
+            return if (value.isNullOrEmpty()) {
                 vFunction.apply(defaultConfiguration)
             } else {
                 value.toCharArray()
