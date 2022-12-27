@@ -25,7 +25,7 @@ internal abstract class Js2pGenerationTask : DefaultTask() {
     fun action() {
         val config = configuration ?: throw GradleException("Invalid task setup")
 
-        val js2pConfig = Js2dConfig.fromConfig(config, targetDirectory.asFile.get())
+        val js2pConfig = Js2dConfig.fromConfig(targetDirectory, config)
         logger.trace("Using this configuration:\n{}", js2pConfig)
         Jsonschema2Pojo.generate(js2pConfig, GradleRuleLogWrapper(logger))
     }
