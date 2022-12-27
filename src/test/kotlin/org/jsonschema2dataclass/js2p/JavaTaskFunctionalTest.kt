@@ -61,26 +61,6 @@ class JavaTaskFunctionalTest {
     @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
-    @DisplayName("single execution (inherited)")
-    fun singleExtensionInherited(gradleVersion: String?) {
-        val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
-
-        createBuildFilesSingleSourceInherit(testProjectDir, true)
-
-        val result = executeRunner(gradleVersion, testProjectDir)
-
-        assertEquals(TaskOutcome.SUCCESS, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
-        addressJavaExists(
-            testProjectDir,
-            TARGET_FOLDER_DEFAULT,
-            EXECUTION_NAME_COM,
-            PACKAGE_COM_EXAMPLE
-        )
-    }
-
-    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
-    @NullSource
-    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
     @DisplayName("single extension simple")
     fun singleExtensionSimple(gradleVersion: String?) {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")

@@ -141,26 +141,6 @@ fun createBuildFilesSingle(testProjectDir: Path, shouldCopyAddressJSON: Boolean)
 /**
  * Single with execution, inherited
  */
-fun createBuildFilesSingleSourceInherit(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
-    writeBuildFiles(
-        testProjectDir, shouldCopyAddressJSON,
-        """
-         |jsonSchema2Pojo {
-         |  source.setFrom files ("${'$'}{project.rootDir}/src/main/resources/json")
-         |  executions {
-         |    com {
-         |      targetPackage = "com.example"
-         |    }
-         |  }
-         |}
-        """.trimMargin()
-    )
-    Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
-}
-
-/**
- * Single with execution, inherited
- */
 fun createBuildFilesLazyInit(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
     writeBuildFiles(
         testProjectDir, shouldCopyAddressJSON,
