@@ -12,7 +12,7 @@ import java.util.stream.Stream
 internal const val COLON_TASK_NAME = ":$TASK_NAME"
 internal const val COLON_TASK_NAME_FOR_COM = ":${TASK_NAME}ConfigCom"
 internal const val COLON_TASK_NAME_FOR_ORG = ":${TASK_NAME}ConfigOrg"
-private val GRADLE_RELEASES = listOf<String>(
+private val gradleReleases = listOf<String>(
     "7.6", "7.5.1",   // 7.5 - 7.6
     "7.4.2", "7.3.3", "7.2", "7.1.1", "7.0.2", // 7.0 - 7.4
     "6.9.1", "6.8.3", "6.7.1", "6.6.1", // 6.6 - 6.9
@@ -87,7 +87,7 @@ class TestGradleVersionHolder {
             }
 */
 
-            return GRADLE_RELEASES.stream()
+            return gradleReleases.stream()
                 .filter{
                     GradleVersion.current().version != it // don't test on the same gradle version twice
                 }
