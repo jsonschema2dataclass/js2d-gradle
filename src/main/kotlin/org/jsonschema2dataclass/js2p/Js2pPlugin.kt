@@ -6,10 +6,6 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.logging.Logger
-import org.gradle.api.provider.MapProperty
-import org.gradle.api.provider.Property
-import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.apply
 import org.gradle.util.GradleVersion
@@ -24,10 +20,6 @@ internal const val TARGET_FOLDER_BASE = "generated/sources/js2d"
 internal const val TASK_NAME = "generateJsonSchema2DataClass"
 internal const val PLUGIN_ID = "org.jsonschema2dataclass"
 private val configurationNameRegex = "[a-z][A-Za-z0-9_]*".toRegex()
-private const val DEPRECATION_PROPERTY_USAGE_MESSAGE =
-    "Using property settings from the extension $EXTENSION_NAME is deprecated and will be removed " +
-            "in plugin $PLUGIN_ID version 6.x. " +
-            "Please, move all properties to defined executions."
 
 private const val DEPRECATION_NO_EXECUTION =
     "No executions defined, behavior to with default execution has been deprecated and removed " +
@@ -118,7 +110,6 @@ internal fun createJS2DTask(
             project,
             androidVariant,
             configuration,
-            extension,
             configuration.source.filter { it.exists() },
             targetPath,
             defaultSourcePath,
@@ -138,7 +129,6 @@ private fun createJS2DTaskExecution(
     project: Project,
     androidVariant: String?,
     configuration: Js2pConfiguration,
-    pluginExtension: Js2pExtension,
     source: FileCollection,
     targetPath: DirectoryProperty,
     defaultSourcePath: Path?,
@@ -146,7 +136,7 @@ private fun createJS2DTaskExecution(
 ): TaskProvider<out Js2pGenerationTask> {
     val (taskName, taskDescription) = createTaskNameDescription(androidVariant, configuration.name)
 
-    copyConfiguration(project, pluginExtension, configuration, excludeGeneratedOption, defaultSourcePath)
+    copyConfiguration(configuration, excludeGeneratedOption, defaultSourcePath)
     return project.tasks.register(taskName, Js2pGenerationTask::class.java) {
         this.description = taskDescription
         this.group = "Build"
@@ -185,130 +175,17 @@ private fun verifyConfigurationName(configurationName: String) {
     }
 }
 
-private fun <V> copyProperty(
-    logger: Logger,
-    left: Property<V>,
-    right: Property<V>
-) {
-    if (!left.isPresent && right.isPresent) {
-        left.set(right)
-        logger.warn(DEPRECATION_PROPERTY_USAGE_MESSAGE)
-    }
-}
-
-private fun <V> copyProperty(
-    logger: Logger,
-    left: SetProperty<V>,
-    right: SetProperty<V>
-) {
-    if (!left.isPresent && right.isPresent) {
-        left.set(right)
-        logger.warn(DEPRECATION_PROPERTY_USAGE_MESSAGE)
-    }
-}
-
-private fun <K, V> copyProperty(
-    logger: Logger,
-    left: MapProperty<K, V>,
-    right: MapProperty<K, V>
-) {
-    if (!left.isPresent && right.isPresent) {
-        left.set(right)
-        logger.warn(DEPRECATION_PROPERTY_USAGE_MESSAGE)
-    }
-}
-
 internal fun copyConfiguration(
-    project: Project,
-    extension: Js2pExtension,
     configuration: Js2pConfiguration,
     excludeGeneratedOption: Boolean,
     defaultSourcePath: Path?
 ) {
     if (configuration.source.isEmpty) {
-        if (extension.source.isEmpty) {
             configuration.source.setFrom(defaultSourcePath)
-        } else {
-            configuration.source.setFrom(extension.source)
-            project.logger.warn(DEPRECATION_PROPERTY_USAGE_MESSAGE)
-        }
     }
-    copyProperty(project.logger, configuration.annotationStyle, extension.annotationStyle)
-    copyProperty(project.logger, configuration.classNamePrefix, extension.classNamePrefix)
-    copyProperty(project.logger, configuration.classNameSuffix, extension.classNameSuffix)
-    copyProperty(project.logger, configuration.customAnnotator, extension.customAnnotator)
-    copyProperty(project.logger, configuration.customDatePattern, extension.customDatePattern)
-    copyProperty(project.logger, configuration.customDateTimePattern, extension.customDateTimePattern)
-    copyProperty(project.logger, configuration.customRuleFactory, extension.customRuleFactory)
-    copyProperty(project.logger, configuration.customTimePattern, extension.customTimePattern)
-    copyProperty(project.logger, configuration.dateTimeType, extension.dateTimeType)
-    copyProperty(project.logger, configuration.dateType, extension.dateType)
-    copyProperty(project.logger, configuration.fileExtensions, extension.fileExtensions)
-    copyProperty(project.logger, configuration.fileFilter, extension.fileFilter)
-    copyProperty(project.logger, configuration.formatDateTimes, extension.formatDateTimes)
-    copyProperty(project.logger, configuration.formatDates, extension.formatDates)
-    copyProperty(project.logger, configuration.formatTimes, extension.formatTimes)
-    copyProperty(project.logger, configuration.formatTypeMapping, extension.formatTypeMapping)
-    copyProperty(project.logger, configuration.generateBuilders, extension.generateBuilders)
-    copyProperty(project.logger, configuration.includeAdditionalProperties, extension.includeAdditionalProperties)
-    copyProperty(
-        project.logger,
-        configuration.includeAllPropertiesConstructor,
-        extension.includeAllPropertiesConstructor
-    )
-    copyProperty(
-        project.logger,
-        configuration.includeConstructorPropertiesAnnotation,
-        extension.includeConstructorPropertiesAnnotation
-    )
-    copyProperty(project.logger, configuration.includeConstructors, extension.includeConstructors)
-    copyProperty(project.logger, configuration.includeCopyConstructor, extension.includeCopyConstructor)
-    copyProperty(project.logger, configuration.includeDynamicAccessors, extension.includeDynamicAccessors)
-    copyProperty(project.logger, configuration.includeDynamicBuilders, extension.includeDynamicBuilders)
-    copyProperty(project.logger, configuration.includeDynamicGetters, extension.includeDynamicGetters)
-    copyProperty(project.logger, configuration.includeDynamicSetters, extension.includeDynamicSetters)
     if (excludeGeneratedOption) {
-        // Temporary fixes #71 and upstream issue #1212 (used Generated annotation is not compatible with AGP 7+)
+        // Temporary fixes #71 and upstream issue #1212 by overriding Generated annotation.
+        // Java 1.9+ Generated annotation is not compatible with AGP 7+
         configuration.includeGeneratedAnnotation.set(false)
-    } else {
-        copyProperty(project.logger, configuration.includeGeneratedAnnotation, extension.includeGeneratedAnnotation)
     }
-    copyProperty(project.logger, configuration.includeGetters, extension.includeGetters)
-    copyProperty(project.logger, configuration.includeHashcodeAndEquals, extension.includeHashcodeAndEquals)
-    copyProperty(project.logger, configuration.includeJsr303Annotations, extension.includeJsr303Annotations)
-    copyProperty(project.logger, configuration.includeJsr305Annotations, extension.includeJsr305Annotations)
-    copyProperty(
-        project.logger,
-        configuration.includeRequiredPropertiesConstructor,
-        extension.includeRequiredPropertiesConstructor
-    )
-    copyProperty(project.logger, configuration.includeSetters, extension.includeSetters)
-    copyProperty(project.logger, configuration.includeToString, extension.includeToString)
-    copyProperty(project.logger, configuration.includeTypeInfo, extension.includeTypeInfo)
-    copyProperty(project.logger, configuration.inclusionLevel, extension.inclusionLevel)
-    copyProperty(project.logger, configuration.initializeCollections, extension.initializeCollections)
-    copyProperty(project.logger, configuration.outputEncoding, extension.outputEncoding)
-    copyProperty(project.logger, configuration.parcelable, extension.parcelable)
-    copyProperty(project.logger, configuration.propertyWordDelimiters, extension.propertyWordDelimiters)
-    copyProperty(project.logger, configuration.refFragmentPathDelimiters, extension.refFragmentPathDelimiters)
-    copyProperty(project.logger, configuration.removeOldOutput, extension.removeOldOutput)
-    copyProperty(project.logger, configuration.serializable, extension.serializable)
-    copyProperty(project.logger, configuration.sourceSortOrder, extension.sourceSortOrder)
-    copyProperty(project.logger, configuration.sourceType, extension.sourceType)
-    copyProperty(project.logger, configuration.targetPackage, extension.targetPackage)
-    copyProperty(project.logger, configuration.targetVersion, extension.targetVersion)
-    copyProperty(project.logger, configuration.timeType, extension.timeType)
-    copyProperty(project.logger, configuration.toStringExcludes, extension.toStringExcludes)
-    copyProperty(project.logger, configuration.useBigDecimals, extension.useBigDecimals)
-    copyProperty(project.logger, configuration.useBigIntegers, extension.useBigIntegers)
-    copyProperty(project.logger, configuration.useDoubleNumbers, extension.useDoubleNumbers)
-    copyProperty(project.logger, configuration.useInnerClassBuilders, extension.useInnerClassBuilders)
-    copyProperty(project.logger, configuration.useJodaDates, extension.useJodaDates)
-    copyProperty(project.logger, configuration.useJodaLocalDates, extension.useJodaLocalDates)
-    copyProperty(project.logger, configuration.useJodaLocalTimes, extension.useJodaLocalTimes)
-    copyProperty(project.logger, configuration.useLongIntegers, extension.useLongIntegers)
-    copyProperty(project.logger, configuration.useOptionalForGetters, extension.useOptionalForGetters)
-    copyProperty(project.logger, configuration.usePrimitives, extension.usePrimitives)
-    copyProperty(project.logger, configuration.useTitleAsClassname, extension.useTitleAsClassname)
-    copyProperty(project.logger, configuration.useJakartaValidation, extension.useJakartaValidation)
 }

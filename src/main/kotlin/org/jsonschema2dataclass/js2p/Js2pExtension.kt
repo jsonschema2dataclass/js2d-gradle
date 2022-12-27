@@ -5,11 +5,8 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import javax.inject.Inject
 
-abstract class Js2pExtension @Inject constructor(
-    name: String = "not used",
-) : Js2pConfiguration(name) {
+abstract class Js2pExtension{
 
     @get: Optional
     abstract val executions: NamedDomainObjectContainer<Js2pConfiguration>
