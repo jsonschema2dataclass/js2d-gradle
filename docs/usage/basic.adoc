@@ -22,7 +22,7 @@ Execution name `main` is an arbitrary one and any other supported name can be ch
 Execution name must follow the regular expression `[a-z][A-Za-z0-9_]*` to generate .
 Execution section might contain as many execution as project needs.
 
-Inside any execution a developer might override any parameter as per their needs as described in xref:parameters.adoc[parameters] section.
+Inside any execution a developer might override any parameter as per their needs as described in xref:5.0/parameters.adoc[parameters] section.
 
 [options=header,cols="1,5"]
 |=====

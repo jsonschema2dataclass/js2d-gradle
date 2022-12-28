@@ -51,6 +51,6 @@ https://github.com/networknt/json-schema-validator[by NetworkNT].
 
 Usage and migration documentation can be read in a separate documents.
 
-* xref:docs/usage/5.0/basic.adoc[Basic usage]
-* xref:docs/usage/5.0/parameters.adoc[Parameters]
+* xref:docs/usage/basic.adoc[Basic usage]
+* xref:docs/usage/parameters_5.adoc[Parameters]
 * xref:docs/migration/migration_5.adoc[Migration from 4.x to 5.x]
