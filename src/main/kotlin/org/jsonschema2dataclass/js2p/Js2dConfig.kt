@@ -35,152 +35,237 @@ internal data class Js2dConfig(
             )
     }
 
-    override fun isGenerateBuilders(): Boolean = methods.generateBuilders
-    override fun isIncludeTypeInfo(): Boolean = klass.includeTypeInfo
-    override fun isIncludeConstructorPropertiesAnnotation(): Boolean =
-        constructor.includeConstructorPropertiesAnnotation
-    override fun isUsePrimitives(): Boolean = fields.usePrimitives
-    override fun getSource(): Iterator<URL> = io.sourceFiles.iterator()
-    override fun getTargetDirectory(): File = targetDirectory
-    override fun getTargetPackage(): String? = klass.targetPackage
-    override fun getPropertyWordDelimiters(): CharArray = klass.propertyWordDelimiters.toCharArray()
-    override fun isUseLongIntegers(): Boolean = fields.useLongIntegers
-    override fun isUseBigIntegers(): Boolean = fields.useBigIntegers
-    override fun isUseDoubleNumbers(): Boolean = fields.useDoubleNumbers
-    override fun isUseBigDecimals(): Boolean = fields.useBigDecimals
-    override fun isIncludeHashcodeAndEquals(): Boolean = methods.includeHashcodeAndEquals
-    override fun isIncludeToString(): Boolean = methods.includeToString
-    override fun getToStringExcludes(): Array<String> = methods.toStringExcludes.toTypedArray()
     override fun getAnnotationStyle(): AnnotationStyle = klass.annotationStyle
-    override fun isUseTitleAsClassname(): Boolean = klass.useTitleAsClassname
-    override fun getInclusionLevel(): InclusionLevel = klass.inclusionLevel
-    override fun getCustomAnnotator(): Class<out Annotator> = klass.customAnnotator
-    override fun getCustomRuleFactory(): Class<out RuleFactory> = klass.customRuleFactory
-    override fun isIncludeJsr303Annotations(): Boolean = methods.includeJsr303Annotations
-    override fun isIncludeJsr305Annotations(): Boolean = methods.includeJsr305Annotations
-    override fun isUseOptionalForGetters(): Boolean = methods.useOptionalForGetters
-    override fun getSourceType(): SourceType = io.sourceType
-    override fun isRemoveOldOutput(): Boolean = io.removeOldOutput
-    override fun getOutputEncoding(): String? = io.outputEncoding
-    override fun isUseJodaDates(): Boolean = dateTime.useJodaDates
-    override fun isUseJodaLocalDates(): Boolean = dateTime.useJodaLocalDates
-    override fun isUseJodaLocalTimes(): Boolean = dateTime.useJodaLocalTimes
-    override fun isParcelable(): Boolean = constructor.parcelable
-    override fun isSerializable(): Boolean = klass.serializable
-    override fun getFileFilter(): FileFilter = io.fileFilter
-    override fun isInitializeCollections(): Boolean = fields.initializeCollections
-    override fun getClassNamePrefix(): String? = klass.classNamePrefix
-    override fun getClassNameSuffix(): String? = klass.classNameSuffix
-    override fun getFileExtensions(): Array<String> = io.fileExtensions.toTypedArray()
-    override fun isIncludeConstructors(): Boolean = constructor.includeConstructors
-    override fun isConstructorsRequiredPropertiesOnly(): Boolean = constructor.constructorsRequiredPropertiesOnly
-    override fun isIncludeRequiredPropertiesConstructor(): Boolean = constructor.includeRequiredPropertiesConstructor
-    override fun isIncludeAllPropertiesConstructor(): Boolean = constructor.includeAllPropertiesConstructor
-    override fun isIncludeCopyConstructor(): Boolean = constructor.includeCopyConstructor
-    override fun isIncludeAdditionalProperties(): Boolean = methods.includeAdditionalProperties
-    override fun isIncludeGetters(): Boolean = methods.includeGetters
-    override fun isIncludeSetters(): Boolean = methods.includeSetters
-    override fun getTargetVersion(): String? = io.targetJavaVersion
-    override fun isIncludeDynamicAccessors(): Boolean = methods.includeDynamicAccessors
-    override fun isIncludeDynamicGetters(): Boolean = methods.includeDynamicGetters
-    override fun isIncludeDynamicSetters(): Boolean = methods.includeDynamicSetters
-    override fun isIncludeDynamicBuilders(): Boolean = methods.includeDynamicBuilders
+    override fun getClassNamePrefix(): String? = klass.namePrefix
+    override fun getClassNameSuffix(): String? = klass.nameSuffix
+    override fun getCustomAnnotator(): Class<out Annotator> = klass.customAnnotatorClass
+    override fun getCustomDatePattern(): String? = dateTime.datePattern
+    override fun getCustomDateTimePattern(): String? = dateTime.dateTimePattern
+    override fun getCustomRuleFactory(): Class<out RuleFactory> = klass.customRuleFactoryClass
+    override fun getCustomTimePattern(): String? = dateTime.timePattern
     override fun getDateTimeType(): String? = dateTime.dateTimeType
     override fun getDateType(): String? = dateTime.dateType
-    override fun getTimeType(): String? = dateTime.timeType
-    override fun isFormatDates(): Boolean = dateTime.formatDates
-    override fun isFormatTimes(): Boolean = dateTime.formatTimes
-    override fun isFormatDateTimes(): Boolean = dateTime.formatDateTimes
-    override fun getCustomDatePattern(): String? = dateTime.customDatePattern
-    override fun getCustomTimePattern(): String? = dateTime.customTimePattern
-    override fun getCustomDateTimePattern(): String? = dateTime.customDateTimePattern
-    override fun getRefFragmentPathDelimiters(): String? = io.refFragmentPathDelimiters
-    override fun getSourceSortOrder(): SourceSortOrder = io.sourceSortOrder
+    override fun getFileExtensions(): Array<String> = io.fileExtensions.toTypedArray()
+    override fun getFileFilter(): FileFilter = io.fileFilter
     override fun getFormatTypeMapping(): Map<String, String> = fields.formatTypeMapping
-    override fun isIncludeGeneratedAnnotation(): Boolean = klass.includeGeneratedAnnotation
-    override fun isUseJakartaValidation(): Boolean = methods.useJakartaValidation
+    override fun getInclusionLevel(): InclusionLevel = klass.jackson2InclusionLevel
+    override fun getOutputEncoding(): String? = io.outputEncoding
+    override fun getPropertyWordDelimiters(): CharArray = io.delimitersPropertyWord.toCharArray()
+    override fun getRefFragmentPathDelimiters(): String? = io.delimitersRefFragmentPath
+    override fun getSource(): Iterator<URL> = io.sourceFiles.iterator()
+    override fun getSourceSortOrder(): SourceSortOrder = io.sourceSortOrder
+    override fun getSourceType(): SourceType = io.sourceType
+    override fun getTargetDirectory(): File = targetDirectory
+    override fun getTargetPackage(): String? = klass.targetPackage
+    override fun getTargetVersion(): String? = io.targetJavaVersion
+    override fun getTimeType(): String? = dateTime.timeType
+    override fun getToStringExcludes(): Array<String> = methods.toStringExcludes.toTypedArray()
+    override fun isConstructorsRequiredPropertiesOnly(): Boolean = constructor.requiredPropertiesOnly
+    override fun isFormatDateTimes(): Boolean = dateTime.dateTimeFormat
+    override fun isFormatDates(): Boolean = dateTime.dateFormat
+    override fun isFormatTimes(): Boolean = dateTime.timeFormat
+    override fun isGenerateBuilders(): Boolean = methods.builders
+    override fun isIncludeAdditionalProperties(): Boolean = methods.additionalProperties
+    override fun isIncludeAllPropertiesConstructor(): Boolean = constructor.allProperties
+    override fun isIncludeConstructorPropertiesAnnotation(): Boolean = constructor.annotateConstructorProperties
+    override fun isIncludeConstructors(): Boolean = constructor.generate
+    override fun isIncludeCopyConstructor(): Boolean = constructor.copy
+    override fun isIncludeDynamicAccessors(): Boolean = methods.accessorsDynamic
+    override fun isIncludeDynamicBuilders(): Boolean = methods.buildersDynamic
+    override fun isIncludeDynamicGetters(): Boolean = methods.gettersDynamic
+    override fun isIncludeDynamicSetters(): Boolean = methods.includeDynamicSetters
+    override fun isIncludeGeneratedAnnotation(): Boolean = klass.annotateGenerated
+    override fun isIncludeGetters(): Boolean = methods.getters
+    override fun isIncludeHashcodeAndEquals(): Boolean = methods.hashcodeAndEquals
+    override fun isIncludeJsr303Annotations(): Boolean = methods.annotateJsr303
+    override fun isIncludeJsr305Annotations(): Boolean = methods.annotateJsr305
+    override fun isIncludeRequiredPropertiesConstructor(): Boolean = constructor.requiredProperties
+    override fun isIncludeSetters(): Boolean = methods.setters
+    override fun isIncludeToString(): Boolean = methods.toStringMethod
+    override fun isIncludeTypeInfo(): Boolean = klass.jackson2IncludeTypeInfo
+    override fun isInitializeCollections(): Boolean = fields.initializeCollections
+    override fun isParcelable(): Boolean = constructor.parcelable
+    override fun isRemoveOldOutput(): Boolean = false
+    override fun isSerializable(): Boolean = klass.annotateSerializable
+    override fun isUseBigDecimals(): Boolean = fields.floatUseBigDecimal
+    override fun isUseBigIntegers(): Boolean = fields.integerUseBigInteger
+    override fun isUseDoubleNumbers(): Boolean = fields.floatUseDouble
+    override fun isUseInnerClassBuilders(): Boolean = methods.buildersInnerClass
+    override fun isUseJakartaValidation(): Boolean = methods.annotateJakartaValidation
+    override fun isUseJodaDates(): Boolean = dateTime.jodaDate
+    override fun isUseJodaLocalDates(): Boolean = dateTime.jodaLocalDate
+    override fun isUseJodaLocalTimes(): Boolean = dateTime.jodaLocalTime
+    override fun isUseLongIntegers(): Boolean = fields.integerUseLong
+    override fun isUseOptionalForGetters(): Boolean = methods.gettersUseOptional
+    override fun isUsePrimitives(): Boolean = fields.usePrimitives
+    override fun isUseTitleAsClassname(): Boolean = klass.nameUseTitle
 }
 
 internal data class Js2pConfigIO(
     val sourceFiles: List<URL>,
+    val delimitersPropertyWord: String,
+    val delimitersRefFragmentPath: String?,
     val fileExtensions: Set<String>,
     val fileFilter: FileFilter,
     val outputEncoding: String?,
-    val refFragmentPathDelimiters: String?,
-    val removeOldOutput: Boolean,
     val sourceSortOrder: SourceSortOrder,
     val sourceType: SourceType,
     val targetJavaVersion: String?,
 )
 
 internal data class Js2pConfigClass(
+    val annotateGenerated: Boolean,
+    val annotateSerializable: Boolean,
     val annotationStyle: AnnotationStyle,
-    val classNamePrefix: String?,
-    val classNameSuffix: String?,
-    val customAnnotator: Class<out Annotator>,
-    val customRuleFactory: Class<out RuleFactory>,
-    val includeGeneratedAnnotation: Boolean,
-    val includeTypeInfo: Boolean,
-    val inclusionLevel: InclusionLevel,
-    val propertyWordDelimiters: String,
-    val serializable: Boolean,
+    val customAnnotatorClass: Class<out Annotator>,
+    val customRuleFactoryClass: Class<out RuleFactory>,
+    val jackson2IncludeTypeInfo: Boolean,
+    val jackson2InclusionLevel: InclusionLevel,
+    val namePrefix: String?,
+    val nameSuffix: String?,
+    val nameUseTitle: Boolean,
     val targetPackage: String?,
-    val useTitleAsClassname: Boolean
 )
 
 internal data class Js2pConfigConstructor(
-    val constructorsRequiredPropertiesOnly: Boolean,
-    val includeAllPropertiesConstructor: Boolean,
-    val includeConstructorPropertiesAnnotation: Boolean,
-    val includeConstructors: Boolean,
-    val includeCopyConstructor: Boolean,
-    val includeRequiredPropertiesConstructor: Boolean,
+    val allProperties: Boolean,
+    val annotateConstructorProperties: Boolean,
+    val copy: Boolean,
+    val generate: Boolean,
     val parcelable: Boolean,
-    val useInnerClassBuilders: Boolean,
+    val requiredProperties: Boolean,
+    val requiredPropertiesOnly: Boolean,
 )
 
 internal data class Js2pConfigMethod(
-    val generateBuilders: Boolean,
-    val includeAdditionalProperties: Boolean,
-    val includeDynamicAccessors: Boolean,
-    val includeDynamicBuilders: Boolean,
-    val includeDynamicGetters: Boolean,
+    val accessorsDynamic: Boolean,
+    val additionalProperties: Boolean,
+    val annotateJakartaValidation: Boolean,
+    val annotateJsr303: Boolean,
+    val annotateJsr305: Boolean,
+    val builders: Boolean,
+    val buildersDynamic: Boolean,
+    val buildersInnerClass: Boolean,
+    val getters: Boolean,
+    val gettersDynamic: Boolean,
+    val gettersUseOptional: Boolean,
+    val hashcodeAndEquals: Boolean,
     val includeDynamicSetters: Boolean,
-    val includeGetters: Boolean,
-    val includeHashcodeAndEquals: Boolean,
-    val includeJsr303Annotations: Boolean,
-    val includeJsr305Annotations: Boolean,
-    val includeSetters: Boolean,
-    val includeToString: Boolean,
+    val setters: Boolean,
     val toStringExcludes: Set<String>,
-    val useJakartaValidation: Boolean,
-    val useOptionalForGetters: Boolean,
+    val toStringMethod: Boolean,
 )
 
 internal data class Js2pConfigFields(
+    val floatUseBigDecimal: Boolean,
+    val floatUseDouble: Boolean,
     val formatTypeMapping: Map<String, String>,
     val initializeCollections: Boolean,
-    val useBigDecimals: Boolean,
-    val useBigIntegers: Boolean,
-    val useDoubleNumbers: Boolean,
-    val useLongIntegers: Boolean,
+    val integerUseBigInteger: Boolean,
+    val integerUseLong: Boolean,
     val usePrimitives: Boolean,
 )
 
 internal data class Js2pConfigDateTime(
-    val customDatePattern: String?,
-    val customDateTimePattern: String?,
-    val customTimePattern: String?,
+    val dateFormat: Boolean,
+    val datePattern: String?,
+    val dateTimeFormat: Boolean,
+    val dateTimePattern: String?,
     val dateTimeType: String?,
     val dateType: String?,
-    val formatDateTimes: Boolean,
-    val formatDates: Boolean,
-    val formatTimes: Boolean,
+    val jodaDate: Boolean,
+    val jodaLocalDate: Boolean,
+    val jodaLocalTime: Boolean,
+    val timeFormat: Boolean,
+    val timePattern: String?,
     val timeType: String?,
-    val useJodaDates: Boolean,
-    val useJodaLocalDates: Boolean,
-    val useJodaLocalTimes: Boolean,
 )
+
+private fun convert(io: PluginConfigJs2pIO): Js2pConfigIO =
+    Js2pConfigIO(
+        io.source.map { it.toURI().toURL() },
+        maybeDefaultChar(io.delimitersPropertyWord) { it.propertyWordDelimiters },
+        maybeDefault(io.delimitersRefFragmentPath) { it.refFragmentPathDelimiters },
+        maybeDefaultSet(io.fileExtensions) { it.fileExtensions },
+        maybeDefault(io.fileFilter) { it.fileFilter },
+        maybeDefault(io.outputEncoding) { it.outputEncoding },
+        maybeDefaultEnum(io.sourceSortOrder) { it.sourceSortOrder },
+        maybeDefaultEnum(io.sourceType) { it.sourceType },
+        maybeDefault(io.targetJavaVersion) { it.targetVersion },
+    )
+
+private fun convert(klass: PluginConfigJs2pClass): Js2pConfigClass =
+    Js2pConfigClass(
+        maybeDefault(klass.annotateGenerated) { it.isIncludeGeneratedAnnotation },
+        maybeDefault(klass.annotateSerializable) { it.isSerializable },
+        maybeDefaultEnum(klass.annotationStyle) { it.annotationStyle },
+        maybeDefaultClass(klass.customAnnotatorClass) { it.customAnnotator },
+        maybeDefaultClass(klass.customRuleFactoryClass) { it.customRuleFactory },
+        maybeDefault(klass.jackson2IncludeTypeInfo) { it.isIncludeTypeInfo },
+        maybeDefaultEnum(klass.jackson2InclusionLevel) { it.inclusionLevel },
+        maybeDefault(klass.namePrefix) { it.classNamePrefix },
+        maybeDefault(klass.nameSuffix) { it.classNameSuffix },
+        maybeDefault(klass.nameUseTitle) { it.isUseTitleAsClassname },
+        maybeDefault(klass.targetPackage) { it.targetPackage },
+    )
+
+private fun convert(constructor: PluginConfigJs2pConstructor): Js2pConfigConstructor =
+    Js2pConfigConstructor(
+        maybeDefault(constructor.allProperties) { it.isIncludeAllPropertiesConstructor },
+        maybeDefault(constructor.annotateConstructorProperties) { it.isIncludeConstructorPropertiesAnnotation },
+        maybeDefault(constructor.copy) { it.isIncludeCopyConstructor },
+        maybeDefault(constructor.generate) { it.isIncludeConstructors },
+        maybeDefault(constructor.parcelable) { it.isParcelable },
+        maybeDefault(constructor.requiredProperties) { it.isIncludeRequiredPropertiesConstructor },
+        maybeDefault(constructor.requiredPropertiesOnly) { it.isConstructorsRequiredPropertiesOnly },
+    )
+
+private fun convert(methods: PluginConfigJs2pMethod): Js2pConfigMethod =
+    Js2pConfigMethod(
+        maybeDefault(methods.accessorsDynamic) { it.isIncludeDynamicAccessors },
+        maybeDefault(methods.additionalProperties) { it.isIncludeAdditionalProperties },
+        maybeDefault(methods.annotateJakartaValidation) { it.isUseJakartaValidation },
+        maybeDefault(methods.annotateJsr303) { it.isIncludeJsr303Annotations },
+        maybeDefault(methods.annotateJsr305) { it.isIncludeJsr305Annotations },
+        maybeDefault(methods.builders) { it.isGenerateBuilders },
+        maybeDefault(methods.buildersDynamic) { it.isIncludeDynamicBuilders },
+        maybeDefault(methods.buildersInnerClass) { it.isUseInnerClassBuilders },
+        maybeDefault(methods.getters) { it.isIncludeGetters },
+        maybeDefault(methods.gettersDynamic) { it.isIncludeDynamicGetters },
+        maybeDefault(methods.gettersUseOptional) { it.isUseOptionalForGetters },
+        maybeDefault(methods.hashcodeAndEquals) { it.isIncludeHashcodeAndEquals },
+        maybeDefault(methods.setters) { it.isIncludeSetters },
+        maybeDefault(methods.settersDynamic) { it.isIncludeDynamicSetters },
+        maybeDefaultSet(methods.toStringExcludes) { it.toStringExcludes },
+        maybeDefault(methods.toStringMethod) { it.isIncludeToString },
+        )
+
+private fun convert(fields: PluginConfigJs2pField): Js2pConfigFields =
+    Js2pConfigFields(
+        maybeDefault(fields.floatUseBigDecimal) { it.isUseBigDecimals },
+        maybeDefault(fields.floatUseDouble) { it.isUseDoubleNumbers },
+        maybeDefault(fields.formatTypeMapping) { it.formatTypeMapping },
+        maybeDefault(fields.initializeCollections) { it.isInitializeCollections },
+        maybeDefault(fields.integerUseBigInteger) { it.isUseBigIntegers },
+        maybeDefault(fields.integerUseLong) { it.isUseLongIntegers },
+        maybeDefault(fields.usePrimitives) { it.isUsePrimitives },
+        )
+
+private fun convert(dateTime: PluginConfigJs2pDateTime): Js2pConfigDateTime =
+    Js2pConfigDateTime(
+        maybeDefault(dateTime.dateFormat) { it.isFormatDates },
+        maybeDefault(dateTime.datePattern) { it.customDatePattern },
+        maybeDefault(dateTime.dateTimeFormat) { it.isFormatDateTimes },
+        maybeDefault(dateTime.dateTimePattern) { it.customDateTimePattern },
+        maybeDefault(dateTime.dateTimeType) { it.dateTimeType },
+        maybeDefault(dateTime.dateType) { it.dateType },
+        maybeDefault(dateTime.jodaDate) { it.isUseJodaDates },
+        maybeDefault(dateTime.jodaLocalDate) { it.isUseJodaLocalDates },
+        maybeDefault(dateTime.jodaLocalTime) { it.isUseJodaLocalTimes },
+        maybeDefault(dateTime.timeFormat) { it.isFormatTimes },
+        maybeDefault(dateTime.timePattern) { it.customTimePattern },
+        maybeDefault(dateTime.timeType) { it.timeType },
+        )
 
 private val defaultConfiguration = DefaultGenerationConfig()
 
@@ -250,90 +335,3 @@ private inline fun <reified V : Enum<V>?> maybeDefaultEnum(
 ): V {
     return fromEnum(value, V::class.java) ?: vFunction.apply(defaultConfiguration)
 }
-
-private fun convert(io: PluginConfigJs2pIO): Js2pConfigIO =
-    Js2pConfigIO(
-        io.source.map { it.toURI().toURL() },
-        maybeDefaultSet(io.fileExtensions) { it.fileExtensions },
-        maybeDefault(io.fileFilter) { it.fileFilter },
-        maybeDefault(io.outputEncoding) { it.outputEncoding },
-        maybeDefault(io.refFragmentPathDelimiters) { it.refFragmentPathDelimiters },
-        maybeDefault(io.removeOldOutput) { it.isRemoveOldOutput },
-        maybeDefaultEnum(io.sourceSortOrder) { it.sourceSortOrder },
-        maybeDefaultEnum(io.sourceType) { it.sourceType },
-        maybeDefault(io.targetJavaVersion) { it.targetVersion },
-    )
-
-private fun convert(klass: PluginConfigJs2pClass): Js2pConfigClass =
-    Js2pConfigClass(
-        maybeDefaultEnum(klass.annotationStyle) { it.annotationStyle },
-        maybeDefault(klass.classNamePrefix) { it.classNamePrefix },
-        maybeDefault(klass.classNameSuffix) { it.classNameSuffix },
-        maybeDefaultClass(klass.customAnnotator) { it.customAnnotator },
-        maybeDefaultClass(klass.customRuleFactory) { it.customRuleFactory },
-        maybeDefault(klass.includeGeneratedAnnotation) { it.isIncludeGeneratedAnnotation },
-        maybeDefault(klass.includeTypeInfo) { it.isIncludeTypeInfo },
-        maybeDefaultEnum(klass.inclusionLevel) { it.inclusionLevel },
-        maybeDefaultChar(klass.propertyWordDelimiters) { it.propertyWordDelimiters },
-        maybeDefault(klass.serializable) { it.isSerializable },
-        maybeDefault(klass.targetPackage) { it.targetPackage },
-        maybeDefault(klass.useTitleAsClassname) { it.isUseTitleAsClassname },
-    )
-
-private fun convert(constructor: PluginConfigJs2pConstructor): Js2pConfigConstructor =
-    Js2pConfigConstructor(
-        maybeDefault(constructor.constructorsRequiredPropertiesOnly) { it.isConstructorsRequiredPropertiesOnly },
-        maybeDefault(constructor.includeAllPropertiesConstructor) { it.isIncludeAllPropertiesConstructor },
-        maybeDefault(constructor.includeConstructorPropertiesAnnotation) { it.isIncludeConstructorPropertiesAnnotation },
-        maybeDefault(constructor.includeConstructors) { it.isIncludeConstructors },
-        maybeDefault(constructor.includeCopyConstructor) { it.isIncludeCopyConstructor },
-        maybeDefault(constructor.includeRequiredPropertiesConstructor) { it.isIncludeRequiredPropertiesConstructor },
-        maybeDefault(constructor.parcelable) { it.isParcelable },
-        maybeDefault(constructor.useInnerClassBuilders) { it.isUseInnerClassBuilders },
-    )
-
-private fun convert(methods: PluginConfigJs2pMethod): Js2pConfigMethod =
-    Js2pConfigMethod(
-        maybeDefault(methods.generateBuilders) { it.isGenerateBuilders },
-        maybeDefault(methods.includeAdditionalProperties) { it.isIncludeAdditionalProperties },
-        maybeDefault(methods.includeDynamicAccessors) { it.isIncludeDynamicAccessors },
-        maybeDefault(methods.includeDynamicBuilders) { it.isIncludeDynamicBuilders },
-        maybeDefault(methods.includeDynamicGetters) { it.isIncludeDynamicGetters },
-        maybeDefault(methods.includeDynamicSetters) { it.isIncludeDynamicSetters },
-        maybeDefault(methods.includeGetters) { it.isIncludeGetters },
-        maybeDefault(methods.includeHashcodeAndEquals) { it.isIncludeHashcodeAndEquals },
-        maybeDefault(methods.includeJsr303Annotations) { it.isIncludeJsr303Annotations },
-        maybeDefault(methods.includeJsr305Annotations) { it.isIncludeJsr305Annotations },
-        maybeDefault(methods.includeSetters) { it.isIncludeSetters },
-        maybeDefault(methods.includeToString) { it.isIncludeToString },
-        maybeDefaultSet(methods.toStringExcludes) { it.toStringExcludes },
-        maybeDefault(methods.useJakartaValidation) { it.isUseJakartaValidation },
-        maybeDefault(methods.useOptionalForGetters) { it.isUseOptionalForGetters },
-        )
-
-private fun convert(fields: PluginConfigJs2pField): Js2pConfigFields =
-    Js2pConfigFields(
-        maybeDefault(fields.formatTypeMapping) { it.formatTypeMapping },
-        maybeDefault(fields.initializeCollections) { it.isInitializeCollections },
-        maybeDefault(fields.useBigDecimals) { it.isUseBigDecimals },
-        maybeDefault(fields.useBigIntegers) { it.isUseBigIntegers },
-        maybeDefault(fields.useDoubleNumbers) { it.isUseDoubleNumbers },
-        maybeDefault(fields.useLongIntegers) { it.isUseLongIntegers },
-        maybeDefault(fields.usePrimitives) { it.isUsePrimitives },
-        )
-
-private fun convert(dateTime: PluginConfigJs2pDateTime): Js2pConfigDateTime =
-    Js2pConfigDateTime(
-        maybeDefault(dateTime.customDatePattern) { it.customDatePattern },
-        maybeDefault(dateTime.customDateTimePattern) { it.customDateTimePattern },
-        maybeDefault(dateTime.customTimePattern) { it.customTimePattern },
-        maybeDefault(dateTime.dateTimeType) { it.dateTimeType },
-        maybeDefault(dateTime.dateType) { it.dateType },
-        maybeDefault(dateTime.formatDateTimes) { it.isFormatDateTimes },
-        maybeDefault(dateTime.formatDates) { it.isFormatDates },
-        maybeDefault(dateTime.formatTimes) { it.isFormatTimes },
-        maybeDefault(dateTime.timeType) { it.timeType },
-        maybeDefault(dateTime.useJodaDates) { it.isUseJodaDates },
-        maybeDefault(dateTime.useJodaLocalDates) { it.isUseJodaLocalDates },
-        maybeDefault(dateTime.useJodaLocalTimes) { it.isUseJodaLocalTimes },
-        )

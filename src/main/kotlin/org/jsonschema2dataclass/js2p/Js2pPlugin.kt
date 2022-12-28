@@ -186,6 +186,6 @@ internal fun copyConfiguration(
     if (excludeGeneratedOption) {
         // Temporary fixes #71 and upstream issue #1212 by overriding Generated annotation.
         // Java 1.9+ Generated annotation is not compatible with AGP 7+
-        configuration.klass.includeGeneratedAnnotation.set(false)
+        configuration.klass.annotateGenerated.set(false)
     }
 }

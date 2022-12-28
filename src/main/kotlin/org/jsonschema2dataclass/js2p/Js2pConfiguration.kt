@@ -13,270 +13,266 @@ import javax.inject.Inject
  * Input-output parameters
  */
 abstract class PluginConfigJs2pIO {
-    @get: InputFiles
-    @get: PathSensitive(PathSensitivity.RELATIVE)
-    abstract val source: ConfigurableFileCollection
-
-    @get:Optional
     @get:Input
+    @get:Optional
+    abstract val delimitersPropertyWord: Property<String>
+
+    @get:Input
+    @get:Optional
+    abstract val delimitersRefFragmentPath: Property<String>
+
+    @get:Input
+    @get:Optional
     abstract val fileExtensions: SetProperty<String>
 
-    @get:Optional
     @get:Input
+    @get:Optional
     abstract val fileFilter: Property<FileFilter>
 
-    @get:Optional
     @get:Input
+    @get:Optional
     abstract val outputEncoding: Property<String>
 
-    @get:Optional
-    @get:Input
-    abstract val removeOldOutput: Property<Boolean>
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val source: ConfigurableFileCollection
 
-    @get:Optional
     @get:Input
-    abstract val sourceType: Property<String>
-
     @get:Optional
-    @get:Input
     abstract val sourceSortOrder: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val targetJavaVersion: Property<String>
+    @get:Optional
+    abstract val sourceType: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val refFragmentPathDelimiters: Property<String>
+    @get:Optional
+    abstract val targetJavaVersion: Property<String>
 }
 
 /**
  * Class-level annotations and targeting
  */
 abstract class PluginConfigJs2pClass {
-    @get:Optional
     @get:Input
+    @get:Optional
+    abstract val annotateGenerated: Property<Boolean>
+
+    @get:Input
+    @get:Optional
+    abstract val annotateSerializable: Property<Boolean>
+
+    @get:Input
+    @get:Optional
     abstract val annotationStyle: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val classNamePrefix: Property<String>
+    @get:Optional
+    abstract val customAnnotatorClass: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val classNameSuffix: Property<String>
+    @get:Optional
+    abstract val customRuleFactoryClass: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val customAnnotator: Property<String>
+    @get:Optional
+    abstract val jackson2IncludeTypeInfo: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val customRuleFactory: Property<String>
+    @get:Optional
+    abstract val jackson2InclusionLevel: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val includeGeneratedAnnotation: Property<Boolean>
+    @get:Optional
+    abstract val namePrefix: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val includeTypeInfo: Property<Boolean>
+    @get:Optional
+    abstract val nameSuffix: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val inclusionLevel: Property<String>
+    @get:Optional
+    abstract val nameUseTitle: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val propertyWordDelimiters: Property<String>
-
     @get:Optional
-    @get:Input
-    abstract val serializable: Property<Boolean>
-
-    @get:Optional
-    @get:Input
     abstract val targetPackage: Property<String>
-
-    @get:Optional
-    @get:Input
-    abstract val useTitleAsClassname: Property<Boolean>
 }
 
 abstract class PluginConfigJs2pConstructor {
-    @get:Optional
     @get:Input
-    abstract val constructorsRequiredPropertiesOnly: Property<Boolean>
+    @get:Optional
+    abstract val allProperties: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeAllPropertiesConstructor: Property<Boolean>
+    @get:Optional
+    abstract val annotateConstructorProperties: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeConstructorPropertiesAnnotation: Property<Boolean>
+    @get:Optional
+    abstract val copy: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeConstructors: Property<Boolean>
+    @get:Optional
+    abstract val generate: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeCopyConstructor: Property<Boolean>
-
     @get:Optional
-    @get:Input
-    abstract val includeRequiredPropertiesConstructor: Property<Boolean>
-
-    @get:Optional
-    @get:Input
     abstract val parcelable: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val useInnerClassBuilders: Property<Boolean>
+    @get:Optional
+    abstract val requiredProperties: Property<Boolean>
+
+    @get:Input
+    @get:Optional
+    abstract val requiredPropertiesOnly: Property<Boolean>
 }
 
 abstract class PluginConfigJs2pMethod {
-    @get:Optional
     @get:Input
-    abstract val generateBuilders: Property<Boolean>
+    @get:Optional
+    abstract val accessorsDynamic: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeAdditionalProperties: Property<Boolean>
+    @get:Optional
+    abstract val additionalProperties: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeDynamicAccessors: Property<Boolean>
+    @get:Optional
+    abstract val annotateJakartaValidation: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeDynamicBuilders: Property<Boolean>
+    @get:Optional
+    abstract val annotateJsr303: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeDynamicGetters: Property<Boolean>
+    @get:Optional
+    abstract val annotateJsr305: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeDynamicSetters: Property<Boolean>
+    @get:Optional
+    abstract val builders: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeGetters: Property<Boolean>
+    @get:Optional
+    abstract val buildersDynamic: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeHashcodeAndEquals: Property<Boolean>
+    @get:Optional
+    abstract val buildersInnerClass: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeJsr303Annotations: Property<Boolean>
+    @get:Optional
+    abstract val getters: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeJsr305Annotations: Property<Boolean>
+    @get:Optional
+    abstract val gettersDynamic: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeSetters: Property<Boolean>
+    @get:Optional
+    abstract val gettersUseOptional: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val includeToString: Property<Boolean>
+    @get:Optional
+    abstract val hashcodeAndEquals: Property<Boolean>
 
-    @get:Optional
     @get:Input
+    @get:Optional
+    abstract val setters: Property<Boolean>
+
+    @get:Input
+    @get:Optional
+    abstract val settersDynamic: Property<Boolean>
+
+    @get:Input
+    @get:Optional
+    abstract val toStringMethod: Property<Boolean>
+
+    @get:Input
+    @get:Optional
     abstract val toStringExcludes: SetProperty<String>
-
-    @get:Optional
-    @get:Input
-    abstract val useJakartaValidation: Property<Boolean>
-
-    @get:Optional
-    @get:Input
-    abstract val useOptionalForGetters: Property<Boolean>
 }
 
 abstract class PluginConfigJs2pField {
-    @get:Optional
     @get:Input
+    @get:Optional
+    abstract val floatUseBigDecimal: Property<Boolean>
+
+    @get:Input
+    @get:Optional
+    abstract val floatUseDouble: Property<Boolean>
+
+    @get:Input
+    @get:Optional
     abstract val formatTypeMapping: MapProperty<String, String>
 
-    @get:Optional
     @get:Input
+    @get:Optional
     abstract val initializeCollections: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val useBigDecimals: Property<Boolean>
+    @get:Optional
+    abstract val integerUseBigInteger: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val useBigIntegers: Property<Boolean>
+    @get:Optional
+    abstract val integerUseLong: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val useDoubleNumbers: Property<Boolean>
-
     @get:Optional
-    @get:Input
-    abstract val useLongIntegers: Property<Boolean>
-
-    @get:Optional
-    @get:Input
     abstract val usePrimitives: Property<Boolean>
 }
 
 abstract class PluginConfigJs2pDateTime {
-    @get:Optional
     @get:Input
-    abstract val customDatePattern: Property<String>
+    @get:Optional
+    abstract val dateFormat: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val customDateTimePattern: Property<String>
+    @get:Optional
+    abstract val datePattern: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val customTimePattern: Property<String>
+    @get:Optional
+    abstract val dateTimeFormat: Property<Boolean>
 
-    @get:Optional
     @get:Input
+    @get:Optional
+    abstract val dateTimePattern: Property<String>
+
+    @get:Input
+    @get:Optional
     abstract val dateTimeType: Property<String>
 
-    @get:Optional
     @get:Input
+    @get:Optional
     abstract val dateType: Property<String>
 
-    @get:Optional
     @get:Input
-    abstract val formatDateTimes: Property<Boolean>
+    @get:Optional
+    abstract val jodaDate: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val formatDates: Property<Boolean>
+    @get:Optional
+    abstract val jodaLocalDate: Property<Boolean>
 
-    @get:Optional
     @get:Input
-    abstract val formatTimes: Property<Boolean>
+    @get:Optional
+    abstract val jodaLocalTime: Property<Boolean>
 
-    @get:Optional
     @get:Input
+    @get:Optional
+    abstract val timeFormat: Property<Boolean>
+
+    @get:Input
+    @get:Optional
+    abstract val timePattern: Property<String>
+
+    @get:Input
+    @get:Optional
     abstract val timeType: Property<String>
-
-    @get:Optional
-    @get:Input
-    abstract val useJodaDates: Property<Boolean>
-
-    @get:Optional
-    @get:Input
-    abstract val useJodaLocalDates: Property<Boolean>
-
-    @get:Optional
-    @get:Input
-    abstract val useJodaLocalTimes: Property<Boolean>
 }
 
 abstract class Js2pConfiguration @Inject constructor(
@@ -285,27 +281,27 @@ abstract class Js2pConfiguration @Inject constructor(
     @Internal
     override fun getName(): String = name
 
-    @get:Optional
     @get:Nested
+    @get:Optional
     abstract val constructor: PluginConfigJs2pConstructor
 
-    @get:Optional
     @get:Nested
+    @get:Optional
     abstract val dateTime: PluginConfigJs2pDateTime
 
-    @get:Optional
     @get:Nested
+    @get:Optional
     abstract val fields: PluginConfigJs2pField
 
-    @get:Optional
     @get:Nested
+    @get:Optional
     abstract val io: PluginConfigJs2pIO
 
-    @get:Optional
     @get:Nested
+    @get:Optional
     abstract val klass: PluginConfigJs2pClass
 
-    @get:Optional
     @get:Nested
+    @get:Optional
     abstract val methods: PluginConfigJs2pMethod
 }
