@@ -110,7 +110,7 @@ internal fun createJS2DTask(
             project,
             androidVariant,
             configuration,
-            configuration.source.filter { it.exists() },
+            configuration.io.source.filter { it.exists() },
             targetPath,
             defaultSourcePath,
             excludeGeneratedOption
@@ -180,12 +180,12 @@ internal fun copyConfiguration(
     excludeGeneratedOption: Boolean,
     defaultSourcePath: Path?
 ) {
-    if (configuration.source.isEmpty) {
-            configuration.source.setFrom(defaultSourcePath)
+    if (configuration.io.source.isEmpty) {
+            configuration.io.source.setFrom(defaultSourcePath)
     }
     if (excludeGeneratedOption) {
         // Temporary fixes #71 and upstream issue #1212 by overriding Generated annotation.
         // Java 1.9+ Generated annotation is not compatible with AGP 7+
-        configuration.includeGeneratedAnnotation.set(false)
+        configuration.klass.annotateGenerated.set(false)
     }
 }
