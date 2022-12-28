@@ -68,10 +68,11 @@ a| The style of annotations to use in the generated Java types.
 |
 // ------------------------------
 | constructorsRequiredPropertiesOnly
-|
-This is a legacy configuration option used to turn on the `includeAllPropertiesConstructor` and off the
-`constructorsIncludeAllPropertiesConstructor` parameter.
-| This option will do nothign if `includeConstructors` parameter is not set to `true`
+| This is a legacy configuration option and will be removed in subsequent releases.
+  This option turns on the `includeAllPropertiesConstructor` parameter.
+  This option turns off the `constructorsIncludeAllPropertiesConstructor` parameter.
+| This option will do nothing if `constructors.generate` parameter is not set to `true`
+  ⚠️ This is the last release which includes this option.
 // ------------------------------
 | customAnnotator
 | A fully qualified class name, referring to a custom annotator class that implements `org.jsonschema2pojo.Annotator`.
@@ -126,7 +127,7 @@ This is a legacy configuration option used to turn on the `includeAllPropertiesC
 | Default pattern of `HH:mm:ss.SSS` as per JSON schema definition.
 // ------------------------------
 | formatTypeMapping
-| ⚠️(no description)
+| Defines mapping from format identifier (e.g. 'uri') to fully qualified type name (e.g. 'java.net.URI').
 |
 // ------------------------------
 | generateBuilders
@@ -140,28 +141,27 @@ This is a legacy configuration option used to turn on the `includeAllPropertiesC
 // ------------------------------
 | includeAllPropertiesConstructor
 | This option determines whether the resulting object should include a constructor with all listed properties as parameters.
-| This option works in collaboration with the `includeConstructors` configuration option.
+| This option will have no effect if `includeConstructors` is not set to true.
   This option is incompatible with `constructorsRequiredPropertiesOnly`.
-  This option will have no effect if `includeConstructors` is not set to true.
 // ------------------------------
 | includeConstructorPropertiesAnnotation
-| ⚠️(no description)
-|
+| Whether to include JDK `java.bean.ConstructorProperties`.
+Used by some serialization libraries to get parameter names of constructors at runtime.
+| May not be available on Android
 // ------------------------------
 | includeConstructors
 | Whether to generate constructors or not
-|
+| ⚠️ This is the last release which includes this option.
 // ------------------------------
 | includeCopyConstructor
-| This configuration determines whether the resulting object should include a constructor the class itself as a parameter.
-  Constructors are expected to assign all properties from the originating class to the new class.
+| Generate copy constructor to assign all properties from the originating class to the new class.
 | This option works in collaboration with the `includeConstructors` configuration option.
   This option is incompatible with `constructorsRequiredPropertiesOnly`.
   This option will have no effect if `includeConstructors` is not set to true.
 // ------------------------------
 | includeDynamicAccessors
 | Whether to include dynamic getters, setters, and builders or to omit these methods.
-|
+| ⚠️ This is the last release which includes this option.
 // ------------------------------
 | includeDynamicBuilders
 | Whether to include dynamic builders or to omit these methods.
@@ -176,8 +176,8 @@ This is a legacy configuration option used to turn on the `includeAllPropertiesC
 |
 // ------------------------------
 | includeGeneratedAnnotation
-| ⚠️(no description)
-|
+| Whether to mark generated classes with the `Generated` annotation.
+| It strongly depends on java version used to run POJO generator, not `targetVersion`.
 // ------------------------------
 | includeGetters
 | Whether to include getters or to omit this accessor method and create public fields instead
@@ -185,7 +185,7 @@ This is a legacy configuration option used to turn on the `includeAllPropertiesC
 // ------------------------------
 | includeHashcodeAndEquals
 | Whether to include hashCode and equals methods in generated Java types.
-|
+| Note, that `BigDecimal` objects aren't comparable by `equals` as expected.
 // ------------------------------
 | includeJsr303Annotations
 a| Whether to include JSR-303/349 annotations in generated Java types for various field constraints defined in schema.
@@ -247,7 +247,7 @@ a| Whether to include JSR-303/349 annotations in generated Java types for variou
   This is often required to support polymorphic type handling.
   By default, the type information is stored in the `@class` property.
   This can be overridden in the `deserializationClassProperty` of the schema.
-|
+| Works only if `Jackson` or `Jackson2` were selected
 // ------------------------------
 | inclusionLevel
 a| The Level of inclusion to set in the generated Java types for Jackson serializers.
@@ -258,7 +258,7 @@ a| The Level of inclusion to set in the generated Java types for Jackson seriali
 * NON_EMPTY
 * NON_NULL
 * USE_DEFAULTS
-|
+| Works only if `Jackson` or `Jackson2` were selected
 // ------------------------------
 | initializeCollections
 | Whether to initialize Set and List fields as empty collections, or leave them as null.
@@ -269,8 +269,8 @@ a| The Level of inclusion to set in the generated Java types for Jackson seriali
 |
 // ------------------------------
 | parcelable
-| Whether to make the generated types 'parcelable' (for Android development).
-|
+| Whether to make the generated types `Parcelable`.
+| Used for Android development.
 // ------------------------------
 | propertyWordDelimiters
 | The characters that should be considered as word delimiters when creating Java Bean property names from JSON property names.
@@ -289,7 +289,7 @@ a| The Level of inclusion to set in the generated Java types for Jackson seriali
 |
 // ------------------------------
 | serializable
-| Whether to make the generated types 'serializable'.
+| Whether to make the generated types `Serializable`.
 |
 // ------------------------------
 | source
@@ -352,15 +352,15 @@ a| The type of input documents that will be read.
 | If the `generateBuilders` is false, then this property will not do anything.
 // ------------------------------
 | useJodaDates
-| Whether to use DateTime instead of Date when adding date type fields to generated Java types.
+| Whether to use `org.joda.time.DateTime` instead of Date when adding date type fields to generated Java types.
 |
 // ------------------------------
 | useJodaLocalDates
-| Whether to use LocalDate instead of string when adding string type fields of format `date` (not date-time) to generated Java types.
+| Whether to use `org.joda.time.LocalDate` instead of string when adding string type fields of format `date` to generated Java types.
 |
 // ------------------------------
 | useJodaLocalTimes
-| Whether to use LocalTime instead of string when adding string type fields of format `time` (not date-time) to generated Java types.
+| Whether to use `org.joda.time.LocalTime` instead of string when adding string type fields of format `time` to generated Java types.
 |
 // ------------------------------
 | useLongIntegers
@@ -373,8 +373,7 @@ a| The type of input documents that will be read.
 // ------------------------------
 | usePrimitives
 | Whether to use primitives (`long`, `double` or `boolean`) instead of wrapper types where possible.
-  This has the side effect of making those properties non-null.
-|
+| This has the side effect of making those properties non-null.
 // ------------------------------
 | useTitleAsClassname
 | Use the title as class name.
@@ -457,7 +456,7 @@ a| The type of input documents that will be read.
 | false
 // ------------------------------
 | formatTypeMapping
-| Map
+| `Map<String, String>`
 |
 // ------------------------------
 | generateBuilders
