@@ -101,17 +101,21 @@ Any contributions are welcome.
 |=====
 | Platform | Demo | Status | Notes
 // ------------------------------
-.2+| JVM
-| Groovy DSL
+.3+| JVM
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/groovy[Groovy DSL] example
 | Maintained and healthy
 |
 // ------------------------------
-| Kotlin DSL
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/kotlin[Kotlin DSL] example
 | Maintained and healthy
 |
+// ------------------------------
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/model-publish[Model publishing] example
+| Maintained and healthy
+| 
 // ------------------------------
 .4+| Android
-| AGP 7
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/android/agp7[AGP 7] example
 | Maintained and healthy
 |
 // ------------------------------
@@ -119,7 +123,7 @@ Any contributions are welcome.
 | Waiting for releases from Google and Gradle
 | AGP 8 depends on Gradle 8.0 which is not released at the time of writing the documentation
 // ------------------------------
-| AGP 4
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/android/agp4[AGP 4] example
 | ⚠️ Unmaintained since 5.0
 |
 // ------------------------------
