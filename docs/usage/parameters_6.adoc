@@ -5,7 +5,7 @@
 
 = Extension jsonSchema2Pojo accepted parameters
 
-Extension `jsonSchema2Pojo` is used to configure generator of Java POJO classes from JSON/YAML schema
+Extension `jsonSchema2Pojo` is used to configure generator of Java POJO classes from JSON/YAML schema.
 
 == Extension parameters
 
@@ -20,7 +20,7 @@ Each execution defines parameters for Java POJOs generation using underlying lib
 | targetDirectoryPrefix
 | String
 | $buildDir/generated/sources/js2d
-| Directory property to define prefix under build directory where underlying tool will generate sources
+| Directory property to define prefix under build directory where underlying tool will generate sources.
 |
 // ------------------------------
 | executions
@@ -46,7 +46,7 @@ The only exception is `source` which is `ConfigurableFileCollection`.
 ==== IO parameters
 
 .Supported parameters and options
-[options=header,cols="4,4,2"]
+[options=header,cols="1,4,2"]
 |====
 | Name | Description | Notes
 // ------------------------------
@@ -61,7 +61,7 @@ Option will not prevent inclusion through a "$ref" in one of the schemas.
 // ------------------------------
 | delimitersPropertyWord
 | The characters that should be considered as word delimiters when creating Java Bean property names from JSON property names.
-If blank or not set, JSON properties will be considered to contain a single word when creating Java Bean property names.
+  If blank or not set, JSON properties will be considered to contain a single word when creating Java Bean property names.
 |
 // ------------------------------
 | outputEncoding
@@ -76,27 +76,27 @@ If blank or not set, JSON properties will be considered to contain a single word
 a| The type of input documents that will be read.
 
 .Supported values
-* jsonschema -- schema documents, containing formal rules that describe the structure of JSON data
-* json -- documents that represent an example of the kind of JSON data that the generated Java types will be mapped to
-* yamlschema -- JSON schema documents, represented as YAML
-* yaml -- documents that represent an example of the kind of YAML (or JSON) data that the generated Java types will be mapped to
+* jsonschema -- schema documents, containing formal rules that describe the structure of JSON data.
+* yamlschema -- JSON schema documents, represented as YAML.
+* json -- documents that represent an example of the kind of JSON data that the generated Java types will be mapped to.
+* yaml -- documents that represent an example of the kind of YAML data that the generated Java types will be mapped to.
 |
 // ------------------------------
 | sourceSortOrder
 a| The sort order to be applied when recursively processing the source files.
-By default, the OS can influence the processing order.
+  By default, the OS can influence the processing order.
 
 .Supported values
 * OS -- Let the OS influence the order the source files are processed.
 * FILES_FIRST -- Case sensitive sort, visit the files first.
-The source files are processed in a breadth first sort order.
+  The source files are processed in a breadth first sort order.
 * SUBDIRS_FIRST -- Case sensitive sort, visit the subdirectories before the files.
-The source files are processed in a depth first sort order.
+  The source files are processed in a depth first sort order.
 |
 // ------------------------------
 | targetJavaVersion
 | The target Java version for generated source files.
-| ⚠️Underlying library basically ignores it
+|
 // ------------------------------
 | delimitersRefFragmentPath
 | A string containing any characters that should act as path delimiters when resolving $ref fragments.
@@ -154,7 +154,7 @@ The source files are processed in a depth first sort order.
 ==== Class Generation Parameters
 
 .Supported parameters and options
-[options=header,cols="4,4,2"]
+[options=header,cols="1,4,2"]
 |====
 | Name | Description | Notes
 // ------------------------------
@@ -170,28 +170,28 @@ The source files are processed in a depth first sort order.
 a| The style of annotations to use in the generated Java types.
 
 .Supported values
-* jackson2 (apply annotations from the Jackson 2.x library)
-* jackson (alias for jackson2)
-* gson (apply annotations from the gson library)
-* moshi1 (apply annotations from the moshi 1.x library)
-* none (apply no annotations at all)
+* jackson2 -- apply annotations from the Jackson 2.x library
+* jackson -- alias for jackson2
+* gson -- apply annotations from the gson library
+* moshi1 -- apply annotations from the moshi 1.x library
+* none -- apply no annotations at all
 |
 // ------------------------------
 | customAnnotatorClass
 | A fully qualified class name, referring to a custom annotator class that implements `org.jsonschema2pojo.Annotator`.
-This annotator will be used in addition to the one chosen by `annotationStyle`.
+  This annotator will be used in addition to the one chosen by `annotationStyle`.
 | If you want to use the custom annotator alone, set `annotationStyle` to none.
 // ------------------------------
 | customRuleFactoryClass
 | A fully qualified class name, referring to a class that extends `org.jsonschema2pojo.rules.RuleFactory`.
-This class will be used to create instances of Rules used for code generation.
+  This class will be used to create instances of Rules used for code generation.
 |
 // ------------------------------
 | jackson2IncludeTypeInfo
 | Whether to include json type information.
-This is often required to support polymorphic type handling.
-By default, the type information is stored in the `@class` property.
-This can be overridden in the `deserializationClassProperty` of the schema.
+  This is often required to support polymorphic type handling.
+  By default, the type information is stored in the `@class` property.
+  This can be overridden in the `deserializationClassProperty` of the schema.
 | Works only if `Jackson` or `Jackson2` were selected
 // ------------------------------
 | jackson2InclusionLevel
@@ -203,6 +203,7 @@ a| The Level of inclusion to set in the generated Java types for Jackson seriali
 * NON_EMPTY
 * NON_NULL
 * USE_DEFAULTS
+
 | Works only if `Jackson` or `Jackson2` were selected
 // ------------------------------
 | namePrefix
@@ -282,7 +283,7 @@ This is used for types where a fully qualified name has not been supplied in the
 ==== Constructor Parameters
 
 .Supported parameters and options
-[options=header,cols="4,4,2"]
+[options=header,cols="1,4,2"]
 |====
 | Name | Description | Notes
 // ------------------------------
@@ -342,7 +343,7 @@ This is used for types where a fully qualified name has not been supplied in the
 ==== Method Generation Parameters
 
 .Supported parameters and options
-[options=header,cols="4,4,2"]
+[options=header,cols="1,4,2"]
 |====
 | Name | Description | Notes
 // ------------------------------
@@ -422,10 +423,10 @@ Any Java fields which are an object or array of objects will be annotated with @
 // ------------------------------
 | hashcodeAndEquals
 | Whether to include hashCode and equals methods in generated Java types.
-| Note, that `BigDecimal` objects aren't comparable by `equals` as expected.
+| `BigDecimal` objects aren't comparable by `equals` as expected.
 // ------------------------------
 | setters
-| Whether to include setters or to omit this accessor method and create public fields instead
+| Whether to include setters or to omit this accessor method and create public fields instead.
 |
 // ------------------------------
 | settersDynamic
@@ -433,7 +434,7 @@ Any Java fields which are an object or array of objects will be annotated with @
 |
 // ------------------------------
 | toStringExcludes
-| The fields to be excluded from toString generation
+| The fields to be excluded from toString generation.
 |
 // ------------------------------
 | toStringMethod
@@ -515,7 +516,7 @@ Any Java fields which are an object or array of objects will be annotated with @
 ==== Field Generation Parameters
 
 .Supported parameters and options
-[options=header,cols="4,4,2"]
+[options=header,cols="1,4,2"]
 |====
 | Name | Description | Notes
 // ------------------------------
@@ -590,7 +591,7 @@ Any Java fields which are an object or array of objects will be annotated with @
 ==== Date-Time Fields Generation Parameters
 
 .Supported parameters and options
-[options=header,cols="4,4,2"]
+[options=header,cols="1,4,2"]
 |====
 | Name | Description | Notes
 // ------------------------------

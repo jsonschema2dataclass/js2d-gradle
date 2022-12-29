@@ -1,0 +1,4 @@
+= Migration guide list
+
+* xref:migration_5.adoc[Migration from 4.x and below to 5.0]
+* xref:migration_6.adoc[Migration from 5.x to 6.0]

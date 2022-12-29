@@ -1,0 +1,17 @@
+= Plugin usage and parameters documentation
+
+== Version 4.x and below
+
+Version 4.x and below has mostly the same documentation as 5.x.
+
+== Version 5.x
+
+:plugin_major: 5
+* xref:basic_{plugin_major}.adoc[Basic usage for {plugin_major}.x]
+* xref:parameters_{plugin_major}.adoc[Parameters for {plugin_major}.x]
+
+== Version 6.x
+
+:plugin_major: 6
+* xref:basic_{plugin_major}.adoc[Basic usage for {plugin_major}.x]
+* xref:parameters_{plugin_major}.adoc[Parameters for {plugin_major}.x]
