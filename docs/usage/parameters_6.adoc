@@ -1,0 +1,703 @@
+:toc:
+:toc-placement: preamble
+:toclevels: 5
+:showtitle:
+
+= Extension jsonSchema2Pojo accepted parameters
+
+Extension `jsonSchema2Pojo` is used to configure generator of Java POJO classes from JSON/YAML schema
+
+== Extension parameters
+
+Extension allows to define target directory prefix and executions.
+Each execution defines parameters for Java POJOs generation using underlying library.
+
+.Supported parameters
+[options=header]
+|====
+| Name | Type | Default | Description | Notes
+// ------------------------------
+| targetDirectoryPrefix
+| String
+| $buildDir/generated/sources/js2d
+| Directory property to define prefix under build directory where underlying tool will generate sources
+|
+// ------------------------------
+| executions
+| Set of named executions
+|
+| Execution with parameters.
+| Execution name must follow the regular expression `[a-z][A-Za-z0-9_]*`.
+// ------------------------------
+|====
+
+== Execution block parameters
+
+Execution block specifies parameters listed below needed to process JSON schema to POJOs.
+All enum parameters are case-insensitive for a convenience.
+
+Most of the parameters has defaults defined in `jsonschema2pojo` library.
+
+All parameters and options listed are Gradle properties of given type.
+The only exception is `source` which is `ConfigurableFileCollection`.
+
+=== Description and notes
+
+==== IO parameters
+
+.Supported parameters and options
+[options=header,cols="4,4,2"]
+|====
+| Name | Description | Notes
+// ------------------------------
+| fileExtensions
+| The strings (no preceding dot) that should be considered as file name extensions, and therefore ignored, when creating Java class names.
+|
+// ------------------------------
+| fileFilter
+| List of file patterns to exclude.
+| This only applies to the initial scan of the file system.
+Option will not prevent inclusion through a "$ref" in one of the schemas.
+// ------------------------------
+| delimitersPropertyWord
+| The characters that should be considered as word delimiters when creating Java Bean property names from JSON property names.
+If blank or not set, JSON properties will be considered to contain a single word when creating Java Bean property names.
+|
+// ------------------------------
+| outputEncoding
+| The character encoding that should be used when writing the generated Java source files.
+|
+// ------------------------------
+| source
+| Location of the JSON Schema file(s).
+| this may refer to a single file or a directory of files.
+// ------------------------------
+| sourceType
+a| The type of input documents that will be read.
+
+.Supported values
+* jsonschema -- schema documents, containing formal rules that describe the structure of JSON data
+* json -- documents that represent an example of the kind of JSON data that the generated Java types will be mapped to
+* yamlschema -- JSON schema documents, represented as YAML
+* yaml -- documents that represent an example of the kind of YAML (or JSON) data that the generated Java types will be mapped to
+|
+// ------------------------------
+| sourceSortOrder
+a| The sort order to be applied when recursively processing the source files.
+By default, the OS can influence the processing order.
+
+.Supported values
+* OS -- Let the OS influence the order the source files are processed.
+* FILES_FIRST -- Case sensitive sort, visit the files first.
+The source files are processed in a breadth first sort order.
+* SUBDIRS_FIRST -- Case sensitive sort, visit the subdirectories before the files.
+The source files are processed in a depth first sort order.
+|
+// ------------------------------
+| targetJavaVersion
+| The target Java version for generated source files.
+| ⚠️Underlying library basically ignores it
+// ------------------------------
+| delimitersRefFragmentPath
+| A string containing any characters that should act as path delimiters when resolving $ref fragments.
+  Defaults are used in an attempt to support JSON Pointer and JSON Path.
+|
+// ------------------------------
+|====
+
+.Supported parameters and options (types and their defaults)
+[%collapsible]
+====
+[options=header,cols="4,1,2"]
+|====
+| Name | Type | Default
+// ------------------------------
+| delimitersPropertyWord
+| String
+| `- _`
+// ------------------------------
+| delimitersRefFragmentPath
+| String
+| `#/.`
+// ------------------------------
+| fileExtensions
+| List<String>
+|
+// ------------------------------
+| fileFilter
+| FileFilter
+|
+// ------------------------------
+| outputEncoding
+| String
+| `UTF-8`
+// ------------------------------
+| source
+| ConfigurableFileCollection
+| `$projectRoot/src/main/resources/json`
+// ------------------------------
+| sourceSortOrder
+| String
+| OS
+// ------------------------------
+| sourceType
+| String
+| jsonschema
+// ------------------------------
+| targetJavaVersion
+| String
+|
+// ------------------------------
+|====
+====
+
+==== Class Generation Parameters
+
+.Supported parameters and options
+[options=header,cols="4,4,2"]
+|====
+| Name | Description | Notes
+// ------------------------------
+| annotateGenerated
+| Whether to mark generated classes with the `Generated` annotation.
+| It strongly depends on java version used to run POJO generator, not `targetVersion`.
+// ------------------------------
+| annotateSerializable
+| Whether to make the generated types `Serializable`.
+|
+// ------------------------------
+| annotationStyle
+a| The style of annotations to use in the generated Java types.
+
+.Supported values
+* jackson2 (apply annotations from the Jackson 2.x library)
+* jackson (alias for jackson2)
+* gson (apply annotations from the gson library)
+* moshi1 (apply annotations from the moshi 1.x library)
+* none (apply no annotations at all)
+|
+// ------------------------------
+| customAnnotatorClass
+| A fully qualified class name, referring to a custom annotator class that implements `org.jsonschema2pojo.Annotator`.
+This annotator will be used in addition to the one chosen by `annotationStyle`.
+| If you want to use the custom annotator alone, set `annotationStyle` to none.
+// ------------------------------
+| customRuleFactoryClass
+| A fully qualified class name, referring to a class that extends `org.jsonschema2pojo.rules.RuleFactory`.
+This class will be used to create instances of Rules used for code generation.
+|
+// ------------------------------
+| jackson2IncludeTypeInfo
+| Whether to include json type information.
+This is often required to support polymorphic type handling.
+By default, the type information is stored in the `@class` property.
+This can be overridden in the `deserializationClassProperty` of the schema.
+| Works only if `Jackson` or `Jackson2` were selected
+// ------------------------------
+| jackson2InclusionLevel
+a| The Level of inclusion to set in the generated Java types for Jackson serializers.
+
+.Supported values
+* ALWAYS NON_ABSENT
+* NON_DEFAULT
+* NON_EMPTY
+* NON_NULL
+* USE_DEFAULTS
+| Works only if `Jackson` or `Jackson2` were selected
+// ------------------------------
+| namePrefix
+| Whether to add a prefix to generated classes.
+|
+// ------------------------------
+| nameSuffix
+| Whether to add a suffix to generated classes.
+|
+// ------------------------------
+| nameUseTitle
+| Use the title as class name.
+  Otherwise, the property and file name is used.
+|
+// ------------------------------
+| targetPackage
+| Package name prefix used for generated Java classes.
+This is used for types where a fully qualified name has not been supplied in the schema using the `javaType` property.
+|
+// ------------------------------
+|====
+
+.Supported parameters and options (types and their defaults)
+[%collapsible]
+====
+[options=header,cols="4,1,2"]
+|====
+| Name | Type | Default
+// ------------------------------
+| annotateGenerated
+| boolean
+| false
+// ------------------------------
+| annotateSerializable
+| boolean
+|
+// ------------------------------
+| annotationStyle
+| String
+| jackson2
+// ------------------------------
+| customAnnotatorClass
+| String
+| org.jsonschema2pojo.NoopAnnotator
+// ------------------------------
+| customRuleFactoryClass
+| String
+| org.jsonschema2pojo.rules.RuleFactory
+// ------------------------------
+| jackson2IncludeTypeInfo
+| boolean
+| false
+// ------------------------------
+| jackson2InclusionLevel
+| String
+| NON_NULL
+// ------------------------------
+| namePrefix
+| String
+|
+// ------------------------------
+| nameSuffix
+| String
+|
+// ------------------------------
+| nameUseTitle
+| boolean
+| false
+// ------------------------------
+| targetPackage
+| String
+|
+// ------------------------------
+|====
+====
+
+==== Constructor Parameters
+
+.Supported parameters and options
+[options=header,cols="4,4,2"]
+|====
+| Name | Description | Notes
+// ------------------------------
+| allProperties
+| This option determines whether the resulting object should include a constructor with all listed properties as parameters.
+|
+// ------------------------------
+| annotateConstructorProperties
+| Whether to include JDK `java.bean.ConstructorProperties`.
+  Used by some serialization libraries to get parameter names of constructors at runtime.
+| May not be available on Android
+// ------------------------------
+| copy
+| Generate copy constructor to assign all properties from the originating class to the new class.
+|
+// ------------------------------
+| parcelable
+| Whether to make the generated types `Parcelable`.
+| Used for Android development.
+// ------------------------------
+| requiredProperties
+| This option determines whether the resulting object should include a constructor with only the required properties as parameters.
+|
+// ------------------------------
+|====
+
+.Supported parameters and options (types and their defaults)
+[%collapsible]
+====
+[options=header,cols="4,1,2"]
+|====
+| Name | Type | Default
+// ------------------------------
+| allProperties
+| boolean
+| false
+// ------------------------------
+| annotateConstructorProperties
+| boolean
+| false
+// ------------------------------
+| copy
+| boolean
+| false
+// ------------------------------
+| parcelable
+| boolean
+| false
+// ------------------------------
+| requiredProperties
+| boolean
+| false
+// ------------------------------
+|====
+====
+
+==== Method Generation Parameters
+
+.Supported parameters and options
+[options=header,cols="4,4,2"]
+|====
+| Name | Description | Notes
+// ------------------------------
+| additionalProperties
+| Whether to allow 'additional properties' support in objects.
+  Setting this to false will disable additional properties support, regardless of the input schema(s).
+|
+// ------------------------------
+| annotateJsr303
+a| Whether to include JSR-303/349 annotations in generated Java types for various field constraints defined in schema.
+Any Java fields which are an object or array of objects will be annotated with @Valid to support validation.
+
+.Schema rules and the annotation they produce
+[options=header]
+!===
+! schema constraint ! annotation
+// ++++++++++++++++++++++++++++++
+! maximum
+! @DecimalMax
+// ++++++++++++++++++++++++++++++
+! minimum
+! @DecimalMin
+// ++++++++++++++++++++++++++++++
+! minItems
+! @Size
+// ++++++++++++++++++++++++++++++
+! maxItems
+! @Size
+// ++++++++++++++++++++++++++++++
+! minLength
+! @Size
+// ++++++++++++++++++++++++++++++
+! maxLength
+! @Size
+// ++++++++++++++++++++++++++++++
+! pattern
+! @Pattern
+// ++++++++++++++++++++++++++++++
+! required
+! @NotNull
+// ++++++++++++++++++++++++++++++
+!===
+
+|
+// ------------------------------
+| annotateJsr303Jakarta
+| Whether to use `JSR-303` annotations from `jakarta.validation` package instead of `javax.validation` package.
+| Implies `annotateJsr303` option
+// ------------------------------
+| annotateJsr305
+| Whether to include JSR-305 annotations (for schema rules like Nullable, NonNull, etc.) in generated Java types.
+|
+// ------------------------------
+| builders
+| Whether to generate builder-style methods of the form `withXxx(value)` that return `this`.
+|
+// ------------------------------
+| buildersDynamic
+| Whether to include dynamic builders.
+|
+// ------------------------------
+| buildersInnerClass
+| If set to true, then the gang of four builder pattern will be used to generate builders on generated classes.
+| Implies `builders` option.
+// ------------------------------
+| getters
+| Whether to include getters or to omit this accessor method and create public fields instead.
+|
+// ------------------------------
+| gettersDynamic
+| Whether to include dynamic getters.
+|
+// ------------------------------
+| gettersUseOptional
+| Whether to use Optional as return type for getters of non-required fields.
+|
+// ------------------------------
+| hashcodeAndEquals
+| Whether to include hashCode and equals methods in generated Java types.
+| Note, that `BigDecimal` objects aren't comparable by `equals` as expected.
+// ------------------------------
+| setters
+| Whether to include setters or to omit this accessor method and create public fields instead
+|
+// ------------------------------
+| settersDynamic
+| Whether to include dynamic setters.
+|
+// ------------------------------
+| toStringExcludes
+| The fields to be excluded from toString generation
+|
+// ------------------------------
+| toStringMethod
+| Whether to include a toString method in generated Java types.
+|
+// ------------------------------
+|====
+
+.Supported parameters and options (types and their defaults)
+[%collapsible]
+====
+[options=header,cols="4,1,2"]
+|====
+| Name | Type | Default
+// ------------------------------
+| additionalProperties
+| boolean
+| true
+// ------------------------------
+| annotateJakartaValidation
+| boolean
+| false
+// ------------------------------
+| annotateJsr303
+| boolean
+| false
+// ------------------------------
+| annotateJsr305
+| boolean
+| false
+// ------------------------------
+| builders
+| boolean
+| false
+// ------------------------------
+| buildersDynamic
+| boolean
+| false
+// ------------------------------
+| buildersInnerClass
+| boolean
+| false
+// ------------------------------
+| getters
+| boolean
+| true
+// ------------------------------
+| gettersDynamic
+| boolean
+| false
+// ------------------------------
+| gettersUseOptional
+| boolean
+| false
+// ------------------------------
+| hashcodeAndEquals
+| boolean
+| true
+// ------------------------------
+| setters
+| boolean
+| true
+// ------------------------------
+| settersDynamic
+| boolean
+| false
+// ------------------------------
+| toStringExcludes
+| boolean
+| true
+// ------------------------------
+| toStringMethod
+| boolean
+| false
+// ------------------------------
+|====
+====
+
+==== Field Generation Parameters
+
+.Supported parameters and options
+[options=header,cols="4,4,2"]
+|====
+| Name | Description | Notes
+// ------------------------------
+| floatUseBigDecimal
+| Whether to use the java type `BigDecimal` instead of `float` (or `Float`) when representing the JSON Schema type 'number'.
+| This parameter overrides `floatUseDouble`.
+// ------------------------------
+| floatUseDouble
+| Whether to use the java type `double` (or `Double`) instead of `float` (or `Float`) when representing the JSON Schema type 'number'.
+|
+// ------------------------------
+| formatToTypeMapping
+| Defines mapping from format identifier (e.g. 'uri') to fully qualified type name (e.g. 'java.net.URI').
+|
+// ------------------------------
+| initializeCollections
+| Whether to initialize Set and List fields as empty collections, or leave them as null.
+|
+// ------------------------------
+| integerUseBigInteger
+| Whether to use the java type `BigInteger` instead of `int` (or `Integer`) when representing the JSON Schema type `integer`.
+| This parameter overrides `integerUseLong`.
+// ------------------------------
+| integerUseLong
+| Whether to use the java type `long` (or `Long`) instead of `int` (or `Integer`) when representing the JSON Schema type 'integer'.
+|
+// ------------------------------
+| usePrimitives
+| Whether to use primitives (`long`, `double` or `boolean`) instead of wrapper types where possible.
+| This has the side effect of making those properties non-null.
+// ------------------------------
+|====
+
+.Supported parameters and options (types and their defaults)
+[%collapsible]
+====
+[options=header,cols="4,1,2"]
+|====
+| Name | Type | Default
+// ------------------------------
+| floatUseBigDecimal
+| boolean
+| false
+// ------------------------------
+| floatUseDouble
+| boolean
+| true
+// ------------------------------
+| formatToTypeMapping
+| `Map<String, String>`
+|
+// ------------------------------
+| initializeCollections
+| boolean
+| true
+// ------------------------------
+| integerUseBigInteger
+| boolean
+| false
+// ------------------------------
+| integerUseLong
+| boolean
+| false
+// ------------------------------
+| usePrimitives
+| boolean
+| false
+// ------------------------------
+|====
+====
+
+==== Date-Time Fields Generation Parameters
+
+.Supported parameters and options
+[options=header,cols="4,4,2"]
+|====
+| Name | Description | Notes
+// ------------------------------
+| dateFormat
+| How `date` fields will be formatted during serialization.
+|
+// ------------------------------
+| datePattern
+| A custom pattern to use when formatting date fields during deserialization.
+| Requires support from your JSON binding library.
+// ------------------------------
+| dateTimeFormat
+| How `date-time` fields will be formatted during serialization.
+|
+// ------------------------------
+| dateTimePattern
+| A custom pattern to use when formatting date-time fields during deserialization.
+| Requires support from your JSON binding library.
+// ------------------------------
+| dateTimeType
+| Which type to use instead of string when adding string type fields of format `date-time` to generated Java types.
+|
+// ------------------------------
+| dateType
+| Which type to use instead of string when adding string type fields of format `date` to generated Java types.
+|
+// ------------------------------
+| jodaDate
+| Whether to use `org.joda.time.DateTime` instead of Date when adding date type fields to generated Java types.
+|
+// ------------------------------
+| jodaLocalDate
+| Whether to use `org.joda.time.LocalDate` instead of string when adding string type fields of format `date` to generated Java types.
+|
+// ------------------------------
+| jodaLocalTime
+| Whether to use `org.joda.time.LocalTime` instead of string when adding string type fields of format `time` to generated Java types.
+|
+// ------------------------------
+| timeFormat
+| How `time` fields will be formatted during serialization.
+|
+// ------------------------------
+| timePattern
+| A custom pattern to use when formatting time fields during deserialization.
+| Requires support from your JSON binding library.
+// ------------------------------
+| timeType
+| Which type to use instead of string when adding string type fields of format `time` to generated Java types.
+|
+// ------------------------------
+|====
+
+.Supported parameters and options (types and their defaults)
+[%collapsible]
+====
+[options=header,cols="4,1,2"]
+|====
+| Name | Type | Default
+// ------------------------------
+| dateFormat
+| String
+|
+// ------------------------------
+| datePattern
+| String
+|
+// ------------------------------
+| dateTimeFormat
+| String
+|
+// ------------------------------
+| dateTimePattern
+| String
+|
+// ------------------------------
+| dateTimeType
+| String
+|
+// ------------------------------
+| dateType
+| String
+|
+// ------------------------------
+| jodaDate
+| boolean
+| false
+// ------------------------------
+| jodaLocalDate
+| boolean
+| false
+// ------------------------------
+| jodaLocalTime
+| boolean
+| false
+// ------------------------------
+| timeFormat
+| String
+|
+// ------------------------------
+| timePattern
+| String
+|
+// ------------------------------
+| timeType
+| String
+|
+// ------------------------------
+|====
+====

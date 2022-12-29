@@ -1,0 +1,260 @@
+:toc:
+:toc-placement: preamble
+:toclevels: 2
+:showtitle:
+
+= Migration guide from 5.0 to 6.0
+
+This guide highlights major changes and shows how to change a project to use new plugin.
+
+== Default options are removed from the extension
+
+Previously, it was possible to define default options for all executions.
+Now it's mandatory to define all options for every execution.
+
+== Configuration options for each execution were split into categories
+
+With plugin version 6.0 configuration options were moved into sub-categories.
+Additionally, some of them were renamed as category has context.
+Documentation and meaning for these configuration options is still the same.
+
+An execution configuration now contains following categories.
+
+.Execution configuration categories
+[options=header]
+|=====
+| Category name | Meaning
+// ------------------------------
+| `io`
+| These options tell which files to read and what encoding to produce.
+// ------------------------------
+| `klass`
+| General class generation options.
+// ------------------------------
+| `constructor`
+| Options define how given class can be instantiated.
+// ------------------------------
+| `methods`
+| Options to define which methods are created and which annotations are used.
+// ------------------------------
+| `fields`
+| Options to define field type mapping (except date and time objects).
+// ------------------------------
+| `dateTime`
+| Options to define date and time field generation and serialization.
+// ------------------------------
+|=====
+
+=== Options Renames and movement
+
+[options=header,cols="1,3,3"]
+|=====
+| Category | Original Source Option | New option name (if changed)
+// ------------------------------
+.9+^.^| `io`
+| fileExtensions
+|
+// ------------------------------
+| fileFilter
+|
+// ------------------------------
+| propertyWordDelimiters
+| delimitersPropertyWord
+// ------------------------------
+| outputEncoding
+|
+// ------------------------------
+| source
+|
+// ------------------------------
+| sourceType
+|
+// ------------------------------
+| sourceSortOrder
+|
+// ------------------------------
+| targetVersion
+| targetJavaVersion
+// ------------------------------
+| refFragmentPathDelimiters
+| delimitersRefFragmentPath
+// ------------------------------
+.11+^.^| `klass`
+| annotationStyle
+|
+// ------------------------------
+| classNamePrefix
+| namePrefix
+// ------------------------------
+| classNameSuffix
+| nameSuffix
+// ------------------------------
+| customAnnotator
+| customAnnotatorClass
+// ------------------------------
+| customRuleFactory
+| customRuleFactoryClass
+// ------------------------------
+| includeGeneratedAnnotation
+| annotateGenerated
+// ------------------------------
+| includeTypeInfo
+| jackson2IncludeTypeInfo
+// ------------------------------
+| inclusionLevel
+| jackson2InclusionLevel
+// ------------------------------
+| serializable
+| annotateSerializable
+// ------------------------------
+| targetPackage
+|
+// ------------------------------
+| useTitleAsClassname
+| nameUseTitle
+// ------------------------------
+.5+^.^| `constructor`
+| includeAllPropertiesConstructor
+| allProperties
+// ------------------------------
+| includeConstructorPropertiesAnnotation
+| annotateConstructorProperties
+// ------------------------------
+| includeCopyConstructor
+| copy
+// ------------------------------
+| includeRequiredPropertiesConstructor
+| requiredProperties
+// ------------------------------
+| parcelable
+|
+// ------------------------------
+.16+^.^| `methods`
+| generateBuilders
+| builders
+// ------------------------------
+| includeAdditionalProperties
+| additionalProperties
+// ------------------------------
+| includeDynamicBuilders
+| buildersDynamic
+// ------------------------------
+| includeDynamicGetters
+| gettersDynamic
+// ------------------------------
+| includeDynamicSetters
+| settersDynamic
+// ------------------------------
+| includeGetters
+| getters
+// ------------------------------
+| includeHashcodeAndEquals
+| hashcodeAndEquals
+// ------------------------------
+| includeJsr303Annotations
+| annotateJsr303
+// ------------------------------
+| includeJsr305Annotations
+| annotateJsr305
+// ------------------------------
+| includeSetters
+| setters
+// ------------------------------
+| includeToString
+| toStringMethod
+// ------------------------------
+| toStringExcludes
+|
+// ------------------------------
+| useInnerClassBuilders
+| buildersInnerClass
+// ------------------------------
+| useJakartaValidation
+| annotateJsr303Jakarta
+// ------------------------------
+| useOptionalForGetters
+| gettersUseOptional
+// ------------------------------
+.7+^.^| `fields`
+| formatTypeMapping
+| formatToTypeMapping
+// ------------------------------
+| initializeCollections
+|
+// ------------------------------
+| useBigDecimals
+| floatUseBigDecimal
+// ------------------------------
+| useBigIntegers
+| integerUseBigInteger
+// ------------------------------
+| useDoubleNumbers
+| floatUseDouble
+// ------------------------------
+| useLongIntegers
+| integerUseLong
+// ------------------------------
+| usePrimitives
+|
+// ------------------------------
+.12+^.^| `dateTime`
+| customDatePattern
+| datePattern
+// ------------------------------
+| customDateTimePattern
+| dateTimePattern
+// ------------------------------
+| customTimePattern
+| timePattern
+// ------------------------------
+| dateTimeType
+|
+// ------------------------------
+| dateType
+|
+// ------------------------------
+| formatDateTimes
+| dateTimeFormat
+// ------------------------------
+| formatDates
+| dateFormat
+// ------------------------------
+| formatTimes
+| timeFormat
+// ------------------------------
+| timeType
+|
+// ------------------------------
+| useJodaDates
+| jodaDate
+// ------------------------------
+| useJodaLocalDates
+| jodaLocalDate
+// ------------------------------
+| useJodaLocalTimes
+| jodaLocalTime
+// ------------------------------
+|=====
+=== Options removed
+
+.Supported parameters and options
+[options=header,cols="4,4,2"]
+|====
+| Name | Notes
+// ------------------------------
+| removeOldOutput
+| became uncontrollable by a user, in favor Gradle to handle generated files.
+// ------------------------------
+| constructorsRequiredPropertiesOnly
+| Can be replaced with turning off generation of any constructors except `requiredProperties`
+// ------------------------------
+| includeConstructors
+| This option will be turned on if any constructor option is turn on.
+// ------------------------------
+| includeDynamicAccessors
+| This option will be turned on if any accessor is turned on.
+|====
+
+Option `removeOldOutput` became uncontrollable by a user, in favor Gradle to handle generated files.
+
+Option constructorsRequiredPropertiesOnly
