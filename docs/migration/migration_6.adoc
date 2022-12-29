@@ -243,14 +243,15 @@ An execution configuration now contains following categories.
 | Name | Notes
 // ------------------------------
 | removeOldOutput
-| became uncontrollable by a user, in favor Gradle to handle generated files.
+| became uncontrollable by a user in favor for Gradle to handle generated files.
 // ------------------------------
 | constructorsRequiredPropertiesOnly
-| Can be replaced with turning off generation of any constructors except `requiredProperties`
+| Can be replaced with turning off generation of any constructors except `requiredProperties`.
+  Was deprecated for a while in the underlying library.
 // ------------------------------
 | includeConstructors
-| This option will be turned on if any constructor option is turn on.
+| This option will be turned on if any constructor generation option is turned on.
 // ------------------------------
 | includeDynamicAccessors
-| This option will be turned on if any accessor is turned on.
+| This option will be turned on if any dynamic accessor generation option  is turned on.
 |====
