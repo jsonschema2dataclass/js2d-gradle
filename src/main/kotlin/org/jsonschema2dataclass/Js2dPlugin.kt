@@ -1,6 +1,6 @@
 package org.jsonschema2dataclass
 
-import org.jsonschema2dataclass.js2p.support.capitalized
+import org.jsonschema2dataclass.support.capitalized
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project

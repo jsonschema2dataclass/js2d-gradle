@@ -1,4 +1,4 @@
-package org.jsonschema2dataclass.js2p.support
+package org.jsonschema2dataclass.support
 
 /**
  * Kotlin version independent functions as we support quite wide range of Gradle
@@ -15,4 +15,4 @@ internal fun String.asUppercase(): String = (this as java.lang.String).toUpperCa
 /**
  * Kotlin-independent version of capitalization.
  */
-internal fun CharSequence.capitalized(): String = this[0].titlecase(Locale.ROOT) + substring(1)
+internal fun CharSequence.capitalized(): String = this[0].toString().asUppercase() + substring(1)

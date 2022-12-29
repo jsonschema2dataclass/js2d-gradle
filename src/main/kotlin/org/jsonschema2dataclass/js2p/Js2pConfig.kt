@@ -1,6 +1,6 @@
 package org.jsonschema2dataclass.js2p
 
-import org.jsonschema2dataclass.js2p.support.asUppercase
+import org.jsonschema2dataclass.support.asUppercase
 import org.gradle.api.GradleScriptException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Provider
