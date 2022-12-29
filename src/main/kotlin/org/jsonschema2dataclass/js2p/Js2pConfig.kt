@@ -1,5 +1,6 @@
 package org.jsonschema2dataclass.js2p
 
+import org.jsonschema2dataclass.support.asUppercase
 import org.gradle.api.GradleScriptException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Provider
@@ -8,9 +9,10 @@ import org.jsonschema2pojo.rules.RuleFactory
 import java.io.File
 import java.io.FileFilter
 import java.net.URL
+import java.util.*
 import java.util.function.Function
 
-internal data class Js2dConfig(
+internal data class Js2pConfig(
     private val targetDirectory: File,
     private val io: Js2pConfigIO,
     private val klass: Js2pConfigClass,
@@ -23,8 +25,8 @@ internal data class Js2dConfig(
         fun fromConfig(
             targetDirectory: DirectoryProperty,
             config: Js2pConfiguration,
-        ): Js2dConfig =
-            Js2dConfig(
+        ): Js2pConfig =
+            Js2pConfig(
                 targetDirectory.asFile.get(),
                 convert(config.io),
                 convert(config.klass),
@@ -274,7 +276,7 @@ private fun <E : Enum<E>?> fromEnum(provider: Provider<String>, enumClass: Class
     return if (value.isNullOrEmpty()) {
         null
     } else {
-        java.lang.Enum.valueOf(enumClass, value.toUpperCase())
+        java.lang.Enum.valueOf(enumClass, value.asUppercase())
     }
 }
 
@@ -284,7 +286,7 @@ private fun <C> findClass(className: String?): Class<out C>? {
     }
     return try {
         @Suppress("UNCHECKED_CAST")
-        Class.forName(className, true, Js2dConfig::class.java.classLoader) as Class<C>
+        Class.forName(className, true, Js2pConfig::class.java.classLoader) as Class<C>
     } catch (e: ClassNotFoundException) {
         throw GradleScriptException("Unable to find class $className", e)
     }

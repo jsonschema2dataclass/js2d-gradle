@@ -1,5 +1,6 @@
 package org.jsonschema2dataclass
 
+import org.jsonschema2dataclass.support.capitalized
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -74,15 +75,19 @@ internal class Js2pAndroidPlugin : Plugin<Project> {
     }
 }
 
-internal fun createTaskNameDescription(
+
+
+private fun createTaskNameDescription(
     androidVariant: String?,
     configurationName: String?
 ): Pair<String, String> {
 
-    val androidVariantSuffix = if (androidVariant == null) "" else "For${androidVariant.capitalize()}"
-    val androidVariantMessage = if (androidVariant == null) "" else " for variant ${androidVariant.capitalize()}"
-    val configurationNameSuffix = if (configurationName == null) "" else "Config${configurationName.capitalize()}"
-    val configurationNameMessage = if (configurationName == null) "" else "for configuration $configurationName"
+    val androidVariantCapitalized = androidVariant?.capitalized()
+    val configurationNameCapitalized = configurationName?.capitalized()
+    val androidVariantSuffix = if (androidVariant.isNullOrEmpty()) "" else "For$androidVariantCapitalized"
+    val androidVariantMessage = if (androidVariant.isNullOrEmpty()) "" else " for variant $androidVariantCapitalized"
+    val configurationNameSuffix = if (configurationName.isNullOrEmpty()) "" else "Config$configurationNameCapitalized"
+    val configurationNameMessage = if (configurationName.isNullOrEmpty()) "" else "for configuration $configurationName"
 
     return "$TASK_NAME$androidVariantSuffix$configurationNameSuffix" to
             "Generates Java classes from a json schema using JsonSchema2Pojo$configurationNameMessage$androidVariantMessage."
