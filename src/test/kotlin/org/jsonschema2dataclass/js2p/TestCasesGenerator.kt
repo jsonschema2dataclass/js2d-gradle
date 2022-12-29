@@ -1,5 +1,7 @@
 package org.jsonschema2dataclass.js2p
 
+import org.jsonschema2dataclass.PLUGIN_ID
+import org.jsonschema2dataclass.TARGET_FOLDER_BASE
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path

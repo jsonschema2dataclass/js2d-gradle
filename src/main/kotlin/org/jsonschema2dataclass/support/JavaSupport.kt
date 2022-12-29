@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package org.jsonschema2dataclass.js2p.support
+package org.jsonschema2dataclass.support
 
 // DEPRECATION: to support Gradle 6.0 - 7.0.2
 import org.gradle.api.Project
@@ -14,7 +14,7 @@ import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.js2p.Js2pWrapperTask
-import org.jsonschema2dataclass.js2p.createJS2DTask
+import org.jsonschema2dataclass.createJS2DTask
 import java.nio.file.Path
 
 internal fun applyInternalJava(extension: Js2pExtension, project: Project) {

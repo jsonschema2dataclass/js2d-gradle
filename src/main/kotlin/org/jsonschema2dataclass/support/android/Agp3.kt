@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package org.jsonschema2dataclass.js2p.support.android
+package org.jsonschema2dataclass.support.android
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
@@ -9,8 +9,8 @@ import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.LibraryVariant
 import org.gradle.api.*
 import org.jsonschema2dataclass.js2p.Js2pExtension
-import org.jsonschema2dataclass.js2p.createJS2DTask
-import org.jsonschema2dataclass.js2p.support.getAndroidJsonPath
+import org.jsonschema2dataclass.createJS2DTask
+import org.jsonschema2dataclass.support.getAndroidJsonPath
 
 internal fun applyInternalAndroidAgp3(extension: Js2pExtension, project: Project) {
     obtainAndroidLibraryVariants(project)?.all {
