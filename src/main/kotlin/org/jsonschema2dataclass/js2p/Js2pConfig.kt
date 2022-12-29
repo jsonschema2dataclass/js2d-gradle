@@ -49,7 +49,7 @@ internal data class Js2pConfig(
     override fun getDateType(): String? = dateTime.dateType
     override fun getFileExtensions(): Array<String> = io.fileExtensions.toTypedArray()
     override fun getFileFilter(): FileFilter = io.fileFilter
-    override fun getFormatTypeMapping(): Map<String, String> = fields.formatTypeMapping
+    override fun getFormatTypeMapping(): Map<String, String> = fields.formatToTypeMapping
     override fun getInclusionLevel(): InclusionLevel = klass.jackson2InclusionLevel
     override fun getOutputEncoding(): String? = io.outputEncoding
     override fun getPropertyWordDelimiters(): CharArray = io.delimitersPropertyWord.toCharArray()
@@ -62,11 +62,11 @@ internal data class Js2pConfig(
     override fun getTargetVersion(): String? = io.targetJavaVersion
     override fun getTimeType(): String? = dateTime.timeType
     override fun getToStringExcludes(): Array<String> = methods.toStringExcludes.toTypedArray()
-    override fun isConstructorsRequiredPropertiesOnly(): Boolean = constructor.requiredPropertiesOnly
+    override fun isConstructorsRequiredPropertiesOnly(): Boolean = false
     override fun isFormatDateTimes(): Boolean = dateTime.dateTimeFormat
     override fun isFormatDates(): Boolean = dateTime.dateFormat
     override fun isFormatTimes(): Boolean = dateTime.timeFormat
-    override fun isGenerateBuilders(): Boolean = methods.builders
+    override fun isGenerateBuilders(): Boolean = methods.builders || methods.buildersInnerClass
     override fun isIncludeAdditionalProperties(): Boolean = methods.additionalProperties
     override fun isIncludeAllPropertiesConstructor(): Boolean = constructor.allProperties
     override fun isIncludeConstructorPropertiesAnnotation(): Boolean = constructor.annotateConstructorProperties
@@ -75,11 +75,11 @@ internal data class Js2pConfig(
     override fun isIncludeDynamicAccessors(): Boolean = methods.accessorsDynamic
     override fun isIncludeDynamicBuilders(): Boolean = methods.buildersDynamic
     override fun isIncludeDynamicGetters(): Boolean = methods.gettersDynamic
-    override fun isIncludeDynamicSetters(): Boolean = methods.includeDynamicSetters
+    override fun isIncludeDynamicSetters(): Boolean = methods.settersDynamic
     override fun isIncludeGeneratedAnnotation(): Boolean = klass.annotateGenerated
     override fun isIncludeGetters(): Boolean = methods.getters
     override fun isIncludeHashcodeAndEquals(): Boolean = methods.hashcodeAndEquals
-    override fun isIncludeJsr303Annotations(): Boolean = methods.annotateJsr303
+    override fun isIncludeJsr303Annotations(): Boolean = methods.annotateJsr303 || methods.annotateJsr303Jakarta
     override fun isIncludeJsr305Annotations(): Boolean = methods.annotateJsr305
     override fun isIncludeRequiredPropertiesConstructor(): Boolean = constructor.requiredProperties
     override fun isIncludeSetters(): Boolean = methods.setters
@@ -93,7 +93,7 @@ internal data class Js2pConfig(
     override fun isUseBigIntegers(): Boolean = fields.integerUseBigInteger
     override fun isUseDoubleNumbers(): Boolean = fields.floatUseDouble
     override fun isUseInnerClassBuilders(): Boolean = methods.buildersInnerClass
-    override fun isUseJakartaValidation(): Boolean = methods.annotateJakartaValidation
+    override fun isUseJakartaValidation(): Boolean = methods.annotateJsr303Jakarta
     override fun isUseJodaDates(): Boolean = dateTime.jodaDate
     override fun isUseJodaLocalDates(): Boolean = dateTime.jodaLocalDate
     override fun isUseJodaLocalTimes(): Boolean = dateTime.jodaLocalTime
@@ -133,16 +133,14 @@ internal data class Js2pConfigConstructor(
     val allProperties: Boolean,
     val annotateConstructorProperties: Boolean,
     val copy: Boolean,
-    val generate: Boolean,
     val parcelable: Boolean,
     val requiredProperties: Boolean,
-    val requiredPropertiesOnly: Boolean,
+    val generate: Boolean = allProperties || annotateConstructorProperties || copy || parcelable || requiredProperties
 )
 
 internal data class Js2pConfigMethod(
-    val accessorsDynamic: Boolean,
     val additionalProperties: Boolean,
-    val annotateJakartaValidation: Boolean,
+    val annotateJsr303Jakarta: Boolean,
     val annotateJsr303: Boolean,
     val annotateJsr305: Boolean,
     val builders: Boolean,
@@ -152,16 +150,17 @@ internal data class Js2pConfigMethod(
     val gettersDynamic: Boolean,
     val gettersUseOptional: Boolean,
     val hashcodeAndEquals: Boolean,
-    val includeDynamicSetters: Boolean,
     val setters: Boolean,
+    val settersDynamic: Boolean,
     val toStringExcludes: Set<String>,
     val toStringMethod: Boolean,
+    val accessorsDynamic: Boolean = gettersDynamic || buildersDynamic || settersDynamic,
 )
 
 internal data class Js2pConfigFields(
     val floatUseBigDecimal: Boolean,
     val floatUseDouble: Boolean,
-    val formatTypeMapping: Map<String, String>,
+    val formatToTypeMapping: Map<String, String>,
     val initializeCollections: Boolean,
     val integerUseBigInteger: Boolean,
     val integerUseLong: Boolean,
@@ -216,17 +215,14 @@ private fun convert(constructor: PluginConfigJs2pConstructor): Js2pConfigConstru
         maybeDefault(constructor.allProperties) { it.isIncludeAllPropertiesConstructor },
         maybeDefault(constructor.annotateConstructorProperties) { it.isIncludeConstructorPropertiesAnnotation },
         maybeDefault(constructor.copy) { it.isIncludeCopyConstructor },
-        maybeDefault(constructor.generate) { it.isIncludeConstructors },
         maybeDefault(constructor.parcelable) { it.isParcelable },
         maybeDefault(constructor.requiredProperties) { it.isIncludeRequiredPropertiesConstructor },
-        maybeDefault(constructor.requiredPropertiesOnly) { it.isConstructorsRequiredPropertiesOnly },
     )
 
 private fun convert(methods: PluginConfigJs2pMethod): Js2pConfigMethod =
     Js2pConfigMethod(
-        maybeDefault(methods.accessorsDynamic) { it.isIncludeDynamicAccessors },
         maybeDefault(methods.additionalProperties) { it.isIncludeAdditionalProperties },
-        maybeDefault(methods.annotateJakartaValidation) { it.isUseJakartaValidation },
+        maybeDefault(methods.annotateJsr303Jakarta) { it.isUseJakartaValidation },
         maybeDefault(methods.annotateJsr303) { it.isIncludeJsr303Annotations },
         maybeDefault(methods.annotateJsr305) { it.isIncludeJsr305Annotations },
         maybeDefault(methods.builders) { it.isGenerateBuilders },
@@ -246,7 +242,7 @@ private fun convert(fields: PluginConfigJs2pField): Js2pConfigFields =
     Js2pConfigFields(
         maybeDefault(fields.floatUseBigDecimal) { it.isUseBigDecimals },
         maybeDefault(fields.floatUseDouble) { it.isUseDoubleNumbers },
-        maybeDefault(fields.formatTypeMapping) { it.formatTypeMapping },
+        maybeDefault(fields.formatToTypeMapping) { it.formatTypeMapping },
         maybeDefault(fields.initializeCollections) { it.isInitializeCollections },
         maybeDefault(fields.integerUseBigInteger) { it.isUseBigIntegers },
         maybeDefault(fields.integerUseLong) { it.isUseLongIntegers },

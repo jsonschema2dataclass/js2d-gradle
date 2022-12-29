@@ -114,33 +114,21 @@ abstract class PluginConfigJs2pConstructor {
 
     @get:Input
     @get:Optional
-    abstract val generate: Property<Boolean>
-
-    @get:Input
-    @get:Optional
     abstract val parcelable: Property<Boolean>
 
     @get:Input
     @get:Optional
     abstract val requiredProperties: Property<Boolean>
-
-    @get:Input
-    @get:Optional
-    abstract val requiredPropertiesOnly: Property<Boolean>
 }
 
 abstract class PluginConfigJs2pMethod {
-    @get:Input
-    @get:Optional
-    abstract val accessorsDynamic: Property<Boolean>
-
     @get:Input
     @get:Optional
     abstract val additionalProperties: Property<Boolean>
 
     @get:Input
     @get:Optional
-    abstract val annotateJakartaValidation: Property<Boolean>
+    abstract val annotateJsr303Jakarta: Property<Boolean>
 
     @get:Input
     @get:Optional
@@ -206,7 +194,7 @@ abstract class PluginConfigJs2pField {
 
     @get:Input
     @get:Optional
-    abstract val formatTypeMapping: MapProperty<String, String>
+    abstract val formatToTypeMapping: MapProperty<String, String>
 
     @get:Input
     @get:Optional
