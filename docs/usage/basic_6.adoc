@@ -1,0 +1,3 @@
+:plugin_major: 6
+
+include::basic.adoc[]

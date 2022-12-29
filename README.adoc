@@ -1,12 +1,13 @@
-
-= Json Schema to Data Class Gradle plugin
-
-image:https://img.shields.io/github/v/release/jsonschema2dataclass/js2d-gradle[GitHub release (latest by date)]
-
 :toc:
 :toc-placement: preamble
 :toclevels: 1
 :showtitle:
+
+:plugin_major: 6
+
+= Json Schema to Data Class Gradle plugin
+
+image:https://img.shields.io/github/v/release/jsonschema2dataclass/js2d-gradle[GitHub release (latest by date)]
 
 // Need some preamble to get TOC:
 {empty}
@@ -47,10 +48,17 @@ can't replace Json Schema Validation.
 I suggest to use a Json Schema Validation library when possible like one
 https://github.com/networknt/json-schema-validator[by NetworkNT].
 
-== Usage
+== Usage and migration information for {plugin_major}.x:
 
-Usage and migration documentation can be read in a separate documents.
+Usage and migration documentation is located in separate documents.
 
-* xref:docs/usage/basic.adoc[Basic usage]
-* xref:docs/usage/parameters_5.adoc[Parameters]
-* xref:docs/migration/migration_5.adoc[Migration from 4.x to 5.x]
+* xref:docs/usage/basic_{plugin_major}.adoc[Basic usage for {plugin_major}.x]
+* xref:docs/usage/parameters_{plugin_major}.adoc[Parameters for {plugin_major}.x]
+* xref:docs/migration/migration.adoc[Migration guide for {plugin_major}.x]
+
+== Usage and migration information for all versions:
+
+Usage and migration documentation is located in separate documents.
+
+* xref:docs/usage/index.adoc[Usage documentation for all versions]
+* xref:docs/migration/migration.adoc[Migration guides for all versions]
