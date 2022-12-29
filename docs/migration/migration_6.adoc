@@ -45,7 +45,7 @@ An execution configuration now contains following categories.
 // ------------------------------
 |=====
 
-=== Options Renames and movement
+=== Options renames and placing into categories
 
 [options=header,cols="1,3,3"]
 |=====
@@ -238,7 +238,7 @@ An execution configuration now contains following categories.
 === Options removed
 
 .Supported parameters and options
-[options=header,cols="4,4,2"]
+[options=header,cols="1,4"]
 |====
 | Name | Notes
 // ------------------------------
@@ -254,7 +254,3 @@ An execution configuration now contains following categories.
 | includeDynamicAccessors
 | This option will be turned on if any accessor is turned on.
 |====
-
-Option `removeOldOutput` became uncontrollable by a user, in favor Gradle to handle generated files.
-
-Option constructorsRequiredPropertiesOnly
