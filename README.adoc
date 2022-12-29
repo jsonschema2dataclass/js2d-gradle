@@ -48,7 +48,7 @@ can't replace Json Schema Validation.
 I suggest to use a Json Schema Validation library when possible like one
 https://github.com/networknt/json-schema-validator[by NetworkNT].
 
-== Usage and migration information for {plugin_major}.x:
+== Usage and migration information for {plugin_major}.x
 
 Usage and migration documentation is located in separate documents.
 
@@ -56,7 +56,7 @@ Usage and migration documentation is located in separate documents.
 * xref:docs/usage/parameters_{plugin_major}.adoc[Parameters for {plugin_major}.x]
 * xref:docs/migration/migration.adoc[Migration guide for {plugin_major}.x]
 
-== Usage and migration information for all versions:
+== Usage and migration information for all versions
 
 Usage and migration documentation is located in separate documents.
 
