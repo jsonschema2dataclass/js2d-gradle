@@ -1,4 +1,4 @@
-package org.jsonschema2dataclass.js2p.support.android
+package org.jsonschema2dataclass.support.android
 
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
@@ -11,9 +11,9 @@ import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.jsonschema2dataclass.js2p.Js2pExtension
-import org.jsonschema2dataclass.js2p.createJS2DTask
-import org.jsonschema2dataclass.js2p.support.capitalization
-import org.jsonschema2dataclass.js2p.support.getAndroidJsonPath
+import org.jsonschema2dataclass.createJS2DTask
+import org.jsonschema2dataclass.support.capitalization
+import org.jsonschema2dataclass.support.getAndroidJsonPath
 
 internal fun applyInternalAndroidAgp7(extension: Js2pExtension, project: Project) {
     val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)

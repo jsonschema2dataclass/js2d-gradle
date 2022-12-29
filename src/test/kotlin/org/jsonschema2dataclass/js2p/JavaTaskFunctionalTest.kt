@@ -1,6 +1,7 @@
 package org.jsonschema2dataclass.js2p
 
 import org.gradle.testkit.runner.TaskOutcome
+import org.jsonschema2dataclass.TARGET_FOLDER_BASE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.DisplayName

@@ -1,4 +1,4 @@
-package org.jsonschema2dataclass.js2p
+package org.jsonschema2dataclass
 
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -9,8 +9,12 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.apply
 import org.gradle.util.GradleVersion
-import org.jsonschema2dataclass.js2p.support.applyInternalAndroid
-import org.jsonschema2dataclass.js2p.support.applyInternalJava
+import org.jsonschema2dataclass.js2p.Js2pConfiguration
+import org.jsonschema2dataclass.js2p.Js2pExtension
+import org.jsonschema2dataclass.js2p.Js2pGenerationTask
+import org.jsonschema2dataclass.js2p.Js2pWrapperTask
+import org.jsonschema2dataclass.support.applyInternalAndroid
+import org.jsonschema2dataclass.support.applyInternalJava
 import java.nio.file.Path
 import java.util.*
 
@@ -27,7 +31,7 @@ private const val DEPRECATION_NO_EXECUTION =
             "Please, consider follow migration guide to upgrade plugin properly"
 
 @Suppress("unused")
-class Js2pPlugin : Plugin<Project> {
+class Js2dPlugin : Plugin<Project> {
     private val javaPlugins = listOf("java", "java-library")
     private val androidPlugins = listOf("com.android.application", "com.android.library")
 
