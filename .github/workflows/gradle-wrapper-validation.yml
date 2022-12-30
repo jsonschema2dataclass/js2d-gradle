@@ -11,14 +11,18 @@ on:
       - 'demo/*/*/gradle/**'
       - 'demo/*/*/gradlew'
       - 'demo/*/*/gradlew.bat'
-      - 'buildSrc/gradle*'
       - .github/workflows/gradle-wrapper-validation.yml
   pull_request:
     branches:
       - main
     paths:
       - 'gradle/**'
-      - 'gradlew*'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'demo/*/*/gradle/**'
+      - 'demo/*/*/gradlew'
+      - 'demo/*/*/gradlew.bat'
+      - .github/workflows/gradle-wrapper-validation.yml
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dkotlin.compiler.execution.strategy=in-process
 
@@ -30,7 +34,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@55e685c48d84285a5b0418cd094606e199cca3b6
+      - uses: gradle/wrapper-validation-action@v1
   validationJavaKotlinSample:
     name: "Wrapper validation: Java Kotlin DSL Sample"
     runs-on: ubuntu-latest
@@ -41,7 +45,18 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@55e685c48d84285a5b0418cd094606e199cca3b6
+      - uses: gradle/wrapper-validation-action@v1
+  validationJavaModelPublishSample:
+    name: "Wrapper validation: Java Kotlin DSL Sample"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/java/model-publish
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: gradle/wrapper-validation-action@v1
   validationJavaGroovySample:
     name: "Wrapper validation: Java Groovy DSL Sample"
     runs-on: ubuntu-latest
@@ -52,7 +67,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@55e685c48d84285a5b0418cd094606e199cca3b6
+      - uses: gradle/wrapper-validation-action@v1
   validationAndroidAgp7Sample:
     name: "Wrapper validation: Android AGP 7 Sample"
     runs-on: ubuntu-latest
@@ -63,7 +78,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@55e685c48d84285a5b0418cd094606e199cca3b6
+      - uses: gradle/wrapper-validation-action@v1
   validationAndroidAgp4Sample:
     name: "Wrapper validation: Android AGP 4 Sample"
     runs-on: ubuntu-latest
@@ -74,15 +89,5 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@55e685c48d84285a5b0418cd094606e199cca3b6
-  validationAndroidAgp3Sample:
-    name: "Wrapper validation: Android AGP 3 Sample"
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: demo/android/agp3
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: gradle/wrapper-validation-action@55e685c48d84285a5b0418cd094606e199cca3b6
+      - uses: gradle/wrapper-validation-action@v1
+
