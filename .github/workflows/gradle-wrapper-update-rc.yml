@@ -25,89 +25,33 @@ on:
       - 'demo/*/*/gradlew'
       - 'demo/*/*/gradlew.bat'
       - .github/workflows/gradle-wrapper-update.yml
+
 jobs:
-  updateWrapperPlugin:
-    name: "Gradle Wrapper Update RC: Plugin"
+  update:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v1
+      - name: update gradle
+        id: gradleUpdate
+        uses: EdwarDDay/upgrade-gradle-action@v1
         with:
+          distribution-type: bin
+          release-channel: release-candidate
+      - name: create pull request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "Update gradle to ${{ steps.gradleUpdate.outputs.gradle-version }}"
+          title: "Update gradle wrapper to ${{ steps.gradleUpdate.outputs.gradle-version }}"
+          branch: "gradle_update_rc/plugin/version_${{ steps.gradleUpdate.outputs.gradle-version }}"
+          delete-branch: true
+          branch-suffix: timestamp
+          draft: true
+          body: |
+            ${{ steps.gradleUpdate.outputs.version-information }}
+
+            Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
           labels: release candidate
-          path-ignore: demo/**
-          release-channel: release-candidate
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          set-distribution-checksum: true
-  updateWrapperJavaKotlinSample:
-    name: "Gradle Wrapper Update RC: Java Kotlin DSL Sample"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v1
-        with:
-          path: demo/java/kotlin
-          release-channel: release-candidate
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          set-distribution-checksum: true
-  validationJavaModelPublishSample:
-    name: "Gradle Wrapper Update RC: Java Kotlin DSL Sample"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v1
-        with:
-          path: demo/java/model-publish
-          release-channel: release-candidate
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          set-distribution-checksum: true
-  updateWrapperJavaGroovySample:
-    name: "Gradle Wrapper Update RC: Java Groovy DSL Sample"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v1
-        with:
-          path: demo/java/groovy
-          release-channel: release-candidate
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          set-distribution-checksum: true
-  updateWrapperAndroidAgp7Sample:
-    name: "Gradle Wrapper Update RC: Android AGP 7 Sample"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v1
-        with:
-          path: demo/android/agp7
-          release-channel: release-candidate
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          set-distribution-checksum: true
-  updateWrapperAndroidAgp4Sample:
-    name: "Gradle Wrapper Update RC: Android AGP 4 Sample"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v1
-        with:
-          path: demo/android/agp4
-          release-channel: release-candidate
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          set-distribution-checksum: true
