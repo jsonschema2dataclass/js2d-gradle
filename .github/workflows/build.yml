@@ -8,7 +8,7 @@ on:
       - '*'
     paths:
       - .github/workflows/build.yml
-      - 'src/**'
+      - 'plugin/**'
       - 'gradle/**'
       - 'gradlew*'
       - 'buildSrc/**'
@@ -19,7 +19,7 @@ on:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
       - .github/workflows/build.yml
-      - 'src/**'
+      - 'plugin/**'
       - 'gradle/**'
       - 'gradlew*'
       - 'buildSrc/**'
