@@ -1,1 +1,1 @@
-rootProject.name = "model-publish-jsonschema2dataclass-example"
+rootProject.name = "Jsonschema2dataclass JVM model and schema publishing sample"

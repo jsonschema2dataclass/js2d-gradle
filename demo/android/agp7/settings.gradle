@@ -1,4 +1,4 @@
-rootProject.name = 'js2d-gradle Android sample'
+rootProject.name = "Jsonschema2dataclass Android AGP7 sample"
 
 include ':app'
 include ':lib'
