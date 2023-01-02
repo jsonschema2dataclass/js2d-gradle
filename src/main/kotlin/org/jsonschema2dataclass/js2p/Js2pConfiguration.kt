@@ -56,6 +56,10 @@ abstract class PluginConfigJs2pIO {
 abstract class PluginConfigJs2pClass {
     @get:Input
     @get:Optional
+    abstract val androidParcelable: Property<Boolean>
+
+    @get:Input
+    @get:Optional
     abstract val annotateGenerated: Property<Boolean>
 
     @get:Input
@@ -110,11 +114,7 @@ abstract class PluginConfigJs2pConstructor {
 
     @get:Input
     @get:Optional
-    abstract val copy: Property<Boolean>
-
-    @get:Input
-    @get:Optional
-    abstract val parcelable: Property<Boolean>
+    abstract val copyConstructor: Property<Boolean>
 
     @get:Input
     @get:Optional
@@ -271,7 +271,7 @@ abstract class Js2pConfiguration @Inject constructor(
 
     @get:Nested
     @get:Optional
-    abstract val constructor: PluginConfigJs2pConstructor
+    abstract val constructors: PluginConfigJs2pConstructor
 
     @get:Nested
     @get:Optional

@@ -54,7 +54,7 @@ Usage and migration documentation is located in separate documents.
 
 * xref:docs/usage/basic_{plugin_major}.adoc[Basic usage for {plugin_major}.x]
 * xref:docs/usage/parameters_{plugin_major}.adoc[Parameters for {plugin_major}.x]
-* xref:docs/migration/migration.adoc[Migration guide for {plugin_major}.x]
+* xref:docs/migration/migration_{plugin_major}.adoc[Migration guide for {plugin_major}.x]
 
 == Usage and migration information for all versions
 
