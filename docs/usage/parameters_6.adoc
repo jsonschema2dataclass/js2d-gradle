@@ -158,6 +158,10 @@ a| The sort order to be applied when recursively processing the source files.
 |====
 | Name | Description | Notes
 // ------------------------------
+| androidParcelable
+| Whether to make the generated types `Parcelable`.
+| Used for Android development.
+// ------------------------------
 | annotateGenerated
 | Whether to mark generated classes with the `Generated` annotation.
 | It strongly depends on java version used to run POJO generator, not `targetVersion`.
@@ -233,6 +237,10 @@ This is used for types where a fully qualified name has not been supplied in the
 |====
 | Name | Type | Default
 // ------------------------------
+| androidParcelable
+| boolean
+| false
+// ------------------------------
 | annotateGenerated
 | boolean
 | false
@@ -296,13 +304,9 @@ This is used for types where a fully qualified name has not been supplied in the
   Used by some serialization libraries to get parameter names of constructors at runtime.
 | May not be available on Android
 // ------------------------------
-| copy
+| copyConstructor
 | Generate copy constructor to assign all properties from the originating class to the new class.
 |
-// ------------------------------
-| parcelable
-| Whether to make the generated types `Parcelable`.
-| Used for Android development.
 // ------------------------------
 | requiredProperties
 | This option determines whether the resulting object should include a constructor with only the required properties as parameters.
@@ -326,10 +330,6 @@ This is used for types where a fully qualified name has not been supplied in the
 | false
 // ------------------------------
 | copy
-| boolean
-| false
-// ------------------------------
-| parcelable
 | boolean
 | false
 // ------------------------------

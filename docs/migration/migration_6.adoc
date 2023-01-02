@@ -31,7 +31,7 @@ An execution configuration now contains following categories.
 | `klass`
 | General class generation options.
 // ------------------------------
-| `constructor`
+| `constructors`
 | Options define how given class can be instantiated.
 // ------------------------------
 | `methods`
@@ -79,7 +79,7 @@ An execution configuration now contains following categories.
 | refFragmentPathDelimiters
 | delimitersRefFragmentPath
 // ------------------------------
-.11+^.^| `klass`
+.12+^.^| `klass`
 | annotationStyle
 |
 // ------------------------------
@@ -104,6 +104,9 @@ An execution configuration now contains following categories.
 | inclusionLevel
 | jackson2InclusionLevel
 // ------------------------------
+| parcelable
+| androidParcelable
+// ------------------------------
 | serializable
 | annotateSerializable
 // ------------------------------
@@ -113,7 +116,7 @@ An execution configuration now contains following categories.
 | useTitleAsClassname
 | nameUseTitle
 // ------------------------------
-.5+^.^| `constructor`
+.4+^.^| `constructor`
 | includeAllPropertiesConstructor
 | allProperties
 // ------------------------------
@@ -121,15 +124,12 @@ An execution configuration now contains following categories.
 | annotateConstructorProperties
 // ------------------------------
 | includeCopyConstructor
-| copy
+| copyConstructor
 // ------------------------------
 | includeRequiredPropertiesConstructor
 | requiredProperties
 // ------------------------------
-| parcelable
-|
-// ------------------------------
-.16+^.^| `methods`
+.15+^.^| `methods`
 | generateBuilders
 | builders
 // ------------------------------

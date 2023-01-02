@@ -30,7 +30,7 @@ internal data class Js2pConfig(
                 targetDirectory.asFile.get(),
                 convert(config.io),
                 convert(config.klass),
-                convert(config.constructor),
+                convert(config.constructors),
                 convert(config.methods),
                 convert(config.fields),
                 convert(config.dateTime),
@@ -86,7 +86,7 @@ internal data class Js2pConfig(
     override fun isIncludeToString(): Boolean = methods.toStringMethod
     override fun isIncludeTypeInfo(): Boolean = klass.jackson2IncludeTypeInfo
     override fun isInitializeCollections(): Boolean = fields.initializeCollections
-    override fun isParcelable(): Boolean = constructor.parcelable
+    override fun isParcelable(): Boolean = klass.parcelable
     override fun isRemoveOldOutput(): Boolean = false
     override fun isSerializable(): Boolean = klass.annotateSerializable
     override fun isUseBigDecimals(): Boolean = fields.floatUseBigDecimal
@@ -116,6 +116,7 @@ internal data class Js2pConfigIO(
 )
 
 internal data class Js2pConfigClass(
+    val parcelable: Boolean,
     val annotateGenerated: Boolean,
     val annotateSerializable: Boolean,
     val annotationStyle: AnnotationStyle,
@@ -133,9 +134,8 @@ internal data class Js2pConfigConstructor(
     val allProperties: Boolean,
     val annotateConstructorProperties: Boolean,
     val copy: Boolean,
-    val parcelable: Boolean,
     val requiredProperties: Boolean,
-    val generate: Boolean = allProperties || annotateConstructorProperties || copy || parcelable || requiredProperties
+    val generate: Boolean = allProperties || annotateConstructorProperties || copy || requiredProperties
 )
 
 internal data class Js2pConfigMethod(
@@ -197,6 +197,7 @@ private fun convert(io: PluginConfigJs2pIO): Js2pConfigIO =
 
 private fun convert(klass: PluginConfigJs2pClass): Js2pConfigClass =
     Js2pConfigClass(
+        maybeDefault(klass.androidParcelable) { it.isParcelable },
         maybeDefault(klass.annotateGenerated) { it.isIncludeGeneratedAnnotation },
         maybeDefault(klass.annotateSerializable) { it.isSerializable },
         maybeDefaultEnum(klass.annotationStyle) { it.annotationStyle },
@@ -214,8 +215,7 @@ private fun convert(constructor: PluginConfigJs2pConstructor): Js2pConfigConstru
     Js2pConfigConstructor(
         maybeDefault(constructor.allProperties) { it.isIncludeAllPropertiesConstructor },
         maybeDefault(constructor.annotateConstructorProperties) { it.isIncludeConstructorPropertiesAnnotation },
-        maybeDefault(constructor.copy) { it.isIncludeCopyConstructor },
-        maybeDefault(constructor.parcelable) { it.isParcelable },
+        maybeDefault(constructor.copyConstructor) { it.isIncludeCopyConstructor },
         maybeDefault(constructor.requiredProperties) { it.isIncludeRequiredPropertiesConstructor },
     )
 
