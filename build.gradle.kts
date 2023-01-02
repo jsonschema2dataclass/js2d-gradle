@@ -2,7 +2,7 @@ import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 
 plugins {
     id("com.gradle.plugin-publish") version "1.1.0" apply false
-    id("com.diffplug.spotless") version "6.12.0"
+    id("com.diffplug.spotless") version "6.12.1"
 }
 
 group = "org.jsonschema2dataclass"
