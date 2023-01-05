@@ -1,0 +1,60 @@
+name: update-gradle-wrapper
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        description: Where to run the action
+        required: false
+        type: string
+        default: ./
+      working-directory-branch:  # TODO: can be done via if
+        required: true
+        type: string
+      message:
+        required: true
+        type: string
+      release-channel:
+        required: true
+        type: string
+
+jobs:
+  update-gradle-wrapper-job:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: update gradle
+        id: gradleUpdate
+        uses: EdwarDDay/upgrade-gradle-action@v1
+        with:
+          distribution-type: bin
+          release-channel: ${{ inputs.release-channel }}
+      - name: create pull request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "Update gradle wrapper to ${{ steps.gradleUpdate.outputs.gradle-version }}"
+          title: "Update gradle wrapper to ${{ steps.gradleUpdate.outputs.gradle-version }}"
+          branch: "gradle_update/${{ inputs.working-directory-branch }}/version_${{ steps.gradleUpdate.outputs.gradle-version }}"
+          body: |
+            ${{ steps.gradleUpdate.outputs.version-information }}
+            
+            <details>
+            <summary>Fixed issues</summary>
+            ${{ steps.gradleUpdate.outputs.fixed-issues }}
+            </details>
+            
+            <details>
+            <summary>Known issues</summary>
+            ${{ steps.gradleUpdate.outputs.known-issues }}
+            </details>
+            
+            Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
+          labels: release candidate
