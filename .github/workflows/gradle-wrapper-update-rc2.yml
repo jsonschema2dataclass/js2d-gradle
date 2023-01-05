@@ -2,7 +2,7 @@ name: Update Gradle Wrapper RC [TMPL]
 
 on:
   schedule:
-    - cron: "5 * * * *"
+    - cron: "*/2 * * * *"
 
 jobs:
   gradle-wrapper-update-plugin:
@@ -10,11 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         release-channel: [ "current", "release-candidate" ]
-    uses: ./.github/workflows/template-gradle-wrapper-update.yaml@main
+    uses: ./.github/workflows/template-gradle-wrapper-update.yml
     with:
       working-directory: ./
       working-directory-branch: plugin
       message: Plugin
       release-channel: ${{ matrix.release-channel }}
-
-
