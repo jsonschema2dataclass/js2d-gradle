@@ -47,9 +47,6 @@ jobs:
           commit-message: "Update gradle to ${{ steps.gradleUpdate.outputs.gradle-version }}"
           title: "Update gradle wrapper to ${{ steps.gradleUpdate.outputs.gradle-version }}"
           branch: "gradle_update_rc/plugin/version_${{ steps.gradleUpdate.outputs.gradle-version }}"
-          delete-branch: true
-          branch-suffix: timestamp
-          draft: true
           body: |
             ${{ steps.gradleUpdate.outputs.version-information }}
 
