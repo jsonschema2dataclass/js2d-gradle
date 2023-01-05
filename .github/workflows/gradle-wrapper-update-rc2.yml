@@ -14,5 +14,5 @@ jobs:
     with:
       working-directory: ./
       working-directory-branch: plugin
-      message: Plugin
+      message: plugin
       release-channel: ${{ matrix.release-channel }}
