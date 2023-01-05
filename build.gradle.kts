@@ -21,16 +21,30 @@ configurations.all {
     }
 }
 
+// This section is required for dependabot to catch changes
+val ktlintFormatVersion = "0.48.1"
+val googleJavaFormatVersion = "1.13.0"
+val orgJsonFormatVersion = "20220924"
+val styleCheckers by configurations.registering
+
+dependencies {
+    add("styleCheckers", "com.pinterest:ktlint:$ktlintFormatVersion")
+    add(
+        "styleCheckers",
+        "com.google.googlejavaformat:google-java-format:$googleJavaFormatVersion",
+    )
+}
 spotless {
     kotlin {
         targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
         target("**/*.kt")
+//        ktlint(ktlintVersion)
         endWithNewline()
     }
     kotlinGradle {
         targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
         target("*.gradle.kts")
-        ktlint()
+        ktlint(ktlintFormatVersion)
         endWithNewline()
     }
     json {
