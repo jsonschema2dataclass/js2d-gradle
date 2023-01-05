@@ -1,8 +1,8 @@
 name: Update Gradle Wrapper RC [TMPL]
 
-on:
-  schedule:
-    - cron: "*/2 * * * *"
+#on:
+#  schedule:
+#  - cron: "*/2 * * * *"
 
 jobs:
   gradle-wrapper-update-plugin:
