@@ -40,21 +40,11 @@ jobs:
       - name: create pull request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: "Update gradle wrapper to ${{ steps.gradleUpdate.outputs.gradle-version }}"
-          title: "Update gradle wrapper to ${{ steps.gradleUpdate.outputs.gradle-version }}"
+          commit-message: "Update gradle wrapper to ${{ steps.gradleUpdate.outputs.gradle-version }} for the {{ inputs.message }}"
+          title: "Update gradle wrapper to ${{ steps.gradleUpdate.outputs.gradle-version }} for the {{ inputs.message }}"
           branch: "gradle_update/${{ inputs.working-directory-branch }}/version_${{ steps.gradleUpdate.outputs.gradle-version }}"
           body: |
             ${{ steps.gradleUpdate.outputs.version-information }}
             
-            <details>
-            <summary>Fixed issues</summary>
-            ${{ steps.gradleUpdate.outputs.fixed-issues }}
-            </details>
-            
-            <details>
-            <summary>Known issues</summary>
-            ${{ steps.gradleUpdate.outputs.known-issues }}
-            </details>
-            
             Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
-          labels: release candidate
+          labels: gradle-${{ inputs.release-channel }}
