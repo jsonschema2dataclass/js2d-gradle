@@ -48,3 +48,6 @@ jobs:
             
             Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
           labels: gradle-${{ inputs.release-channel }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          delete-branch: true
+          branch-suffix: timestamp
