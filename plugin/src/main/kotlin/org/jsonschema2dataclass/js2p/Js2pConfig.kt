@@ -1,9 +1,9 @@
 package org.jsonschema2dataclass.js2p
 
-import org.jsonschema2dataclass.support.asUppercase
 import org.gradle.api.GradleScriptException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Provider
+import org.jsonschema2dataclass.support.asUppercase
 import org.jsonschema2pojo.*
 import org.jsonschema2pojo.rules.RuleFactory
 import java.io.File
@@ -135,7 +135,7 @@ internal data class Js2pConfigConstructor(
     val annotateConstructorProperties: Boolean,
     val copy: Boolean,
     val requiredProperties: Boolean,
-    val generate: Boolean = allProperties || annotateConstructorProperties || copy || requiredProperties
+    val generate: Boolean = allProperties || annotateConstructorProperties || copy || requiredProperties,
 )
 
 internal data class Js2pConfigMethod(
@@ -236,7 +236,7 @@ private fun convert(methods: PluginConfigJs2pMethod): Js2pConfigMethod =
         maybeDefault(methods.settersDynamic) { it.isIncludeDynamicSetters },
         maybeDefaultSet(methods.toStringExcludes) { it.toStringExcludes },
         maybeDefault(methods.toStringMethod) { it.isIncludeToString },
-        )
+    )
 
 private fun convert(fields: PluginConfigJs2pField): Js2pConfigFields =
     Js2pConfigFields(
@@ -247,7 +247,7 @@ private fun convert(fields: PluginConfigJs2pField): Js2pConfigFields =
         maybeDefault(fields.integerUseBigInteger) { it.isUseBigIntegers },
         maybeDefault(fields.integerUseLong) { it.isUseLongIntegers },
         maybeDefault(fields.usePrimitives) { it.isUsePrimitives },
-        )
+    )
 
 private fun convert(dateTime: PluginConfigJs2pDateTime): Js2pConfigDateTime =
     Js2pConfigDateTime(
@@ -263,7 +263,7 @@ private fun convert(dateTime: PluginConfigJs2pDateTime): Js2pConfigDateTime =
         maybeDefault(dateTime.timeFormat) { it.isFormatTimes },
         maybeDefault(dateTime.timePattern) { it.customTimePattern },
         maybeDefault(dateTime.timeType) { it.timeType },
-        )
+    )
 
 private val defaultConfiguration = DefaultGenerationConfig()
 
@@ -294,7 +294,7 @@ private fun <V> maybeDefaultRaw(value: V?, vFunction: Function<DefaultGeneration
 
 private fun maybeDefaultChar(
     provider: Provider<String>,
-    vFunction: Function<DefaultGenerationConfig, CharArray>
+    vFunction: Function<DefaultGenerationConfig, CharArray>,
 ): String {
     val value = provider.orNull
     return if (value.isNullOrEmpty()) {
@@ -310,14 +310,14 @@ private fun <V> maybeDefault(value: Provider<V>, vFunction: Function<DefaultGene
 
 private inline fun <reified K> maybeDefaultClass(
     value: Provider<String>,
-    vFunction: Function<DefaultGenerationConfig, Class<out K>>
+    vFunction: Function<DefaultGenerationConfig, Class<out K>>,
 ): Class<out K> {
     return maybeDefaultRaw(findClass(value.orNull), vFunction)
 }
 
 private inline fun <reified V> maybeDefaultSet(
     provider: Provider<Set<V>>,
-    vFunction: Function<DefaultGenerationConfig, Array<V>>
+    vFunction: Function<DefaultGenerationConfig, Array<V>>,
 ): Set<V> {
     val value = provider.orNull
     return if (value.isNullOrEmpty()) {
@@ -329,7 +329,7 @@ private inline fun <reified V> maybeDefaultSet(
 
 private inline fun <reified V : Enum<V>?> maybeDefaultEnum(
     value: Provider<String>,
-    vFunction: Function<DefaultGenerationConfig, V>
+    vFunction: Function<DefaultGenerationConfig, V>,
 ): V {
     return fromEnum(value, V::class.java) ?: vFunction.apply(defaultConfiguration)
 }

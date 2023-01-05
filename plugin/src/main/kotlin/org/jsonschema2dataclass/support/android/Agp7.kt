@@ -10,8 +10,8 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
-import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.createJS2DTask
+import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.support.capitalization
 import org.jsonschema2dataclass.support.getAndroidJsonPath
 
@@ -30,7 +30,7 @@ private fun createTasksForVariant7(project: Project, extension: Js2pExtension, v
         getAndroidJsonPath(project),
         "For$capitalizedName",
         "${variant.flavorName}/${variant.buildType}/",
-        JavaVersion.current() >= JavaVersion.VERSION_1_9
+        JavaVersion.current() >= JavaVersion.VERSION_1_9,
     ) { genTask, targetDirectory ->
         variant.artifacts.use(genTask).wiredWith { targetDirectory }
             .toCreate(ArtifactType7.SINGLE_DIRECTORY_ARTIFACT)

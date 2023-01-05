@@ -55,7 +55,7 @@ class JavaTaskFunctionalTest {
             testProjectDir,
             TARGET_FOLDER_DEFAULT,
             EXECUTION_NAME_COM,
-            PACKAGE_COM_EXAMPLE
+            PACKAGE_COM_EXAMPLE,
         )
     }
 
@@ -76,7 +76,7 @@ class JavaTaskFunctionalTest {
             testProjectDir,
             TARGET_FOLDER_DEFAULT,
             EXECUTION_NAME_COM,
-            PACKAGE_COM_EXAMPLE
+            PACKAGE_COM_EXAMPLE,
         )
     }
 
@@ -97,13 +97,13 @@ class JavaTaskFunctionalTest {
             testProjectDir,
             TARGET_FOLDER_CUSTOM,
             EXECUTION_NAME_COM,
-            PACKAGE_COM_EXAMPLE
+            PACKAGE_COM_EXAMPLE,
         )
         addressJavaExists(
             testProjectDir,
             TARGET_FOLDER_CUSTOM,
             EXECUTION_NAME_ORG,
-            PACKAGE_ORG_EXAMPLE
+            PACKAGE_ORG_EXAMPLE,
         )
     }
 
@@ -151,7 +151,6 @@ class JavaTaskFunctionalTest {
         assertEquals(TaskOutcome.NO_SOURCE, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
     }
 
-
     @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
     @NullSource
     @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
@@ -167,7 +166,7 @@ class JavaTaskFunctionalTest {
             testProjectDir,
             TARGET_FOLDER_DEFAULT,
             EXECUTION_NAME_COM,
-            PACKAGE_COM_EXAMPLE
+            PACKAGE_COM_EXAMPLE,
         )
     }
 
@@ -179,6 +178,6 @@ class JavaTaskFunctionalTest {
         val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
 
         createBuildFilesEmpty(testProjectDir, false)
-        executeRunner(gradleVersion, testProjectDir, task="build")
+        executeRunner(gradleVersion, testProjectDir, task = "build")
     }
 }

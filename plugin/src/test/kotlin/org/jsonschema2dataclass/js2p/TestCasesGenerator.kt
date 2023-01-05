@@ -69,10 +69,11 @@ fun writeBuildFiles(
     testProjectDir: Path,
     shouldCopyAddressJSON: Boolean,
     suffix: String,
-    buildFileHeader: String = BUILD_FILE_HEADER
+    buildFileHeader: String = BUILD_FILE_HEADER,
 ) {
     Files.write(
-        testProjectDir.resolve("build.gradle"), (buildFileHeader + "\n" + suffix).trimIndent().toByteArray()
+        testProjectDir.resolve("build.gradle"),
+        (buildFileHeader + "\n" + suffix).trimIndent().toByteArray(),
     )
     Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
     if (shouldCopyAddressJSON) {
@@ -82,7 +83,8 @@ fun writeBuildFiles(
 
 fun createBuildFilesSingleSimple(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
     writeBuildFiles(
-        testProjectDir, shouldCopyAddressJSON,
+        testProjectDir,
+        shouldCopyAddressJSON,
         """
             |jsonSchema2Pojo{
             |  executions {
@@ -91,7 +93,7 @@ fun createBuildFilesSingleSimple(testProjectDir: Path, shouldCopyAddressJSON: Bo
             |    }
             |  }
             |}
-        """.trimMargin()
+        """.trimMargin(),
     )
 }
 
@@ -104,7 +106,8 @@ fun createBuildFilesSingleNoExtension(testProjectDir: Path, shouldCopyAddressJSO
  */
 fun createBuildFilesMultiple(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
     writeBuildFiles(
-        testProjectDir, shouldCopyAddressJSON,
+        testProjectDir,
+        shouldCopyAddressJSON,
         """
             |jsonSchema2Pojo{
             |   targetDirectoryPrefix = project.file("${'$'}{buildDir}/$TARGET_FOLDER_BASE_CUSTOM")
@@ -117,7 +120,7 @@ fun createBuildFilesMultiple(testProjectDir: Path, shouldCopyAddressJSON: Boolea
             |     }
             |  }
             |}
-        """.trimMargin()
+        """.trimMargin(),
     )
 }
 
@@ -126,7 +129,8 @@ fun createBuildFilesMultiple(testProjectDir: Path, shouldCopyAddressJSON: Boolea
  */
 fun createBuildFilesSingle(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
     writeBuildFiles(
-        testProjectDir, shouldCopyAddressJSON,
+        testProjectDir,
+        shouldCopyAddressJSON,
         """
          |jsonSchema2Pojo {
          |  executions {
@@ -136,7 +140,7 @@ fun createBuildFilesSingle(testProjectDir: Path, shouldCopyAddressJSON: Boolean)
          |    }
          |  }
          |}
-        """.trimMargin()
+        """.trimMargin(),
     )
 }
 
@@ -145,7 +149,8 @@ fun createBuildFilesSingle(testProjectDir: Path, shouldCopyAddressJSON: Boolean)
  */
 fun createBuildFilesLazyInit(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
     writeBuildFiles(
-        testProjectDir, shouldCopyAddressJSON,
+        testProjectDir,
+        shouldCopyAddressJSON,
         suffix = """
          |jsonSchema2Pojo {
          |  executions {
@@ -156,18 +161,20 @@ fun createBuildFilesLazyInit(testProjectDir: Path, shouldCopyAddressJSON: Boolea
          |  }
          |}
         """.trimMargin(),
-        buildFileHeader = BUILD_FILE_HEADER_LAZY
+        buildFileHeader = BUILD_FILE_HEADER_LAZY,
     )
     Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
 }
+
 /**
  * Single with execution, inherited
  */
 fun createBuildFilesEmpty(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
     writeBuildFiles(
-        testProjectDir, shouldCopyAddressJSON,
+        testProjectDir,
+        shouldCopyAddressJSON,
         suffix = "",
-        buildFileHeader = BUILD_FILE_HEADER_PLUGIN_ONLY
+        buildFileHeader = BUILD_FILE_HEADER_PLUGIN_ONLY,
     )
     Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
 }

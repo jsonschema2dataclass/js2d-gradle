@@ -32,22 +32,22 @@ internal abstract class Js2pGenerationTask : DefaultTask() {
 }
 
 private class GradleRuleLogWrapper @Inject constructor(
-        private val logger: Logger
+    private val logger: Logger,
 ) : RuleLogger {
     override fun isDebugEnabled(): Boolean =
-            logger.isDebugEnabled
+        logger.isDebugEnabled
 
     override fun isErrorEnabled(): Boolean =
-            logger.isErrorEnabled
+        logger.isErrorEnabled
 
     override fun isInfoEnabled(): Boolean =
-            logger.isInfoEnabled
+        logger.isInfoEnabled
 
     override fun isTraceEnabled(): Boolean =
-            logger.isTraceEnabled
+        logger.isTraceEnabled
 
     override fun isWarnEnabled(): Boolean =
-            logger.isWarnEnabled
+        logger.isWarnEnabled
 
     override fun debug(msg: String?) {
         logger.debug(msg)

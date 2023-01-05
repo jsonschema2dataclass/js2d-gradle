@@ -12,13 +12,12 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.language.jvm.tasks.ProcessResources
 import org.gradle.util.GradleVersion
+import org.jsonschema2dataclass.createJS2DTask
 import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.js2p.Js2pWrapperTask
-import org.jsonschema2dataclass.createJS2DTask
 import java.nio.file.Path
 
 internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
-
     val mainSourceSet = obtainJavaSourceSet(project)
 
     val javaSourceSet = mainSourceSet.java
@@ -28,7 +27,7 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
         getJavaJsonPath(mainSourceSet),
         null,
         "",
-        false
+        false,
     ) { generationTaskProvider, targetPath ->
 
         @Suppress("UnstableApiUsage")
@@ -53,7 +52,7 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
     dependsOnJs2p(project, "generateEffectiveLombokConfig", js2pTask)
 }
 
-private fun dependsOnJs2p(project:Project, name: String, js2pTask: TaskProvider<Js2pWrapperTask>) {
+private fun dependsOnJs2p(project: Project, name: String, js2pTask: TaskProvider<Js2pWrapperTask>) {
     try {
         project.tasks.named(name) {
             this.dependsOn(js2pTask)
