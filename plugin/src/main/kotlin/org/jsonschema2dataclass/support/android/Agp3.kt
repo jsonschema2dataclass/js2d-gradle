@@ -8,8 +8,8 @@ import com.android.build.gradle.api.ApplicationVariant
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.LibraryVariant
 import org.gradle.api.*
-import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.createJS2DTask
+import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.support.getAndroidJsonPath
 
 internal fun applyInternalAndroidAgp3(extension: Js2pExtension, project: Project) {
@@ -22,14 +22,14 @@ internal fun applyInternalAndroidAgp3(extension: Js2pExtension, project: Project
     }
 }
 
-private fun <T: BaseVariant> createTasksForVariant(project: Project, extension: Js2pExtension, variant: T) {
+private fun <T : BaseVariant> createTasksForVariant(project: Project, extension: Js2pExtension, variant: T) {
     val task = createJS2DTask(
         project,
         extension,
         getAndroidJsonPath(project),
         variant.name,
         "${variant.flavorName}/${variant.buildType.name}/",
-        JavaVersion.current() >= JavaVersion.VERSION_1_9
+        JavaVersion.current() >= JavaVersion.VERSION_1_9,
     ) { genTask, targetPath ->
         variant.registerJavaGeneratingTask(genTask.get(), targetPath.get().asFile)
         try {

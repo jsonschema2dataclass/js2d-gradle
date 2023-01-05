@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
         val id = item.itemId
         return if (id == R.id.action_settings) {
             true
-        } else
+        } else {
             super.onOptionsItemSelected(item)
+        }
     }
 }

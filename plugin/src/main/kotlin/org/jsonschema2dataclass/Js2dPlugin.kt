@@ -1,6 +1,5 @@
 package org.jsonschema2dataclass
 
-import org.jsonschema2dataclass.support.capitalized
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -16,6 +15,7 @@ import org.jsonschema2dataclass.js2p.Js2pGenerationTask
 import org.jsonschema2dataclass.js2p.Js2pWrapperTask
 import org.jsonschema2dataclass.support.applyInternalAndroid
 import org.jsonschema2dataclass.support.applyInternalJava
+import org.jsonschema2dataclass.support.capitalized
 import java.nio.file.Path
 import java.util.*
 
@@ -27,9 +27,9 @@ internal const val PLUGIN_ID = "org.jsonschema2dataclass"
 private val configurationNameRegex = "[a-z][A-Za-z0-9_]*".toRegex()
 
 private const val DEPRECATION_NO_EXECUTION =
-    "No executions defined, behavior to with default execution has been deprecated and removed " +
-            "in plugin $PLUGIN_ID version 5.0. " +
-            "Please, consider follow migration guide to upgrade plugin properly"
+    "No executions defined, behavior to with default execution has been deprecated and will be removed " +
+        "in plugin $PLUGIN_ID version 5.0. " +
+        "Please, consider follow migration guide to upgrade plugin properly"
 
 @Suppress("unused")
 class Js2dPlugin : Plugin<Project> {
@@ -75,13 +75,12 @@ internal class Js2pAndroidPlugin : Plugin<Project> {
     }
 }
 
-
+private const val TASK_DESCRIPTION_PREFIX = "Generates Java classes from a json schema using JsonSchema2Pojo"
 
 private fun createTaskNameDescription(
     androidVariant: String?,
-    configurationName: String?
+    configurationName: String?,
 ): Pair<String, String> {
-
     val androidVariantCapitalized = androidVariant?.capitalized()
     val configurationNameCapitalized = configurationName?.capitalized()
     val androidVariantSuffix = if (androidVariant.isNullOrEmpty()) "" else "For$androidVariantCapitalized"
@@ -90,7 +89,7 @@ private fun createTaskNameDescription(
     val configurationNameMessage = if (configurationName.isNullOrEmpty()) "" else "for configuration $configurationName"
 
     return "$TASK_NAME$androidVariantSuffix$configurationNameSuffix" to
-            "Generates Java classes from a json schema using JsonSchema2Pojo$configurationNameMessage$androidVariantMessage."
+        "$TASK_DESCRIPTION_PREFIX$configurationNameMessage$androidVariantMessage."
 }
 
 internal fun createJS2DTask(
@@ -102,7 +101,7 @@ internal fun createJS2DTask(
     excludeGeneratedOption: Boolean,
     postConfigure: (
         task: TaskProvider<out Js2pGenerationTask>,
-        DirectoryProperty
+        DirectoryProperty,
     ) -> Unit,
 ): TaskProvider<Js2pWrapperTask> {
     val (taskName, taskDescription) = createTaskNameDescription(androidVariant, null)
@@ -122,7 +121,7 @@ internal fun createJS2DTask(
             configuration.io.source.filter { it.exists() },
             targetPath,
             defaultSourcePath,
-            excludeGeneratedOption
+            excludeGeneratedOption,
         )
 
         postConfigure(taskProvider, targetPath)
@@ -170,7 +169,8 @@ private fun skipInputWhenEmpty(task: Task, sourceFiles: FileCollection) {
 private fun verifyGradleVersion() {
     if (GradleVersion.current() < GradleVersion.version(MINIMUM_GRADLE_VERSION)) {
         throw GradleException(
-            "Plugin $PLUGIN_ID requires at least Gradle $MINIMUM_GRADLE_VERSION, but you are using ${GradleVersion.current().version}"
+            "Plugin $PLUGIN_ID requires at least Gradle $MINIMUM_GRADLE_VERSION, " +
+                "but you are using ${GradleVersion.current().version}",
         )
     }
 }
@@ -179,7 +179,7 @@ private fun verifyConfigurationName(configurationName: String) {
     if (!configurationNameRegex.matches(configurationName)) {
         throw GradleException(
             "Plugin $PLUGIN_ID doesn't support configuration name \"$configurationName\" provided. " +
-                    "Please, rename to match regex \"$configurationNameRegex\""
+                "Please, rename to match regex \"$configurationNameRegex\"",
         )
     }
 }
@@ -187,10 +187,10 @@ private fun verifyConfigurationName(configurationName: String) {
 internal fun copyConfiguration(
     configuration: Js2pConfiguration,
     excludeGeneratedOption: Boolean,
-    defaultSourcePath: Path?
+    defaultSourcePath: Path?,
 ) {
     if (configuration.io.source.isEmpty) {
-            configuration.io.source.setFrom(defaultSourcePath)
+        configuration.io.source.setFrom(defaultSourcePath)
     }
     if (excludeGeneratedOption) {
         // Temporary fixes #71 and upstream issue #1212 by overriding Generated annotation.

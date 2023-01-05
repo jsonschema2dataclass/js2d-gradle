@@ -2,7 +2,7 @@ import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 
 plugins {
     id("com.gradle.plugin-publish") version "1.1.0" apply false
-    id("com.diffplug.spotless") version "6.12.0"
+    id("com.diffplug.spotless") version "6.12.1"
 }
 
 group = "org.jsonschema2dataclass"
@@ -12,25 +12,30 @@ repositories {
     mavenCentral()
 }
 
-configurations.all {
-    resolutionStrategy {
-        dependencySubstitution {
-            val ktlintVersion = "0.47.1"
-            substitute(module("com.pinterest:ktlint")).using(module("com.pinterest:ktlint:$ktlintVersion"))
-        }
-    }
-}
+// This section is required for dependabot to catch changes
+val ktlintFormatVersion = "0.48.1"
+val googleJavaFormatVersion = "1.13.0"
+val orgJsonFormatVersion = "20220924"
+val styleCheckers by configurations.registering
 
+dependencies {
+    add("styleCheckers", "com.pinterest:ktlint:$ktlintFormatVersion")
+    add(
+        "styleCheckers",
+        "com.google.googlejavaformat:google-java-format:$googleJavaFormatVersion",
+    )
+}
 spotless {
     kotlin {
         targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
         target("**/*.kt")
+//        ktlint(ktlintVersion)
         endWithNewline()
     }
     kotlinGradle {
         targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
         target("*.gradle.kts")
-        ktlint()
+        ktlint(ktlintFormatVersion)
         endWithNewline()
     }
     json {
