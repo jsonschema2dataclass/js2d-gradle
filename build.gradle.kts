@@ -2,7 +2,7 @@ import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 
 plugins {
     id("com.gradle.plugin-publish") version "1.1.0" apply false
-    id("com.diffplug.spotless") version "6.12.0"
+    id("com.diffplug.spotless") version "6.12.1"
 }
 
 group = "org.jsonschema2dataclass"
@@ -10,15 +10,6 @@ version = gitVersion(project)
 
 repositories {
     mavenCentral()
-}
-
-configurations.all {
-    resolutionStrategy {
-        dependencySubstitution {
-            val ktlintVersion = "0.47.1"
-            substitute(module("com.pinterest:ktlint")).using(module("com.pinterest:ktlint:$ktlintVersion"))
-        }
-    }
 }
 
 // This section is required for dependabot to catch changes
