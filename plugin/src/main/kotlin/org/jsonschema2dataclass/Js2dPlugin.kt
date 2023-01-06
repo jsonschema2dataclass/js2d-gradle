@@ -4,8 +4,10 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.apply
 import org.gradle.util.GradleVersion
@@ -19,11 +21,16 @@ import org.jsonschema2dataclass.support.capitalized
 import java.nio.file.Path
 import java.util.*
 
-internal const val EXTENSION_NAME = "jsonSchema2Pojo"
 internal const val MINIMUM_GRADLE_VERSION = "6.0"
 internal const val TARGET_FOLDER_BASE = "generated/sources/js2d"
-internal const val TASK_NAME = "generateJsonSchema2DataClass"
 internal const val PLUGIN_ID = "org.jsonschema2dataclass"
+
+internal const val EXTENSION_NAME = "jsonSchema2Pojo"
+internal const val JS2D_CONFIGURATION_NAME = "jsonschema2dataclass"
+
+internal const val JS2P_TASK_NAME = "generateJsonSchema2DataClass"
+internal const val JS2P_GENERATOR_VERSION = "1.1.2"
+
 private val configurationNameRegex = "[a-z][A-Za-z0-9_]*".toRegex()
 
 private const val DEPRECATION_NO_EXECUTION =
@@ -41,6 +48,12 @@ class Js2dPlugin : Plugin<Project> {
         project.extensions.create(EXTENSION_NAME, Js2pExtension::class.java)
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
+        val js2dConfiguration = createConfiguration(project, JS2D_CONFIGURATION_NAME)
+
+        // TODO: refactor this
+        js2dConfiguration.defaultDependencies {
+            add(project.dependencies.create("org.jsonschema2pojo:jsonschema2pojo-core:$JS2P_GENERATOR_VERSION"))
+        }
 
         for (pluginId in javaPlugins) {
             project.plugins.withId(pluginId) {
@@ -75,6 +88,14 @@ internal class Js2pAndroidPlugin : Plugin<Project> {
     }
 }
 
+private fun createConfiguration(project: Project, name: String): Configuration {
+    return project.configurations.maybeCreate(name).apply {
+        isCanBeConsumed = false
+        isCanBeResolved = true
+        isVisible = false
+    }
+}
+
 private const val TASK_DESCRIPTION_PREFIX = "Generates Java classes from a json schema using JsonSchema2Pojo"
 
 private fun createTaskNameDescription(
@@ -88,7 +109,7 @@ private fun createTaskNameDescription(
     val configurationNameSuffix = if (configurationName.isNullOrEmpty()) "" else "Config$configurationNameCapitalized"
     val configurationNameMessage = if (configurationName.isNullOrEmpty()) "" else "for configuration $configurationName"
 
-    return "$TASK_NAME$androidVariantSuffix$configurationNameSuffix" to
+    return "$JS2P_TASK_NAME$androidVariantSuffix$configurationNameSuffix" to
         "$TASK_DESCRIPTION_PREFIX$configurationNameMessage$androidVariantMessage."
 }
 

@@ -4,7 +4,7 @@ import com.android.build.gradle.BaseExtension
 import org.gradle.api.Project
 import org.gradle.api.ProjectConfigurationException
 import org.gradle.api.tasks.SourceSet
-import org.jsonschema2dataclass.TASK_NAME
+import org.jsonschema2dataclass.JS2P_TASK_NAME
 import org.jsonschema2dataclass.js2p.Js2pExtension
 import org.jsonschema2dataclass.support.android.applyInternalAndroidAgp3
 import org.jsonschema2dataclass.support.android.applyInternalAndroidAgp7
@@ -21,7 +21,7 @@ internal fun applyInternalAndroid(extension: Js2pExtension, project: Project) {
             applyInternalAndroidAgp3(extension, project)
         }
 
-        else -> throw ProjectConfigurationException("$TASK_NAME: Plugin supports AGP 3.x, 4.x or 7.x", listOf())
+        else -> throw ProjectConfigurationException("$JS2P_TASK_NAME: Plugin supports AGP 3.x, 4.x or 7.x", listOf())
     }
 }
 

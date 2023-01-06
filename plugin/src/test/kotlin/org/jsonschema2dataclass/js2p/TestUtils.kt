@@ -4,15 +4,15 @@ import org.gradle.api.JavaVersion
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.util.GradleVersion
-import org.jsonschema2dataclass.TASK_NAME
+import org.jsonschema2dataclass.JS2P_TASK_NAME
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.params.provider.Arguments
 import java.nio.file.Path
 import java.util.stream.Stream
 
-internal const val COLON_TASK_NAME = ":$TASK_NAME"
-internal const val COLON_TASK_NAME_FOR_COM = ":${TASK_NAME}ConfigCom"
-internal const val COLON_TASK_NAME_FOR_ORG = ":${TASK_NAME}ConfigOrg"
+internal const val COLON_TASK_NAME = ":$JS2P_TASK_NAME"
+internal const val COLON_TASK_NAME_FOR_COM = ":${JS2P_TASK_NAME}ConfigCom"
+internal const val COLON_TASK_NAME_FOR_ORG = ":${JS2P_TASK_NAME}ConfigOrg"
 private val gradleReleases = listOf<String>(
     "7.6", "7.5.1", // 7.5 - 7.6
     "7.4.2", "7.3.3", "7.2", "7.1.1", "7.0.2", // 7.0 - 7.4
