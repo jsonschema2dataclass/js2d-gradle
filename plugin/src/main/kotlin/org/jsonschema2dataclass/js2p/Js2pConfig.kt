@@ -1,8 +1,6 @@
 package org.jsonschema2dataclass.js2p
 
 import org.gradle.api.GradleScriptException
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Provider
 import org.jsonschema2dataclass.support.asUppercase
 import org.jsonschema2pojo.*
 import org.jsonschema2pojo.rules.RuleFactory
@@ -16,18 +14,17 @@ internal data class Js2pConfig(
     private val targetDirectory: File,
     private val io: Js2pConfigIO,
     private val klass: Js2pConfigClass,
-    private val constructor: Js2pConfigConstructor,
+    private val constructors: Js2pConfigConstructor,
     private val methods: Js2pConfigMethod,
     private val fields: Js2pConfigFields,
     private val dateTime: Js2pConfigDateTime,
 ) : GenerationConfig, java.io.Serializable {
     companion object {
         fun fromConfig(
-            targetDirectory: DirectoryProperty,
-            config: Js2pConfiguration,
+            config: Js2pWorkerConfig,
         ): Js2pConfig =
             Js2pConfig(
-                targetDirectory.asFile.get(),
+                config.targetDirectory,
                 convert(config.io),
                 convert(config.klass),
                 convert(config.constructors),
@@ -68,10 +65,10 @@ internal data class Js2pConfig(
     override fun isFormatTimes(): Boolean = dateTime.timeFormat
     override fun isGenerateBuilders(): Boolean = methods.builders || methods.buildersInnerClass
     override fun isIncludeAdditionalProperties(): Boolean = methods.additionalProperties
-    override fun isIncludeAllPropertiesConstructor(): Boolean = constructor.allProperties
-    override fun isIncludeConstructorPropertiesAnnotation(): Boolean = constructor.annotateConstructorProperties
-    override fun isIncludeConstructors(): Boolean = constructor.generate
-    override fun isIncludeCopyConstructor(): Boolean = constructor.copy
+    override fun isIncludeAllPropertiesConstructor(): Boolean = constructors.allProperties
+    override fun isIncludeConstructorPropertiesAnnotation(): Boolean = constructors.annotateConstructorProperties
+    override fun isIncludeConstructors(): Boolean = constructors.generate
+    override fun isIncludeCopyConstructor(): Boolean = constructors.copyConstructor
     override fun isIncludeDynamicAccessors(): Boolean = methods.accessorsDynamic
     override fun isIncludeDynamicBuilders(): Boolean = methods.buildersDynamic
     override fun isIncludeDynamicGetters(): Boolean = methods.gettersDynamic
@@ -81,12 +78,12 @@ internal data class Js2pConfig(
     override fun isIncludeHashcodeAndEquals(): Boolean = methods.hashcodeAndEquals
     override fun isIncludeJsr303Annotations(): Boolean = methods.annotateJsr303 || methods.annotateJsr303Jakarta
     override fun isIncludeJsr305Annotations(): Boolean = methods.annotateJsr305
-    override fun isIncludeRequiredPropertiesConstructor(): Boolean = constructor.requiredProperties
+    override fun isIncludeRequiredPropertiesConstructor(): Boolean = constructors.requiredProperties
     override fun isIncludeSetters(): Boolean = methods.setters
     override fun isIncludeToString(): Boolean = methods.toStringMethod
     override fun isIncludeTypeInfo(): Boolean = klass.jackson2IncludeTypeInfo
     override fun isInitializeCollections(): Boolean = fields.initializeCollections
-    override fun isParcelable(): Boolean = klass.parcelable
+    override fun isParcelable(): Boolean = klass.androidParcelable
     override fun isRemoveOldOutput(): Boolean = false
     override fun isSerializable(): Boolean = klass.annotateSerializable
     override fun isUseBigDecimals(): Boolean = fields.floatUseBigDecimal
@@ -116,7 +113,7 @@ internal data class Js2pConfigIO(
 )
 
 internal data class Js2pConfigClass(
-    val parcelable: Boolean,
+    val androidParcelable: Boolean,
     val annotateGenerated: Boolean,
     val annotateSerializable: Boolean,
     val annotationStyle: AnnotationStyle,
@@ -133,9 +130,9 @@ internal data class Js2pConfigClass(
 internal data class Js2pConfigConstructor(
     val allProperties: Boolean,
     val annotateConstructorProperties: Boolean,
-    val copy: Boolean,
+    val copyConstructor: Boolean,
     val requiredProperties: Boolean,
-    val generate: Boolean = allProperties || annotateConstructorProperties || copy || requiredProperties,
+    val generate: Boolean = allProperties || annotateConstructorProperties || copyConstructor || requiredProperties,
 )
 
 internal data class Js2pConfigMethod(
@@ -182,9 +179,9 @@ internal data class Js2pConfigDateTime(
     val timeType: String?,
 )
 
-private fun convert(io: PluginConfigJs2pIO): Js2pConfigIO =
+private fun convert(io: Js2pWorkerConfigIO): Js2pConfigIO =
     Js2pConfigIO(
-        io.source.map { it.toURI().toURL() },
+        io.sourceFiles,
         maybeDefaultChar(io.delimitersPropertyWord) { it.propertyWordDelimiters },
         maybeDefault(io.delimitersRefFragmentPath) { it.refFragmentPathDelimiters },
         maybeDefaultSet(io.fileExtensions) { it.fileExtensions },
@@ -195,7 +192,7 @@ private fun convert(io: PluginConfigJs2pIO): Js2pConfigIO =
         maybeDefault(io.targetJavaVersion) { it.targetVersion },
     )
 
-private fun convert(klass: PluginConfigJs2pClass): Js2pConfigClass =
+private fun convert(klass: Js2pWorkerConfigClass): Js2pConfigClass =
     Js2pConfigClass(
         maybeDefault(klass.androidParcelable) { it.isParcelable },
         maybeDefault(klass.annotateGenerated) { it.isIncludeGeneratedAnnotation },
@@ -211,7 +208,7 @@ private fun convert(klass: PluginConfigJs2pClass): Js2pConfigClass =
         maybeDefault(klass.targetPackage) { it.targetPackage },
     )
 
-private fun convert(constructor: PluginConfigJs2pConstructor): Js2pConfigConstructor =
+private fun convert(constructor: Js2pWorkerConfigConstructor): Js2pConfigConstructor =
     Js2pConfigConstructor(
         maybeDefault(constructor.allProperties) { it.isIncludeAllPropertiesConstructor },
         maybeDefault(constructor.annotateConstructorProperties) { it.isIncludeConstructorPropertiesAnnotation },
@@ -219,7 +216,7 @@ private fun convert(constructor: PluginConfigJs2pConstructor): Js2pConfigConstru
         maybeDefault(constructor.requiredProperties) { it.isIncludeRequiredPropertiesConstructor },
     )
 
-private fun convert(methods: PluginConfigJs2pMethod): Js2pConfigMethod =
+private fun convert(methods: Js2pWorkerConfigMethod): Js2pConfigMethod =
     Js2pConfigMethod(
         maybeDefault(methods.additionalProperties) { it.isIncludeAdditionalProperties },
         maybeDefault(methods.annotateJsr303Jakarta) { it.isUseJakartaValidation },
@@ -238,7 +235,7 @@ private fun convert(methods: PluginConfigJs2pMethod): Js2pConfigMethod =
         maybeDefault(methods.toStringMethod) { it.isIncludeToString },
     )
 
-private fun convert(fields: PluginConfigJs2pField): Js2pConfigFields =
+private fun convert(fields: Js2pWorkerConfigFields): Js2pConfigFields =
     Js2pConfigFields(
         maybeDefault(fields.floatUseBigDecimal) { it.isUseBigDecimals },
         maybeDefault(fields.floatUseDouble) { it.isUseDoubleNumbers },
@@ -249,7 +246,7 @@ private fun convert(fields: PluginConfigJs2pField): Js2pConfigFields =
         maybeDefault(fields.usePrimitives) { it.isUsePrimitives },
     )
 
-private fun convert(dateTime: PluginConfigJs2pDateTime): Js2pConfigDateTime =
+private fun convert(dateTime: Js2pWorkerConfigDateTime): Js2pConfigDateTime =
     Js2pConfigDateTime(
         maybeDefault(dateTime.dateFormat) { it.isFormatDates },
         maybeDefault(dateTime.datePattern) { it.customDatePattern },
@@ -267,15 +264,6 @@ private fun convert(dateTime: PluginConfigJs2pDateTime): Js2pConfigDateTime =
 
 private val defaultConfiguration = DefaultGenerationConfig()
 
-private fun <E : Enum<E>?> fromEnum(provider: Provider<String>, enumClass: Class<E>): E? {
-    val value = provider.orNull
-    return if (value.isNullOrEmpty()) {
-        null
-    } else {
-        java.lang.Enum.valueOf(enumClass, value.asUppercase())
-    }
-}
-
 private fun <C> findClass(className: String?): Class<out C>? {
     if (className.isNullOrEmpty()) {
         return null
@@ -288,15 +276,14 @@ private fun <C> findClass(className: String?): Class<out C>? {
     }
 }
 
-private fun <V> maybeDefaultRaw(value: V?, vFunction: Function<DefaultGenerationConfig, V>): V {
+private fun <V> maybeDefault(value: V?, vFunction: Function<DefaultGenerationConfig, V>): V {
     return value ?: vFunction.apply(defaultConfiguration)
 }
 
 private fun maybeDefaultChar(
-    provider: Provider<String>,
+    value: String?,
     vFunction: Function<DefaultGenerationConfig, CharArray>,
 ): String {
-    val value = provider.orNull
     return if (value.isNullOrEmpty()) {
         vFunction.apply(defaultConfiguration).joinToString(separator = "")
     } else {
@@ -304,22 +291,17 @@ private fun maybeDefaultChar(
     }
 }
 
-private fun <V> maybeDefault(value: Provider<V>, vFunction: Function<DefaultGenerationConfig, V>): V {
-    return maybeDefaultRaw(value.orNull, vFunction)
-}
-
 private inline fun <reified K> maybeDefaultClass(
-    value: Provider<String>,
+    value: String?,
     vFunction: Function<DefaultGenerationConfig, Class<out K>>,
 ): Class<out K> {
-    return maybeDefaultRaw(findClass(value.orNull), vFunction)
+    return maybeDefault(findClass(value), vFunction)
 }
 
 private inline fun <reified V> maybeDefaultSet(
-    provider: Provider<Set<V>>,
+    value: Set<V>?,
     vFunction: Function<DefaultGenerationConfig, Array<V>>,
 ): Set<V> {
-    val value = provider.orNull
     return if (value.isNullOrEmpty()) {
         vFunction.apply(defaultConfiguration).toSet()
     } else {
@@ -327,8 +309,17 @@ private inline fun <reified V> maybeDefaultSet(
     }
 }
 
+private fun <E : Enum<E>?> fromEnum(value: String?, enumClass: Class<E>): E? {
+    return if (value.isNullOrEmpty()) {
+        null
+    } else {
+        java.lang.Enum.valueOf(enumClass, value.asUppercase())
+    }
+}
+
+
 private inline fun <reified V : Enum<V>?> maybeDefaultEnum(
-    value: Provider<String>,
+    value: String?,
     vFunction: Function<DefaultGenerationConfig, V>,
 ): V {
     return fromEnum(value, V::class.java) ?: vFunction.apply(defaultConfiguration)
