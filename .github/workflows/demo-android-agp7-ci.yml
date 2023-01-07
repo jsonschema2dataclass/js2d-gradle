@@ -1,4 +1,4 @@
-name: Build Plugin
+name: Android AGP 7 Demo
 
 on:
   push:
@@ -14,7 +14,8 @@ on:
       - settings.gradle.kts
       - build.gradle.kts
       - gradle.properties
-      - .github/workflows/build.yml
+      - 'demo/android/agp7/**'
+      - .github/workflows/demo-android-agp7-ci.yml
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
@@ -25,22 +26,27 @@ on:
       - settings.gradle.kts
       - build.gradle.kts
       - gradle.properties
-      - .github/workflows/build.yml
+      - 'demo/android/agp7/**'
+      - .github/workflows/demo-android-agp7-ci.yml
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
-  build-and-test:
-    name: Build Plugin
+  buildDemo:
+    name: Build Android AGP 7 Demo
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/android/agp7
     strategy:
       fail-fast: false
       matrix:
-        java: [ 8, 11, 17, 19 ]
+        java: [ 11, 17, 18 ]
         distribution: [ "zulu", "temurin" ]
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
@@ -48,13 +54,7 @@ jobs:
         with:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-v2-gradle-build-${{ hashFiles('**/*') }}
-          restore-keys: |
-            ${{ runner.os }}-v2-gradle-build-
-            ${{ runner.os }}-v2-gradle-
-      - run: ./gradlew build --warning-mode all
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.1.2
+      - name: Build project
+        run: ./gradlew assembleDebug -S --warning-mode all

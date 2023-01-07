@@ -84,7 +84,7 @@ internal data class Js2pConfig(
     override fun isIncludeTypeInfo(): Boolean = klass.jackson2IncludeTypeInfo
     override fun isInitializeCollections(): Boolean = fields.initializeCollections
     override fun isParcelable(): Boolean = klass.androidParcelable
-    override fun isRemoveOldOutput(): Boolean = false
+    override fun isRemoveOldOutput(): Boolean = true
     override fun isSerializable(): Boolean = klass.annotateSerializable
     override fun isUseBigDecimals(): Boolean = fields.floatUseBigDecimal
     override fun isUseBigIntegers(): Boolean = fields.integerUseBigInteger

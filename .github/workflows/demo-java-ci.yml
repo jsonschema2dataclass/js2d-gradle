@@ -1,0 +1,58 @@
+name: Java Groovy DSL Demo
+
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+    paths:
+      - 'plugin/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
+      - 'demo/java/**'
+      - .github/workflows/demo-java-ci.yml
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+    paths:
+      - 'plugin/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
+      - 'demo/java/**'
+      - .github/workflows/demo-java-ci.yml
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
+
+jobs:
+  buildTest:
+    name: Build Java Demos
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/java
+    strategy:
+      fail-fast: false
+      matrix:
+        java_version: [8, 11, 17, 18]
+        distribution: ["zulu", "temurin"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
+        uses: actions/setup-java@v3.9.0
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.java_version }}
+      - name: Build project
+        run: ./gradlew build -S --warning-mode all

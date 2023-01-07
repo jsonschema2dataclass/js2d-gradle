@@ -1,0 +1,7 @@
+{
+    "type": "object",
+    "properties": {"base64-field": {
+        "format": "base64",
+        "type": "string"
+    }}
+}
