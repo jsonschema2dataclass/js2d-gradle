@@ -45,7 +45,7 @@ An execution configuration now contains following categories.
 // ------------------------------
 |=====
 
-=== Options renames and placing into categories
+=== Option renames and placing into categories
 
 [options=header,cols="1,3,3"]
 |=====
@@ -255,3 +255,22 @@ An execution configuration now contains following categories.
 | includeDynamicAccessors
 | This option will be turned on if any dynamic accessor generation option  is turned on.
 |====
+
+== Additional configurations to setup processor dependencies
+
+To set up additional processor dependencies it's needed to add a dependency
+  into `jsonschema2dataclassPlugins` configuration.
+
+This could be needed for the processor to resolve:
+* Resources referenced by classpath
+* Additional types not present in standard library and direct dependencies of the processor
+* Custom RuleFactory or an Annotator for the processor
+
+== Demos are using current version of plugin.
+
+Since version 6.0 all demos are using current version of plugin to build.
+I make all them with a thought to be re-usable and show real-world scenarios of plugin usage.
+
+== AGP 4 demo is removed
+
+AGP 4 is a quite old technology, I can't find a living open-source Android application using AGP 4.

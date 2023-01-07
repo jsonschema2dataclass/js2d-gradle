@@ -1,3 +1,48 @@
 :plugin_major: 6
+:demo-agp4: has been removed
 
 include::basic.adoc[]
+
+== Usage for new categories
+
+Since version 6.0, all options has been split into categories.
+You can set options with `category.option.set(value)` or via block `category { option.set(value) }`
+
+Example usage (Kotlin DSL):
+
+[source,kotlin]
+-----
+jsonSchema2Pojo {
+    executions {
+        create("main") {
+            io {
+                source.setFrom(files("${project.rootDir}/schema"))
+                sourceType.set("jsonschema")
+                outputEncoding.set("UTF-8")
+                delimitersPropertyWord.set("")
+            }
+
+            klass {
+                targetPackage.set("com.example")
+                annotationStyle.set("gson")
+            }
+
+            methods {
+                builders.set(false)
+                hashcodeAndEquals.set(true)
+                toStringMethod.set(true)
+                annotateJsr303.set(true)
+            }
+
+            fields {
+                usePrimitives.set(false)
+                integerUseLong.set(false)
+                floatUseDouble.set(true)
+                initializeCollections.set(true)
+            }
+
+            dateTime.jodaDate.set(false)
+        }
+    }
+}
+-----

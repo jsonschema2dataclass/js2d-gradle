@@ -1,3 +1,4 @@
 :plugin_major: 5
+:demo-agp4: was marked as unmaintained
 
 include::basic.adoc[]
