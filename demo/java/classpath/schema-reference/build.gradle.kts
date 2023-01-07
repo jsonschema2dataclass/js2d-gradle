@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    jsonschema2dataclassPlugins(project(":java:classpath:schema"))
+    jsonschema2dataclassPlugins(project(":classpath:schema"))
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
 }
@@ -23,4 +23,3 @@ jsonSchema2Pojo {
         }
     }
 }
-
