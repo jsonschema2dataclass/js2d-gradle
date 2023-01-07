@@ -123,15 +123,14 @@ Any contributions are welcome.
 | Waiting for releases from Google and Gradle
 | AGP 8 depends on Gradle 8.0 which is not released at the time of writing the documentation
 // ------------------------------
-| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/android/agp4[AGP 4] example
-| ⚠️ Unmaintained since 5.0
-|
+| AGP 4
+| ⚠️ Demo {demo-agp4} since {plugin_major}.0
+| Was unmaintained for a while
 // ------------------------------
 | AGP 3
-| ⚠️ Removed in 5.0
+| ⚠️ Demo has been removed in 5.0
 | Was unmaintained for a while
 // ------------------------------
 |=====
 
 For AGP 3 and AGP 4 I have no computer to build the demos.
-AGP3 demo fails to compile on CI for a while.
