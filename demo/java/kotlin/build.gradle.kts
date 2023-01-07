@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "1.8.0"
-    id("org.jsonschema2dataclass") version "5.0.0"
+    id("org.jsonschema2dataclass")
 }
 
 repositories {
@@ -18,10 +18,10 @@ dependencies {
 jsonSchema2Pojo {
     executions {
         create("main") {
-            targetPackage.set("example")
-            propertyWordDelimiters.set("_")
-            includeGeneratedAnnotation.set(false)
-            source.setFrom(files("${project.rootDir}/src/main/resources/json"))
+            io.delimitersPropertyWord.set("_")
+            io.source.setFrom(files("${projectDir}/src/main/resources/json"))
+            klass.annotateGenerated.set(false)
+            klass.targetPackage.set("example")
         }
     }
 }

@@ -1,7 +1,7 @@
 plugins {
     `maven-publish`
     kotlin("jvm") version "1.8.0"
-    id("org.jsonschema2dataclass") version "5.0.0"
+    id("org.jsonschema2dataclass")
 }
 
 repositories {
@@ -11,7 +11,7 @@ repositories {
 project.group = "com.example"
 project.version = "1.0"
 
-val targetJSONBaseDir = files("${project.rootDir}/src/main/resources/json")
+val targetJSONBaseDir = files("${projectDir}/src/main/resources/json")
 
 dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
@@ -48,9 +48,9 @@ publishing {
 jsonSchema2Pojo {
     executions {
         create("main") {
-            targetPackage.set(project.group.toString())
-            includeGeneratedAnnotation.set(false)
-            source.setFrom(targetJSONBaseDir)
+            io.source.setFrom(targetJSONBaseDir)
+            klass.annotateGenerated.set(false)
+            klass.targetPackage.set(project.group.toString())
         }
     }
 }
