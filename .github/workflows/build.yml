@@ -7,7 +7,6 @@ on:
     tags-ignore:
       - '*'
     paths:
-      - .github/workflows/build.yml
       - 'plugin/**'
       - 'gradle/**'
       - 'gradlew*'
@@ -15,10 +14,10 @@ on:
       - settings.gradle.kts
       - build.gradle.kts
       - gradle.properties
+      - .github/workflows/build.yml
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
-      - .github/workflows/build.yml
       - 'plugin/**'
       - 'gradle/**'
       - 'gradlew*'
@@ -26,6 +25,7 @@ on:
       - settings.gradle.kts
       - build.gradle.kts
       - gradle.properties
+      - .github/workflows/build.yml
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false

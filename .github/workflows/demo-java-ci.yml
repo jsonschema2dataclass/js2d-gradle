@@ -1,22 +1,44 @@
-name: Java Kotlin DSL Demo
+name: Java Groovy DSL Demo
 
 on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+    paths:
+      - 'plugin/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
+      - 'demo/java/**'
+      - .github/workflows/demo-java-ci.yml
   pull_request:
     types: [assigned, opened, synchronize, reopened]
     paths:
-      - 'demo/java/kotlin/**'
-      - .github/workflows/Java-CI-kotlin.yml
+      - 'plugin/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
+      - 'demo/java/**'
+      - .github/workflows/demo-java-ci.yml
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   buildTest:
-    name: Build Java Kotlin DSL Demo
+    name: Build Java Demos
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: demo/java/kotlin
+        working-directory: demo/java
     strategy:
       fail-fast: false
       matrix:
@@ -33,4 +55,4 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
       - name: Build project
-        run: ./gradlew assemble -S --warning-mode all
+        run: ./gradlew build -S --warning-mode all

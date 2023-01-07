@@ -1,18 +1,40 @@
-name: Android Sample 7
+name: Android AGP 7 Demo
 
 on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+    paths:
+      - 'plugin/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
+      - 'demo/android/agp7/**'
+      - .github/workflows/demo-android-agp7-ci.yml
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
+      - 'plugin/**'
+      - 'gradle/**'
+      - 'gradlew*'
+      - 'buildSrc/**'
+      - settings.gradle.kts
+      - build.gradle.kts
+      - gradle.properties
       - 'demo/android/agp7/**'
-      - .github/workflows/Android-CI-agp7.yml
+      - .github/workflows/demo-android-agp7-ci.yml
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
   buildDemo:
-    name: Build Android AGP 7 Demo JDK
+    name: Build Android AGP 7 Demo
     runs-on: ubuntu-latest
     defaults:
       run:
