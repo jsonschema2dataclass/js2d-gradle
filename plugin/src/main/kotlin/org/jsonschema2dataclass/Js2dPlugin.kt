@@ -27,6 +27,7 @@ internal const val PLUGIN_ID = "org.jsonschema2dataclass"
 
 internal const val EXTENSION_NAME = "jsonSchema2Pojo"
 internal const val JS2D_CONFIGURATION_NAME = "jsonschema2dataclass"
+internal const val JS2D_PLUGINS_CONFIGURATION_NAME = "jsonschema2dataclassPlugins"
 
 internal const val JS2P_TASK_NAME = "generateJsonSchema2DataClass"
 internal const val JS2P_GENERATOR_VERSION = "1.1.2"
@@ -49,9 +50,15 @@ class Js2dPlugin : Plugin<Project> {
         val pluginExtension = project.extensions.getByType(Js2pExtension::class.java)
         pluginExtension.targetDirectoryPrefix.convention(project.layout.buildDirectory.dir(TARGET_FOLDER_BASE))
         val js2dConfiguration = createConfiguration(project, JS2D_CONFIGURATION_NAME)
+        val js2dConfigurationPlugins = createConfiguration(project, JS2D_PLUGINS_CONFIGURATION_NAME)
 
         // TODO: refactor this
         js2dConfiguration.defaultDependencies {
+            add(project.dependencies.create("org.jsonschema2pojo:jsonschema2pojo-core:$JS2P_GENERATOR_VERSION"))
+        }
+
+        // TODO: refactor this
+        js2dConfigurationPlugins.defaultDependencies {
             add(project.dependencies.create("org.jsonschema2pojo:jsonschema2pojo-core:$JS2P_GENERATOR_VERSION"))
         }
 
