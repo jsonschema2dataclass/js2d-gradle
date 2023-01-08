@@ -1,4 +1,4 @@
-name: Java Groovy DSL Demo
+name: Java Demo CI
 
 on:
   push:
