@@ -9,7 +9,7 @@ Extension `jsonSchema2Pojo` is used to configure generator of Java POJO classes 
 
 == Extension parameters
 
-Extension allows to define target directory prefix and executions.
+Extension `jsonSchema2Pojo` allows to define target directory prefix and executions.
 Each execution defines parameters for Java POJOs generation using underlying library.
 
 .Supported parameters
@@ -20,7 +20,7 @@ Each execution defines parameters for Java POJOs generation using underlying lib
 | targetDirectoryPrefix
 | String
 | $buildDir/generated/sources/js2d
-| Directory property to define prefix under build directory where underlying tool will generate sources.
+| Directory property to define prefix usually under build directory, where an underlying generator will produce sources.
 |
 // ------------------------------
 | executions
@@ -33,17 +33,77 @@ Each execution defines parameters for Java POJOs generation using underlying lib
 
 == Execution block parameters
 
-Execution block specifies parameters listed below needed to process JSON schema to POJOs.
-All enum parameters are case-insensitive for a convenience.
+// TODO: rephrase properly
+To add some executions, a developer should guide with
+  https://docs.gradle.org/current/userguide/kotlin_dsl.html#using_the_container_api[Gradle User Guide].
 
-Most of the parameters has defaults defined in `jsonschema2pojo` library.
+* Execution section must contain at least 1 execution and there can be as many as needed for a project.
+* Execution block specifies single set of parameters listed below needed to process a JSON schema into POJO(s).
+* Execution name must follow the regular expression `[a-z][A-Za-z0-9_]*` to generate task name properly.
+* Each execution is processed independently and in the unknown order.
+  User can define some task dependencies, but this won't be done by the plugin.
+* All enum parameters are case-insensitive for a convenience.
+* Most of the parameters has defaults defined in `jsonschema2pojo` library.
 
-All parameters and options listed are Gradle properties of given type.
-The only exception is `source` which is `ConfigurableFileCollection`.
+=== Parameter categories
 
-=== Description and notes
+All parameters have been split to simple categories as listed in the table below.
+It's possible to set options with a direct reference `category.option.set(value)`
+or via block configuration `category { option.set(value) }` as shown in the example below.
 
-==== IO parameters
+.Example usage (Kotlin DSL)
+[source,kotlin]
+-----
+jsonSchema2Pojo {
+    executions {
+        create("main") {
+            // define block with settings for a given category
+            io {
+                source.setFrom(files("${projectDir}/schema"))
+                sourceType.set("yamlschema")
+            }
+
+            klass {
+                targetPackage.set("com.example")
+                annotationStyle.set("gson")
+            }
+
+            // configure a single field for a category
+            dateTime.jodaDate.set(false)
+        }
+    }
+}
+-----
+
+.Execution configuration categories
+[options=header,cols="1,4"]
+|=====
+| Category name | Meaning
+// ------------------------------
+| `io`
+| These options tell which files to read and what encoding to produce.
+// ------------------------------
+| `klass`
+| General class generation options.
+// ------------------------------
+| `constructors`
+| Options define how given class can be instantiated.
+// ------------------------------
+| `methods`
+| Options to define which methods are created and which annotations are used.
+// ------------------------------
+| `fields`
+| Options to define field type mapping (except date and time objects).
+// ------------------------------
+| `dateTime`
+| Options to define date and time field generation and serialization.
+// ------------------------------
+|=====
+
+
+=== All parameter descriptions and notes
+
+==== I/O related parameters
 
 .Supported parameters and options
 [options=header,cols="1,4,2"]
@@ -80,7 +140,7 @@ a| The type of input documents that will be read.
 * yamlschema -- JSON schema documents, represented as YAML.
 * json -- documents that represent an example of the kind of JSON data that the generated Java types will be mapped to.
 * yaml -- documents that represent an example of the kind of YAML data that the generated Java types will be mapped to.
-|
+| Value is case-insensitive
 // ------------------------------
 | sourceSortOrder
 a| The sort order to be applied when recursively processing the source files.
@@ -92,7 +152,7 @@ a| The sort order to be applied when recursively processing the source files.
   The source files are processed in a breadth first sort order.
 * SUBDIRS_FIRST -- Case sensitive sort, visit the subdirectories before the files.
   The source files are processed in a depth first sort order.
-|
+| Value is case-insensitive
 // ------------------------------
 | targetJavaVersion
 | The target Java version for generated source files.
@@ -138,11 +198,11 @@ a| The sort order to be applied when recursively processing the source files.
 // ------------------------------
 | sourceSortOrder
 | String
-| OS
+| `OS`
 // ------------------------------
 | sourceType
 | String
-| jsonschema
+| `jsonschema`
 // ------------------------------
 | targetJavaVersion
 | String
@@ -179,7 +239,7 @@ a| The style of annotations to use in the generated Java types.
 * gson -- apply annotations from the gson library
 * moshi1 -- apply annotations from the moshi 1.x library
 * none -- apply no annotations at all
-|
+| Value is case-insensitive
 // ------------------------------
 | customAnnotatorClass
 | A fully qualified class name, referring to a custom annotator class that implements `org.jsonschema2pojo.Annotator`.
@@ -202,13 +262,18 @@ a| The style of annotations to use in the generated Java types.
 a| The Level of inclusion to set in the generated Java types for Jackson serializers.
 
 .Supported values
-* ALWAYS NON_ABSENT
+* ALWAYS
+* NON_ABSENT
 * NON_DEFAULT
 * NON_EMPTY
 * NON_NULL
 * USE_DEFAULTS
 
-| Works only if `Jackson` or `Jackson2` were selected
+a|
+
+* Works only if `Jackson` or `Jackson2` were selected
+* Value is case-insensitive
+
 // ------------------------------
 | namePrefix
 | Whether to add a prefix to generated classes.
