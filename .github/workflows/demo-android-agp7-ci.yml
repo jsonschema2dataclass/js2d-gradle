@@ -1,4 +1,4 @@
-name: Android AGP 7 Demo
+name: Android AGP 7 Demo CI
 
 on:
   push:
