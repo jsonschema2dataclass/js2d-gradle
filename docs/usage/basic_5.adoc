@@ -20,12 +20,13 @@ The minimal usage example looks like shown in the following table.
 Examples provided follow Gradle DSL to showcase `org.jsonschema2dataclass` plugin configuration.
 
 Plugin requires one of `java`, `java library`, `Android application` or `Android library` plugin applied to work.
+Kotlin and Groovy automatically apply one of plugin mentioned before.
 
 Execution name `main` as shown below is an arbitrary one and any other supported name can be chosen.
 Execution name must follow the regular expression `[a-z][A-Za-z0-9_]*` to generate task name properly.
 Execution section might contain as many executions as project needs (at least 1).
 
-Inside any execution a developer might override any parameter as per their needs as described in xref:parameters_{plugin_major}.adoc[parameters] section.
+
 
 [options=header,cols="1,5"]
 |=====
