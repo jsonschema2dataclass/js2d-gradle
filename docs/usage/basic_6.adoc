@@ -131,7 +131,7 @@ NOTE: Any additional ideas and contributions are welcome.
 | Maintained and healthy
 | Demonstrates a way to publish jars with sources and schemas along with classes
 // ------------------------------
-| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/classpath[Model publishing] examples
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/classpath[Plugin's processor classpath] examples
 | Maintained and healthy
 | Demonstrates usage for plugin's processor classpath manipulation to apply schemas and custom RuleFactory
 // ------------------------------
