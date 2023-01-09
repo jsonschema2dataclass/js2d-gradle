@@ -317,7 +317,6 @@ private fun <E : Enum<E>?> fromEnum(value: String?, enumClass: Class<E>): E? {
     }
 }
 
-
 private inline fun <reified V : Enum<V>?> maybeDefaultEnum(
     value: String?,
     vFunction: Function<DefaultGenerationConfig, V>,

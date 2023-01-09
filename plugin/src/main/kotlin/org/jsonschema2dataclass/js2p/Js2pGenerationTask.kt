@@ -33,7 +33,7 @@ internal abstract class Js2pGenerationTask @Inject constructor(
 
     @get:Classpath
     val js2dConfigurationPlugins: NamedDomainObjectProvider<Configuration> = project.configurations.named(
-        JS2D_PLUGINS_CONFIGURATION_NAME
+        JS2D_PLUGINS_CONFIGURATION_NAME,
     )
 
     @TaskAction
@@ -42,7 +42,7 @@ internal abstract class Js2pGenerationTask @Inject constructor(
             throw GradleException("Invalid task setup")
         }
 
-        val workerClassPath = js2dConfiguration.get() +  js2dConfigurationPlugins
+        val workerClassPath = js2dConfiguration.get() + js2dConfigurationPlugins
         val workQueue = workerExecutor.processIsolation {
             // Set encoding (work-around for https://github.com/gradle/gradle/issues/13843)
             forkOptions.environment("LANG", System.getenv("LANG") ?: "C.UTF-8")
@@ -54,6 +54,5 @@ internal abstract class Js2pGenerationTask @Inject constructor(
         workQueue.submit(Js2pWorker::class.java) {
             config = js2pConfig
         }
-
     }
 }
