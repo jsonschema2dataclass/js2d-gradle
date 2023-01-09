@@ -14,7 +14,7 @@ internal class Js2pWorkerConfig(
     internal val methods: Js2pWorkerConfigMethod,
     internal val fields: Js2pWorkerConfigFields,
     internal val dateTime: Js2pWorkerConfigDateTime,
-) : Serializable{
+) : Serializable {
     companion object {
         fun fromConfig(
             targetDirectory: DirectoryProperty,
@@ -42,7 +42,7 @@ internal class Js2pWorkerConfigIO(
     val sourceSortOrder: String?,
     val sourceType: String?,
     val targetJavaVersion: String?,
-): Serializable
+) : Serializable
 
 internal class Js2pWorkerConfigClass(
     val androidParcelable: Boolean?,
@@ -57,14 +57,14 @@ internal class Js2pWorkerConfigClass(
     val nameSuffix: String?,
     val nameUseTitle: Boolean?,
     val targetPackage: String?,
-): Serializable
+) : Serializable
 
 internal class Js2pWorkerConfigConstructor(
     val allProperties: Boolean?,
     val annotateConstructorProperties: Boolean?,
     val copyConstructor: Boolean?,
     val requiredProperties: Boolean?,
-): Serializable
+) : Serializable
 
 internal class Js2pWorkerConfigMethod(
     val additionalProperties: Boolean?,
@@ -82,7 +82,7 @@ internal class Js2pWorkerConfigMethod(
     val settersDynamic: Boolean?,
     val toStringExcludes: Set<String>?,
     val toStringMethod: Boolean?,
-): Serializable
+) : Serializable
 
 internal class Js2pWorkerConfigFields(
     val floatUseBigDecimal: Boolean?,
@@ -92,7 +92,7 @@ internal class Js2pWorkerConfigFields(
     val integerUseBigInteger: Boolean?,
     val integerUseLong: Boolean?,
     val usePrimitives: Boolean?,
-): Serializable
+) : Serializable
 
 internal class Js2pWorkerConfigDateTime(
     val dateFormat: Boolean?,
@@ -107,7 +107,7 @@ internal class Js2pWorkerConfigDateTime(
     val timeFormat: Boolean?,
     val timePattern: String?,
     val timeType: String?,
-): Serializable
+) : Serializable
 
 private fun workerConvert(io: PluginConfigJs2pIO): Js2pWorkerConfigIO =
     Js2pWorkerConfigIO(

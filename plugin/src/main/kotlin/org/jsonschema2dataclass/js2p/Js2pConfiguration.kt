@@ -1,6 +1,5 @@
 package org.jsonschema2dataclass.js2p
 
-import groovy.lang.Closure
 import org.gradle.api.Action
 import org.gradle.api.Named
 import org.gradle.api.file.ConfigurableFileCollection
@@ -292,7 +291,6 @@ abstract class Js2pConfiguration @Inject constructor(
     @get:Optional
     abstract val klass: PluginConfigJs2pClass
 
-
     @get:Nested
     @get:Optional
     abstract val methods: PluginConfigJs2pMethod
@@ -313,11 +311,10 @@ abstract class Js2pConfiguration @Inject constructor(
         action(methods)
     }
 
-    fun fields(action:  Action<PluginConfigJs2pField>) {
+    fun fields(action: Action<PluginConfigJs2pField>) {
         action(fields)
     }
-    fun dateTime(action:  Action<PluginConfigJs2pDateTime>) {
+    fun dateTime(action: Action<PluginConfigJs2pDateTime>) {
         action(dateTime)
     }
-
 }
