@@ -64,7 +64,7 @@ dependencies {
 
     provided("org.jsonschema2pojo:jsonschema2pojo-core:1.1.2")
 
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation(platform("org.junit:junit-bom:5.9.2"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
