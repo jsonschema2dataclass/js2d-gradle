@@ -29,7 +29,6 @@ private fun <T : BaseVariant> createTasksForVariant(project: Project, extension:
         getAndroidJsonPath(project),
         variant.name,
         "${variant.flavorName}/${variant.buildType.name}/",
-        JavaVersion.current() >= JavaVersion.VERSION_1_9,
     ) { genTask, targetPath ->
         variant.registerJavaGeneratingTask(genTask.get(), targetPath.get().asFile)
         try {

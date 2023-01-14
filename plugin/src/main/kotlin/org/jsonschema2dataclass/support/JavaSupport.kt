@@ -27,7 +27,6 @@ internal fun applyInternalJava(extension: Js2pExtension, project: Project) {
         getJavaJsonPath(mainSourceSet),
         null,
         "",
-        false,
     ) { generationTaskProvider, targetPath ->
 
         @Suppress("UnstableApiUsage")

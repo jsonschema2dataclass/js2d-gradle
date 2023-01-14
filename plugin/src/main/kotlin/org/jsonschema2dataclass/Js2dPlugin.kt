@@ -125,11 +125,7 @@ internal fun createJS2DTask(
     defaultSourcePath: Path?,
     androidVariant: String?,
     targetDirectorySuffix: String,
-    excludeGeneratedOption: Boolean,
-    postConfigure: (
-        task: TaskProvider<out Js2pGenerationTask>,
-        DirectoryProperty,
-    ) -> Unit,
+    postConfigure: (task: TaskProvider<out Js2pGenerationTask>, DirectoryProperty) -> Unit,
 ): TaskProvider<Js2pWrapperTask> {
     val (taskName, taskDescription) = createTaskNameDescription(androidVariant, null)
     val js2dTask = project.tasks.register(taskName, Js2pWrapperTask::class.java) {
@@ -148,7 +144,6 @@ internal fun createJS2DTask(
             configuration.io.source.filter { it.exists() },
             targetPath,
             defaultSourcePath,
-            excludeGeneratedOption,
         )
 
         postConfigure(taskProvider, targetPath)
@@ -167,11 +162,10 @@ private fun createJS2DTaskExecution(
     source: FileCollection,
     targetPath: DirectoryProperty,
     defaultSourcePath: Path?,
-    excludeGeneratedOption: Boolean,
 ): TaskProvider<out Js2pGenerationTask> {
     val (taskName, taskDescription) = createTaskNameDescription(androidVariant, configuration.name)
 
-    copyConfiguration(configuration, excludeGeneratedOption, defaultSourcePath)
+    copyConfiguration(configuration, defaultSourcePath)
     return project.tasks.register(taskName, Js2pGenerationTask::class.java) {
         this.description = taskDescription
         this.group = "Build"
@@ -213,15 +207,9 @@ private fun verifyConfigurationName(configurationName: String) {
 
 internal fun copyConfiguration(
     configuration: Js2pConfiguration,
-    excludeGeneratedOption: Boolean,
     defaultSourcePath: Path?,
 ) {
     if (configuration.io.source.isEmpty) {
         configuration.io.source.setFrom(defaultSourcePath)
-    }
-    if (excludeGeneratedOption) {
-        // Temporary fixes #71 and upstream issue #1212 by overriding Generated annotation.
-        // Java 1.9+ Generated annotation is not compatible with AGP 7+
-        configuration.klass.annotateGenerated.set(false)
     }
 }

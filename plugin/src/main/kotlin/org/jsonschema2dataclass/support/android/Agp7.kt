@@ -6,7 +6,6 @@ import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.tasks.JavaPreCompileTask
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
@@ -30,7 +29,6 @@ private fun createTasksForVariant7(project: Project, extension: Js2pExtension, v
         getAndroidJsonPath(project),
         "For$capitalizedName",
         "${variant.flavorName}/${variant.buildType}/",
-        JavaVersion.current() >= JavaVersion.VERSION_1_9,
     ) { genTask, targetDirectory ->
         variant.artifacts.use(genTask).wiredWith { targetDirectory }
             .toCreate(ArtifactType7.SINGLE_DIRECTORY_ARTIFACT)
