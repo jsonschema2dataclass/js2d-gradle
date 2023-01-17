@@ -28,7 +28,7 @@ spotless {
     kotlin {
         targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
         target("**/*.kt")
-//        ktlint(ktlintVersion)
+        ktlint(ktlintFormatVersion)
         endWithNewline()
     }
     kotlinGradle {
