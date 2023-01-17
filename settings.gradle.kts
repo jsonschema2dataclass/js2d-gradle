@@ -1,3 +1,3 @@
 rootProject.name = "JsonSchema2DataClass"
 
-include(":plugin")
+include(":plugin-gradle")
