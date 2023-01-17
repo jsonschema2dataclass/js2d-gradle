@@ -7,7 +7,7 @@ on:
     tags-ignore:
       - '*'
     paths:
-      - 'plugin/**'
+      - 'plugin-gradle/**'
       - 'gradle/**'
       - 'gradlew*'
       - 'buildSrc/**'
@@ -19,7 +19,7 @@ on:
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
-      - 'plugin/**'
+      - 'plugin-gradle/**'
       - 'gradle/**'
       - 'gradlew*'
       - 'buildSrc/**'

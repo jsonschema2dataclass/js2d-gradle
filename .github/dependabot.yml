@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "gradle"
-    directory: "/plugin"
+    directory: "/plugin-gradle"
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle"
