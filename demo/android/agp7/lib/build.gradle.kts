@@ -1,49 +1,48 @@
 plugins {
-    id "com.android.library"
-    id "org.jsonschema2dataclass"
-    id "kotlin-android"
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+    id("org.jsonschema2dataclass")
 }
 
 android {
-    namespace "org.jsonschema2dataclass.lib2"
-    compileSdkVersion 33
+    namespace = "org.jsonschema2dataclass.lib"
+
+    compileSdkVersion = "android-33"
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 33
-        versionCode 1
-        versionName "1.0"
+        minSdk = 24
+        targetSdk = 33
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            isMinifyEnabled = false
+            consumerProguardFiles("proguard-rules.pro")
         }
     }
 
     packagingOptions {
-        exclude "META-INF/LICENSE.txt"
+        resources.excludes.add("META-INF/LICENSE.txt")
     }
 
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.6.0"
+    implementation("androidx.appcompat:appcompat:1.6.0")
 
     // Required for @Generated annotation
-    implementation "org.glassfish:javax.annotation:10.0-b28"
-    implementation "com.google.code.gson:gson:2.10.1"
-    implementation "com.squareup.moshi:moshi:1.14.0"
+    implementation("org.glassfish:javax.annotation:10.0-b28")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.moshi:moshi:1.14.0")
     // Required if generating JSR-303 annotations
-    implementation "javax.validation:validation-api:2.0.1.Final"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.14.1"
-    implementation "androidx.core:core-ktx:1.9.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation("javax.validation:validation-api:2.0.1.Final")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
 }
 
 jsonSchema2Pojo {
     executions {
-        main {
+        create("main") {
             io {
                 source.setFrom(files("${project.rootDir}/schema"))
                 sourceType.set("jsonschema")

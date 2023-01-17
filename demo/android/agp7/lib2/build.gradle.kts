@@ -1,50 +1,50 @@
 plugins {
-    id 'com.android.library'
-    id "org.jsonschema2dataclass"
-    id "kotlin-android"
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+    id("org.jsonschema2dataclass")
 }
 
 android {
-    namespace "org.jsonschema2dataclass.lib"
-
-    compileSdkVersion 33
+    namespace = "org.jsonschema2dataclass.lib2"
+    compileSdk = 33
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 33
-        versionCode 1
-        versionName "1.0"
+        minSdk = 24
+        targetSdk = 33
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
+
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            isMinifyEnabled = false
         }
     }
-
-    packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.0'
 
-    // Required for @Generated annotation
-    implementation 'org.glassfish:javax.annotation:10.0-b28'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'com.squareup.moshi:moshi:1.14.0'
-    // Required if generating JSR-303 annotations
-    implementation 'javax.validation:validation-api:2.0.1.Final'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
-    implementation "androidx.core:core-ktx:1.9.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.appcompat:appcompat:1.6.0")
+    implementation("com.google.android.material:material:1.5.0")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
+
+
 
 jsonSchema2Pojo {
     executions {
-        main {
+        create("main")  {
             io {
                 source.setFrom(files("${project.rootDir}/schema"))
                 sourceType.set("jsonschema")
