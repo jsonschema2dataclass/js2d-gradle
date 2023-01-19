@@ -5,8 +5,10 @@ plugins {
     id("com.diffplug.spotless") version "6.13.0"
 }
 
-group = "org.jsonschema2dataclass"
-version = gitVersion(project)
+allprojects {
+    group = "org.jsonschema2dataclass"
+    version = gitVersion(project)
+}
 
 repositories {
     mavenCentral()
