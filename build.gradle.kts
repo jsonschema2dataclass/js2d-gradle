@@ -14,7 +14,7 @@ repositories {
     mavenCentral()
 }
 // This section is required for dependabot to catch changes
-val ktlintFormatVersion = "0.48.1"
+val ktlintFormatVersion = "0.48.2"
 val googleJavaFormatVersion = "1.15.0"
 val orgJsonFormatVersion = "20220924"
 val styleCheckers by configurations.registering
