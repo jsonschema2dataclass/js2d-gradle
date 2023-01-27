@@ -25,7 +25,7 @@ sourceSets {
 dependencies {
     compileOnly(project(":plugin-gradle:processors:common"))
 
-    compileOnly("com.android.tools.build:gradle:4.2.2") {
+    compileOnly("com.android.tools.build:gradle:7.4.0") {
         exclude(group = "org.jetbrains.kotlin")
     }
 }
