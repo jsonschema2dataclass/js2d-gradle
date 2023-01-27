@@ -55,4 +55,4 @@ jobs:
           java-version: ${{ matrix.java_version }}
           cache: gradle
       - name: Build project Java Demo (local plugin ${{ matrix.localPlugin }} )
-        run: ./gradlew build -S --warning-mode all -Porg.jsonschema2pojo.local=${{ matrix.localPlugin }}
+        run: ./gradlew build -S --warning-mode all -Porg.jsonschema2pojo.local=${{ matrix.localPlugin }} -I ../../gradle/init.gradle.kts
