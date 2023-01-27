@@ -1,0 +1,140 @@
+:plugin_major: 5
+:demo-agp4: was marked as unmaintained
+
+:toc:
+:toc-placement: preamble
+:toclevels: 2
+:showtitle:
+
+= Basic plugin usage and support
+
+This page shows plugin basic usage and support.
+
+== Apply the plugin and basic settings
+
+A one should follow an https://plugins.gradle.org/plugin/org.jsonschema2dataclass[official Gradle guide] to apply the plugin.
+
+Then it's required to specify execution and their settings in the extension.
+
+The minimal usage example looks like shown in the following table.
+Examples provided follow Gradle DSL to showcase `org.jsonschema2dataclass` plugin configuration.
+
+Plugin requires one of `java`, `java library`, `Android application` or `Android library` plugin applied to work.
+Kotlin and Groovy automatically apply one of plugin mentioned before.
+
+Execution name `main` as shown below is an arbitrary one and any other supported name can be chosen.
+Execution name must follow the regular expression `[a-z][A-Za-z0-9_]*` to generate task name properly.
+Execution section might contain as many executions as project needs (at least 1).
+
+Inside any execution a developer might override any parameter as per their needs as described in xref:parameters_{plugin_major}.adoc[parameters] section.
+
+[options=header,cols="1,5"]
+|=====
+| DSL language | DSL
+// ------------------------------
+| Groovy
+a|
+[source,gradle]
+-----
+plugins {
+    id "java"
+    id "org.jsonschema2dataclass" version "x.y.z"
+}
+
+jsonSchema2Pojo {
+    executions {
+        main {}
+    }
+}
+-----
+// ------------------------------
+| Kotlin
+a|
+[source,gradle]
+-----
+plugins {
+    `java`
+    id("org.jsonschema2dataclass") version "x.y.z"
+}
+
+jsonSchema2Pojo {
+    executions {
+        create("main") {
+        }
+    }
+}
+-----
+// ------------------------------
+|=====
+
+== SDK and build tools support
+
+.Demos and statuses
+[options=header]
+|=====
+| SDK/Tool | Minimal Version | Maximum version | Notes
+// ------------------------------
+| Java compiler
+| 8
+| 19
+|
+// ------------------------------
+| Gradle
+| 6.0
+| 7.x
+| 8.0 support is beta till it will be released
+// ------------------------------
+| Android Gradle Plugin
+| 3
+| 7
+|
+// ------------------------------
+|=====
+
+== Demos and their statuses
+
+Project contains various minimal `org.jsonschema2dataclass` plugin usage https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo[demos].
+These minimal applications aren't normal full-featured for a given platform, but can be used as a showcase for a plugin.
+
+Also, there's also integration tests which are
+
+Any contributions are welcome.
+
+.Demos and statuses
+[options=header]
+|=====
+| Platform | Demo | Status | Notes
+// ------------------------------
+.3+| JVM
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/groovy[Groovy DSL] example
+| Maintained and healthy
+|
+// ------------------------------
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/kotlin[Kotlin DSL] example
+| Maintained and healthy
+|
+// ------------------------------
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/model-publish[Model publishing] example
+| Maintained and healthy
+|
+// ------------------------------
+.4+| Android
+| https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/android/agp7[AGP 7] example
+| Maintained and healthy
+|
+// ------------------------------
+| AGP 8
+| Waiting for releases from Google and Gradle
+| AGP 8 depends on Gradle 8.0 which is not released at the time of writing the documentation
+// ------------------------------
+| AGP 4
+| ⚠️ Demo {demo-agp4} since {plugin_major}.0
+| Was unmaintained for a while
+// ------------------------------
+| AGP 3
+| ⚠️ Demo has been removed in 5.0
+| Was unmaintained for a while
+// ------------------------------
+|=====
+
+For AGP 3 and AGP 4 I have no computer to build the demos.

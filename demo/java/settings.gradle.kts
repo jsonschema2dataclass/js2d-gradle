@@ -14,8 +14,3 @@ include(":classpath:schema-reference")
 include(":classpath:custom-rule-factory")
 // How to apply custom rule factory
 include(":classpath:custom-rule-factory-apply")
-
-if (settings.extra.has("org.jsonschema2pojo.local") &&
-    settings.extra["org.jsonschema2pojo.local"].toString().toBoolean()) {
-    includeBuild("../..")
-}

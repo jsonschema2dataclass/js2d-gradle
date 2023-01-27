@@ -57,4 +57,4 @@ jobs:
       - name: Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.4
       - name: Build project Android AGP 7 Demo (local plugin ${{ matrix.localPlugin }} )
-        run: ./gradlew assembleDebug -S --warning-mode all -Porg.jsonschema2pojo.local=${{ matrix.localPlugin }}
+        run: ./gradlew assembleDebug -S --warning-mode all -Porg.jsonschema2pojo.local=${{ matrix.localPlugin }} -I ../../../gradle/init.gradle.kts
