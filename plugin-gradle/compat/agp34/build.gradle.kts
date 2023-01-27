@@ -3,9 +3,6 @@ plugins {
     `kotlin-dsl-precompiled-script-plugins`
 }
 
-group = "org.jsonschema2dataclass"
-version = gitVersion(project)
-
 repositories {
     google().content {
         includeGroup("com.android")

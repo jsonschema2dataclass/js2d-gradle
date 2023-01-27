@@ -10,10 +10,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: gradle
-    directory: "/plugin-gradle/compat/java"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: gradle
     directory: "/plugin-gradle/compat/android"
     schedule:
       interval: "daily"

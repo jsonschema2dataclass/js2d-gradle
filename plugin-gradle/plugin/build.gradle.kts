@@ -5,9 +5,6 @@ plugins {
     id("com.gradle.plugin-publish")
 }
 
-group = "org.jsonschema2dataclass"
-version = gitVersion(project)
-
 repositories {
     mavenCentral()
 }

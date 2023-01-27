@@ -1,3 +1,5 @@
+package org.jsonschema2dataclass.internal.plugin
+
 import org.gradle.api.Project
 import java.io.IOException
 import java.nio.charset.StandardCharsets
