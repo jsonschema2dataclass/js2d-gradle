@@ -6,35 +6,11 @@
 version: 2
 updates:
   - package-ecosystem: gradle
-    directory: "/"
+    directory: ""
     schedule:
       interval: "daily"
   - package-ecosystem: gradle
-    directory: "/plugin-gradle/compat/android"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: gradle
-    directory: "plugin-gradle/commons/kotlin-compat"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: gradle
-    directory: "plugin-gradle/commons/test-common"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: gradle
-    directory: "plugin-gradle/plugin"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: gradle
-    directory: "plugin-gradle/processors/common"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: gradle
-    directory: "plugin-gradle/processors/jsonschema2pojo"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: gradle
-    directory: "/plugin-gradle/compat/agp7"
+    directory: "plugin-gradle/compat/agp7"
     schedule:
       interval: "daily"
     ignore:
@@ -59,6 +35,6 @@ updates:
       - dependency-name: com.android.tools.build:gradle
         update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directory: ""
     schedule:
       interval: "daily"
