@@ -5,15 +5,57 @@
 
 version: 2
 updates:
-  - package-ecosystem: "gradle"
+  - package-ecosystem: gradle
     directory: "/"
     schedule:
       interval: "daily"
-  - package-ecosystem: "gradle"
+  - package-ecosystem: gradle
+    directory: "/plugin-gradle/compat/java"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: gradle
+    directory: "/plugin-gradle/compat/android"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: gradle
+    directory: "plugin-gradle/commons/kotlin-compat"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: gradle
+    directory: "plugin-gradle/commons/test-common"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: gradle
+    directory: "plugin-gradle/plugin"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: gradle
+    directory: "plugin-gradle/processors/common"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: gradle
+    directory: "plugin-gradle/processors/jsonschema2pojo"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: gradle
+    directory: "/plugin-gradle/compat/agp7"
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: com.android.tools.build:gradle
+        update-types: [ "version-update:semver-major" ]
+  - package-ecosystem: gradle
+    directory: "/plugin-gradle/compat/agp34"
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: com.android.tools.build:gradle
+        update-types: [ "version-update:semver-major" ]
+  - package-ecosystem: gradle
     directory: "demo/java"
     schedule:
       interval: "daily"
-  - package-ecosystem: "gradle"
+  - package-ecosystem: gradle
     directory: "demo/android/agp7"
     schedule:
       interval: "daily"
