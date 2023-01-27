@@ -6,10 +6,6 @@
 version: 2
 updates:
   - package-ecosystem: gradle
-    directory: ""
-    schedule:
-      interval: "daily"
-  - package-ecosystem: gradle
     directory: "plugin-gradle/compat/agp7"
     schedule:
       interval: "daily"
@@ -35,6 +31,10 @@ updates:
       - dependency-name: com.android.tools.build:gradle
         update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "github-actions"
+    directory: ""
+    schedule:
+      interval: "daily"
+  - package-ecosystem: gradle
     directory: ""
     schedule:
       interval: "daily"
