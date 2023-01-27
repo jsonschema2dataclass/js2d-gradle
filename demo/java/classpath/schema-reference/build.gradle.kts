@@ -18,6 +18,7 @@ jsonSchema2Pojo {
         create("main") {
             io.source.setFrom(files("src/main/resources/schema/foo.json"))
             klass.annotationStyle.set("jackson2")
+            klass.annotateGenerated.set(false)
             klass.targetPackage.set("org.test")
             klass.nameUseTitle.set(true)
         }

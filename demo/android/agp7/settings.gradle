@@ -4,4 +4,7 @@ include ':app'
 include ':lib'
 include ':lib2'
 
-includeBuild('../../..')
+if (settings.ext.has("org.jsonschema2pojo.local") &&
+        settings.ext["org.jsonschema2pojo.local"].toString().toBoolean()) {
+    includeBuild("../..")
+}

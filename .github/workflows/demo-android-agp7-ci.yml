@@ -42,6 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        localPlugin: ["true", "false"]
         java: [ 11, 17, 18 ]
         distribution: [ "zulu", "temurin" ]
     steps:
@@ -55,5 +56,5 @@ jobs:
           cache: gradle
       - name: Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.4
-      - name: Build project
-        run: ./gradlew assembleDebug -S --warning-mode all
+      - name: Build project Android AGP 7 Demo (local plugin ${{ matrix.localPlugin }} )
+        run: ./gradlew assembleDebug -S --warning-mode all -Porg.jsonschema2pojo.local=${{ matrix.localPlugin }}

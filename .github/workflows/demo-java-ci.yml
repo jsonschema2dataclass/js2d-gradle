@@ -42,6 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        localPlugin: ["true", "false"]
         java_version: [8, 11, 17, 18]
         distribution: ["zulu", "temurin"]
     steps:
@@ -53,5 +54,5 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
           cache: gradle
-      - name: Build project
-        run: ./gradlew build -S --warning-mode all
+      - name: Build project Java Demo (local plugin ${{ matrix.localPlugin }} )
+        run: ./gradlew build -S --warning-mode all -Porg.jsonschema2pojo.local=${{ matrix.localPlugin }}

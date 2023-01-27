@@ -10,27 +10,9 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle"
-    directory: "demo/java/groovy"
+    directory: "demo/java"
     schedule:
       interval: "daily"
-  - package-ecosystem: "gradle"
-    directory: "demo/java/kotlin"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "gradle"
-    directory: "demo/android/agp3"
-    schedule:
-      interval: "daily"
-    ignore:
-      - dependency-name: com.android.tools.build:gradle
-        update-types: [ "version-update:semver-major" ]
-  - package-ecosystem: "gradle"
-    directory: "demo/android/agp4"
-    schedule:
-      interval: "daily"
-    ignore:
-      - dependency-name: com.android.tools.build:gradle
-        update-types: [ "version-update:semver-major" ]
   - package-ecosystem: "gradle"
     directory: "demo/android/agp7"
     schedule:
