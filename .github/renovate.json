@@ -1,22 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ],
-  "packageRules": [
-    {
-      "description": "Disable updating AGP compatibility dependencies. Allow changes in minor and patches",
-      "matchPackageNames": [
-        "com.android.tools.build:gradle"
-      ],
-      "matchUpdateTypes": ["major"],
-      "matchFiles": [
-        "demo/android-agp7/build.gradle.kts",
-        "demo/android-agp7/settings.gradle.kts",
-        "plugin-gradle/compat/agp7/build.gradle.kts",
-        "plugin-gradle/compat/agp34/build.gradle.kts"
-      ],
-      "enabled": false
-    }
-  ]
+  "extends": [ "config:base" ],
+  "packageRules": [ {
+    "description": "Disable updating AGP compatibility dependencies. Allow changes in minor and patches",
+    "matchPackageNames": [ "com.android.tools.build:gradle" ],
+    "matchUpdateTypes": [ "major" ],
+    "matchFiles": [ "demo/android-agp7/build.gradle.kts", "demo/android-agp7/settings.gradle.kts", "plugin-gradle/compat/agp7/build.gradle.kts", "plugin-gradle/compat/agp34/build.gradle.kts" ],
+    "enabled": false
+  } ]
 }

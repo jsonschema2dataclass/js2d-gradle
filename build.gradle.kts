@@ -10,9 +10,11 @@ plugins {
     }
 }
 
+val projectVersion = gitVersion(project)
+
 allprojects {
     group = "org.jsonschema2dataclass"
-    version = gitVersion(project)
+    version = projectVersion
 }
 
 repositories {

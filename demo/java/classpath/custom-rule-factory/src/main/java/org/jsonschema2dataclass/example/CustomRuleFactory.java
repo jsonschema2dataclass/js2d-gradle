@@ -8,14 +8,14 @@ import org.jsonschema2pojo.rules.Rule;
 import org.jsonschema2pojo.rules.RuleFactory;
 
 public class CustomRuleFactory extends RuleFactory {
-    public CustomRuleFactory(GenerationConfig generationConfig, Annotator annotator, SchemaStore schemaStore) {
-        super(generationConfig, annotator, schemaStore);
-    }
+  public CustomRuleFactory(
+      GenerationConfig generationConfig, Annotator annotator, SchemaStore schemaStore) {
+    super(generationConfig, annotator, schemaStore);
+  }
 
-    public CustomRuleFactory() {
-    }
+  public CustomRuleFactory() {}
 
-    public Rule<JType, JType> getFormatRule() {
-        return new CustomFormatRule(this);
-    }
+  public Rule<JType, JType> getFormatRule() {
+    return new CustomFormatRule(this);
+  }
 }

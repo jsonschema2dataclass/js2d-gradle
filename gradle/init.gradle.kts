@@ -10,7 +10,7 @@ fun resolvePluginPath(rootPath: java.nio.file.Path): java.nio.file.Path? {
         val settingsFile = path.resolve("demo")
         if (settingsFile.toFile().exists()) {
             return path.toAbsolutePath()
-            break;
+            break
         } else {
             path = path.resolve("..")
             println("new path: ${path.toAbsolutePath()}")

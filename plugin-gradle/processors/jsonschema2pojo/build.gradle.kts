@@ -20,7 +20,6 @@ dependencies {
     testImplementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.2")
 }
 
-
 tasks.test {
     useJUnitPlatform()
     systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_method")

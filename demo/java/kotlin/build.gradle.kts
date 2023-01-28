@@ -24,7 +24,7 @@ jsonSchema2Pojo {
     executions {
         create("main") {
             io.delimitersPropertyWord.set("_")
-            io.source.setFrom(files("${projectDir}/src/main/resources/json"))
+            io.source.setFrom(files("$projectDir/src/main/resources/json"))
             klass.annotateGenerated.set(false)
             klass.targetPackage.set("example")
         }

@@ -23,7 +23,6 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/LICENSE.txt")
     }
-
 }
 
 dependencies {
