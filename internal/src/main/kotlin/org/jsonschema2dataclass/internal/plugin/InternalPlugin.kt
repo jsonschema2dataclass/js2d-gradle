@@ -4,9 +4,11 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.extra
 
 const val ktLintFormatVersion = "0.48.2"
 const val googleJavaFormatVersion = "1.15.0"
+private const val spotlessDisable = "org.jsonschema2dataclass.internal.spotless.disable"
 
 @Suppress("unused")
 class InternalPlugin : Plugin<Project> {
@@ -18,7 +20,11 @@ class InternalPlugin : Plugin<Project> {
 }
 
 private fun applySpotless(project: Project) {
+    val spotlessDisable = project.extra.has(spotlessDisable) && project.extra[spotlessDisable].toString().toBoolean()
     project.extensions.configure(SpotlessExtension::class.java) {
+        if (spotlessDisable) {
+            this.isEnforceCheck = false
+        }
         kotlin {
             targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
             target("**/*.kt")

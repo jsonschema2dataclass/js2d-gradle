@@ -1,4 +1,4 @@
-name: Android AGP 7 Demo CI
+name: Android AGP 7 Demo CI (unreleased plugin version)
 
 on:
   push:
@@ -7,13 +7,15 @@ on:
     tags-ignore:
       - '*'
     paths:
+      - 'plugin-gradle/**'
       - 'demo/android/agp7/**'
-      - .github/workflows/demo-android-agp7-ci.yml
+      - .github/workflows/demo-android-agp7-ci-unreleased.yml
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
     paths:
+      - 'plugin-gradle/**'
       - 'demo/android/agp7/**'
-      - .github/workflows/demo-android-agp7-ci.yml
+      - .github/workflows/demo-android-agp7-ci-unreleased.yml
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
@@ -28,8 +30,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ 11, 17, 18 ]
-        distribution: [ "zulu", "temurin" ]
+        java: [ 17 ]
+        distribution: [ "zulu" ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -41,5 +43,5 @@ jobs:
           cache: gradle
       - name: Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.4
-      - name: Build project Android AGP 7 Demo
-        run: ./gradlew assembleDebug -S --warning-mode all
+      - name: Build project Android AGP 7 Demo (unreleased plugin version)
+        run: ./gradlew assembleDebug -S --warning-mode all  -I ../../../gradle/init.gradle.kts -Porg.jsonschema2dataclass.internal.spotless.disable=true  -Porg.jsonschema2pojo.internal.local=true
