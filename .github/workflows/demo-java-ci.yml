@@ -26,6 +26,7 @@ jobs:
       run:
         working-directory: demo/java
     strategy:
+      max-parallel: 2
       fail-fast: false
       matrix:
         java_version: [8, 11, 17, 19]
