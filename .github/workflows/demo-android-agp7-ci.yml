@@ -27,6 +27,7 @@ jobs:
         working-directory: demo/android-agp7
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         java: [ 11, 17, 18 ]
         distribution: [ "zulu", "temurin" ]

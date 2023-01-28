@@ -29,6 +29,7 @@ jobs:
         working-directory: demo/java
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         java_version: [8, 17]
         distribution: ["zulu"]
