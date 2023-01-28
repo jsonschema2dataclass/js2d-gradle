@@ -15,7 +15,8 @@
         "demo/android/agp7/settings.gradle.kts",
         "plugin-gradle/compat/agp7/build.gradle.kts",
         "plugin-gradle/compat/agp34/build.gradle.kts"
-      ]
+      ],
+      "enabled": false
     }
   ]
 }
