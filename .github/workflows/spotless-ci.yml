@@ -1,0 +1,32 @@
+name: Check Spotless
+
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+  pull_request:
+    types: [ assigned, opened, synchronize, reopened ]
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
+
+jobs:
+  spotless-check:
+    name: Spotless check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [ 11 ]
+        distribution: [ "zulu"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
+        uses: actions/setup-java@v3.9.0
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.java }}
+          cache: gradle
+      - run: ./gradlew spotlessCheck --warning-mode all --no-daemon

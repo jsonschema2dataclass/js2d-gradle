@@ -1,4 +1,4 @@
-name: Java Demo CI
+name: Java Demo CI (unreleased plugin version)
 
 on:
   push:
@@ -7,11 +7,13 @@ on:
     tags-ignore:
       - '*'
     paths:
+      - 'plugin-gradle/**'
       - 'demo/java/**'
       - .github/workflows/demo-java-ci.yml
   pull_request:
     types: [assigned, opened, synchronize, reopened]
     paths:
+      - 'plugin-gradle/**'
       - 'demo/java/**'
       - .github/workflows/demo-java-ci.yml
 
@@ -28,8 +30,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java_version: [8, 11, 17, 19]
-        distribution: ["zulu", "temurin"]
+        java_version: [8, 17]
+        distribution: ["zulu"]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -39,5 +41,5 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java_version }}
           cache: gradle
-      - name: Build project Java Demo
-        run: ./gradlew build -S --warning-mode all
+      - name: Build project Java Demo (unreleased plugin version)
+        run: ./gradlew build -S --warning-mode all -I ../../gradle/init.gradle.kts  -Porg.jsonschema2dataclass.internal.spotless.disable=true  -Porg.jsonschema2pojo.local=true
