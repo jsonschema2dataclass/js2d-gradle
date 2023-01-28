@@ -24,7 +24,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: gradle
-    directory: "demo/android/agp7"
+    directory: "demo/android-agp7"
     schedule:
       interval: "daily"
     ignore:
