@@ -26,31 +26,37 @@ private fun applySpotless(project: Project) {
             this.isEnforceCheck = false
         }
         kotlin {
-            targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
+            targetExclude(".idea", "**/.idea", "**/build")
             target("**/*.kt")
             ktlint(ktLintFormatVersion)
             endWithNewline()
         }
         kotlinGradle {
-            targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
-            target("*.gradle.kts")
+            targetExclude(".idea", "**/.idea", "**/build")
+            target("**/*.kts")
             ktlint(ktLintFormatVersion)
             endWithNewline()
         }
         json {
-            targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
-            target("demo/**/*.json", "src/**/*.json")
-            simple()
+            targetExclude(".idea", "**/.idea", "**/build")
+            target("**/*.json")
+            jackson()
+            endWithNewline()
+        }
+        yaml {
+            targetExclude(".idea", "**/.idea", "**/build")
+            target("**/*.yaml")
+            jackson()
             endWithNewline()
         }
         format("xml") {
-            targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
-            target("demo/**src/**/*.xml", "src/**/*.xml")
+            targetExclude(".idea", "**/.idea", "**/build")
+            target("**/*.xml")
             eclipseWtp(EclipseWtpFormatterStep.XML)
         }
         java {
-            targetExclude(".idea", "**/.idea", "plugin/build", "**/build")
-            target("demo/**src/**/*.java", "src/**/*.java")
+            targetExclude(".idea", "**/.idea", "**/build")
+            target("**/*.java")
             googleJavaFormat(googleJavaFormatVersion)
         }
     }

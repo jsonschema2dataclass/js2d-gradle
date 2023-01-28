@@ -10,7 +10,7 @@ on:
       - 'plugin-gradle/**'
       - 'gradle/**'
       - 'gradlew*'
-      - 'buildSrc/**'
+      - 'internal/**'
       - settings.gradle.kts
       - build.gradle.kts
       - gradle.properties
@@ -21,7 +21,7 @@ on:
       - 'plugin-gradle/**'
       - 'gradle/**'
       - 'gradlew*'
-      - 'buildSrc/**'
+      - 'internal/**'
       - settings.gradle.kts
       - build.gradle.kts
       - gradle.properties

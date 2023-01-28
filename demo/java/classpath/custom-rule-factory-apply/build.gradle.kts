@@ -1,6 +1,6 @@
 plugins {
     `java-library`
-    id ("org.jsonschema2dataclass")
+    id("org.jsonschema2dataclass")
 }
 
 repositories {

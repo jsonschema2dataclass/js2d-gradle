@@ -40,11 +40,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
-
-
 jsonSchema2Pojo {
     executions {
-        create("main")  {
+        create("main") {
             io {
                 source.setFrom(files("${project.rootDir}/schema"))
                 sourceType.set("jsonschema")
