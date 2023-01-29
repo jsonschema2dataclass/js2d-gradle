@@ -7,5 +7,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jsonschema2pojo:jsonschema2pojo-core:1.1.2")
+    compileOnly("org.jsonschema2pojo:jsonschema2pojo-core:1.1.3")
 }
