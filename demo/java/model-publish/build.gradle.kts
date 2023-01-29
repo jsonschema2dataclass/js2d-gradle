@@ -14,7 +14,7 @@ project.version = "1.0"
 val targetJSONBaseDir = files("$projectDir/src/main/resources/json")
 
 dependencies {
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
 
     // see src/main/resources/json/external_dependencies.json
     implementation("joda-time:joda-time:2.12.2")
