@@ -15,13 +15,6 @@ repositories {
     mavenCentral()
 }
 
-val provided: Configuration by configurations.creating
-sourceSets {
-    main {
-        this.compileClasspath += provided
-    }
-}
-
 dependencies {
     compileOnly(project(":plugin-gradle:processors:common"))
 
