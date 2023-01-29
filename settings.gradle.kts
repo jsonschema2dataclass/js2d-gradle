@@ -6,7 +6,7 @@ include(":plugin-gradle:compat:android")
 include(":plugin-gradle:compat:agp34")
 
 // If is for testing on Java 1.8
-if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+if (JavaVersion.current() > JavaVersion.VERSION_1_8) {
     include(":plugin-gradle:compat:agp7")
 }
 include(":plugin-gradle:processors:common")

@@ -25,7 +25,7 @@ dependencies {
 
     implementation(project(":plugin-gradle:processors:common"))
     implementation(project(":plugin-gradle:compat:agp34"))
-    if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+    if (JavaVersion.current() > JavaVersion.VERSION_1_8) {
         implementation(project(":plugin-gradle:compat:agp7"))
     }
 }
