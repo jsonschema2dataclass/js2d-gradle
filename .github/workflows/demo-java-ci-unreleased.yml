@@ -9,13 +9,19 @@ on:
     paths:
       - 'plugin-gradle/**'
       - 'demo/java/**'
-      - .github/workflows/demo-java-ci.yml
+      - .github/workflows/demo-java-ci-unreleased.yml
   pull_request:
     types: [assigned, opened, synchronize, reopened]
     paths:
       - 'plugin-gradle/**'
       - 'demo/java/**'
-      - .github/workflows/demo-java-ci.yml
+      - .github/workflows/demo-java-ci-unreleased.yml
+
+concurrency:
+  # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
+  # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
+  group: ${{ github.ref == 'refs/heads/main' && format('demo-java-ci-un-main-{0}', github.sha) || format('demo-java-ci-un-{0}', github.ref) }}
+  cancel-in-progress: true
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
