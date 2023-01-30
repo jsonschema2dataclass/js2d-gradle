@@ -8,6 +8,14 @@ on:
       - '*'
   pull_request:
     types: [ assigned, opened, synchronize, reopened ]
+    paths:
+      - "**/*.java"
+      - "**/*.xml"
+      - "**/*.json"
+      - "**/*.kt"
+      - "**/*.kts"
+      - "**/*.yml"
+      - "**/*.yaml"
 
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.

@@ -9,17 +9,16 @@ import org.jsonschema2pojo.rules.RuleFactory;
 
 public class CustomFormatRule extends FormatRule {
 
-  protected CustomFormatRule(RuleFactory ruleFactory) {
-    super(ruleFactory);
-  }
-
-  @Override
-  public JType apply(
-      String nodeName, JsonNode node, JsonNode parent, JType baseType, Schema schema) {
-    if ("base64".equals(node.asText())) {
-      return baseType.owner()._ref(Base64.class);
-    } else {
-      return super.apply(nodeName, node, parent, baseType, schema);
+    protected CustomFormatRule(RuleFactory ruleFactory) {
+        super(ruleFactory);
     }
-  }
+
+    @Override
+    public JType apply(String nodeName, JsonNode node, JsonNode parent, JType baseType, Schema schema) {
+        if ("base64".equals(node.asText())) {
+            return baseType.owner()._ref(Base64.class);
+        } else {
+            return super.apply(nodeName, node, parent, baseType, schema);
+        }
+    }
 }

@@ -5,10 +5,10 @@ import com.oosocial.clarityn.rest.clarityn.model.Storage;
 
 public final class AndroidLibExample {
 
-  public static void example() {
-    EntrySchema schema = new EntrySchema();
-    schema.setReadonly(false);
-    schema.setFstype(EntrySchema.Fstype.EXT_4);
-    schema.setStorage(new Storage());
-  }
+    public static void example() {
+        EntrySchema schema = new EntrySchema();
+        schema.setReadonly(false);
+        schema.setFstype(EntrySchema.Fstype.EXT_4);
+        schema.setStorage(new Storage());
+    }
 }
