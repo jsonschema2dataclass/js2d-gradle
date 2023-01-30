@@ -22,12 +22,9 @@ repositories {
 }
 
 // This section is required for dependabot to catch changes
-val styleCheckers by configurations.registering
+val styleCheckers: Configuration by configurations.creating
 
 dependencies {
-    add("styleCheckers", "com.pinterest:ktlint:$ktLintFormatVersion")
-    add(
-        "styleCheckers",
-        "com.palantir.javaformat:palantir-java-format:$palantirJavaFormatVersion",
-    )
+    styleCheckers("com.pinterest:ktlint:$ktLintFormatVersion")
+    styleCheckers("com.palantir.javaformat:palantir-java-format:$palantirJavaFormatVersion")
 }
