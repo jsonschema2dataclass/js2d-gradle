@@ -1,6 +1,6 @@
 import org.jsonschema2dataclass.internal.plugin.gitVersion
-import org.jsonschema2dataclass.internal.plugin.googleJavaFormatVersion
 import org.jsonschema2dataclass.internal.plugin.ktLintFormatVersion
+import org.jsonschema2dataclass.internal.plugin.palantirJavaFormatVersion
 
 plugins {
     id("com.gradle.plugin-publish") version "1.1.0" apply false
@@ -28,6 +28,6 @@ dependencies {
     add("styleCheckers", "com.pinterest:ktlint:$ktLintFormatVersion")
     add(
         "styleCheckers",
-        "com.google.googlejavaformat:google-java-format:$googleJavaFormatVersion",
+        "com.palantir.javaformat:palantir-java-format:$palantirJavaFormatVersion",
     )
 }
