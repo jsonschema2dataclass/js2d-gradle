@@ -43,7 +43,7 @@ private fun applySpotless(project: Project, styleCheckers: Configuration) {
         project,
         styleCheckers,
         "com.pinterest:ktlint",
-        "0.48.2",
+        "7.6",
     )
     val palantirJavaFormatVersion = applyVersion(
         project,
