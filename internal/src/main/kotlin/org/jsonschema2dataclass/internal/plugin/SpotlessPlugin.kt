@@ -40,7 +40,7 @@ private fun applySpotless(project: Project, styleCheckers: Configuration) {
     }
 
     val ktLintFormatVersion = applyVersion("com.pinterest:ktlint:0.48.2")
-    val palantirJavaFormatVersion = applyVersion("com.palantir.javaformat:palantir-java-format:2.21.0")
+    val palantirJavaFormatVersion = applyVersion("com.palantir.javaformat:palantir-java-format:2.28.0")
 
     val spotlessDisable = project.extra.has(EXTRA_SPOTLESS_DISABLE) &&
         project.extra[EXTRA_SPOTLESS_DISABLE].toString().toBoolean()
