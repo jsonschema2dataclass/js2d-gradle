@@ -49,7 +49,7 @@ private fun applySpotless(project: Project, styleCheckers: Configuration) {
         project,
         styleCheckers,
         "com.palantir.javaformat:palantir-java-format",
-        "2.21.0",
+        "7.6",
     )
 
     val spotlessDisable = project.extra.has(EXTRA_SPOTLESS_DISABLE) &&
