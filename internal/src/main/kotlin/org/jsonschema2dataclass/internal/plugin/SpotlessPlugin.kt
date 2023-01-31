@@ -4,21 +4,54 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
+import org.gradle.kotlin.dsl.creating
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.getValue
+import org.gradle.util.GradleVersion
 
-const val ktLintFormatVersion = "0.48.2"
-const val palantirJavaFormatVersion = "2.21.0"
 private const val EXTRA_SPOTLESS_DISABLE = "org.jsonschema2dataclass.internal.spotless.disable"
 
 class SpotlessPlugin : Plugin<Project> {
     override fun apply(project: Project) {
+        val styleCheckers: Configuration by project.configurations.creating {
+            if (GradleVersion.current() >= GradleVersion.version("6.8")) {
+                @Suppress("UnstableApiUsage")
+                disableConsistentResolution()
+            }
+            isCanBeConsumed = false
+            isCanBeResolved = false
+            isVisible = false
+        }
+
         project.plugins.withId("com.diffplug.spotless") {
-            applySpotless(project)
+            applySpotless(project, styleCheckers)
         }
     }
 }
 
-private fun applySpotless(project: Project) {
+private fun applyVersion(project: Project, styleCheckers: Configuration, dependency: String, version: String): String {
+    project.dependencies {
+        styleCheckers("$dependency:$version")
+    }
+    return version
+}
+
+private fun applySpotless(project: Project, styleCheckers: Configuration) {
+    val ktLintFormatVersion = applyVersion(
+        project,
+        styleCheckers,
+        "com.pinterest:ktlint",
+        "0.48.2",
+    )
+    val palantirJavaFormatVersion = applyVersion(
+        project,
+        styleCheckers,
+        "com.palantir.javaformat:palantir-java-format",
+        "2.21.0",
+    )
+
     val spotlessDisable = project.extra.has(EXTRA_SPOTLESS_DISABLE) &&
         project.extra[EXTRA_SPOTLESS_DISABLE].toString().toBoolean()
     val excludes = arrayOf(
