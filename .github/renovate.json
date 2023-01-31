@@ -4,7 +4,7 @@
   "regexManagers": [ {
     "fileMatch": [ "^internal/src/main/kotlin/org/jsonschema2dataclass/internal/plugin/SpotlessPlugin.kt$" ],
     "matchStrings": [ "project,\\n\\s*styleCheckers,\\n\\s*\"(?<depName>[^\"]*?)\",\\n\\s*\"(?<currentValue>[^\"]*)\"" ],
-    "datasourceTemplate": "gradle-version"
+    "datasourceTemplate": "gradle"
   } ],
   "packageRules": [ {
     "description": "Disable updating AGP compatibility dependencies. Allow changes in minor and patches",
