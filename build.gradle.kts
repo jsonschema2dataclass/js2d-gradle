@@ -1,6 +1,4 @@
 import org.jsonschema2dataclass.internal.plugin.gitVersion
-import org.jsonschema2dataclass.internal.plugin.ktLintFormatVersion
-import org.jsonschema2dataclass.internal.plugin.palantirJavaFormatVersion
 
 plugins {
     id("com.gradle.plugin-publish") version "1.1.0" apply false
@@ -22,9 +20,3 @@ repositories {
 }
 
 // This section is required for dependabot to catch changes
-val styleCheckers: Configuration by configurations.creating
-
-dependencies {
-    styleCheckers("com.pinterest:ktlint:$ktLintFormatVersion")
-    styleCheckers("com.palantir.javaformat:palantir-java-format:$palantirJavaFormatVersion")
-}
