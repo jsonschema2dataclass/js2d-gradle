@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     // for Android build tools version :)
-    compileOnly("com.android.tools:common:30.4.0") {
+    compileOnly("com.android.tools:common:30.4.1") {
         exclude(group = "org.jetbrains.kotlin")
     }
 
