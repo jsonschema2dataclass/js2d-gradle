@@ -18,7 +18,7 @@ repositories {
 dependencies {
     compileOnly(project(":plugin-gradle:processors:common"))
 
-    compileOnly("com.android.tools.build:gradle:4.2.2") {
+    compileOnly("com.android.tools.build:gradle:7.4.1") {
         exclude(group = "org.jetbrains.kotlin")
     }
 }
