@@ -23,5 +23,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.diffplug.spotless:spotless-plugin-gradle:6.14.0")
+    compileOnly("com.diffplug.spotless:spotless-plugin-gradle:6.14.1")
 }
