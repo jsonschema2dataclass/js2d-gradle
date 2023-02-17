@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jsonschema2pojo:jsonschema2pojo-core:1.1.3")
+    compileOnly("org.jsonschema2pojo:jsonschema2pojo-core:1.2.0")
     implementation(project(":plugin-gradle:commons:kotlin-compat"))
     implementation(project(":plugin-gradle:processors:common"))
 
@@ -17,7 +17,7 @@ dependencies {
     testImplementation(project(":plugin-gradle:processors:common"))
     testImplementation(gradleTestKit())
 
-    testImplementation("org.jsonschema2pojo:jsonschema2pojo-core:1.1.3")
+    testImplementation("org.jsonschema2pojo:jsonschema2pojo-core:1.2.0")
 }
 
 tasks.test {
