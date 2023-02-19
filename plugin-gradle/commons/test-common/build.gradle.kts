@@ -1,9 +1,6 @@
 plugins {
     `kotlin-dsl`
-}
-
-repositories {
-    mavenCentral()
+    id("org.jsonschema2dataclass.internal.kotlin-target")
 }
 
 dependencies {

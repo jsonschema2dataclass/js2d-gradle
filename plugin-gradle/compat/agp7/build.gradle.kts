@@ -1,6 +1,6 @@
 plugins {
     `kotlin-dsl`
-    `kotlin-dsl-precompiled-script-plugins`
+    id("org.jsonschema2dataclass.internal.kotlin-target")
     id("org.jsonschema2dataclass.internal.agpcompat")
 }
 

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.jsonschema2dataclass.internal.compat.android
 
 import com.android.build.api.variant.AndroidComponentsExtension
