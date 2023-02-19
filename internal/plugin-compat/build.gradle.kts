@@ -8,7 +8,7 @@ gradlePlugin {
     plugins {
         create("internal") {
             id = "org.jsonschema2dataclass.internal.spotless"
-            implementationClass = "org.jsonschema2dataclass.internal.plugin.SpotlessPlugin"
+            implementationClass = "org.jsonschema2dataclass.internal.plugin.SpotlessConfigPlugin"
         }
         create("agp-compat") {
             id = "org.jsonschema2dataclass.internal.agpcompat"

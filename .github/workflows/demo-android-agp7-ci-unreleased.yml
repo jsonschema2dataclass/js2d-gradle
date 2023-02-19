@@ -7,6 +7,8 @@ on:
     tags-ignore:
       - '*'
     paths:
+      - build.gradle.kts
+      - 'internal/**'
       - 'plugin-gradle/**'
       - 'demo/android-agp7/**'
       - .github/workflows/demo-android-agp7-ci-unreleased.yml
@@ -50,4 +52,4 @@ jobs:
       - name: Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.4
       - name: Build project Android AGP 7 Demo (unreleased plugin version)
-        run: ./gradlew assembleDebug -S --warning-mode all  -I ../../gradle/init.gradle.kts -Porg.jsonschema2dataclass.internal.spotless.disable=true  -Porg.jsonschema2pojo.internal.local=true
+        run: ./gradlew assembleDebug -S --warning-mode all  -I ../../gradle/init.gradle.kts -Porg.jsonschema2dataclass.internal.spotless.disable=true  -Porg.jsonschema2dataclass.internal.local=true

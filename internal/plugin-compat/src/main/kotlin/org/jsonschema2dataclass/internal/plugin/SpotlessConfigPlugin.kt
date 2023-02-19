@@ -13,7 +13,7 @@ import org.gradle.util.GradleVersion
 
 private const val EXTRA_SPOTLESS_DISABLE = "org.jsonschema2dataclass.internal.spotless.disable"
 
-class SpotlessPlugin : Plugin<Project> {
+class SpotlessConfigPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val styleCheckers: Configuration by project.configurations.creating {
             if (GradleVersion.current() >= GradleVersion.version("6.8")) {
