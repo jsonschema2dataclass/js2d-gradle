@@ -16,4 +16,6 @@ include(":plugin-gradle:compat:java")
 include(":plugin-gradle:commons:kotlin-compat")
 include(":plugin-gradle:commons:test-common")
 
-includeBuild("internal")
+pluginManagement {
+    includeBuild("internal")
+}

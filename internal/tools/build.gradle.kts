@@ -4,10 +4,13 @@ plugins {
     `kotlin-dsl-precompiled-script-plugins`
 }
 
+version = "1.0"
+
 repositories {
     gradlePluginPortal()
     mavenCentral()
 }
+
 gradlePlugin {
     plugins {
         create("dummy") {
