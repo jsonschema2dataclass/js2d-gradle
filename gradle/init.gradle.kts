@@ -20,7 +20,7 @@ fun resolvePluginPath(rootPath: java.nio.file.Path): java.nio.file.Path? {
 }
 
 gradle.settingsEvaluated {
-    val property = "org.jsonschema2pojo.local"
+    val property = "org.jsonschema2dataclass.local"
     if (extra.has(property) && extra[property].toString().toBoolean()) {
         println("root dir: ${getRootDir()}")
         val path = resolvePluginPath(getRootDir().toPath().toAbsolutePath())
