@@ -9,6 +9,7 @@ import com.android.build.gradle.api.LibraryVariant
 import org.gradle.api.*
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.configurationcache.extensions.capitalized
 import org.gradle.kotlin.dsl.invoke
 import org.jsonschema2dataclass.internal.GradlePluginRegistration
 import org.jsonschema2dataclass.internal.ProcessorRegistrationCallback
@@ -43,7 +44,7 @@ private fun <T : BaseVariant> createTasksForVariant(variant: T, callback: Proces
         mapOf("variant" to variant.name),
     ) { taskProvider: TaskProvider<out Task>, targetPath: Path?, dependsOn: Action<String> ->
         variant.registerJavaGeneratingTask(taskProvider.get(), listOfNotNull(targetPath?.toFile()))
-        dependsOn("compile${variant.name.capitalize()}Kotlin")
+        dependsOn("compile${variant.name.capitalized()}Kotlin")
     }
 }
 

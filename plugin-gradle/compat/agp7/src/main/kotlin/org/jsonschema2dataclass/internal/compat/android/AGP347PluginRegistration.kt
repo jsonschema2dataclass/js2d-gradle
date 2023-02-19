@@ -11,6 +11,7 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.gradle.api.*
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.configurationcache.extensions.capitalized
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.invoke
 import org.jsonschema2dataclass.internal.GradlePluginRegistration
@@ -62,7 +63,7 @@ private fun <T : BaseVariant> createTasksForVariant(
         } else {
             variant.registerJavaGeneratingTask(taskProvider)
         }
-        dependsOn("compile${variant.name.capitalize()}Kotlin")
+        dependsOn("compile${variant.name.capitalized()}Kotlin")
     }
 }
 
