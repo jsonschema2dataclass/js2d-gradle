@@ -30,7 +30,7 @@ env:
 
 jobs:
   buildDemo:
-    name: Build Android AGP 7 Demo
+    name: Build Android AGP 7 Demo (unreleased plugin version)
     runs-on: ubuntu-latest
     defaults:
       run:

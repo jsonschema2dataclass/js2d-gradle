@@ -30,7 +30,7 @@ env:
 
 jobs:
   buildTest:
-    name: Build Java Demos
+    name: Build Java Demos (unreleased plugin version)
     runs-on: ubuntu-latest
     defaults:
       run:

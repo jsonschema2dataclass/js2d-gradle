@@ -4,6 +4,8 @@ plugins {
     `kotlin-dsl-precompiled-script-plugins`
 }
 
+version = "1.0"
+
 gradlePlugin {
     plugins {
         create("internal") {
