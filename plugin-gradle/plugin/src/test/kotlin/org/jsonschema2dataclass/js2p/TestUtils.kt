@@ -14,7 +14,7 @@ internal const val COLON_TASK_NAME = ":$JS2D_TASK_NAME"
 internal const val COLON_TASK_NAME_FOR_COM = ":${JS2D_TASK_NAME}ConfigCom"
 internal const val COLON_TASK_NAME_FOR_ORG = ":${JS2D_TASK_NAME}ConfigOrg"
 private val gradleReleases = listOf<String>(
-    "7.6", "7.5.1", // 7.5 - 7.6
+    "8.0", "7.6", "7.5.1", // 7.5 - 7.6
     "7.4.2", "7.3.3", "7.2", "7.1.1", "7.0.2", // 7.0 - 7.4
     "6.9.1", "6.8.3", "6.7.1", "6.6.1", // 6.6 - 6.9
     "6.5.1", "6.4.1", "6.3", //   6.3 - 6.5
@@ -37,7 +37,7 @@ fun executeRunner(
         .withDebug(true)
         .withPluginClasspath()
         .withProjectDir(testProjectDir.toFile())
-        .withArguments(task, "-S", "--debug")
+        .withArguments(task)
 
     if (gradleVersion != null) {
         arguments.withGradleVersion(gradleVersion)
@@ -55,22 +55,22 @@ fun executeRunner(
  * |--------------|----------------|
  * |   1.8 - 13   |    >= 6.0      |
  * |    14        |    >= 6.3      |
- * |    15        |    >= 6.3      |
+ * |    15        |    >= 6.7      |
  * |    16        |    >= 7.0      |
  * |    17        |    >= 7.3      |
  * |    18        |    >= 7.5      |
  * |    19        |    >= 7.6      |
  * |   other      | not supported  |
  */
-fun gradleSupported(gradleVersion: Pair<Int, Int>): Boolean =
+fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
     when (JavaVersion.current()) {
-        in JavaVersion.VERSION_1_8..JavaVersion.VERSION_13 -> gradleVersion.first >= 6
-        JavaVersion.VERSION_14 -> gradleVersion.first >= 7 || (gradleVersion.first == 6 && gradleVersion.second >= 3)
-        JavaVersion.VERSION_15 -> gradleVersion.first >= 7 || (gradleVersion.first == 6 && gradleVersion.second >= 6)
-        JavaVersion.VERSION_16 -> gradleVersion.first >= 7
-        JavaVersion.VERSION_17 -> gradleVersion.first >= 8 || (gradleVersion.first == 7 && gradleVersion.second >= 3)
-        JavaVersion.VERSION_18 -> gradleVersion.first >= 8 || (gradleVersion.first == 7 && gradleVersion.second >= 5)
-        JavaVersion.VERSION_19 -> gradleVersion.first >= 8 || (gradleVersion.first == 7 && gradleVersion.second >= 6)
+        in JavaVersion.VERSION_1_8..JavaVersion.VERSION_13 -> gradleVersion >= 6 to 0
+        JavaVersion.VERSION_14 -> gradleVersion >= 6 to 3
+        JavaVersion.VERSION_15 -> gradleVersion >= 6 to 7
+        JavaVersion.VERSION_16 -> gradleVersion >= 7 to 0
+        JavaVersion.VERSION_17 -> gradleVersion >= 7 to 3
+        JavaVersion.VERSION_18 -> gradleVersion >= 7 to 5
+        JavaVersion.VERSION_19 -> gradleVersion >= 7 to 6
         else -> false // no official information on Gradle compatibility with further versions of Java
     }
 
@@ -96,9 +96,23 @@ class TestGradleVersionHolder {
                 }
                 .filter {
                     val gradleVersionParts = it.split(".")
-                    gradleSupported(Pair(gradleVersionParts[0].toInt(), gradleVersionParts[1].toInt()))
+                    gradleSupported(
+                        ComparableGradleVersion(
+                            gradleVersionParts[0].toInt() to gradleVersionParts[1].toInt(),
+                        ),
+                    )
                 }
                 .map { Arguments.of(it) } as Stream<Arguments>
         }
+    }
+}
+
+class ComparableGradleVersion(private val pair: Pair<Int, Int>) : Comparable<Pair<Int, Int>> {
+    override fun compareTo(other: Pair<Int, Int>): Int {
+        val resultFirst = this.pair.first.compareTo(other.first)
+        if (resultFirst == 0) {
+            return this.pair.second.compareTo(other.second)
+        }
+        return resultFirst
     }
 }
