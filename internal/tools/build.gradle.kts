@@ -24,5 +24,5 @@ gradlePlugin {
 }
 
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0")
+    compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
 }
