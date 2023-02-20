@@ -23,6 +23,15 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/LICENSE.txt")
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.current()
+        targetCompatibility = JavaVersion.current()
+    }
+    kotlin {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(JavaVersion.current().majorVersion.toInt()))
+        }
+    }
 }
 
 dependencies {
