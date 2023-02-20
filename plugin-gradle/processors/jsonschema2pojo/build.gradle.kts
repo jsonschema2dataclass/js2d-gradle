@@ -1,10 +1,6 @@
 plugins {
     `kotlin-dsl`
-    `kotlin-dsl-precompiled-script-plugins`
-}
-
-repositories {
-    mavenCentral()
+    id("org.jsonschema2dataclass.internal.kotlin-target")
 }
 
 dependencies {

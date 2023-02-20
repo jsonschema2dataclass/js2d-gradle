@@ -1,12 +1,8 @@
 plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
-    `kotlin-dsl-precompiled-script-plugins`
     id("com.gradle.plugin-publish")
-}
-
-repositories {
-    mavenCentral()
+    id("org.jsonschema2dataclass.internal.kotlin-target")
 }
 
 gradlePlugin {
@@ -53,6 +49,6 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-    systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_method")
-    systemProperty("junit.jupiter.execution.parallel.enabled", "true")
+//    systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_method")
+//    systemProperty("junit.jupiter.execution.parallel.enabled", "true")
 }
