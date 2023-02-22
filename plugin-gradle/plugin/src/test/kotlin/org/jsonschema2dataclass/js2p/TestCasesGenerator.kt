@@ -182,3 +182,27 @@ internal fun copyAddressJSON(testProjectDir: Path) {
     File(jsonDir.toString()).mkdirs()
     jsonDir.resolve("address.json").toFile().writeText(ADDRESS_JSON)
 }
+
+fun createBuildFilesWithSourcesJar(testProjectDir: Path) {
+    writeBuildFiles(
+        testProjectDir,
+        true,
+        """
+            |jsonSchema2Pojo{
+            |  executions {
+            |    create("com") {
+            |      klass.targetPackage.set("com.example")
+            |    }
+            |  }
+            |}
+            |
+            |java {
+            |   withSourcesJar()
+            |}
+            |
+            |tasks.register("generateAndJarSources") {
+            |    dependsOn("generateJsonSchema2DataClass", "sourcesJar")
+            |}
+        """.trimMargin(),
+    )
+}
