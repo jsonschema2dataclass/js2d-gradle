@@ -40,7 +40,6 @@ class JavaPluginRegistration : GradlePluginRegistration {
                 dependsOn(project.tasks.named("processResources"))
             }
 
-            dependsOn.execute("compileKotlin")
             dependsOn.execute("generateEffectiveLombokConfig")
 
             if (targetPath != null) {
