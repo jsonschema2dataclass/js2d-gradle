@@ -181,4 +181,15 @@ class JavaTaskFunctionalTest {
         createBuildFilesEmpty(testProjectDir, false)
         executeRunner(gradleVersion, testProjectDir, task = "build")
     }
+
+    @ParameterizedTest(name = "[{index} - {0}]({argumentsWithNames}) {displayName}")
+    @NullSource
+    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests")
+    @DisplayName("jarring sources does not fail after code generation")
+    fun sourceJarCompatibility(gradleVersion: String?) {
+        val testProjectDir = testProjectDirPath ?: throw IllegalStateException("Test project dir path is null")
+
+        createBuildFilesWithSourcesJar(testProjectDir)
+        executeRunner(gradleVersion, testProjectDir, task = "generateAndJarSources")
+    }
 }

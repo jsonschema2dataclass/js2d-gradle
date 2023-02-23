@@ -40,13 +40,10 @@ class JavaPluginRegistration : GradlePluginRegistration {
                 dependsOn(project.tasks.named("processResources"))
             }
 
-            dependsOn.execute("compileKotlin")
-            dependsOn.execute("compileJava")
             dependsOn.execute("generateEffectiveLombokConfig")
 
             if (targetPath != null) {
-                javaSourceSet.srcDirs(targetPath)
-                javaSourceSet.sourceDirectories.plus(targetPath)
+                javaSourceSet.srcDirs(taskProvider)
             }
         }
     }
