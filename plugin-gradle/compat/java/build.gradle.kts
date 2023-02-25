@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    compileOnly(project(":plugin-gradle:processors:common"))
+    implementation(projects.pluginGradle.processors.common)
 }

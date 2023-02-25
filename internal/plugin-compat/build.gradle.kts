@@ -1,7 +1,6 @@
 plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
-    `kotlin-dsl-precompiled-script-plugins`
 }
 
 version = "1.0"
@@ -17,11 +16,6 @@ gradlePlugin {
             implementationClass = "org.jsonschema2dataclass.internal.plugin.AGPCompat8Plugin"
         }
     }
-}
-
-repositories {
-    gradlePluginPortal()
-    mavenCentral()
 }
 
 dependencies {

@@ -4,16 +4,18 @@ plugins {
 }
 
 dependencies {
-    compileOnly("org.jsonschema2pojo:jsonschema2pojo-core:1.2.1")
-    implementation(project(":plugin-gradle:commons:kotlin-compat"))
-    implementation(project(":plugin-gradle:processors:common"))
+    compileOnly(libs.processor.jsonschema2pojo)
+    implementation(projects.pluginGradle.commons.kotlinCompat)
+    implementation(projects.pluginGradle.processors.common)
 
-    testImplementation(platform("org.junit:junit-bom:5.9.2"))
-    testImplementation(project(":plugin-gradle:commons:test-common"))
-    testImplementation(project(":plugin-gradle:processors:common"))
+    testImplementation(libs.bundles.junit.tests)
+    testImplementation(projects.pluginGradle.commons.testCommon)
+    testImplementation(projects.pluginGradle.processors.common)
+
+    testRuntimeOnly(libs.junit.engine)
     testImplementation(gradleTestKit())
 
-    testImplementation("org.jsonschema2pojo:jsonschema2pojo-core:1.2.1")
+    testImplementation(libs.processor.jsonschema2pojo)
 }
 
 tasks.test {

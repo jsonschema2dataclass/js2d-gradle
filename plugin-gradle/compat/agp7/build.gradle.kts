@@ -4,29 +4,9 @@ plugins {
     id("org.jsonschema2dataclass.internal.agpcompat")
 }
 
-repositories {
-    google().content {
-        includeGroup("com.android")
-        includeGroup("android.arch.lifecycle")
-        includeGroup("android.arch.core")
-        includeGroupByRegex("com\\.android\\..*")
-        includeGroupByRegex("com\\.google\\..*")
-        includeGroupByRegex("androidx\\..*")
-    }
-    mavenCentral().content {
-        excludeGroup("com.android")
-        excludeGroup("android.arch.lifecycle")
-        excludeGroup("android.arch.core")
-        excludeGroupByRegex("com\\.android\\..*")
-        excludeGroupByRegex("com\\.google\\..*")
-        excludeGroupByRegex("androidx\\..*")
-    }
-}
-
 dependencies {
-    compileOnly(project(":plugin-gradle:processors:common"))
-
-    compileOnly("com.android.tools.build:gradle:7.4.1") {
+    compileOnly(projects.pluginGradle.processors.common)
+    compileOnly(agp.android.gradle.v7x) {
         exclude(group = "org.jetbrains.kotlin")
     }
 }

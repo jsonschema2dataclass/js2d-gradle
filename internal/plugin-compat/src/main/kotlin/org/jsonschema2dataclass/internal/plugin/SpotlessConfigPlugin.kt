@@ -1,47 +1,25 @@
 package org.jsonschema2dataclass.internal.plugin
 
 import com.diffplug.gradle.spotless.SpotlessExtension
-import com.diffplug.spotless.extra.wtp.EclipseWtpFormatterStep
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
-import org.gradle.kotlin.dsl.creating
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.extra
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.util.GradleVersion
+import org.gradle.kotlin.dsl.*
 
 private const val EXTRA_SPOTLESS_DISABLE = "org.jsonschema2dataclass.internal.spotless.disable"
+private const val EXTENSION_SPOTLESS_EXTENSION = "jsonschema2dataclassSpotless"
 
 class SpotlessConfigPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val styleCheckers: Configuration by project.configurations.creating {
-            if (GradleVersion.current() >= GradleVersion.version("6.8")) {
-                @Suppress("UnstableApiUsage")
-                disableConsistentResolution()
-            }
-            isCanBeConsumed = false
-            isCanBeResolved = false
-            isVisible = false
-        }
-
+        val extension = project.extensions.create<SpotlessPluginExtension>(EXTENSION_SPOTLESS_EXTENSION)
         project.plugins.withId("com.diffplug.spotless") {
-            applySpotless(project, styleCheckers)
+            applySpotless(project, extension)
         }
     }
 }
 
-private fun applySpotless(project: Project, styleCheckers: Configuration) {
-    fun applyVersion(dependency: String): String {
-        project.dependencies {
-            styleCheckers(dependency)
-        }
-        return dependency.substring(dependency.lastIndexOf(":") + 1)
-    }
+open class SpotlessPluginExtension(var ktlintVersion: String? = null, var palantirVersion: String? = null)
 
-    val ktLintFormatVersion = applyVersion("com.pinterest:ktlint:0.48.2")
-    val palantirJavaFormatVersion = applyVersion("com.palantir.javaformat:palantir-java-format:2.28.0")
-
+private fun applySpotless(project: Project, styleCheckers: SpotlessPluginExtension) {
     val spotlessDisable = project.extra.has(EXTRA_SPOTLESS_DISABLE) &&
         project.extra[EXTRA_SPOTLESS_DISABLE].toString().toBoolean()
     val excludes = arrayOf(
@@ -57,13 +35,13 @@ private fun applySpotless(project: Project, styleCheckers: Configuration) {
         kotlin {
             targetExclude(*excludes)
             target("**/*.kt")
-            ktlint(ktLintFormatVersion)
+            ktlint(styleCheckers.ktlintVersion)
             endWithNewline()
         }
         kotlinGradle {
             targetExclude(*excludes)
             target("**/*.kts")
-            ktlint(ktLintFormatVersion)
+            ktlint(styleCheckers.ktlintVersion)
             endWithNewline()
         }
         json {
@@ -78,15 +56,10 @@ private fun applySpotless(project: Project, styleCheckers: Configuration) {
             jackson()
             endWithNewline()
         }
-        format("xml") {
-            targetExclude(*excludes)
-            target("**/*.xml")
-            eclipseWtp(EclipseWtpFormatterStep.XML)
-        }
         java {
             targetExclude(*excludes)
             target("**/*.java")
-            palantirJavaFormat(palantirJavaFormatVersion)
+            palantirJavaFormat(styleCheckers.palantirVersion)
         }
     }
 }
