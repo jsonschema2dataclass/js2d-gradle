@@ -1,5 +1,5 @@
 plugins {
-    `kotlin-dsl`
+    `kotlin-dsl-base`
     id("org.jsonschema2dataclass.internal.kotlin-target")
 }
 
