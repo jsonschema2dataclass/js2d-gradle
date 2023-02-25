@@ -1,10 +1,11 @@
 plugins {
     `java-gradle-plugin`
     `kotlin-dsl`
-    id("com.gradle.plugin-publish")
+    alias(libs.plugins.gradle.publish)
     id("org.jsonschema2dataclass.internal.kotlin-target")
 }
 
+@Suppress("UnstableApiUsage")
 gradlePlugin {
     website.set("https://github.com/jsonschema2dataclass/js2d-gradle")
     vcsUrl.set("https://github.com/jsonschema2dataclass/js2d-gradle.git")
@@ -30,20 +31,23 @@ gradlePlugin {
 }
 
 dependencies {
+    implementation(projects.pluginGradle.processors.common)
+
     // Java language compatibility layer
-    implementation(project(":plugin-gradle:commons:kotlin-compat"))
+    implementation(projects.pluginGradle.commons.kotlinCompat)
 
     // Processors
-    implementation(project(":plugin-gradle:processors:common"))
-    implementation(project(":plugin-gradle:processors:jsonschema2pojo"))
+    implementation(projects.pluginGradle.processors.jsonschema2pojo)
 
     // Gradle applicability
-    implementation(project(":plugin-gradle:compat:java"))
-    implementation(project(":plugin-gradle:compat:android"))
+    implementation(projects.pluginGradle.compat.java)
+    implementation(projects.pluginGradle.compat.android)
 
-    testImplementation(platform("org.junit:junit-bom:5.9.2"))
-    testImplementation(project(":plugin-gradle:commons:test-common"))
-    testImplementation(project(":plugin-gradle:processors:common"))
+    testImplementation(libs.bundles.junit.tests)
+    testImplementation(projects.pluginGradle.commons.testCommon)
+    testImplementation(projects.pluginGradle.processors.common)
+
+    testRuntimeOnly(libs.junit.engine)
     testImplementation(gradleTestKit())
 }
 

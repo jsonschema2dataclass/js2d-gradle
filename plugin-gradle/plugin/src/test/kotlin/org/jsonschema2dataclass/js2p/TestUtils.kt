@@ -14,7 +14,8 @@ internal const val COLON_TASK_NAME = ":$JS2D_TASK_NAME"
 internal const val COLON_TASK_NAME_FOR_COM = ":${JS2D_TASK_NAME}ConfigCom"
 internal const val COLON_TASK_NAME_FOR_ORG = ":${JS2D_TASK_NAME}ConfigOrg"
 private val gradleReleases = listOf<String>(
-    "8.0", "7.6", "7.5.1", // 7.5 - 7.6
+    "8.0.1", // 8.x
+    "7.6.1", "7.5.1", // 7.5 - 7.6
     "7.4.2", "7.3.3", "7.2", "7.1.1", "7.0.2", // 7.0 - 7.4
     "6.9.1", "6.8.3", "6.7.1", "6.6.1", // 6.6 - 6.9
     "6.5.1", "6.4.1", "6.3", //   6.3 - 6.5

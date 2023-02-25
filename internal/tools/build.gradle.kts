@@ -5,11 +5,6 @@ plugins {
 
 version = "1.0"
 
-repositories {
-    gradlePluginPortal()
-    mavenCentral()
-}
-
 gradlePlugin {
     plugins {
         create("git-version") {
@@ -20,9 +15,16 @@ gradlePlugin {
             id = "org.jsonschema2dataclass.internal.kotlin-target"
             implementationClass = "org.jsonschema2dataclass.internal.plugin.KotlinToolchain"
         }
+        create("settings-enterprise") {
+            id = "org.jsonschema2dataclass.internal.settings-enterprise"
+            implementationClass = "org.jsonschema2dataclass.internal.plugin.SettingEnterpriseAccept"
+            dependencies {
+                compileOnly(libs.gradle.enterprise)
+            }
+        }
     }
 }
 
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+    compileOnly(libs.kotlin.gradle)
 }
