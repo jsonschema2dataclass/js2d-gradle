@@ -17,6 +17,7 @@ private val compatComponentsDefault = listOf(
     "com.android.tools.build:manifest-merger",
 )
 
+@Suppress("unused")
 class AGPCompat8Plugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.afterEvaluate {
