@@ -10,6 +10,7 @@ gradlePlugin {
         create("internal") {
             id = "org.jsonschema2dataclass.internal.jdk11.spotless"
             implementationClass = "org.jsonschema2dataclass.internal.plugin.SpotlessConfigPlugin"
+            description = "Set up Spotless defaults."
             dependencies {
                 compileOnly(libs.spotless)
             }
