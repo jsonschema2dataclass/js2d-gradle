@@ -29,6 +29,15 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.current()
+        targetCompatibility = JavaVersion.current()
+    }
+    kotlin {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(JavaVersion.current().majorVersion.toInteger()))
+        }
+    }
 }
 
 dependencies {
@@ -38,7 +47,7 @@ dependencies {
     // Required if generating JSR-303 annotations
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation "androidx.core:core-ktx:1.9.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10"
 }
 
 jsonSchema2Pojo {
