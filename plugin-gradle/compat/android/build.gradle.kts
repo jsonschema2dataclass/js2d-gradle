@@ -9,8 +9,8 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin")
     }
 
-    implementation(projects.pluginGradle.commons.kotlinCompat)
-    implementation(projects.pluginGradle.processors.common)
+    implementation(projects.pluginGradle.compat.kotlinCompat)
+    compileOnly(projects.pluginGradle.common)
     implementation(projects.pluginGradle.compat.agp34)
 
     if (JavaVersion.current() > JavaVersion.VERSION_1_8) {
