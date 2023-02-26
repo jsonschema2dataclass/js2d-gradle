@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.pluginGradle.processors.common)
+    implementation(projects.pluginGradle.common)
 }

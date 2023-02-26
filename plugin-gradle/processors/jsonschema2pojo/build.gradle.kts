@@ -5,13 +5,10 @@ plugins {
 
 dependencies {
     compileOnly(libs.processor.jsonschema2pojo)
-    implementation(projects.pluginGradle.commons.kotlinCompat)
-    implementation(projects.pluginGradle.processors.common)
+    implementation(projects.pluginGradle.compat.kotlinCompat)
+    implementation(projects.pluginGradle.common)
 
     testImplementation(libs.bundles.junit.tests)
-    testImplementation(projects.pluginGradle.commons.testCommon)
-    testImplementation(projects.pluginGradle.processors.common)
-
     testRuntimeOnly(libs.junit.engine)
     testImplementation(gradleTestKit())
 

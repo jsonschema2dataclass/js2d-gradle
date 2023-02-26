@@ -31,22 +31,19 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation(projects.pluginGradle.processors.common)
+    implementation(projects.pluginGradle.common)
 
     // Java language compatibility layer
-    implementation(projects.pluginGradle.commons.kotlinCompat)
+    implementation(projects.pluginGradle.compat.kotlinCompat)
 
     // Processors
     implementation(projects.pluginGradle.processors.jsonschema2pojo)
 
-    // Gradle applicability
+    // Gradle plugin compatibility
     implementation(projects.pluginGradle.compat.java)
     implementation(projects.pluginGradle.compat.android)
 
     testImplementation(libs.bundles.junit.tests)
-    testImplementation(projects.pluginGradle.commons.testCommon)
-    testImplementation(projects.pluginGradle.processors.common)
-
     testRuntimeOnly(libs.junit.engine)
     testImplementation(gradleTestKit())
 }

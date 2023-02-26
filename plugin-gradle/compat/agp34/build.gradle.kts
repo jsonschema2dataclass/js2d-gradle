@@ -4,8 +4,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(project(":plugin-gradle:processors:common"))
-
+    compileOnly(projects.pluginGradle.common)
     compileOnly(agp.android.gradle.v4x) {
         exclude(group = "org.jetbrains.kotlin")
     }
