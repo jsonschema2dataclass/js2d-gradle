@@ -43,10 +43,10 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("agp") {
-            from(files("internal/agp.dependencies.toml"))
+            from(files("gradle/agp.dependencies.toml"))
         }
         create("libs") {
-            from(files("internal/libs.dependencies.toml"))
+            from(files("gradle/libs.dependencies.toml"))
         }
     }
 }
