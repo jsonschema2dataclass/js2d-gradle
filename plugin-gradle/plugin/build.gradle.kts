@@ -34,7 +34,7 @@ dependencies {
     implementation(projects.pluginGradle.common)
 
     // Java language compatibility layer
-    implementation(projects.pluginGradle.compat.kotlinCompat)
+    implementation(projects.pluginGradle.compat.kotlin)
 
     // Processors
     implementation(projects.pluginGradle.processors.jsonschema2pojo)
