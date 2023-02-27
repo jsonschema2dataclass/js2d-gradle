@@ -9,7 +9,7 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin")
     }
 
-    implementation(projects.pluginGradle.compat.kotlinCompat)
+    implementation(projects.pluginGradle.compat.kotlin)
     compileOnly(projects.pluginGradle.common)
     implementation(projects.pluginGradle.compat.agp34)
 

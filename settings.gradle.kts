@@ -17,7 +17,7 @@ include(":plugin-gradle:plugin")
 include(":plugin-gradle:common")
 
 // Kotlin language compatibility along Gradle versions
-include(":plugin-gradle:compat:kotlin-compat")
+include(":plugin-gradle:compat:kotlin")
 // Gradle plugin compatibility
 include(":plugin-gradle:compat:android")
 include(":plugin-gradle:compat:agp34")
@@ -30,7 +30,6 @@ if (JavaVersion.current() > JavaVersion.VERSION_1_8) {
 
 // processors:
 include(":plugin-gradle:processors:jsonschema2pojo")
-
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {

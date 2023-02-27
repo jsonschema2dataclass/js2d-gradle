@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.processor.jsonschema2pojo)
-    implementation(projects.pluginGradle.compat.kotlinCompat)
+    implementation(projects.pluginGradle.compat.kotlin)
     implementation(projects.pluginGradle.common)
 
     testImplementation(libs.bundles.junit.tests)
