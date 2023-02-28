@@ -3,7 +3,7 @@
 nexus = "1.2.0"
 
 # Tags: https://github.com/diffplug/spotless/tags
-spotless = "6.15.0"
+spotless = "6.16.0"
 
 # Releases https://github.com/pinterest/ktlint/releases
 spotless-ktlint = "0.48.2"
