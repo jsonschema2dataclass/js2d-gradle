@@ -35,7 +35,9 @@ private fun applySpotless(project: Project, styleCheckers: SpotlessPluginExtensi
         kotlin {
             targetExclude(*excludes)
             target("**/*.kt")
-            ktlint(styleCheckers.ktlintVersion)
+            ktlint(styleCheckers.ktlintVersion).editorConfigOverride(
+                mapOf("ktlint_standard_filename" to "disabled"),
+            )
             endWithNewline()
         }
         kotlinGradle {
