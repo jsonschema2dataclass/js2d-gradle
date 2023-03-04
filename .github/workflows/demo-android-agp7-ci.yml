@@ -49,4 +49,4 @@ jobs:
       - name: Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.4
       - name: Build project Android AGP 7 Demo
-        run: ./gradlew assembleDebug -S --warning-mode all
+        run: ./gradlew assembleDebug -S --scan --warning-mode all

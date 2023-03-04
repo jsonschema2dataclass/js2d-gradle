@@ -47,4 +47,4 @@ jobs:
           java-version: ${{ matrix.java_version }}
           cache: gradle
       - name: Build project Java Demo
-        run: ./gradlew build -S --warning-mode all
+        run: ./gradlew build -S --scan --warning-mode all
