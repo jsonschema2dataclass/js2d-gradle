@@ -51,4 +51,4 @@ jobs:
           java-version: ${{ matrix.java_version }}
           cache: gradle
       - name: Build project Java Demo (unreleased plugin version)
-        run: ./gradlew build -S --warning-mode all -I ../../gradle/init.gradle.kts  -Porg.jsonschema2dataclass.internal.spotless.disable=true  -Porg.jsonschema2dataclass.local=true
+        run: ./gradlew build -S --scan  --warning-mode all -I ../../gradle/init.gradle.kts  -Porg.jsonschema2dataclass.internal.spotless.disable=true  -Porg.jsonschema2dataclass.local=true
