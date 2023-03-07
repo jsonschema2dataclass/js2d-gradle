@@ -1,6 +1,6 @@
 [versions]
 # https://github.com/gradle-nexus/publish-plugin/releases
-nexus = "1.2.0"
+nexus = "1.3.0"
 
 # Tags: https://github.com/diffplug/spotless/tags
 spotless = "6.16.0"
