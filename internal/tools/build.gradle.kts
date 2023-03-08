@@ -22,9 +22,14 @@ gradlePlugin {
                 compileOnly(libs.gradle.enterprise)
             }
         }
+        create("agp-compat") {
+            id = "org.jsonschema2dataclass.internal.agpcompat"
+            implementationClass = "org.jsonschema2dataclass.internal.plugin.AGPCompat8Plugin"
+        }
     }
 }
 
 dependencies {
+    implementation(project(":common"))
     compileOnly(libs.kotlin.gradle)
 }

@@ -1,27 +1,33 @@
 package org.jsonschema2dataclass.internal.plugin
 
 import com.diffplug.gradle.spotless.SpotlessExtension
+import isExtraEnabled
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.*
+import versionCatalogs
 
 private const val EXTRA_SPOTLESS_DISABLE = "org.jsonschema2dataclass.internal.spotless.disable"
-private const val EXTENSION_SPOTLESS_EXTENSION = "jsonschema2dataclassSpotless"
 
 class SpotlessConfigPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val extension = project.extensions.create<SpotlessPluginExtension>(EXTENSION_SPOTLESS_EXTENSION)
         project.plugins.withId("com.diffplug.spotless") {
-            applySpotless(project, extension)
+            applySpotless(project)
         }
     }
 }
 
-open class SpotlessPluginExtension(var ktlintVersion: String? = null, var palantirVersion: String? = null)
+private fun applySpotless(project: Project) {
+    fun version(name: String): String =
+        project
+            .versionCatalogs
+            .named("libs")
+            .findVersion(name)
+            .get()
+            .requiredVersion
 
-private fun applySpotless(project: Project, styleCheckers: SpotlessPluginExtension) {
-    val spotlessDisable = project.extra.has(EXTRA_SPOTLESS_DISABLE) &&
-        project.extra[EXTRA_SPOTLESS_DISABLE].toString().toBoolean()
+    val ktlintVersion: String = version("spotless-ktlint")
+    val palantirVersion: String = version("spotless-palantir")
+
     val excludes = arrayOf(
         ".idea/**",
         "**/.idea/**",
@@ -29,19 +35,19 @@ private fun applySpotless(project: Project, styleCheckers: SpotlessPluginExtensi
         "**/.gradle/**",
     )
     project.extensions.configure(SpotlessExtension::class.java) {
-        if (spotlessDisable) {
+        if (project.isExtraEnabled(EXTRA_SPOTLESS_DISABLE)) {
             this.isEnforceCheck = false
         }
         kotlin {
             targetExclude(*excludes)
             target("**/*.kt")
-            ktlint(styleCheckers.ktlintVersion)
+            ktlint(ktlintVersion)
             endWithNewline()
         }
         kotlinGradle {
             targetExclude(*excludes)
             target("**/*.kts")
-            ktlint(styleCheckers.ktlintVersion)
+            ktlint(ktlintVersion)
             endWithNewline()
         }
         json {
@@ -59,7 +65,7 @@ private fun applySpotless(project: Project, styleCheckers: SpotlessPluginExtensi
         java {
             targetExclude(*excludes)
             target("**/*.java")
-            palantirJavaFormat(styleCheckers.palantirVersion)
+            palantirJavaFormat(palantirVersion)
         }
     }
 }

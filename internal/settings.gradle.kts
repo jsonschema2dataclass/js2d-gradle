@@ -1,3 +1,6 @@
+rootProject.name = "Internal plugins"
+
+include(":common")
 include(":tools")
 
 if (JavaVersion.current() > JavaVersion.VERSION_1_8) {
