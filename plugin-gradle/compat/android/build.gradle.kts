@@ -10,10 +10,7 @@ dependencies {
     }
 
     implementation(projects.pluginGradle.compat.kotlin)
-    compileOnly(projects.pluginGradle.common)
+    implementation(projects.pluginGradle.common)
     implementation(projects.pluginGradle.compat.agp34)
-
-    if (JavaVersion.current() > JavaVersion.VERSION_1_8) {
-        implementation(projects.pluginGradle.compat.agp7)
-    }
+    implementation(projects.pluginGradle.compat.agp7)
 }
