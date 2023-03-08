@@ -1,8 +1,6 @@
 import org.gradle.api.initialization.Settings
 
-/**
- * @see <a href="https://github.com/gradle/gradle/issues/19069">Feature request</a>
- */
+/** [Feature request](https://github.com/gradle/gradle/issues/19069) */
 @Suppress("unused")
 fun Settings.enableFeaturePreviewQuietly(name: String, summary: String) {
     enableFeaturePreview(name)

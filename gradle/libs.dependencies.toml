@@ -71,5 +71,7 @@ junit-tests =  ["junit-api", "junit-params"]
 [plugins]
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-gradle-publish = { id = "com.gradle.plugin-publish", version.ref="gradle-publish"}
+gradle-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-publish"}
+kotlin-build = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-build"}
+kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "kotlin-dokka"}
 # Note: internal plugins cannot be used with `alias(libs.plugins....)`, because they don't have version.

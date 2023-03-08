@@ -1,5 +1,5 @@
 
-package org.jsonschema2dataclass.internal.plugin
+package org.jsonschema2dataclass.internal.plugin.lib
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -14,6 +14,7 @@ class KotlinToolchain : Plugin<Project> {
         // Configure Java 8 toolchain for the latest JVM
         if (JavaVersion.current() >= JavaVersion.VERSION_11) {
             project.extensions.configure<JavaPluginExtension> {
+                withSourcesJar()
                 toolchain.languageVersion.set(JavaLanguageVersion.of(8))
             }
         }

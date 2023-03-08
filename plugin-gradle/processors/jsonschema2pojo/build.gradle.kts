@@ -1,6 +1,6 @@
 plugins {
     `kotlin-dsl-base`
-    id("org.jsonschema2dataclass.internal.kotlin-target")
+    id("org.jsonschema2dataclass.internal.library")
 }
 
 dependencies {

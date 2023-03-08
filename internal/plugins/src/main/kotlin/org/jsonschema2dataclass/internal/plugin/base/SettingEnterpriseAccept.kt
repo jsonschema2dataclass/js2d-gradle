@@ -1,4 +1,4 @@
-package org.jsonschema2dataclass.internal.plugin
+package org.jsonschema2dataclass.internal.plugin.base
 
 import com.gradle.enterprise.gradleplugin.GradleEnterpriseExtension
 import org.gradle.api.Plugin

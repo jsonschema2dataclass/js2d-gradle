@@ -1,16 +1,16 @@
 package org.jsonschema2dataclass.internal.plugin
 
+import EXTRA_SPOTLESS_DISABLE
 import com.diffplug.gradle.spotless.SpotlessExtension
 import isExtraEnabled
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import pluginIds
 import versionCatalogs
-
-private const val EXTRA_SPOTLESS_DISABLE = "org.jsonschema2dataclass.internal.spotless.disable"
 
 class SpotlessConfigPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.plugins.withId("com.diffplug.spotless") {
+        project.plugins.withId(pluginIds["spotless"]!!) {
             applySpotless(project)
         }
     }

@@ -1,6 +1,4 @@
-/**
- * JsonSchema 2 Pojo configuration extension
- */
+/** JsonSchema 2 Pojo configuration extension */
 package org.jsonschema2dataclass.ext
 
 import org.gradle.api.Action
@@ -16,9 +14,7 @@ import org.gradle.kotlin.dsl.invoke
 import java.io.FileFilter
 import javax.inject.Inject
 
-/**
- * Input-output parameters
- */
+/** Input-output parameters */
 abstract class PluginConfigJs2pIO {
     @get:Input
     @get:Optional
@@ -57,9 +53,7 @@ abstract class PluginConfigJs2pIO {
     abstract val targetJavaVersion: Property<String>
 }
 
-/**
- * Class-level annotations and targeting
- */
+/** Class-level annotations and targeting */
 abstract class PluginConfigJs2pClass {
     @get:Input
     @get:Optional

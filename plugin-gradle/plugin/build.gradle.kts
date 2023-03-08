@@ -1,8 +1,7 @@
 plugins {
-    `java-gradle-plugin`
+    `java-gradle-plugin` // Gradle plugin base
     `kotlin-dsl`
-    alias(libs.plugins.gradle.publish)
-    id("org.jsonschema2dataclass.internal.kotlin-target")
+    id("org.jsonschema2dataclass.internal.gradle-plugin")
 }
 
 @Suppress("UnstableApiUsage")
@@ -24,6 +23,7 @@ gradlePlugin {
                 listOf(
                     "json-schema", "jsonschema", "generator", "pojo", "jsonschema2pojo",
                     "dataclass", "data", "json", "generation", "jsonschema2dataclass", "java",
+                    "kotlin", "groovy", "android",
                 ),
             )
         }
@@ -31,7 +31,9 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation(projects.pluginGradle.common)
+    implementation(projects.pluginGradle.common) {
+        exclude(group = "org.jetbrains.kotlin")
+    }
 
     // Java language compatibility layer
     implementation(projects.pluginGradle.compat.kotlin)

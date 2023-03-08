@@ -1,4 +1,4 @@
-package org.jsonschema2dataclass.internal.plugin
+package org.jsonschema2dataclass.internal.plugin.base
 
 import org.gradle.api.Project
 import java.io.IOException
