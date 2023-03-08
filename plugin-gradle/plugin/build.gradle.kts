@@ -50,6 +50,6 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-//    systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_method")
-//    systemProperty("junit.jupiter.execution.parallel.enabled", "true")
+    systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_method")
+    systemProperty("junit.jupiter.execution.parallel.enabled", "true")
 }

@@ -44,8 +44,8 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        java: [ 8, 11, 17, 19 ]
-        distribution: [ "zulu", "temurin" ]
+        java: [ 19, 17, 11, 8 ]
+        distribution: [ "zulu" ]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
