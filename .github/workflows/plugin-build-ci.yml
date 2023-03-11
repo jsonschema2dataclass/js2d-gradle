@@ -54,4 +54,7 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
           cache: gradle
-      - run: ./gradlew build -S --scan --warning-mode all --no-daemon -Porg.jsonschema2dataclass.internal.spotless.disable=true
+      - run: |
+         ./gradlew build -S --scan --warning-mode all --no-daemon \
+             -Porg.jsonschema2dataclass.internal.no-git-version=true \
+             -Porg.jsonschema2dataclass.internal.spotless-disable=true

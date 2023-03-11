@@ -17,6 +17,13 @@ class SpotlessConfigPlugin : Plugin<Project> {
 }
 
 private fun applySpotless(project: Project) {
+    if (project.isExtraEnabled(EXTRA_SPOTLESS_DISABLE)) {
+        project.extensions.configure(SpotlessExtension::class.java) {
+            this.isEnforceCheck = false
+        }
+        return
+    }
+
     fun version(name: String): String =
         project
             .versionCatalogs
@@ -35,9 +42,6 @@ private fun applySpotless(project: Project) {
         "**/.gradle/**",
     )
     project.extensions.configure(SpotlessExtension::class.java) {
-        if (project.isExtraEnabled(EXTRA_SPOTLESS_DISABLE)) {
-            this.isEnforceCheck = false
-        }
         kotlin {
             targetExclude(*excludes)
             target("**/*.kt")

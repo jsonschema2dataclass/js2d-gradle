@@ -26,12 +26,11 @@ val pluginIds = mapOf(
     "gradle-publish" to "com.gradle.plugin-publish",
 )
 
-val classChecking = mapOf(
-    "spotless" to "com.diffplug.gradle.spotless.SpotlessExtension",
-)
+/** If set, project version will be set to a constant. */
+const val EXTRA_NO_GIT_VERSION = "org.jsonschema2dataclass.internal.no-git-version"
 
-/** If set, gradle plugin will be prepared for a local publication */
+/** If set, gradle plugin will be prepared for a local publication. */
 const val EXTRA_LOCAL_PUBLISH = "org.jsonschema2dataclass.internal.local-publish"
 
-/** If set, spotless plugin will be disabled */
-const val EXTRA_SPOTLESS_DISABLE = "org.jsonschema2dataclass.internal.spotless.disable"
+/** If set, spotless plugin will be disabled. */
+const val EXTRA_SPOTLESS_DISABLE = "org.jsonschema2dataclass.internal.spotless-disable"
