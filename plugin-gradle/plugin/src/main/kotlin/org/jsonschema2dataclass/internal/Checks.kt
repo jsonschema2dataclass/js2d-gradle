@@ -8,7 +8,7 @@ internal const val MINIMUM_GRADLE_VERSION = "6.0"
 
 private val executionNameRegex = "[a-z][A-Za-z0-9_]*".toRegex()
 
-private const val DEPRECATION_NO_EXECUTION =
+private const val ERROR_NO_EXECUTION =
     "No executions defined, behavior to with default execution has been removed " +
         "in plugin $PLUGIN_ID version 6.0.0. " +
         "Please, consider follow migration guide to upgrade plugin properly"
@@ -33,10 +33,10 @@ internal fun <T : Named> verifyExecutionNames(executions: NamedDomainObjectConta
     }
 }
 
-internal fun <T> verifyExecutions(project: Project, configurations: NamedDomainObjectContainer<T>) {
+internal fun <T> verifyExecutions(project: Project, executions: NamedDomainObjectContainer<T>) {
     project.afterEvaluate { // this can be reported only after evaluation
-        if (configurations.size == 0) {
-            throw InvalidUserDataException(DEPRECATION_NO_EXECUTION)
+        if (executions.size == 0) {
+            throw InvalidUserDataException(ERROR_NO_EXECUTION)
         }
     }
 }
