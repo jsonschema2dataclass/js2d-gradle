@@ -3,10 +3,6 @@ plugins {
     id("org.jsonschema2dataclass")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     jsonschema2dataclassPlugins(project(":classpath:custom-rule-factory"))
 

@@ -3,10 +3,6 @@ plugins {
     id("org.jsonschema2dataclass")
 }
 
-repositories {
-    mavenCentral()
-}
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
     kotlinOptions {
         jvmTarget = JavaVersion.current().toString()
