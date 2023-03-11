@@ -15,8 +15,15 @@ val Project.javaPluginExtension: JavaPluginExtension
 val Project.versionCatalogs: VersionCatalogsExtension
     get() = this.extensions.getByName<VersionCatalogsExtension>("versionCatalogs")
 
+fun Project.extraValue(name: String): String? =
+    if (extra.has(name)) {
+        extra[name].toString()
+    } else {
+        null
+    }
+
 fun Project.isExtraEnabled(name: String): Boolean =
-    project.extra.has(name) && project.extra[name].toString().toBoolean()
+    project.extraValue(name)?.toBoolean() == true
 
 val pluginIds = mapOf(
     "spotless" to "com.diffplug.spotless",
@@ -26,8 +33,8 @@ val pluginIds = mapOf(
     "gradle-publish" to "com.gradle.plugin-publish",
 )
 
-/** If set, project version will be set to a constant. */
-const val EXTRA_NO_GIT_VERSION = "org.jsonschema2dataclass.internal.no-git-version"
+/** If set, project version will be set to the value. */
+const val EXTRA_GIT_VERSION = "org.jsonschema2dataclass.internal.git-version"
 
 /** If set, gradle plugin will be prepared for a local publication. */
 const val EXTRA_LOCAL_PUBLISH = "org.jsonschema2dataclass.internal.local-publish"
