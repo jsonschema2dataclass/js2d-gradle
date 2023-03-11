@@ -3,5 +3,5 @@ plugins {
     id("org.jsonschema2dataclass.internal.library")
 }
 
-project.basePluginExtension.archivesName.set("jsonschema2dataclass-kotlin-compat")
+basePluginExtension.archivesName.set("jsonschema2dataclass-kotlin-compat")
 description = "Plugin Kotlin Compat: Kotlin compatibility functions"

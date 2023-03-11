@@ -4,7 +4,7 @@ plugins {
     id("org.jsonschema2dataclass.internal.agpcompat")
 }
 
-project.basePluginExtension.archivesName.set("jsonschema2dataclass-agp7-api-compat")
+basePluginExtension.archivesName.set("jsonschema2dataclass-agp7-api-compat")
 description = "AGP 7 Compatibility layer: Compatibility layer for Android Gradle Plugin 7.x."
 
 dependencies {
