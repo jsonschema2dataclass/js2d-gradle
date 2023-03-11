@@ -3,7 +3,7 @@ plugins {
     id("org.jsonschema2dataclass.internal.library")
 }
 
-basePluginExtension.archivesName.set("jsonschema2dataclass-processor-jsonschema2pojo")
+base.archivesName.set("jsonschema2dataclass-processor-jsonschema2pojo")
 description = "Jsonschema2pojo schema processor compatibility layer: Compatibility layer for Jsonschema2pojo processor."
 
 dependencies {

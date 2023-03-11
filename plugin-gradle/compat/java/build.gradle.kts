@@ -3,7 +3,7 @@ plugins {
     id("org.jsonschema2dataclass.internal.library")
 }
 
-basePluginExtension.archivesName.set("jsonschema2dataclass-java-plugin-compat")
+base.archivesName.set("jsonschema2dataclass-java-plugin-compat")
 description = "Java Plugin Compatibility layer: Compatibility layer for Java Plugin."
 
 dependencies {
