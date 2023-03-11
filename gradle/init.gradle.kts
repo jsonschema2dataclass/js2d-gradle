@@ -5,15 +5,14 @@ gradle.settingsEvaluated {
         val localVersion = extra[localVersionExtra]!!.toString()
         pluginManagement {
             repositories {
-                mavenLocal().content {
-                    includeGroupByRegex(".*.jsonschema2dataclass.*")
+                exclusiveContent {
+                    mavenLocal()
+                    filter {
+                        includeGroupByRegex(".*.jsonschema2dataclass.*")
+                    }
                 }
-                mavenCentral().content() {
-                    excludeGroupByRegex(".*jsonschema2dataclass.*")
-                }
-                gradlePluginPortal().content() {
-                    excludeGroupByRegex(".*jsonschema2dataclass.*")
-                }
+                mavenCentral()
+                gradlePluginPortal()
             }
             resolutionStrategy {
                 eachPlugin {
@@ -26,12 +25,13 @@ gradle.settingsEvaluated {
         rootProject {
             buildscript {
                 repositories {
-                    mavenLocal().content {
-                        includeGroupByRegex(".*.jsonschema2dataclass.*")
+                    exclusiveContent {
+                        mavenLocal()
+                        filter {
+                            includeGroupByRegex(".*.jsonschema2dataclass.*")
+                        }
                     }
-                    mavenCentral().content() {
-                        excludeGroupByRegex(".*jsonschema2dataclass.*")
-                    }
+                    mavenCentral()
                 }
                 configurations.forEach {
                     it.resolutionStrategy.eachDependency {
