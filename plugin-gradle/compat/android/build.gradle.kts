@@ -3,6 +3,10 @@ plugins {
     id("org.jsonschema2dataclass.internal.library")
 }
 
+base.archivesName.set("jsonschema2dataclass-agp-api-compat")
+description = "Common AGP Compatibility layer: " +
+    "Common compatibility layer for supported versions of Android Gradle Plugin."
+
 dependencies {
     // for Android build tools version :)
     compileOnly(libs.android.tools) {

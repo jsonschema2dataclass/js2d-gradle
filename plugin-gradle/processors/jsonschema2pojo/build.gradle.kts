@@ -3,6 +3,9 @@ plugins {
     id("org.jsonschema2dataclass.internal.library")
 }
 
+base.archivesName.set("jsonschema2dataclass-processor-jsonschema2pojo")
+description = "Jsonschema2pojo schema processor compatibility layer: Compatibility layer for Jsonschema2pojo processor."
+
 dependencies {
     compileOnly(libs.processor.jsonschema2pojo)
     implementation(projects.pluginGradle.compat.kotlin)
