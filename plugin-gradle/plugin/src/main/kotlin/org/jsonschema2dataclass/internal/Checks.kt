@@ -1,9 +1,6 @@
 package org.jsonschema2dataclass.internal
 
-import org.gradle.api.GradleException
-import org.gradle.api.Named
-import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.Project
+import org.gradle.api.*
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.internal.task.PLUGIN_ID
 
@@ -12,8 +9,8 @@ internal const val MINIMUM_GRADLE_VERSION = "6.0"
 private val executionNameRegex = "[a-z][A-Za-z0-9_]*".toRegex()
 
 private const val DEPRECATION_NO_EXECUTION =
-    "No executions defined, behavior to with default execution has been deprecated and will be removed " +
-        "in plugin $PLUGIN_ID version 5.0. " +
+    "No executions defined, behavior to with default execution has been removed " +
+        "in plugin $PLUGIN_ID version 6.0.0. " +
         "Please, consider follow migration guide to upgrade plugin properly"
 
 internal fun verifyGradleVersion() {
@@ -28,7 +25,7 @@ internal fun verifyGradleVersion() {
 internal fun <T : Named> verifyExecutionNames(executions: NamedDomainObjectContainer<T>) {
     executions.configureEach {
         if (!executionNameRegex.matches(name)) {
-            throw GradleException(
+            throw InvalidUserDataException(
                 "Plugin $PLUGIN_ID doesn't support execution name \"$name\" provided. " +
                     "Please, rename to match regex \"$executionNameRegex\"",
             )
@@ -39,7 +36,7 @@ internal fun <T : Named> verifyExecutionNames(executions: NamedDomainObjectConta
 internal fun <T> verifyExecutions(project: Project, configurations: NamedDomainObjectContainer<T>) {
     project.afterEvaluate { // this can be reported only after evaluation
         if (configurations.size == 0) {
-            project.logger.warn(DEPRECATION_NO_EXECUTION)
+            throw InvalidUserDataException(DEPRECATION_NO_EXECUTION)
         }
     }
 }
