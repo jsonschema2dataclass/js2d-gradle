@@ -4,10 +4,6 @@ plugins {
     id("org.jsonschema2dataclass")
 }
 
-repositories {
-    mavenCentral()
-}
-
 project.group = "com.example"
 project.version = "1.0"
 

@@ -14,3 +14,11 @@ include(":classpath:schema-reference")
 include(":classpath:custom-rule-factory")
 // How to apply custom rule factory
 include(":classpath:custom-rule-factory-apply")
+
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+    }
+}
