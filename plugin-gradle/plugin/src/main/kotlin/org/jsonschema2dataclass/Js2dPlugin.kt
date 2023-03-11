@@ -34,6 +34,7 @@ class Js2dPlugin : Plugin<Project> {
         val js2dConfigurationPlugins = createConfiguration(project, JS2D_PLUGINS_CONFIGURATION_NAME)
 
         verifyExecutionNames(js2pExtension.executions)
+        verifyExecutions(project, js2pExtension.executions)
 
         val processor = obtainProcessor()
         processors.add(processor)
@@ -51,8 +52,6 @@ class Js2dPlugin : Plugin<Project> {
                 project.apply<Js2pAndroidPlugin>()
             }
         }
-
-        verifyExecutions(project, js2pExtension.executions)
     }
 }
 
