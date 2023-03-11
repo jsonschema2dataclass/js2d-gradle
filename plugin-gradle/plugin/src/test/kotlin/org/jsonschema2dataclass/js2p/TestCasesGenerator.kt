@@ -164,19 +164,6 @@ fun createBuildFilesLazyInit(testProjectDir: Path, shouldCopyAddressJSON: Boolea
     Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
 }
 
-/**
- * Single with execution, inherited
- */
-fun createBuildFilesEmpty(testProjectDir: Path, shouldCopyAddressJSON: Boolean) {
-    writeBuildFiles(
-        testProjectDir,
-        shouldCopyAddressJSON,
-        suffix = "",
-        buildFileHeader = BUILD_FILE_HEADER_PLUGIN_ONLY,
-    )
-    Files.write(testProjectDir.resolve("settings.gradle"), ByteArray(0))
-}
-
 internal fun copyAddressJSON(testProjectDir: Path) {
     val jsonDir = testProjectDir.resolve("src/main/resources/json")
     File(jsonDir.toString()).mkdirs()

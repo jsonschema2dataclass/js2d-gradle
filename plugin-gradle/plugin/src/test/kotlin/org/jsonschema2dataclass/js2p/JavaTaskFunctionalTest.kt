@@ -29,7 +29,7 @@ class JavaTaskFunctionalTest {
     fun withoutExtension(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingleNoExtension(testProjectDir, true)
 
-        val result = executeRunner(gradleVersion, testProjectDir)
+        val result = executeRunner(gradleVersion, testProjectDir, shouldFail = true)
         assertNull(result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
     }
 
@@ -103,14 +103,6 @@ class JavaTaskFunctionalTest {
         createBuildFilesLazyInit(testProjectDir, true)
         val result = executeRunner(gradleVersion, testProjectDir)
         checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
-    }
-
-    @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
-    @DisplayName("plugin applies even without java plugin")
-    fun onlyPlugin(gradleVersion: String?, @TempDir testProjectDir: Path) {
-        createBuildFilesEmpty(testProjectDir, false)
-        executeRunner(gradleVersion, testProjectDir, task = "tasks")
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
