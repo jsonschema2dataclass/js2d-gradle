@@ -4,15 +4,13 @@ import basePluginExtension
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.attributes.DocsType
-import org.gradle.api.component.AdhocComponentWithVariants
+import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.internal.JvmPluginsHelper
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.named
-import org.gradle.kotlin.dsl.support.serviceOf
 import org.jetbrains.dokka.gradle.DokkaTask
 
 private const val DOKKA_TASK_NAME: String = "dokkaJavadoc"
@@ -41,22 +39,18 @@ private fun setupDoc(project: Project) {
 
 /**
  * Attaches Dokka as "JavaDoc" provider
+ *
  * @see [org.gradle.api.plugins.JavaPluginExtension.withJavadocJar]
  *     implementation for details
  */
 private fun JavaPluginExtension.withDokkaJar(project: Project, artifactTask: TaskProvider<out Task>) {
-    JvmPluginsHelper.configureDocumentationVariantWithArtifact(
+    JvmPluginsHelper.createDocumentationVariantWithArtifact(
         JavaPlugin.JAVADOC_ELEMENTS_CONFIGURATION_NAME,
         null,
         DocsType.JAVADOC,
         emptyList(),
         sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME).javadocJarTaskName,
         artifactTask,
-        project.components["java"] as AdhocComponentWithVariants,
-        project.configurations,
-        project.tasks,
-        project.objects,
-        project.serviceOf(),
-        project.serviceOf(),
+        project as ProjectInternal,
     )
 }
