@@ -6,7 +6,7 @@ plugins {
 dependencies {
     jsonschema2dataclassPlugins(project(":classpath:schema"))
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
 }
 
 jsonSchema2Pojo {
