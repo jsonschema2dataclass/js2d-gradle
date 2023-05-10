@@ -11,7 +11,7 @@ spotless-ktlint = "0.48.2"
 spotless-palantir = "2.30.0"
 
 # https://docs.gradle.com/enterprise/gradle-plugin/#release_history
-gradle-enterprise = "3.13.1"
+gradle-enterprise = "3.13.2"
 gradle-publish = "1.2.0"
 
 # @see com.android.build.gradle.internal.plugins.BasePlugin.createLintClasspathConfiguration
