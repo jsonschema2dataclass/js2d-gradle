@@ -44,7 +44,7 @@ dependencies {
     // Required if generating JSR-303 annotations
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.3")
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21")
 }
 
