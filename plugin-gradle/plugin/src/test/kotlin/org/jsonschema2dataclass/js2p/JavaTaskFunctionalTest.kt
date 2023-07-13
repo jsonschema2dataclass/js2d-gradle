@@ -116,7 +116,9 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource("org.jsonschema2dataclass.js2p.TestGradleVersionHolder#configurationCacheCompatibleGradleReleasesForTests")
+    @MethodSource(
+        "org.jsonschema2dataclass.js2p.TestGradleVersionHolder#configurationCacheCompatibleGradleReleasesForTests",
+    )
     @DisplayName("plugin is configuration cache compatible")
     fun configurationCacheCompatibility(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
