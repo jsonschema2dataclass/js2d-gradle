@@ -1,9 +1,9 @@
 package org.jsonschema2dataclass.internal.task
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.NamedDomainObjectProvider
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.FileCollection
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.*
 import org.gradle.workers.WorkQueue
 import org.gradle.workers.WorkerExecutor
@@ -23,11 +23,11 @@ abstract class Js2dGeneratorTaskBase<ConfigType> @Inject constructor(
     abstract var uuid: UUID
 
     @get:Classpath
-    val js2dConfiguration: NamedDomainObjectProvider<Configuration> =
+    val js2dConfiguration: Provider<out FileCollection> =
         project.configurations.named(JS2D_CONFIGURATION_NAME)
 
     @get:Classpath
-    val js2dConfigurationPlugins: NamedDomainObjectProvider<Configuration> = project.configurations.named(
+    val js2dConfigurationPlugins: Provider<out FileCollection> = project.configurations.named(
         JS2D_PLUGINS_CONFIGURATION_NAME,
     )
 
