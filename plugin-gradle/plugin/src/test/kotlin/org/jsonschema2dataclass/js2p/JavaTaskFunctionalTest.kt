@@ -114,4 +114,18 @@ class JavaTaskFunctionalTest {
         val result = executeRunner(gradleVersion, testProjectDir, task = "generateAndJarSources")
         checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
     }
+
+    @ParameterizedTest(name = "[{index}] {displayName} - {0}")
+    @MethodSource(
+        "org.jsonschema2dataclass.js2p.TestGradleVersionHolder#configurationCacheCompatibleGradleReleasesForTests",
+    )
+    @DisplayName("plugin is configuration cache compatible")
+    fun configurationCacheCompatibility(gradleVersion: String?, @TempDir testProjectDir: Path) {
+        createBuildFilesSingle(testProjectDir, true)
+
+        val runner = createRunner(gradleVersion, testProjectDir)
+        val result = runner.withArguments(*runner.arguments.toTypedArray(), "--configuration-cache")
+            .build()
+        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
+    }
 }

@@ -41,7 +41,7 @@ private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
         else -> false // no official information on Gradle compatibility with further versions of Java
     }
 
-private fun filterCompatibleVersions(): List<String?> =
+private fun filterCompatibleVersions(): List<String> =
     gradleReleases.filter { gradleSupported(ComparableGradleVersion(it)) }
 
 /**
@@ -52,6 +52,14 @@ class TestGradleVersionHolder {
     companion object {
         @JvmStatic
         fun gradleReleasesForTests(): List<Arguments> = compatibleVersions.map { Arguments.of(it) }
+
+        @JvmStatic
+        fun configurationCacheCompatibleGradleReleasesForTests(): List<Arguments> = compatibleVersions
+            .filter {
+                ComparableGradleVersion(it) >= 6 to 6
+            }.map {
+                Arguments.of(it)
+            }
     }
 }
 
