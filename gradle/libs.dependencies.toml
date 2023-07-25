@@ -8,7 +8,7 @@ spotless = "6.19.0"
 # Releases https://github.com/pinterest/ktlint/releases
 spotless-ktlint = "0.49.1"
 # Releases https://github.com/palantir/palantir-java-format/releases
-spotless-palantir = "2.32.0"
+spotless-palantir = "2.34.0"
 
 # https://docs.gradle.com/enterprise/gradle-plugin/#release_history
 gradle-enterprise = "3.13.3"
