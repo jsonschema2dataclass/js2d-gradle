@@ -10,7 +10,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
 }
 dependencies {
     implementation("javax.validation:validation-api:2.0.1.Final")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.3")
 
     // see src/main/resources/json/external_dependencies.json
     implementation("joda-time:joda-time:2.12.5")
