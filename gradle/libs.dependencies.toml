@@ -6,7 +6,7 @@ nexus = "1.3.0"
 spotless = "6.19.0"
 
 # Releases https://github.com/pinterest/ktlint/releases
-spotless-ktlint = "0.49.1"
+spotless-ktlint = "0.51.0-FINAL"
 # Releases https://github.com/palantir/palantir-java-format/releases
 spotless-palantir = "2.34.0"
 
