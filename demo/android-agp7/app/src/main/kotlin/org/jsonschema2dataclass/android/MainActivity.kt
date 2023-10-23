@@ -8,7 +8,6 @@ import com.oosocial.clarityn.rest.clarityn.model.EntrySchema
 import com.oosocial.clarityn.rest.clarityn.model.Storage
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var schema: EntrySchema
 
     override fun onCreate(savedInstanceState: Bundle?) {

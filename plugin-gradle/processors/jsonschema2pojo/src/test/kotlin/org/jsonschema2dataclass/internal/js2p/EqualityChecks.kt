@@ -39,7 +39,6 @@ private fun checkIfEqual(expected: PluginConfigJs2pIO, actual: Js2pWorkerConfigI
 
 private fun checkIfEqual(expected: PluginConfigJs2pClass, actual: Js2pWorkerConfigClass) {
     assertAll(
-
         { checkIfEqual(expected.androidParcelable, actual.androidParcelable, "klass.androidParcelable") },
         { checkIfEqual(expected.annotateGenerated, actual.annotateGenerated, "klass.annotateGenerated") },
         { checkIfEqual(expected.annotateSerializable, actual.annotateSerializable, "klass.annotateSerializable") },
@@ -75,7 +74,6 @@ private fun checkIfEqual(expected: PluginConfigJs2pClass, actual: Js2pWorkerConf
 
 private fun checkIfEqual(expected: PluginConfigJs2pConstructor, actual: Js2pWorkerConfigConstructor) {
     assertAll(
-
         { checkIfEqual(expected.allProperties, actual.allProperties, "constructors.allProperties") },
         {
             checkIfEqual(
@@ -91,7 +89,6 @@ private fun checkIfEqual(expected: PluginConfigJs2pConstructor, actual: Js2pWork
 
 private fun checkIfEqual(expected: PluginConfigJs2pMethod, actual: Js2pWorkerConfigMethod) {
     assertAll(
-
         { checkIfEqual(expected.additionalProperties, actual.additionalProperties, "methods.additionalProperties") },
         { checkIfEqual(expected.annotateJsr303Jakarta, actual.annotateJsr303Jakarta, "methods.annotateJsr303Jakarta") },
         { checkIfEqual(expected.annotateJsr303, actual.annotateJsr303, "methods.annotateJsr303") },

@@ -18,5 +18,6 @@ interface GradlePluginRegistration {
     }
 
     fun defaultSchemaPathInternal(project: Project): Path?
+
     fun registerPlugin(project: Project, callback: ProcessorRegistrationCallback)
 }

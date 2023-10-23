@@ -50,6 +50,7 @@ class JavaPluginRegistration : GradlePluginRegistration {
 }
 
 // TODO: split this out to have better compatibility
+
 /**
  * Obtain java source sets in Gradle 6.0 - 7.0.2
  */

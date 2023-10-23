@@ -322,6 +322,6 @@ abstract class Js2pConfiguration @Inject constructor(
 abstract class Js2pExtension {
     abstract val executions: NamedDomainObjectContainer<Js2pConfiguration>
 
-    @get: PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val targetDirectoryPrefix: DirectoryProperty
 }

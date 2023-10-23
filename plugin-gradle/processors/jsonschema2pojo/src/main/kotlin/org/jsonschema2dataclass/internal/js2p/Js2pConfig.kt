@@ -22,12 +22,16 @@ internal data class Js2pConfig(
     private val def: GenerationConfig = DefaultGenerationConfig(),
 ) : GenerationConfig, java.io.Serializable {
     override fun getAnnotationStyle(): AnnotationStyle = maybeDefaultEnum(klass.annotationStyle, def.annotationStyle)
+
     override fun getClassNamePrefix(): String? = klass.namePrefix ?: def.classNamePrefix
+
     override fun getClassNameSuffix(): String? = klass.nameSuffix ?: def.classNameSuffix
+
     override fun getCustomAnnotator(): Class<out Annotator> =
         maybeDefaultClass(klass.customAnnotatorClass, def.customAnnotator)
 
     override fun getCustomDatePattern(): String? = dateTime.datePattern ?: def.customDatePattern
+
     override fun getCustomDateTimePattern(): String? =
         dateTime.dateTimePattern ?: def.customDateTimePattern
 
@@ -35,12 +39,16 @@ internal data class Js2pConfig(
         maybeDefaultClass(klass.customRuleFactoryClass, def.customRuleFactory)
 
     override fun getCustomTimePattern(): String? = dateTime.timePattern ?: def.customTimePattern
+
     override fun getDateTimeType(): String? = dateTime.dateTimeType ?: def.dateTimeType
+
     override fun getDateType(): String? = dateTime.dateType ?: def.dateType
+
     override fun getFileExtensions(): Array<String> =
         maybeDefaultSet(io.fileExtensions, def.fileExtensions).toTypedArray()
 
     override fun getFileFilter(): FileFilter = io.fileFilter ?: def.fileFilter
+
     override fun getFormatTypeMapping(): Map<String, String> =
         fields.formatToTypeMapping ?: def.formatTypeMapping
 
@@ -48,6 +56,7 @@ internal data class Js2pConfig(
         maybeDefaultEnum(klass.jackson2InclusionLevel, def.inclusionLevel)
 
     override fun getOutputEncoding(): String? = io.outputEncoding ?: def.outputEncoding
+
     override fun getPropertyWordDelimiters(): CharArray =
         maybeDefaultChar(io.delimitersPropertyWord, def.propertyWordDelimiters).toCharArray()
 
@@ -55,23 +64,35 @@ internal data class Js2pConfig(
         io.delimitersRefFragmentPath ?: def.refFragmentPathDelimiters
 
     override fun getSource(): Iterator<URL> = io.sourceFiles.iterator()
+
     override fun getSourceSortOrder(): SourceSortOrder = maybeDefaultEnum(io.sourceSortOrder, def.sourceSortOrder)
+
     override fun getSourceType(): SourceType = maybeDefaultEnum(io.sourceType, def.sourceType)
+
     override fun getTargetDirectory(): File = targetDirectory
+
     override fun getTargetPackage(): String = klass.targetPackage ?: def.targetPackage
+
     override fun getTargetVersion(): String? = io.targetJavaVersion ?: def.targetVersion
+
     override fun getTimeType(): String? = dateTime.timeType ?: def.timeType
+
     override fun getToStringExcludes(): Array<String> =
         maybeDefaultSet(methods.toStringExcludes, def.toStringExcludes).toTypedArray()
 
     override fun isConstructorsRequiredPropertiesOnly(): Boolean = false
+
     override fun isFormatDateTimes(): Boolean = dateTime.dateTimeFormat ?: def.isFormatDateTimes
+
     override fun isFormatDates(): Boolean = dateTime.dateFormat ?: def.isFormatDates
+
     override fun isFormatTimes(): Boolean = dateTime.timeFormat ?: def.isFormatTimes
+
     internal fun isGenerateBuildersRaw(): Boolean = methods.builders ?: def.isGenerateBuilders
 
     @TestsNeeded
     override fun isGenerateBuilders(): Boolean = isGenerateBuildersRaw() || isUseInnerClassBuilders
+
     override fun isIncludeAdditionalProperties(): Boolean =
         methods.additionalProperties ?: def.isIncludeAdditionalProperties
 
@@ -105,6 +126,7 @@ internal data class Js2pConfig(
         klass.annotateGenerated ?: def.isIncludeGeneratedAnnotation
 
     override fun isIncludeGetters(): Boolean = methods.getters ?: def.isIncludeGetters
+
     override fun isIncludeHashcodeAndEquals(): Boolean =
         methods.hashcodeAndEquals ?: def.isIncludeHashcodeAndEquals
 
@@ -113,6 +135,7 @@ internal data class Js2pConfig(
 
     @TestsNeeded
     override fun isIncludeJsr303Annotations(): Boolean = isIncludeJsr303AnnotationRaw() || isUseJakartaValidation
+
     override fun isIncludeJsr305Annotations(): Boolean =
         methods.annotateJsr305 ?: def.isIncludeJsr305Annotations
 
@@ -120,8 +143,11 @@ internal data class Js2pConfig(
         constructors.requiredProperties ?: def.isIncludeRequiredPropertiesConstructor
 
     override fun isIncludeSetters(): Boolean = methods.setters ?: def.isIncludeSetters
+
     override fun isIncludeToString(): Boolean = methods.toStringMethod ?: def.isIncludeToString
+
     override fun isIncludeTypeInfo(): Boolean = klass.jackson2IncludeTypeInfo ?: def.isIncludeTypeInfo
+
     override fun isInitializeCollections(): Boolean =
         fields.initializeCollections ?: def.isInitializeCollections
 
@@ -129,10 +155,15 @@ internal data class Js2pConfig(
 
     @TestsNeeded
     override fun isRemoveOldOutput(): Boolean = true
+
     override fun isSerializable(): Boolean = klass.annotateSerializable ?: def.isSerializable
+
     override fun isUseBigDecimals(): Boolean = fields.floatUseBigDecimal ?: def.isUseBigDecimals
+
     override fun isUseBigIntegers(): Boolean = fields.integerUseBigInteger ?: def.isUseBigIntegers
+
     override fun isUseDoubleNumbers(): Boolean = fields.floatUseDouble ?: def.isUseDoubleNumbers
+
     override fun isUseInnerClassBuilders(): Boolean =
         methods.buildersInnerClass ?: def.isUseInnerClassBuilders
 
@@ -140,13 +171,18 @@ internal data class Js2pConfig(
         methods.annotateJsr303Jakarta ?: def.isUseJakartaValidation
 
     override fun isUseJodaDates(): Boolean = dateTime.jodaDate ?: def.isUseJodaDates
+
     override fun isUseJodaLocalDates(): Boolean = dateTime.jodaLocalDate ?: def.isUseJodaLocalDates
+
     override fun isUseJodaLocalTimes(): Boolean = dateTime.jodaLocalTime ?: def.isUseJodaLocalTimes
+
     override fun isUseLongIntegers(): Boolean = fields.integerUseLong ?: def.isUseLongIntegers
+
     override fun isUseOptionalForGetters(): Boolean =
         methods.gettersUseOptional ?: def.isUseOptionalForGetters
 
     override fun isUsePrimitives(): Boolean = fields.usePrimitives ?: def.isUsePrimitives
+
     override fun isUseTitleAsClassname(): Boolean = klass.nameUseTitle ?: def.isUseTitleAsClassname
 }
 
