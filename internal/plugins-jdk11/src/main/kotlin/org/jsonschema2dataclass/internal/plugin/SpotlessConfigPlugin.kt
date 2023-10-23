@@ -66,10 +66,10 @@ private fun applySpotless(project: Project) {
             jackson()
             endWithNewline()
         }
-        java {
-            targetExclude(*excludes)
-            target("**/*.java")
-            palantirJavaFormat(palantirVersion)
-        }
+//        java {
+//            targetExclude(*excludes)
+//            target("**/*.java")
+//            palantirJavaFormat(palantirVersion)
+//        }
     }
 }
