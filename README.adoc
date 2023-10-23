@@ -18,7 +18,7 @@ This plugin is aiming to take raw JSON or YAML raw files or schemas and convert 
 (Plain Old Java Object).
 
 At the moment of writing documentation, it uses
-https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] 1.1.2 library to generate classes.
+https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] 1.2.1 library to generate classes.
 
 The `org.jsonschema2dataclass` plugin feature highlight:
 
