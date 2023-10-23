@@ -2,14 +2,6 @@
 # https://github.com/gradle-nexus/publish-plugin/releases
 nexus = "1.3.0"
 
-# Tags: https://github.com/diffplug/spotless/tags
-spotless = "6.22.0"
-
-# Releases https://github.com/pinterest/ktlint/releases
-spotless-ktlint = "0.51.0-FINAL"
-# Releases https://github.com/palantir/palantir-java-format/releases
-spotless-palantir = "2.38.0"
-
 # https://docs.gradle.com/enterprise/gradle-plugin/#release_history
 gradle-enterprise = "3.15.1"
 gradle-publish = "1.2.1"
@@ -39,11 +31,6 @@ processor-jsonschema2pojo = "1.2.1"
 nexus = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus" }
 gradle-enterprise = { module = "com.gradle.enterprise:com.gradle.enterprise.gradle.plugin", version.ref = "gradle-enterprise" }
 gradle-publish = { module = "com.gradle.plugin-publish:com.gradle.plugin-publish.gradle.plugin", version.ref = "gradle-publish" }
-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless"}
-
-# Spotless formatting tools
-spotless-ktlint = { module = "com.pinterest:ktlint", version.ref="spotless-ktlint"}
-spotless-palantir = { module = "com.palantir.javaformat:palantir-java-format", version.ref="spotless-palantir"}
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
@@ -70,7 +57,6 @@ junit-tests =  ["junit-api", "junit-params"]
 
 [plugins]
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 gradle-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-publish"}
 kotlin-build = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-build"}
 kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "kotlin-dokka"}

@@ -1,0 +1,18 @@
+[versions]
+# Tags: https://github.com/diffplug/spotless/tags
+spotless = "6.19.0"
+
+# Releases https://github.com/pinterest/ktlint/releases
+spotless-ktlint = "0.49.1"
+# Releases https://github.com/palantir/palantir-java-format/releases
+spotless-palantir = "2.38.0"
+
+[libraries]
+spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless"}
+
+# Spotless formatting tools
+spotless-ktlint = { module = "com.pinterest:ktlint", version.ref="spotless-ktlint"}
+spotless-palantir = { module = "com.palantir.javaformat:palantir-java-format", version.ref="spotless-palantir"}
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

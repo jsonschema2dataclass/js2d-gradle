@@ -12,7 +12,7 @@ gradlePlugin {
             implementationClass = "org.jsonschema2dataclass.internal.plugin.SpotlessConfigPlugin"
             description = "Set up Spotless defaults."
             dependencies {
-                compileOnly(libs.spotless)
+                compileOnly(quality.spotless)
             }
         }
     }

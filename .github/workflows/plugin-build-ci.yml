@@ -8,9 +8,13 @@ on:
       - '*'
     paths:
       - 'plugin-gradle/**'
-      - 'gradle/**'
+      - 'gradle/wrapper/**'
+      - 'gradle/agp.dependencies.toml'
+      - 'gradle/libs.dependencies.toml'
       - 'gradlew*'
-      - 'internal/**'
+      - 'internal/plugins'
+      - 'internal/common'
+      - 'internal/settings.gradle.kts'
       - settings.gradle.kts
       - build.gradle.kts
       - gradle.properties
