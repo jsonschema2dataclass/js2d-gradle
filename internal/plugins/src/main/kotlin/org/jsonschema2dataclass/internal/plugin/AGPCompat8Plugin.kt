@@ -41,7 +41,6 @@ class AGPCompat8Plugin : Plugin<Project> {
 abstract class TargetJvmVersionRule @Inject constructor(
     private val jvmVersionOverride: Int,
 ) : ComponentMetadataRule {
-
     override fun execute(context: ComponentMetadataContext) {
         context.details.allVariants {
             attributes {

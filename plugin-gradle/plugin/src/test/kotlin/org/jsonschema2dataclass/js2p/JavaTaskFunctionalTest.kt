@@ -19,12 +19,11 @@ const val PACKAGE_COM_EXAMPLE = "com/example"
 const val EXECUTION_NAME_ORG = "org"
 const val PACKAGE_ORG_EXAMPLE = "org/example"
 
-const val source = "org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests"
+const val PARAM_SOURCE = "org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests"
 
 class JavaTaskFunctionalTest {
-
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("single execution, no extension")
     fun withoutExtension(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingleNoExtension(testProjectDir, true)
@@ -34,7 +33,7 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("single execution")
     fun singleExtension(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
@@ -43,7 +42,7 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("single extension simple")
     fun singleExtensionSimple(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingleSimple(testProjectDir, true)
@@ -53,7 +52,7 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("multiple executions")
     fun multipleExecutions(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesMultiple(testProjectDir, true)
@@ -64,7 +63,7 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("compileJava task depends task even when project has no java code")
     fun noJavaCode(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
@@ -73,7 +72,7 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("task is cache-able")
     fun taskIsCacheable(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
@@ -88,7 +87,7 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("task skips if no json file exists")
     fun noJsonFiles(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, false)
@@ -97,7 +96,7 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("java-library applied after org.jsonschema2dataclass")
     fun lazyWithoutExtension(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesLazyInit(testProjectDir, true)
@@ -106,7 +105,7 @@ class JavaTaskFunctionalTest {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
-    @MethodSource(source)
+    @MethodSource(PARAM_SOURCE)
     @DisplayName("jarring sources does not fail after code generation")
     fun sourceJarCompatibility(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesWithSourcesJar(testProjectDir)

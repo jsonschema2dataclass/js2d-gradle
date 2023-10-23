@@ -4,15 +4,35 @@ import org.gradle.api.JavaVersion
 import org.gradle.util.GradleVersion
 import org.junit.jupiter.params.provider.Arguments
 
+private val gradleReleases8x = arrayOf(
+    "8.4",
+    "8.3",
+    "8.2.1",
+    "8.1.1",
+    "8.0.2",
+)
+private val gradleReleases7x = arrayOf(
+    "7.6.3",
+    "7.5.1",
+    "7.4.2",
+    "7.3.3",
+    "7.2",
+    "7.1.1",
+    "7.0.2",
+)
+private val gradleReleases6x = arrayOf(
+    "6.9.1", "6.8.3", "6.7.1", "6.6.1",
+    "6.5.1", "6.4.1", "6.3",
+    "6.2.2", "6.2.1", "6.1.1", "6.0.1",
+)
+
 private val gradleReleases = linkedSetOf(
     GradleVersion.current().version,
-    "8.0.2", // 8.0.x
-    "7.6.1", "7.5.1", // 7.5 - 7.6
-    "7.4.2", "7.3.3", "7.2", "7.1.1", "7.0.2", // 7.0 - 7.4
-    "6.9.1", "6.8.3", "6.7.1", "6.6.1", // 6.6 - 6.9
-    "6.5.1", "6.4.1", "6.3", //   6.3 - 6.5
-    "6.2.2", "6.2.1", "6.1.1", "6.0.1", // 6.0 - 6.2
+    *gradleReleases8x,
+    *gradleReleases7x,
+    *gradleReleases6x,
 )
+
 private val compatibleVersions = filterCompatibleVersions()
 
 /**

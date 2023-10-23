@@ -19,7 +19,7 @@ abstract class Js2dGeneratorTaskBase<ConfigType> @Inject constructor(
     @get:OutputDirectory
     abstract val targetDirectory: DirectoryProperty
 
-    @get: Internal
+    @get:Internal
     abstract var uuid: UUID
 
     @get:Classpath

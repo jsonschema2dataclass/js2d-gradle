@@ -6,6 +6,8 @@ import org.jsonschema2dataclass.internal.task.Js2dGeneratorTaskBase
 
 interface Js2dProcessor<ConfigClass> {
     fun toolNameForTask(): Pair<String, String>
+
     fun generatorTaskClass(): Class<out Js2dGeneratorTaskBase<ConfigClass>>
+
     fun toolingMinimalDependencies(project: Project, configuration: Configuration)
 }

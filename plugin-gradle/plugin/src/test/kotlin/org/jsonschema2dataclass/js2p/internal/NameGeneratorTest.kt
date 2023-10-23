@@ -12,7 +12,6 @@ private const val EXECUTION_NAME = "execution"
 
 @DisabledForJreRange(max = JRE.JAVA_8)
 class NameGeneratorTest {
-
     @ParameterizedTest
     @CsvSource(
         "variant,release,true,ForRelease,'for variant release'",

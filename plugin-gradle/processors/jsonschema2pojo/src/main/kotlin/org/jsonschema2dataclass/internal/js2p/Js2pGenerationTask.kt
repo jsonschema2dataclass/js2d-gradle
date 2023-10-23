@@ -11,7 +11,6 @@ import javax.inject.Inject
 internal abstract class Js2pGenerationTask @Inject constructor(
     workerExecutor: WorkerExecutor,
 ) : Js2dGeneratorTaskBase<Js2pConfiguration>(workerExecutor) {
-
     override fun submit(workQueue: WorkQueue) {
         val js2pConfig = Js2pWorkerConfig.fromConfig(uuid, targetDirectory.asFile.get(), configuration)
         workQueue.submit(Js2pWorker::class.java) {
