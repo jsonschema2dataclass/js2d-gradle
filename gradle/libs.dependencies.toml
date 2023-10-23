@@ -20,7 +20,7 @@ gradle-publish = "1.2.1"
 agp-tools = "31.0.2"
 
 # Version of Kotlin Gradle Plugin used for compilation.
-kotlin-build = "1.8.21"
+kotlin-build = "1.8.22"
 # Dokka is sometimes lagging behind and is not using the same release vehicle as Kotlin main.
 # Releases: https://github.com/Kotlin/dokka/releases
 kotlin-dokka = "1.8.10"
