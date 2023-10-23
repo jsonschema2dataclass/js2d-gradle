@@ -13,7 +13,7 @@ on:
     branches:
       - main
     paths:
-      - 'gradle/**'
+      - 'gradle/wrapper/**'
       - 'demo/android-agp7/gradle/**'
       - 'demo/java/gradle/**'
       - .github/workflows/gradle-wrapper-validation.yml
