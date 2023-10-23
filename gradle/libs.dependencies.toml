@@ -12,7 +12,7 @@ spotless-palantir = "2.34.0"
 
 # https://docs.gradle.com/enterprise/gradle-plugin/#release_history
 gradle-enterprise = "3.13.3"
-gradle-publish = "1.2.0"
+gradle-publish = "1.2.1"
 
 # @see com.android.build.gradle.internal.plugins.BasePlugin.createLintClasspathConfiguration
 # @see builder-model//version.properties
