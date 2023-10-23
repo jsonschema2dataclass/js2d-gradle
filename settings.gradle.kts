@@ -49,5 +49,8 @@ dependencyResolutionManagement {
         create("libs") {
             from(files("gradle/libs.dependencies.toml"))
         }
+        create("quality") {
+            from(files("gradle/quality.dependencies.toml"))
+        }
     }
 }

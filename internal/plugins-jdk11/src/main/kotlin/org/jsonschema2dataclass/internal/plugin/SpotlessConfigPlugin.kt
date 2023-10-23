@@ -3,6 +3,7 @@ package org.jsonschema2dataclass.internal.plugin
 import EXTRA_SPOTLESS_DISABLE
 import com.diffplug.gradle.spotless.SpotlessExtension
 import isExtraEnabled
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import pluginIds
@@ -24,12 +25,12 @@ private fun applySpotless(project: Project) {
         return
     }
 
-    fun version(name: String): String =
+    fun version(name: String, catalog: String = "quality"): String =
         project
             .versionCatalogs
-            .named("libs")
+            .named(catalog)
             .findVersion(name)
-            .get()
+            .orElseThrow { GradleException("Unable resolve version for $name in catalog $catalog") }
             .requiredVersion
 
     val ktlintVersion: String = version("spotless-ktlint")

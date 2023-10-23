@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'gradle/**'
-      - 'demo/android-agp7/gradle/**'
-      - 'demo/java/gradle/**'
+      - 'gradle/wrapper/**'
+      - 'demo/android-agp7/gradle/wrapper/**'
+      - 'demo/java/gradle/wrapper/**'
       - .github/workflows/gradle-wrapper-validation.yml
   pull_request:
     branches:
