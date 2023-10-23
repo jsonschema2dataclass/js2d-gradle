@@ -27,7 +27,7 @@ kotlin-dokka = "1.8.20"
 
 # JUnit 5 = JUnit Platform ([junit-api]) + JUnit Jupiter ([junit-engine]) + JUnit Vintage ([junit-vintage])
 # Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
-junit5 = "5.9.3"
+junit5 = "5.10.0"
 
 # Jsonschema2pojo processor
 # Versions: https://github.com/joelittlejohn/jsonschema2pojo/releases
