@@ -42,7 +42,7 @@ jobs:
         distribution: [ "zulu" ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
         uses: actions/setup-java@v3.13.0
         with:
