@@ -8,7 +8,7 @@
   "packageRules": [ {
     "description": "Disable updating AGP compatibility dependencies. Allow changes in minor and patches.",
     "matchPackageNames": [ "com.android.tools.build:gradle" ],
-    "matchFiles": [ "gradle/agp.dependencies.toml" ],
+    "matchFiles": [ "gradle/agp.dependencies.toml", "demo/android-agp7/**" ],
     "matchUpdateTypes": [ "major" ],
     "enabled": false
   } ]
