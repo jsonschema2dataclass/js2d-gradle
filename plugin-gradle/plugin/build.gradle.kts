@@ -46,7 +46,7 @@ dependencies {
     implementation(projects.pluginGradle.compat.android)
 
     testImplementation(libs.bundles.junit.tests)
-    testRuntimeOnly(libs.junit.engine)
+    testRuntimeOnly(libs.bundles.junit.runtime)
     testImplementation(gradleTestKit())
 }
 
