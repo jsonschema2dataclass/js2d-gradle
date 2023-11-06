@@ -19,8 +19,8 @@ kotlin-dokka = "1.9.10"
 
 # JUnit 5 = JUnit Platform ([junit-api]) + JUnit Launcher ([junit-launcher])
 # Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
-junit5 = "5.10.0"
-junit5-platform = "1.10.0"
+junit5 = "5.10.1"
+junit5-platform = "1.10.1"
 
 # Jsonschema2pojo processor
 # Versions: https://github.com/joelittlejohn/jsonschema2pojo/releases
