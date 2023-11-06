@@ -17,9 +17,10 @@ kotlin-build = "1.9.20"
 # Releases: https://github.com/Kotlin/dokka/releases
 kotlin-dokka = "1.9.10"
 
-# JUnit 5 = JUnit Platform ([junit-api]) + JUnit Jupiter ([junit-engine]) + JUnit Vintage ([junit-vintage])
+# JUnit 5 = JUnit Platform ([junit-api]) + JUnit Launcher ([junit-launcher])
 # Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
 junit5 = "5.10.0"
+junit5-platform = "1.10.0"
 
 # Jsonschema2pojo processor
 # Versions: https://github.com/joelittlejohn/jsonschema2pojo/releases
@@ -45,15 +46,20 @@ kotlin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit5" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
-# `runtimeOnly` dependency, because it implements some interfaces from junit-api, but doesn't need to be visible to user.
-# Engines: https://junit.org/junit5/docs/current/user-guide/index.html#running-tests-build-gradle-engines-configure
+
+# JUnit Engines: https://junit.org/junit5/docs/current/user-guide/index.html#running-tests-build-gradle-engines-configure
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+
+# https://docs.gradle.org/8.4/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit5-platform" }
 
 # Plugin Schema processors
 processor-jsonschema2pojo = {module = "org.jsonschema2pojo:jsonschema2pojo-core", version.ref="processor-jsonschema2pojo"}
 
 [bundles]
 junit-tests =  ["junit-api", "junit-params"]
+junit-runtime =  ["junit-engine", "junit-launcher"]
+
 
 [plugins]
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus" }

@@ -12,7 +12,7 @@ dependencies {
     implementation(projects.pluginGradle.common)
 
     testImplementation(libs.bundles.junit.tests)
-    testRuntimeOnly(libs.junit.engine)
+    testRuntimeOnly(libs.bundles.junit.runtime)
     testImplementation(gradleTestKit())
 
     testImplementation(libs.processor.jsonschema2pojo)
