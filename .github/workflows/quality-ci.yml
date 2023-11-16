@@ -17,6 +17,7 @@ on:
       - "**/*.yml"
       - "**/*.yaml"
       - gradle/quality.dependencies.toml
+      - .github/workspace/quality-ci.yml
 
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
