@@ -45,7 +45,7 @@ dependencies {
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.21")
 }
 
 jsonSchema2Pojo {
