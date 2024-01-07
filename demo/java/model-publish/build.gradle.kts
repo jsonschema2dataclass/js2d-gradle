@@ -13,7 +13,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
 
     // see src/main/resources/json/external_dependencies.json
-    implementation("joda-time:joda-time:2.12.5")
+    implementation("joda-time:joda-time:2.12.6")
 }
 
 val sourceJar = tasks.create<Jar>("sourceJar") {
