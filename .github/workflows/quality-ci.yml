@@ -50,7 +50,7 @@ jobs:
 
   spotless-check:
     needs: changes
-    if: ${{ needs.changes.outputs.renovate == 'true' }}
+    if: ${{ needs.changes.outputs.spotless == 'true' }}
 
     name: Spotless check
     runs-on: ubuntu-latest
