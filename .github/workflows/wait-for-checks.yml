@@ -1,4 +1,4 @@
-name: Android AGP 7 Demo CI
+name: Wait all checks
 
 on:
   pull_request:
