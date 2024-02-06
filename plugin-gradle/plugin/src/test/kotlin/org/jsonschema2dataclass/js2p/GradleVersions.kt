@@ -4,6 +4,10 @@ import org.gradle.api.JavaVersion
 import org.gradle.util.GradleVersion
 import org.junit.jupiter.params.provider.Arguments
 
+const val ENV_TEST_MIN = "TEST_GRADLE_VER_MIN"
+const val ENV_TEST_MAX = "TEST_GRADLE_VER_MAX"
+const val ENV_TEST_EXACT = "TEST_GRADLE_VER_EXACT"
+
 private val gradleReleases8x = arrayOf(
     "8.6",
     "8.5",
@@ -42,17 +46,17 @@ private val compatibleVersions = filterCompatibleVersions()
  *
  * | Java version | Gradle version |
  * |--------------|----------------|
- * |   1.8 - 13   |    >= 6.0      |
- * |    14        |    >= 6.3      |
- * |    15        |    >= 6.7      |
- * |    16        |    >= 7.0      |
- * |    17        |    >= 7.3      |
- * |    18        |    >= 7.5      |
- * |    19        |    >= 7.6      |
- * |    20        |    >= 8.3      |
- * |    21        |    >= 8.6      |
- * |    22        |    >= ?.?      |
- * |   other      | not supported  |
+ * | 1.8 - 13     | >= 6.0         |
+ * | 14           | >= 6.3         |
+ * | 15           | >= 6.7         |
+ * | 16           | >= 7.0         |
+ * | 17           | >= 7.3         |
+ * | 18           | >= 7.5         |
+ * | 19           | >= 7.6         |
+ * | 20           | >= 8.3         |
+ * | 21           | >= 8.6         |
+ * | 22           | >= ?.?         |
+ * | other        | not supported  |
  */
 private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
     when (JavaVersion.current()) {
@@ -68,11 +72,28 @@ private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
         else -> false // no official information on Gradle compatibility with further versions of Java
     }
 
-private fun filterCompatibleVersions(): List<String> =
-    gradleReleases.filter { gradleSupported(ComparableGradleVersion(it)) }
+private fun filterCompatibleVersions(): List<String> {
+    val minVersion = System.getenv()[ENV_TEST_MIN]?.let { ComparableGradleVersion(it) }
+    val maxVersion = System.getenv()[ENV_TEST_MAX]?.let { ComparableGradleVersion(it) }
+    val exactVersion = System.getenv()[ENV_TEST_EXACT]?.let { ComparableGradleVersion(it) }
+
+    return gradleReleases
+        .filter { v ->
+            val version = ComparableGradleVersion(v)
+
+            val supported = gradleSupported(version)
+            val isAboveMin = minVersion?.let { version >= it.gradleVersion } ?: true
+            val isBelowMax = maxVersion?.let { version <= it.gradleVersion } ?: true
+            val isExact = exactVersion?.let { version.gradleVersion == it.gradleVersion } ?: true
+
+            supported && isAboveMin && isBelowMax && isExact
+        }
+        .toList()
+}
 
 /**
- * Holder class for gradle releases version to test against current java version
+ * Holder class for gradle releases version to test against current java
+ * version
  */
 @Suppress("unused")
 class TestGradleVersionHolder {
@@ -93,7 +114,7 @@ class TestGradleVersionHolder {
 private class ComparableGradleVersion(
     gradleVersionString: String,
 ) : Comparable<Pair<Int, Int>> {
-    private val gradleVersion: Pair<Int, Int>
+    val gradleVersion: Pair<Int, Int>
 
     init {
         val gradleVersionParts = gradleVersionString.split(".")
