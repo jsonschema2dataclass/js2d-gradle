@@ -1,15 +1,29 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [ "config:base" ],
   "commitMessageExtra": "from {{{currentValue}}} to {{{newValue}}}{{#if isMajor}} (major v{{{newMajor}}}){{else}}{{/if}}",
+  "extends": [
+    "config:base"
+  ],
+  "packageRules": [
+    {
+      "description": "Disable updating AGP compatibility dependencies. Allow changes in minor and patches.",
+      "enabled": false,
+      "matchFiles": [
+        "gradle/agp.dependencies.toml",
+        "demo/android-agp7/**"
+      ],
+      "matchPackageNames": [
+        "com.android.tools.build:gradle"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ]
+    }
+  ],
+  "pre-commit": {
+    "enabled": true
+  },
   "separateMajorMinor": true,
-  "separateMultipleMajor": true,
   "separateMinorPatch": true,
-  "packageRules": [ {
-    "description": "Disable updating AGP compatibility dependencies. Allow changes in minor and patches.",
-    "matchPackageNames": [ "com.android.tools.build:gradle" ],
-    "matchFiles": [ "gradle/agp.dependencies.toml", "demo/android-agp7/**" ],
-    "matchUpdateTypes": [ "major" ],
-    "enabled": false
-  } ]
+  "separateMultipleMajor": true
 }

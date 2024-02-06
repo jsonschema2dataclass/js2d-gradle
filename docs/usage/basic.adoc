@@ -112,7 +112,7 @@ Any contributions are welcome.
 // ------------------------------
 | https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/java/model-publish[Model publishing] example
 | Maintained and healthy
-| 
+|
 // ------------------------------
 .4+| Android
 | https://github.com/jsonschema2dataclass/js2d-gradle/tree/main/demo/android/agp7[AGP 7] example

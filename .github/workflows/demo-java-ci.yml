@@ -1,19 +1,20 @@
+---
 name: Java Demo CI
 
 on:
   push:
     branches:
-      - main
+    - main
     tags-ignore:
-      - '*'
+    - '*'
     paths:
-      - 'demo/java/**'
-      - .github/workflows/demo-java-ci.yml
+    - demo/java/**
+    - .github/workflows/demo-java-ci.yml
   pull_request:
     types: [assigned, opened, synchronize, reopened]
     paths:
-      - 'demo/java/**'
-      - .github/workflows/demo-java-ci.yml
+    - demo/java/**
+    - .github/workflows/demo-java-ci.yml
 
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
@@ -36,15 +37,15 @@ jobs:
       fail-fast: false
       matrix:
         java_version: [8, 11, 17, 19]
-        distribution: ["zulu", "temurin"]
+        distribution: [zulu, temurin]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
-        uses: actions/setup-java@v4
-        with:
-          distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.java_version }}
-          cache: gradle
-      - name: Build project Java Demo
-        run: ./gradlew build -S --scan --warning-mode all
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Install JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java_version }}
+        cache: gradle
+    - name: Build project Java Demo
+      run: ./gradlew build -S --scan --warning-mode all

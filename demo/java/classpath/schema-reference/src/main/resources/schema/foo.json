@@ -1,15 +1,15 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "title": "Foo",
-  "type": "object",
   "properties": {
     "metadata": {
-      "existingJavaType": "com.examples.types.Metadata",
-      "$ref": "classpath:/schema/bar.json#"
+      "$ref": "classpath:/schema/bar.json#",
+      "existingJavaType": "com.examples.types.Metadata"
     },
     "name": {
       "type": "string"
     }
-  }
+  },
+  "title": "Foo",
+  "type": "object"
 }

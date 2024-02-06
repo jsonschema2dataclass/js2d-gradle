@@ -1,38 +1,38 @@
 {
+  "dependencies": {
+    "extended_address": "street_address",
+    "post_office_box": "street_address"
+  },
   "description": "An Address following the convention of http://microformats.org/wiki/hcard",
-  "type": "object",
   "properties": {
+    "address": {
+      "items": "string",
+      "type": "array"
+    },
+    "country_name": {
+      "required": true,
+      "type": "string"
+    },
     "extended_address": {
       "type": "string"
     },
-    "street_address": {
+    "locality": {
+      "required": true,
       "type": "string"
-    },
-    "address": {
-      "type": "array",
-      "items": "string"
     },
     "post_office_box": {
       "type": "string"
     },
-    "locality": {
-      "type": "string",
-      "required": true
-    },
-    "country_name": {
-      "type": "string",
-      "required": true
+    "postal_code": {
+      "type": "string"
     },
     "region": {
-      "type": "string",
-      "required": true
+      "required": true,
+      "type": "string"
     },
-    "postal_code": {
+    "street_address": {
       "type": "string"
     }
   },
-  "dependencies": {
-    "extended_address": "street_address",
-    "post_office_box": "street_address"
-  }
+  "type": "object"
 }
