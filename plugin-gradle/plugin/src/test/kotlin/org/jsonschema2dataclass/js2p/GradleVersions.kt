@@ -5,6 +5,8 @@ import org.gradle.util.GradleVersion
 import org.junit.jupiter.params.provider.Arguments
 
 private val gradleReleases8x = arrayOf(
+    "8.6",
+    "8.5",
     "8.4",
     "8.3",
     "8.2.1",
@@ -12,7 +14,7 @@ private val gradleReleases8x = arrayOf(
     "8.0.2",
 )
 private val gradleReleases7x = arrayOf(
-    "7.6.3",
+    "7.6.4",
     "7.5.1",
     "7.4.2",
     "7.3.3",
@@ -47,6 +49,9 @@ private val compatibleVersions = filterCompatibleVersions()
  * |    17        |    >= 7.3      |
  * |    18        |    >= 7.5      |
  * |    19        |    >= 7.6      |
+ * |    20        |    >= 8.3      |
+ * |    21        |    >= 8.6      |
+ * |    22        |    >= ?.?      |
  * |   other      | not supported  |
  */
 private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
@@ -58,6 +63,8 @@ private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
         JavaVersion.VERSION_17 -> gradleVersion >= 7 to 3
         JavaVersion.VERSION_18 -> gradleVersion >= 7 to 5
         JavaVersion.VERSION_19 -> gradleVersion >= 7 to 6
+        JavaVersion.VERSION_20 -> gradleVersion >= 8 to 3
+        JavaVersion.VERSION_21 -> gradleVersion >= 8 to 6
         else -> false // no official information on Gradle compatibility with further versions of Java
     }
 
