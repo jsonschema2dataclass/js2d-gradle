@@ -1,48 +1,84 @@
-name: Code quality checks
+---
+name: Verify Quality Checks
 
 on:
-  push:
-    branches:
-      - main
-    tags-ignore:
-      - '*'
   pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
-    paths:
-      - "**/*.java"
-      - "**/*.xml"
-      - "**/*.json"
-      - "**/*.kt"
-      - "**/*.kts"
-      - "**/*.yml"
-      - "**/*.yaml"
-      - gradle/quality.dependencies.toml
-      - .github/workspace/quality-ci.yml
+    types: [assigned, opened, synchronize, reopened]
 
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
   # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
-  group: ${{ github.ref == 'refs/heads/main' && format('spotless-ci-main-{0}', github.sha) || format('spotless-ci-{0}', github.ref) }}
+  group: ${{ github.ref == 'refs/heads/main' && format('quality-ci-main-{0}', github.sha) || format('quality-ci-{0}', github.ref) }}
   cancel-in-progress: true
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      renovate: ${{ steps.filter.outputs.renovate }}
+      spotless: ${{ steps.filter.outputs.spotless }}
+    steps:
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          renovate:
+          - '.github/renovate.json'
+          - '.github/workflows/renovate-verify.yml'
+          spotless:
+          - '**/*.java'
+          - '**/*.kt'
+          - '**/*.kts'
+          - gradle/quality.dependencies.toml
+          - .github/workspace/quality-ci.yml
+
+  verify-renovate:
+    needs: changes
+    if: ${{ needs.changes.outputs.renovate == 'true' }}
+
+    name: Renovate official check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+    - run: npx --package renovate -c 'renovate-config-validator'
+
   spotless-check:
+    needs: changes
+    if: ${{ needs.changes.outputs.renovate == 'true' }}
+
     name: Spotless check
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        java: [ 11 ]
-        distribution: [ "zulu"]
+        java: [11]
+        distribution: [zulu]
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
-        uses: actions/setup-java@v4
-        with:
-          distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.java }}
-          cache: gradle
-      - run: ./gradlew spotlessCheck --warning-mode all --no-daemon -Porg.jsonschema2dataclass.internal.no-git-version=true
+    - uses: actions/checkout@v4
+    - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: gradle
+    - run: ./gradlew spotlessCheck --warning-mode all --no-daemon -Porg.jsonschema2dataclass.internal.no-git-version=true
+
+  pre-commit:
+    name: Pre-commit checks
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: pip
+    - name: Install dependencies
+      run: pip install -U pip setuptools wheel pre-commit
+    - name: Run pre-commit hooks
+      run: pre-commit run --all-files --show-diff-on-failure

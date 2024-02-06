@@ -1,23 +1,24 @@
+---
 name: Android AGP 7 Demo CI (unreleased plugin version)
 
 on:
   push:
     branches:
-      - main
+    - main
     tags-ignore:
-      - '*'
+    - '*'
     paths:
-      - build.gradle.kts
-      - 'internal/**'
-      - 'plugin-gradle/**'
-      - 'demo/android-agp7/**'
-      - .github/workflows/demo-android-agp7-ci-unreleased.yml
+    - build.gradle.kts
+    - internal/**
+    - plugin-gradle/**
+    - demo/android-agp7/**
+    - .github/workflows/demo-android-agp7-ci-unreleased.yml
   pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
+    types: [assigned, opened, synchronize, reopened]
     paths:
-      - 'plugin-gradle/**'
-      - 'demo/android-agp7/**'
-      - .github/workflows/demo-android-agp7-ci-unreleased.yml
+    - plugin-gradle/**
+    - demo/android-agp7/**
+    - .github/workflows/demo-android-agp7-ci-unreleased.yml
 
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
@@ -38,18 +39,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ 17 ]
-        distribution: [ "zulu" ]
+        java: [17]
+        distribution: [zulu]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
-        uses: actions/setup-java@v4
-        with:
-          distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.java }}
-          cache: gradle
-      - name: Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.1.4
-      - name: Build project Android AGP 7 Demo (unreleased plugin version)
-        run: ./gradlew assembleDebug -S --scan --warning-mode all  -I ../../gradle/init.gradle.kts -Porg.jsonschema2dataclass.internal.spotless.disable=true  -Porg.jsonschema2dataclass.internal.local=true
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: gradle
+    - name: Install Android SDK
+      uses: malinskiy/action-android/install-sdk@release/0.1.4
+    - name: Build project Android AGP 7 Demo (unreleased plugin version)
+      run: ./gradlew assembleDebug -S --scan --warning-mode all  -I ../../gradle/init.gradle.kts -Porg.jsonschema2dataclass.internal.spotless.disable=true  -Porg.jsonschema2dataclass.internal.local=true

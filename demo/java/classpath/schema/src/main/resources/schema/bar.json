@@ -1,14 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
-  "title": "Metadata",
-  "type": "object",
   "properties": {
-    "name": {
-      "type": "string"
-    },
     "id": {
       "type": "string"
+    },
+    "name": {
+      "type": "string"
     }
-  }
+  },
+  "title": "Metadata",
+  "type": "object"
 }

@@ -55,22 +55,10 @@ private fun applySpotless(project: Project) {
             ktlint(ktlintVersion)
             endWithNewline()
         }
-        json {
+        java {
             targetExclude(*excludes)
-            target("**/*.json")
-            jackson()
-            endWithNewline()
+            target("**/*.java")
+            palantirJavaFormat(palantirVersion)
         }
-        yaml {
-            targetExclude(*excludes)
-            target("**/*.yaml")
-            jackson()
-            endWithNewline()
-        }
-//        java {
-//            targetExclude(*excludes)
-//            target("**/*.java")
-//            palantirJavaFormat(palantirVersion)
-//        }
     }
 }

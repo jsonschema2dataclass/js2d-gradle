@@ -1,39 +1,40 @@
+---
 name: Build Plugin CI
 
 on:
   push:
     branches:
-      - main
+    - main
     tags-ignore:
-      - '*'
+    - '*'
     paths:
-      - 'plugin-gradle/**'
-      - 'gradle/wrapper/**'
-      - 'gradle/agp.dependencies.toml'
-      - 'gradle/libs.dependencies.toml'
-      - 'gradlew*'
-      - 'internal/plugins'
-      - 'internal/common'
-      - 'internal/settings.gradle.kts'
-      - settings.gradle.kts
-      - build.gradle.kts
-      - gradle.properties
-      - .github/workflows/plugin-build-ci.yml
+    - plugin-gradle/**
+    - gradle/wrapper/**
+    - gradle/agp.dependencies.toml
+    - gradle/libs.dependencies.toml
+    - gradlew*
+    - internal/plugins
+    - internal/common
+    - internal/settings.gradle.kts
+    - settings.gradle.kts
+    - build.gradle.kts
+    - gradle.properties
+    - .github/workflows/plugin-build-ci.yml
   pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
+    types: [assigned, opened, synchronize, reopened]
     paths:
-      - 'plugin-gradle/**'
-      - 'gradle/wrapper/**'
-      - 'gradle/agp.dependencies.toml'
-      - 'gradle/libs.dependencies.toml'
-      - 'gradlew*'
-      - 'internal/plugins'
-      - 'internal/common'
-      - 'internal/settings.gradle.kts'
-      - settings.gradle.kts
-      - build.gradle.kts
-      - gradle.properties
-      - .github/workflows/plugin-build-ci.yml
+    - plugin-gradle/**
+    - gradle/wrapper/**
+    - gradle/agp.dependencies.toml
+    - gradle/libs.dependencies.toml
+    - gradlew*
+    - internal/plugins
+    - internal/common
+    - internal/settings.gradle.kts
+    - settings.gradle.kts
+    - build.gradle.kts
+    - gradle.properties
+    - .github/workflows/plugin-build-ci.yml
 
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
@@ -52,17 +53,17 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        java: [ 21, 17, 11, 8 ]
-        distribution: [ "zulu" ]
+        java: [21, 17, 11, 8]
+        distribution: [zulu]
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
-        uses: actions/setup-java@v4
-        with:
-          distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.java }}
-          cache: gradle
-      - run: |
-         ./gradlew build -S --scan --warning-mode all --no-daemon \
-             -Porg.jsonschema2dataclass.internal.no-git-version=true \
-             -Porg.jsonschema2dataclass.internal.spotless-disable=true
+    - uses: actions/checkout@v4
+    - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: gradle
+    - run: |
+        ./gradlew build -S --scan --warning-mode all --no-daemon \
+            -Porg.jsonschema2dataclass.internal.no-git-version=true \
+            -Porg.jsonschema2dataclass.internal.spotless-disable=true
