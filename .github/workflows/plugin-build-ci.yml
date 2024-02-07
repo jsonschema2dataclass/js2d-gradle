@@ -13,8 +13,8 @@ on:
     - gradle/agp.dependencies.toml
     - gradle/libs.dependencies.toml
     - gradlew*
-    - internal/plugins
-    - internal/common
+    - internal/plugins/**
+    - internal/common/**
     - internal/settings.gradle.kts
     - settings.gradle.kts
     - build.gradle.kts
@@ -28,8 +28,8 @@ on:
     - gradle/agp.dependencies.toml
     - gradle/libs.dependencies.toml
     - gradlew*
-    - internal/plugins
-    - internal/common
+    - internal/plugins/**
+    - internal/common/**
     - internal/settings.gradle.kts
     - settings.gradle.kts
     - build.gradle.kts
