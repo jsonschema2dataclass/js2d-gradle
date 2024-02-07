@@ -51,6 +51,9 @@ dependencies {
 }
 
 tasks.test {
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(JavaVersion.current().majorVersion)
+    }
     useJUnitPlatform()
     systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_method")
     systemProperty("junit.jupiter.execution.parallel.enabled", "true")

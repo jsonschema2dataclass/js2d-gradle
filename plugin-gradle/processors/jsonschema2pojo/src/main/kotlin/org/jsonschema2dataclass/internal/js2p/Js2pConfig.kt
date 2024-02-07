@@ -88,6 +88,7 @@ internal data class Js2pConfig(
 
     override fun isFormatTimes(): Boolean = dateTime.timeFormat ?: def.isFormatTimes
 
+    @TestsNeeded
     internal fun isGenerateBuildersRaw(): Boolean = methods.builders ?: def.isGenerateBuilders
 
     @TestsNeeded
@@ -130,6 +131,7 @@ internal data class Js2pConfig(
     override fun isIncludeHashcodeAndEquals(): Boolean =
         methods.hashcodeAndEquals ?: def.isIncludeHashcodeAndEquals
 
+    @TestsNeeded
     internal fun isIncludeJsr303AnnotationRaw(): Boolean =
         methods.annotateJsr303 ?: def.isIncludeJsr303Annotations
 
