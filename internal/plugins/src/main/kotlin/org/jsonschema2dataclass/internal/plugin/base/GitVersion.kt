@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit
 
 private val regex = Regex("""^v?([0-9.]*(?:-rc\d+)?)-(\d+)-g([0-9a-f]+)(-dirty)?$""")
 private const val DEFAULT_VERSION = "-.-.--0-g00000000-dirty"
+private const val PROPERTY_SKIP_GIT_QUERY = "org.jsonschema2dataclass.internal.no-git-version"
 
 fun gitVersion(project: Project): String =
     processVersionString(commandVersion(project) ?: DEFAULT_VERSION)
@@ -38,6 +39,10 @@ private fun processVersionString(value: String): String {
 }
 
 private fun commandVersion(project: Project): String? {
+    if (project.properties[PROPERTY_SKIP_GIT_QUERY] == "true") {
+        return null
+    }
+
     val process = try {
         ProcessBuilder()
             .command("git", "describe", "--tags", "--long", "--dirty")
