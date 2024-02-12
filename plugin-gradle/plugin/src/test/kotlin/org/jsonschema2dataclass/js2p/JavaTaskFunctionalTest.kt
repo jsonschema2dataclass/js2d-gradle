@@ -4,7 +4,6 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.jsonschema2dataclass.internal.task.DEFAULT_TARGET_FOLDER_BASE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -120,7 +119,6 @@ class JavaTaskFunctionalTest {
         "org.jsonschema2dataclass.js2p.GradleVersions#configurationCacheCompatibleGradleReleasesForTests",
     )
     @DisplayName("plugin is configuration cache compatible")
-    @Disabled("To be investigated")
     fun configurationCacheCompatibility(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
 
