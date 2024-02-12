@@ -11,7 +11,7 @@ spotless-palantir = "2.40.0"
 spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless"}
 
 # Spotless formatting tools
-spotless-ktlint = { module = "com.pinterest:ktlint", version.ref="spotless-ktlint"}
+spotless-ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version.ref="spotless-ktlint"}
 spotless-palantir = { module = "com.palantir.javaformat:palantir-java-format", version.ref="spotless-palantir"}
 
 [plugins]
