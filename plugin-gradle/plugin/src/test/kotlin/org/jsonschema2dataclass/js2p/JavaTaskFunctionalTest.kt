@@ -4,7 +4,6 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.jsonschema2dataclass.internal.task.DEFAULT_TARGET_FOLDER_BASE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
@@ -29,7 +28,9 @@ class JavaTaskFunctionalTest {
     fun withoutExtension(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingleNoExtension(testProjectDir, true)
 
-        val result = executeRunner(gradleVersion, testProjectDir, shouldFail = true)
+        val result = createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir)
+            .execute(true)
+
         assertNull(result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
     }
 
@@ -38,8 +39,10 @@ class JavaTaskFunctionalTest {
     @DisplayName("single execution")
     fun singleExtension(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
-        val result = executeRunner(gradleVersion, testProjectDir)
-        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
+
+        createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir)
+            .execute()
+            .assertResultAndGeneratedClass()
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
@@ -48,8 +51,9 @@ class JavaTaskFunctionalTest {
     fun singleExtensionSimple(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingleSimple(testProjectDir, true)
 
-        val result = executeRunner(gradleVersion, testProjectDir)
-        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
+        createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir)
+            .execute()
+            .assertResultAndGeneratedClass()
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
@@ -58,9 +62,10 @@ class JavaTaskFunctionalTest {
     fun multipleExecutions(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesMultiple(testProjectDir, true)
 
-        val result = executeRunner(gradleVersion, testProjectDir, COLON_TASK_NAME)
-        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM, TARGET_FOLDER_CUSTOM)
-        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_ORG, TARGET_FOLDER_CUSTOM)
+        createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir)
+            .execute()
+            .assertResultAndGeneratedClass(taskName = COLON_TASK_NAME_FOR_COM, targetFolder = TARGET_FOLDER_CUSTOM)
+            .assertResultAndGeneratedClass(taskName = COLON_TASK_NAME_FOR_ORG, targetFolder = TARGET_FOLDER_CUSTOM)
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
@@ -68,8 +73,10 @@ class JavaTaskFunctionalTest {
     @DisplayName("compileJava task depends task even when project has no java code")
     fun noJavaCode(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
-        val result = executeRunner(gradleVersion, testProjectDir, "compileJava")
-        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
+
+        createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir, task = "compileJava")
+            .execute()
+            .assertResultAndGeneratedClass()
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
@@ -78,12 +85,11 @@ class JavaTaskFunctionalTest {
     fun taskIsCacheable(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
 
-        // Run our task twice to be sure that results has been cached
-        val runner = createRunner(gradleVersion, testProjectDir)
-        val execution1 = runner.build()
-        checkResultAndGeneratedClass(execution1, testProjectDir, COLON_TASK_NAME_FOR_COM)
-        val execution2 = runner.build()
+        val runner = createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir)
+        runner.execute().assertResultAndGeneratedClass()
 
+        // Run our task twice to be sure that results has been cached
+        val execution2 = runner.execute()
         assertEquals(TaskOutcome.UP_TO_DATE, execution2.task(COLON_TASK_NAME_FOR_COM)?.outcome)
     }
 
@@ -92,7 +98,8 @@ class JavaTaskFunctionalTest {
     @DisplayName("task skips if no json file exists")
     fun noJsonFiles(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, false)
-        val result = executeRunner(gradleVersion, testProjectDir)
+
+        val result = createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir).execute()
         assertEquals(TaskOutcome.NO_SOURCE, result.task(COLON_TASK_NAME_FOR_COM)?.outcome)
     }
 
@@ -101,8 +108,10 @@ class JavaTaskFunctionalTest {
     @DisplayName("java-library applied after org.jsonschema2dataclass")
     fun lazyWithoutExtension(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesLazyInit(testProjectDir, true)
-        val result = executeRunner(gradleVersion, testProjectDir)
-        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
+
+        createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir)
+            .execute()
+            .assertResultAndGeneratedClass()
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
@@ -111,8 +120,9 @@ class JavaTaskFunctionalTest {
     fun sourceJarCompatibility(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesWithSourcesJar(testProjectDir)
 
-        val result = executeRunner(gradleVersion, testProjectDir, task = "generateAndJarSources")
-        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
+        createRunner(gradleVersion = gradleVersion, testProjectDir = testProjectDir, task = "generateAndJarSources")
+            .execute()
+            .assertResultAndGeneratedClass()
     }
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
@@ -120,13 +130,15 @@ class JavaTaskFunctionalTest {
         "org.jsonschema2dataclass.js2p.GradleVersions#configurationCacheCompatibleGradleReleasesForTests",
     )
     @DisplayName("plugin is configuration cache compatible")
-    @Disabled("To be investigated")
     fun configurationCacheCompatibility(gradleVersion: String?, @TempDir testProjectDir: Path) {
         createBuildFilesSingle(testProjectDir, true)
 
-        val runner = createRunner(gradleVersion, testProjectDir)
-        val result = runner.withArguments(*runner.arguments.toTypedArray(), "--configuration-cache")
-            .build()
-        checkResultAndGeneratedClass(result, testProjectDir, COLON_TASK_NAME_FOR_COM)
+        createRunner(
+            gradleVersion = gradleVersion,
+            testProjectDir = testProjectDir,
+            arguments = arrayOf("--configuration-cache"),
+        )
+            .execute()
+            .assertResultAndGeneratedClass()
     }
 }
