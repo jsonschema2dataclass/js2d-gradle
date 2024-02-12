@@ -5,7 +5,7 @@ pluginManagement {
 }
 
 plugins {
-    // Allows using classes / functions from gradle/plugins project.
+    id("com.gradle.enterprise") version "3.16.2"
     id("org.jsonschema2dataclass.internal.settings-enterprise")
 }
 
