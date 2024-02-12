@@ -33,7 +33,6 @@ private fun applySpotless(project: Project) {
             .orElseThrow { GradleException("Unable resolve version for $name in catalog $catalog") }
             .requiredVersion
 
-    val ktlintVersion: String = version("spotless-ktlint")
     val palantirVersion: String = version("spotless-palantir")
 
     val excludes = arrayOf(
@@ -43,18 +42,6 @@ private fun applySpotless(project: Project) {
         "**/.gradle/**",
     )
     project.extensions.configure(SpotlessExtension::class.java) {
-        kotlin {
-            targetExclude(*excludes)
-            target("**/*.kt")
-            ktlint(ktlintVersion)
-            endWithNewline()
-        }
-        kotlinGradle {
-            targetExclude(*excludes)
-            target("**/*.kts")
-            ktlint(ktlintVersion)
-            endWithNewline()
-        }
         java {
             targetExclude(*excludes)
             target("**/*.java")
