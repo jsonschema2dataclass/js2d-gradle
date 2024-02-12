@@ -34,10 +34,13 @@ val pluginIds = mapOf(
 )
 
 /** If set, project version will be set to the value. */
-const val EXTRA_GIT_VERSION = "org.jsonschema2dataclass.internal.git-version"
+const val EXTRA_GIT_VERSION_OVERRIDE = "org.jsonschema2dataclass.internal.git-version-override"
+
+/** If set, project version will be set to the value. */
+const val EXTRA_GIT_VERSION_ENABLE = "org.jsonschema2dataclass.internal.git-version-enable"
 
 /** If set, gradle plugin will be prepared for a local publication. */
 const val EXTRA_LOCAL_PUBLISH = "org.jsonschema2dataclass.internal.local-publish"
 
 /** If set, spotless plugin will be disabled. */
-const val EXTRA_SPOTLESS_DISABLE = "org.jsonschema2dataclass.internal.spotless-disable"
+const val EXTRA_SPOTLESS_ENABLE = "org.jsonschema2dataclass.internal.spotless-enable"

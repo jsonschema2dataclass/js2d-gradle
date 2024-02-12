@@ -13,6 +13,9 @@ concurrency:
   group: ${{ github.ref == 'refs/heads/main' && format('demo-agp7-ci-main-{0}', github.sha) || format('demo-agp7-ci-{0}', github.ref) }}
   cancel-in-progress: true
 
+env:
+  GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
+
 jobs:
   publish:
     name: Publish release
@@ -30,7 +33,7 @@ jobs:
         java-version: 17
         cache: gradle
     - name: Build project
-      run: ./gradlew build --no-daemon
+      run: ./gradlew build --no-daemon  -Porg.jsonschema2dataclass.internal.git-version=true
       env:
         VERSION: ${{ github.ref }}
     - name: Find Tag

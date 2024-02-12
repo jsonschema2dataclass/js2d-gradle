@@ -1,6 +1,6 @@
 package org.jsonschema2dataclass.internal.plugin
 
-import EXTRA_SPOTLESS_DISABLE
+import EXTRA_SPOTLESS_ENABLE
 import com.diffplug.gradle.spotless.SpotlessExtension
 import isExtraEnabled
 import org.gradle.api.GradleException
@@ -18,7 +18,7 @@ class SpotlessConfigPlugin : Plugin<Project> {
 }
 
 private fun applySpotless(project: Project) {
-    if (project.isExtraEnabled(EXTRA_SPOTLESS_DISABLE)) {
+    if (!project.isExtraEnabled(EXTRA_SPOTLESS_ENABLE)) {
         project.extensions.configure(SpotlessExtension::class.java) {
             this.isEnforceCheck = false
         }
