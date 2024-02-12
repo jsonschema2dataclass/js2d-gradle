@@ -11,7 +11,7 @@ import java.io.File
 import java.io.FileFilter
 import java.io.Serializable
 import java.net.URL
-import java.util.*
+import java.util.UUID
 
 internal class Js2pWorkerConfig(
     internal val uuid: UUID,
