@@ -3,7 +3,7 @@
 spotless = "6.25.0"
 
 # Releases https://github.com/pinterest/ktlint/releases
-spotless-ktlint = "1.0.1"
+spotless-ktlint = "1.1.1"
 # Releases https://github.com/palantir/palantir-java-format/releases
 spotless-palantir = "2.40.0"
 
