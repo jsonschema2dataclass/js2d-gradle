@@ -32,8 +32,6 @@ jobs:
           - '.github/workflows/renovate-verify.yml'
           spotless:
           - '**/*.java'
-          - '**/*.kt'
-          - '**/*.kts'
           - gradle/quality.dependencies.toml
           - .github/workspace/quality-ci.yml
 
