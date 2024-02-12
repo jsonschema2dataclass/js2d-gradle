@@ -3,7 +3,13 @@ package org.jsonschema2dataclass.internal.js2p
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
-import org.jsonschema2dataclass.ext.*
+import org.jsonschema2dataclass.ext.Js2pConfiguration
+import org.jsonschema2dataclass.ext.PluginConfigJs2pClass
+import org.jsonschema2dataclass.ext.PluginConfigJs2pConstructor
+import org.jsonschema2dataclass.ext.PluginConfigJs2pDateTime
+import org.jsonschema2dataclass.ext.PluginConfigJs2pField
+import org.jsonschema2dataclass.ext.PluginConfigJs2pIO
+import org.jsonschema2dataclass.ext.PluginConfigJs2pMethod
 import org.jsonschema2pojo.GenerationConfig
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.assertAll

@@ -1,15 +1,19 @@
 package org.jsonschema2dataclass.internal.js2p
 
 import org.gradle.api.GradleScriptException
-import org.jsonschema2dataclass.internal.*
 import org.jsonschema2dataclass.internal.compat.kotlin.TestsNeeded
 import org.jsonschema2dataclass.internal.compat.kotlin.asUppercase
-import org.jsonschema2pojo.*
+import org.jsonschema2pojo.AnnotationStyle
+import org.jsonschema2pojo.Annotator
+import org.jsonschema2pojo.DefaultGenerationConfig
+import org.jsonschema2pojo.GenerationConfig
+import org.jsonschema2pojo.InclusionLevel
+import org.jsonschema2pojo.SourceSortOrder
+import org.jsonschema2pojo.SourceType
 import org.jsonschema2pojo.rules.RuleFactory
 import java.io.File
 import java.io.FileFilter
 import java.net.URL
-import java.util.*
 
 internal data class Js2pConfig(
     private val targetDirectory: File,

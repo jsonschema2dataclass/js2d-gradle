@@ -1,6 +1,12 @@
 package org.jsonschema2dataclass.internal.js2p
 
-import org.jsonschema2dataclass.ext.*
+import org.jsonschema2dataclass.ext.Js2pConfiguration
+import org.jsonschema2dataclass.ext.PluginConfigJs2pClass
+import org.jsonschema2dataclass.ext.PluginConfigJs2pConstructor
+import org.jsonschema2dataclass.ext.PluginConfigJs2pDateTime
+import org.jsonschema2dataclass.ext.PluginConfigJs2pField
+import org.jsonschema2dataclass.ext.PluginConfigJs2pIO
+import org.jsonschema2dataclass.ext.PluginConfigJs2pMethod
 import java.io.File
 import java.io.FileFilter
 import java.io.Serializable

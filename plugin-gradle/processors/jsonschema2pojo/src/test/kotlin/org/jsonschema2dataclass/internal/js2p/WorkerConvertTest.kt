@@ -1,12 +1,12 @@
 package org.jsonschema2dataclass.internal.js2p
 
 import org.gradle.testfixtures.ProjectBuilder
-import org.jsonschema2dataclass.ext.*
+import org.jsonschema2dataclass.ext.Js2pConfiguration
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.assertAll
 import java.io.File
-import java.util.*
+import java.util.UUID
 
 private const val CONFIGURATION_NAME = "random_configuration"
 

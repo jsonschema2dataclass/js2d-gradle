@@ -5,17 +5,20 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.kotlin.dsl.apply
 import org.jsonschema2dataclass.ext.Js2pExtension
-import org.jsonschema2dataclass.internal.*
+import org.jsonschema2dataclass.internal.GradlePluginRegistration
+import org.jsonschema2dataclass.internal.Js2dProcessor
 import org.jsonschema2dataclass.internal.compat.android.androidProcessorRegistrationSelector
 import org.jsonschema2dataclass.internal.compat.java.JavaPluginRegistration
 import org.jsonschema2dataclass.internal.defaultConfigurationSettings
 import org.jsonschema2dataclass.internal.js2p.Js2pProcessor
 import org.jsonschema2dataclass.internal.registrationTasksMachinery
-import org.jsonschema2dataclass.internal.task.*
+import org.jsonschema2dataclass.internal.task.DEFAULT_TARGET_FOLDER_BASE
+import org.jsonschema2dataclass.internal.task.JS2D_CONFIGURATION_NAME
+import org.jsonschema2dataclass.internal.task.JS2D_PLUGINS_CONFIGURATION_NAME
+import org.jsonschema2dataclass.internal.task.JS2P_EXTENSION_NAME
 import org.jsonschema2dataclass.internal.verifyExecutionNames
 import org.jsonschema2dataclass.internal.verifyExecutions
 import org.jsonschema2dataclass.internal.verifyGradleVersion
-import java.util.*
 
 private val processors: MutableList<Js2dProcessor<*>> = mutableListOf()
 

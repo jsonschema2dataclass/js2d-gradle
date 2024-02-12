@@ -4,7 +4,7 @@ package org.jsonschema2dataclass.internal.compat.kotlin
  * Kotlin version independent functions as we support quite wide range of Gradle
  */
 
-import java.util.*
+import java.util.Locale
 
 /**
  * Kotlin-independent version of making string uppercase
