@@ -8,4 +8,4 @@ package org.jsonschema2dataclass.internal.compat.kotlin
     AnnotationTarget.EXPRESSION,
 )
 @Retention(AnnotationRetention.SOURCE)
-annotation class TestsNeeded()
+annotation class TestsNeeded

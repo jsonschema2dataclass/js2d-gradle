@@ -17,6 +17,9 @@ private val compatComponentsDefault = listOf(
     "com.android.tools.build:manifest-merger",
 )
 
+// build with this java version
+private const val TARGET_JAVA_VERSION = 8
+
 @Suppress("unused")
 class AGPCompat8Plugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -26,7 +29,7 @@ class AGPCompat8Plugin : Plugin<Project> {
                 // so that the produced jars can still be used with Java 8.
                 // https://docs.gradle.org/current/userguide/component_metadata_rules.html
                 for (component in compatComponentsDefault) {
-                    withModule<TargetJvmVersionRule>(component) { params(8) }
+                    withModule<TargetJvmVersionRule>(component) { params(TARGET_JAVA_VERSION) }
                 }
             }
         }

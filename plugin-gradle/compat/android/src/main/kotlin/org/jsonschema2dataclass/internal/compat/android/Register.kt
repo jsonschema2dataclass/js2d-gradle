@@ -8,10 +8,14 @@ import org.jsonschema2dataclass.internal.task.PLUGIN_ID
 fun androidProcessorRegistrationSelector(): GradlePluginRegistration =
     findClass<GradlePluginRegistration>(androidProcessorRegistrationClass()).getDeclaredConstructor().newInstance()
 
+private const val AGP_3 = 3
+private const val AGP_4 = 4
+private const val AGP_7 = 7
+
 private fun androidProcessorRegistrationClass(): String =
     when (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.split(".")[0].toInt()) {
-        3, 4 -> "org.jsonschema2dataclass.internal.compat.android.AGP34PluginRegistration"
-        7 -> "org.jsonschema2dataclass.internal.compat.android.AGP347PluginRegistration"
+        AGP_3, AGP_4 -> "org.jsonschema2dataclass.internal.compat.android.AGP34PluginRegistration"
+        AGP_7 -> "org.jsonschema2dataclass.internal.compat.android.AGP347PluginRegistration"
         else -> throw ProjectConfigurationException("$PLUGIN_ID: Plugin supports AGP 3.x, 4.x or 7.x", listOf())
     }
 
