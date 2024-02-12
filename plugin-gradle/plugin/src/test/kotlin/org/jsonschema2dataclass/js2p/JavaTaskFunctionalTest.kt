@@ -20,7 +20,7 @@ const val PACKAGE_COM_EXAMPLE = "com/example"
 const val EXECUTION_NAME_ORG = "org"
 const val PACKAGE_ORG_EXAMPLE = "org/example"
 
-const val PARAM_SOURCE = "org.jsonschema2dataclass.js2p.TestGradleVersionHolder#gradleReleasesForTests"
+const val PARAM_SOURCE = "org.jsonschema2dataclass.js2p.GradleVersions#gradleReleasesForTests"
 
 class JavaTaskFunctionalTest {
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
@@ -117,7 +117,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
     @MethodSource(
-        "org.jsonschema2dataclass.js2p.TestGradleVersionHolder#configurationCacheCompatibleGradleReleasesForTests",
+        "org.jsonschema2dataclass.js2p.GradleVersions#configurationCacheCompatibleGradleReleasesForTests",
     )
     @DisplayName("plugin is configuration cache compatible")
     @Disabled("To be investigated")

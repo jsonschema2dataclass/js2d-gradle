@@ -96,7 +96,7 @@ private fun filterCompatibleVersions(): List<String> {
  * version
  */
 @Suppress("unused")
-class TestGradleVersionHolder {
+class GradleVersions private constructor() {
     companion object {
         @JvmStatic
         fun gradleReleasesForTests(): List<Arguments> = compatibleVersions.map { Arguments.of(it) }

@@ -43,7 +43,7 @@ private fun applySpotless(project: Project) {
     )
     project.extensions.configure(SpotlessExtension::class.java) {
         java {
-            targetExclude(*excludes)
+            targetExclude(excludes)
             target("**/*.java")
             palantirJavaFormat(palantirVersion)
         }
