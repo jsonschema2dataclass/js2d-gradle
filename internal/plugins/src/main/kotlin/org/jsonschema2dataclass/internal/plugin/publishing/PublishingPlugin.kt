@@ -3,7 +3,7 @@ package org.jsonschema2dataclass.internal.plugin.publishing
 import javaPluginExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.configure
 import org.gradle.plugin.devel.GradlePluginDevelopmentExtension
 
 /**

@@ -1,8 +1,25 @@
 package org.jsonschema2dataclass.internal.js2p
 
-import org.jsonschema2dataclass.ext.*
-import org.jsonschema2dataclass.internal.*
-import org.jsonschema2pojo.*
+import org.jsonschema2dataclass.ext.Js2pConfiguration
+import org.jsonschema2dataclass.ext.PluginConfigJs2pClass
+import org.jsonschema2dataclass.ext.PluginConfigJs2pConstructor
+import org.jsonschema2dataclass.ext.PluginConfigJs2pDateTime
+import org.jsonschema2dataclass.ext.PluginConfigJs2pField
+import org.jsonschema2dataclass.ext.PluginConfigJs2pIO
+import org.jsonschema2dataclass.ext.PluginConfigJs2pMethod
+import org.jsonschema2dataclass.internal.nullable
+import org.jsonschema2dataclass.internal.randomBoolean
+import org.jsonschema2dataclass.internal.randomEnum
+import org.jsonschema2dataclass.internal.randomList
+import org.jsonschema2dataclass.internal.randomMap
+import org.jsonschema2dataclass.internal.randomSet
+import org.jsonschema2dataclass.internal.randomString
+import org.jsonschema2pojo.AnnotationStyle
+import org.jsonschema2pojo.Annotator
+import org.jsonschema2pojo.GenerationConfig
+import org.jsonschema2pojo.InclusionLevel
+import org.jsonschema2pojo.SourceSortOrder
+import org.jsonschema2pojo.SourceType
 import org.jsonschema2pojo.rules.RuleFactory
 import java.io.File
 

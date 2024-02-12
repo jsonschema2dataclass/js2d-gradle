@@ -1,6 +1,10 @@
 package org.jsonschema2dataclass.internal
 
-import org.gradle.api.*
+import org.gradle.api.GradleException
+import org.gradle.api.InvalidUserDataException
+import org.gradle.api.Named
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.internal.task.PLUGIN_ID
 

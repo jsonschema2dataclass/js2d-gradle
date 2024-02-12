@@ -1,6 +1,11 @@
 package org.jsonschema2dataclass.internal.js2p
 
-import org.jsonschema2pojo.*
+import org.jsonschema2pojo.AnnotationStyle
+import org.jsonschema2pojo.Annotator
+import org.jsonschema2pojo.GenerationConfig
+import org.jsonschema2pojo.InclusionLevel
+import org.jsonschema2pojo.SourceSortOrder
+import org.jsonschema2pojo.SourceType
 import org.jsonschema2pojo.rules.RuleFactory
 import java.io.File
 import java.io.FileFilter

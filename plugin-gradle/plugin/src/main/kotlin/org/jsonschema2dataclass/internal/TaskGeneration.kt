@@ -1,6 +1,11 @@
 package org.jsonschema2dataclass.internal
 
-import org.gradle.api.*
+import org.gradle.api.Action
+import org.gradle.api.Named
+import org.gradle.api.NamedDomainObjectCollection
+import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.api.UnknownTaskException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.TaskProvider
@@ -10,7 +15,7 @@ import org.jsonschema2dataclass.internal.compat.kotlin.capitalized
 import org.jsonschema2dataclass.internal.task.JS2D_TASK_NAME
 import org.jsonschema2dataclass.internal.task.JS2P_TOOL_NAME
 import java.nio.file.Path
-import java.util.*
+import java.util.UUID
 
 private const val BASE_TASK_DESCRIPTION = "Generates Java models from a schema"
 
