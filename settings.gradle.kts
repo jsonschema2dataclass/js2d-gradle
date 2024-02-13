@@ -52,5 +52,8 @@ dependencyResolutionManagement {
         create("quality") {
             from(files("gradle/quality.dependencies.toml"))
         }
+        create("processors") {
+            from(files("gradle/processors.toml"))
+        }
     }
 }

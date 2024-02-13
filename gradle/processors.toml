@@ -1,0 +1,8 @@
+[versions]
+# Jsonschema2pojo processor
+# Versions: https://github.com/joelittlejohn/jsonschema2pojo/releases
+processor-jsonschema2pojo = "1.2.1"
+
+[libraries]
+# Plugin Schema processors
+processor-jsonschema2pojo = {module = "org.jsonschema2pojo:jsonschema2pojo-core", version.ref="processor-jsonschema2pojo"}
