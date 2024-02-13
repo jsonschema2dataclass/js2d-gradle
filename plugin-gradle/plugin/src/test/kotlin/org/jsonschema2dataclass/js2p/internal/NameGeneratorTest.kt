@@ -3,14 +3,11 @@ package org.jsonschema2dataclass.js2p.internal
 import org.jsonschema2dataclass.internal.createTaskNameDescription
 import org.jsonschema2dataclass.internal.generatePart
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.condition.DisabledForJreRange
-import org.junit.jupiter.api.condition.JRE
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
 private const val EXECUTION_NAME = "execution"
 
-@DisabledForJreRange(max = JRE.JAVA_8)
 class NameGeneratorTest {
     @ParameterizedTest
     @CsvSource(
