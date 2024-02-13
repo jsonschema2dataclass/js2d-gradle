@@ -43,6 +43,11 @@ gradlePlugin {
             implementationClass = "org.jsonschema2dataclass.internal.plugin.lib.GradlePlugin"
             description = "Set up gradle plugin defaults."
         }
+        create("processor-version") {
+            id = "org.jsonschema2dataclass.internal.processor-version"
+            implementationClass = "org.jsonschema2dataclass.internal.plugin.lib.ProcessorVersionPlugin"
+            description = "Set up gradle plugin defaults."
+        }
         create("plugin-publish") {
             id = "org.jsonschema2dataclass.internal.plugin-publish"
             implementationClass = "org.jsonschema2dataclass.internal.plugin.publishing.PublishingPlugin"
