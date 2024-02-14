@@ -26,7 +26,6 @@ fun Project.isExtraEnabled(name: String): Boolean =
     project.extraValue(name)?.toBoolean() == true
 
 val pluginIds = mapOf(
-    "spotless" to "com.diffplug.spotless",
     "kotlin-dokka" to "org.jetbrains.dokka",
     "nexus-publish" to "io.github.gradle-nexus.publish-plugin",
     "gradle-entrprise" to "com.gradle.enterprise",
@@ -41,6 +40,3 @@ const val EXTRA_GIT_VERSION_ENABLE = "org.jsonschema2dataclass.internal.git-vers
 
 /** If set, gradle plugin will be prepared for a local publication. */
 const val EXTRA_LOCAL_PUBLISH = "org.jsonschema2dataclass.internal.local-publish"
-
-/** If set, spotless plugin will be disabled. */
-const val EXTRA_SPOTLESS_ENABLE = "org.jsonschema2dataclass.internal.spotless-enable"

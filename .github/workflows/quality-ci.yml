@@ -21,7 +21,6 @@ jobs:
       pull-requests: read
     outputs:
       renovate: ${{ steps.filter.outputs.renovate }}
-      spotless: ${{ steps.filter.outputs.spotless }}
     steps:
     - uses: dorny/paths-filter@v3
       id: filter
@@ -30,10 +29,6 @@ jobs:
           renovate:
           - '.github/renovate.json'
           - '.github/workflows/renovate-verify.yml'
-          spotless:
-          - '**/*.java'
-          - gradle/quality.dependencies.toml
-          - .github/workspace/quality-ci.yml
 
   verify-renovate:
     needs: changes
@@ -45,27 +40,6 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
     - run: npx --package renovate -c 'renovate-config-validator'
-
-  spotless-check:
-    needs: changes
-    if: ${{ needs.changes.outputs.spotless == 'true' }}
-
-    name: Spotless check
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        java: [11]
-        distribution: [zulu]
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
-      uses: actions/setup-java@v4
-      with:
-        distribution: ${{ matrix.distribution }}
-        java-version: ${{ matrix.java }}
-        cache: gradle
-    - run: ./gradlew spotlessCheck --warning-mode all --no-daemon -Porg.jsonschema2dataclass.internal.spotless-enable=true
 
   pre-commit:
     name: Pre-commit checks
