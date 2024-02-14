@@ -27,8 +27,10 @@ repos:
   hooks:
   - id: check-github-workflows
   - id: check-renovate
-- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.12.0
+- repo: https://github.com/eirnym/language-formatters-pre-commit-hooks
+  rev: ev2.13.0
   hooks:
   - id: pretty-format-kotlin
     args: [--autofix]
+  - id: pretty-format-java
+    args: [--autofix, --palantir]
