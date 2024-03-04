@@ -15,7 +15,7 @@ agp-tools = "31.3.0"
 kotlin-build = "1.9.22"
 # Dokka is sometimes lagging behind and is not using the same release vehicle as Kotlin main.
 # Releases: https://github.com/Kotlin/dokka/releases
-kotlin-dokka = "1.9.10"
+kotlin-dokka = "1.9.20"
 
 # JUnit 5 = JUnit Platform ([junit-api]) + JUnit Launcher ([junit-launcher])
 # Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
