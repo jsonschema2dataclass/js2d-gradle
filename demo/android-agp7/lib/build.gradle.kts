@@ -43,7 +43,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.15.1")
     // Required if generating JSR-303 annotations
     implementation("javax.validation:validation-api:2.0.1.Final")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.23")
 }
