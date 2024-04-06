@@ -1,6 +1,6 @@
 [versions]
 # https://github.com/gradle-nexus/publish-plugin/releases
-nexus = "1.3.0"
+nexus = "2.0.0"
 
 # https://docs.gradle.com/enterprise/gradle-plugin/#release_history
 gradle-enterprise = "3.17"
