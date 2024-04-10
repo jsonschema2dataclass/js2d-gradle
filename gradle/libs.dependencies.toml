@@ -9,7 +9,7 @@ gradle-publish = "1.2.1"
 # @see com.android.build.gradle.internal.plugins.BasePlugin.createLintClasspathConfiguration
 # @see builder-model//version.properties
 # Versions: https://maven.google.com/web/index.html#com.android.tools:common
-agp-tools = "31.3.1"
+agp-tools = "31.3.2"
 
 # Version of Kotlin Gradle Plugin used for compilation.
 kotlin-build = "1.9.23"
