@@ -37,7 +37,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - uses: gradle/wrapper-validation-action@v2
+    - uses: gradle/wrapper-validation-action@v3
   validationJavaKotlinSample:
     name: 'Wrapper validation: Java Demo'
     runs-on: ubuntu-latest
@@ -48,7 +48,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - uses: gradle/wrapper-validation-action@v2
+    - uses: gradle/wrapper-validation-action@v3
   validationAndroidAgp7Sample:
     name: 'Wrapper validation: Android AGP 7 Demo'
     runs-on: ubuntu-latest
@@ -59,4 +59,4 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - uses: gradle/wrapper-validation-action@v2
+    - uses: gradle/wrapper-validation-action@v3
