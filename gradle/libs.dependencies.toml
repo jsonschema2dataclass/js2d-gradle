@@ -3,7 +3,7 @@
 nexus = "2.0.0"
 
 # https://docs.gradle.com/enterprise/gradle-plugin/#release_history
-gradle-enterprise = "3.17.1"
+gradle-enterprise = "3.17.2"
 gradle-publish = "1.2.1"
 
 # @see com.android.build.gradle.internal.plugins.BasePlugin.createLintClasspathConfiguration
