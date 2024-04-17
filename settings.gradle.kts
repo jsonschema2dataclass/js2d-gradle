@@ -5,7 +5,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.gradle.enterprise") version "3.17.1"
+    id("com.gradle.enterprise") version "3.17.2"
     id("org.jsonschema2dataclass.internal.settings-enterprise")
 }
 
