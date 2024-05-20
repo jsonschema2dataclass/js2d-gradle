@@ -39,7 +39,7 @@ dependencies {
 
     // Required for @Generated annotation
     implementation("org.glassfish:javax.annotation:10.0-b28")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.moshi:moshi:1.15.1")
     // Required if generating JSR-303 annotations
     implementation("javax.validation:validation-api:2.0.1.Final")
