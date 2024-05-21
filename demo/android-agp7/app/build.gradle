@@ -47,7 +47,7 @@ dependencies {
     // Required if generating JSR-303 annotations
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation "androidx.core:core-ktx:1.13.1"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.24"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.0"
 }
 
 jsonSchema2Pojo {
