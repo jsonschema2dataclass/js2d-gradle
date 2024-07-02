@@ -1,21 +1,8 @@
 [versions]
-# https://github.com/gradle-nexus/publish-plugin/releases
-nexus = "2.0.0"
-
-# https://docs.gradle.com/enterprise/gradle-plugin/#release_history
-gradle-enterprise = "3.17.5"
-gradle-publish = "1.2.1"
-
 # @see com.android.build.gradle.internal.plugins.BasePlugin.createLintClasspathConfiguration
 # @see builder-model//version.properties
 # Versions: https://maven.google.com/web/index.html#com.android.tools:common
 agp-tools = "31.5.0"
-
-# Version of Kotlin Gradle Plugin used for compilation.
-kotlin-build = "2.0.0"
-# Dokka is sometimes lagging behind and is not using the same release vehicle as Kotlin main.
-# Releases: https://github.com/Kotlin/dokka/releases
-kotlin-dokka = "1.9.20"
 
 # JUnit 5 = JUnit Platform ([junit-api]) + JUnit Launcher ([junit-launcher])
 # Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
@@ -28,19 +15,9 @@ processor-jsonschema2pojo = "1.2.1"
 
 [libraries]
 
-# Plugins as libraries:
-nexus = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus" }
-gradle-enterprise = { module = "com.gradle.enterprise:com.gradle.enterprise.gradle.plugin", version.ref = "gradle-enterprise" }
-gradle-publish = { module = "com.gradle.plugin-publish:com.gradle.plugin-publish.gradle.plugin", version.ref = "gradle-publish" }
-
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
 android-tools = { module = "com.android.tools:common", version.ref = "agp-tools" }
-
-# Kotlin
-kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-build" }
-kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin-build" }
-kotlin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "kotlin-dokka" }
 
 # Junit for testing
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit5" }
@@ -59,11 +36,3 @@ processor-jsonschema2pojo = {module = "org.jsonschema2pojo:jsonschema2pojo-core"
 [bundles]
 junit-tests =  ["junit-api", "junit-params"]
 junit-runtime =  ["junit-engine", "junit-launcher"]
-
-
-[plugins]
-nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus" }
-gradle-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-publish"}
-kotlin-build = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-build"}
-kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "kotlin-dokka"}
-# Note: internal plugins cannot be used with `alias(libs.plugins....)`, because they don't have version.

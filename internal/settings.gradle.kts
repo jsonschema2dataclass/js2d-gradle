@@ -14,5 +14,8 @@ dependencyResolutionManagement {
         create("libs") {
             from(files("../gradle/libs.dependencies.toml"))
         }
+        create("pluginDeps") {
+            from(files("../gradle/plugins.dependencies.toml"))
+        }
     }
 }
