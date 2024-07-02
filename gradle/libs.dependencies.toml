@@ -9,10 +9,6 @@ agp-tools = "31.5.0"
 junit5 = "5.10.3"
 junit5-platform = "1.10.3"
 
-# Jsonschema2pojo processor
-# Versions: https://github.com/joelittlejohn/jsonschema2pojo/releases
-processor-jsonschema2pojo = "1.2.1"
-
 [libraries]
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
@@ -29,9 +25,6 @@ junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref 
 
 # https://docs.gradle.org/8.4/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit5-platform" }
-
-# Plugin Schema processors
-processor-jsonschema2pojo = {module = "org.jsonschema2pojo:jsonschema2pojo-core", version.ref="processor-jsonschema2pojo"}
 
 [bundles]
 junit-tests =  ["junit-api", "junit-params"]

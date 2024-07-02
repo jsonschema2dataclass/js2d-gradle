@@ -29,7 +29,7 @@ private const val DEFAULT_TARGET_FILENAME = "processor.properties"
 private val javaPlugins = listOf("java", "java-library")
 
 /**
- * Plugin to include processor path to properties file
+ * Plugin to include processor path to metadata properties file
  */
 @Suppress("unused")
 class ProcessorVersionPlugin : Plugin<Project> {

@@ -8,11 +8,11 @@ base.archivesName.set("jsonschema2dataclass-processor-jsonschema2pojo")
 description = "Jsonschema2pojo schema processor compatibility layer: Compatibility layer for Jsonschema2pojo processor."
 
 processorVersion {
-    library.set("processor-jsonschema2pojo")
+    library.set("jsonschema2pojo")
 }
 
 dependencies {
-    compileOnly(libs.processor.jsonschema2pojo)
+    compileOnly(processors.jsonschema2pojo)
     implementation(projects.pluginGradle.compat.kotlin)
     implementation(projects.pluginGradle.common)
 
@@ -20,7 +20,7 @@ dependencies {
     testRuntimeOnly(libs.bundles.junit.runtime)
     testImplementation(gradleTestKit())
 
-    testImplementation(libs.processor.jsonschema2pojo)
+    testImplementation(processors.jsonschema2pojo)
 }
 
 tasks.test {
