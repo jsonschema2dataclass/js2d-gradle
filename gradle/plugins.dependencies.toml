@@ -3,7 +3,7 @@
 nexus = "2.0.0"
 
 # https://docs.gradle.com/enterprise/gradle-plugin/#release_history
-gradle-enterprise = "3.17.5"
+gradle-develocity = "3.17.5"
 gradle-publish = "1.2.1"
 
 # Version of Kotlin Gradle Plugin used for compilation.
@@ -19,7 +19,7 @@ kotlin-dokka = "1.9.20"
 # WARNING: it's a bit tricky this way to handle moves as gradle doesn't publihs them.
 
 # Gradle
-gradle-enterprise = { module = "com.gradle.enterprise:com.gradle.enterprise.gradle.plugin", version.ref = "gradle-enterprise" }
+gradle-develocity = { module = "com.gradle.develocity:com.gradle.develocity.gradle.plugin", version.ref = "gradle-develocity" }
 gradle-publish = { module = "com.gradle.plugin-publish:com.gradle.plugin-publish.gradle.plugin", version.ref = "gradle-publish" }
 
 # Kotlin

@@ -20,12 +20,12 @@ gradlePlugin {
                 compileOnly(pluginDeps.kotlin.gradle)
             }
         }
-        create("settings-enterprise") {
-            id = "org.jsonschema2dataclass.internal.settings-enterprise"
+        create("settings-develocity") {
+            id = "org.jsonschema2dataclass.internal.settings-develocity"
             implementationClass = "org.jsonschema2dataclass.internal.plugin.base.SettingEnterpriseAccept"
             description = "Agree on TOS for Gradle Scans."
             dependencies {
-                compileOnly(pluginDeps.gradle.enterprise)
+                compileOnly(pluginDeps.gradle.develocity)
             }
         }
         create("agp-compat") {
