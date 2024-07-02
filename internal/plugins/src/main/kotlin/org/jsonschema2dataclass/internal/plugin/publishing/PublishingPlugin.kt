@@ -22,7 +22,6 @@ class PublishingPlugin : Plugin<Project> {
         val javaPluginExtension = project.javaPluginExtension
         javaPluginExtension.withSourcesJar()
 
-        applyDokka(project, javaPluginExtension)
         applyPublishing(project, signing)
 
         project.plugins.withId("java-gradle-plugin") {

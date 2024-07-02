@@ -52,9 +52,6 @@ gradlePlugin {
             id = "org.jsonschema2dataclass.internal.plugin-publish"
             implementationClass = "org.jsonschema2dataclass.internal.plugin.publishing.PublishingPlugin"
             description = "Set up library publishing settings."
-            dependencies {
-                implementation(pluginDeps.kotlin.dokka)
-            }
         }
     }
 }
