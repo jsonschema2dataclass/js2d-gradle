@@ -52,5 +52,8 @@ dependencyResolutionManagement {
         create("processors") {
             from(files("gradle/processors.toml"))
         }
+        create("pluginDeps") {
+            from(files("gradle/plugins.dependencies.toml"))
+        }
     }
 }

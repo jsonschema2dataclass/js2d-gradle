@@ -17,7 +17,7 @@ gradlePlugin {
             implementationClass = "org.jsonschema2dataclass.internal.plugin.lib.KotlinToolchain"
             description = "Set up Kotlin & Java toolchain to use Java 8."
             dependencies {
-                compileOnly(libs.kotlin.gradle)
+                compileOnly(pluginDeps.kotlin.gradle)
             }
         }
         create("settings-enterprise") {
@@ -25,7 +25,7 @@ gradlePlugin {
             implementationClass = "org.jsonschema2dataclass.internal.plugin.base.SettingEnterpriseAccept"
             description = "Agree on TOS for Gradle Scans."
             dependencies {
-                compileOnly(libs.gradle.enterprise)
+                compileOnly(pluginDeps.gradle.enterprise)
             }
         }
         create("agp-compat") {
@@ -53,7 +53,7 @@ gradlePlugin {
             implementationClass = "org.jsonschema2dataclass.internal.plugin.publishing.PublishingPlugin"
             description = "Set up library publishing settings."
             dependencies {
-                implementation(libs.kotlin.dokka)
+                implementation(pluginDeps.kotlin.dokka)
             }
         }
     }

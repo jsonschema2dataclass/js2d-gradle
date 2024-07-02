@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.gradle.publish) apply false
+    alias(pluginDeps.plugins.gradle.publish) apply false
     id("org.jsonschema2dataclass.internal.git-version")
 }
 
