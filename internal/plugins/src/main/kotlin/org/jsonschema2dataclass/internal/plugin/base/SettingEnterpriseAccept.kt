@@ -1,6 +1,6 @@
 package org.jsonschema2dataclass.internal.plugin.base
 
-import com.gradle.enterprise.gradleplugin.GradleEnterpriseExtension
+import com.gradle.develocity.agent.gradle.DevelocityConfiguration
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.findByType
@@ -9,10 +9,13 @@ import org.gradle.kotlin.dsl.findByType
 class SettingEnterpriseAccept : Plugin<Settings> {
     override fun apply(settings: Settings) {
         if (settings.plugins.hasPlugin("com.gradle.enterprise")) {
-            settings.extensions.findByType<GradleEnterpriseExtension>()?.apply {
+            settings.extensions.findByType<DevelocityConfiguration>()?.apply {
                 buildScan {
-                    termsOfServiceUrl = "https://gradle.com/terms-of-service"
-                    termsOfServiceAgree = "yes"
+                    termsOfUseUrl.set("https://gradle.com/terms-of-service")
+                    termsOfUseAgree.set("yes")
+                    publishing.onlyIf {
+                        it.buildResult.failures.isNotEmpty()
+                    }
                 }
             }
         }
