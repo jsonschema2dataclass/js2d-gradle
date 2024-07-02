@@ -8,10 +8,6 @@ gradle-publish = "1.2.1"
 
 # Version of Kotlin Gradle Plugin used for compilation.
 kotlin-build = "2.0.0"
-# Dokka is sometimes lagging behind and is not using the same release vehicle as Kotlin main.
-# Releases: https://github.com/Kotlin/dokka/releases
-kotlin-dokka = "1.9.20"
-
 
 [libraries]
 # Plugins as libraries. Used as dependencies for other plugins. it's a bit hacky way, but serves the purpose
@@ -25,7 +21,6 @@ gradle-publish = { module = "com.gradle.plugin-publish:com.gradle.plugin-publish
 # Kotlin
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-build" }
 kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin-build" }
-kotlin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "kotlin-dokka" }
 
 [bundles]
 
@@ -33,5 +28,4 @@ kotlin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus" }
 gradle-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-publish"}
 kotlin-build = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-build"}
-kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "kotlin-dokka"}
 # Note: internal plugins cannot be used with `alias(libs.plugins....)`, because they don't have version.
