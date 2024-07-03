@@ -52,7 +52,8 @@ private val gradleReleases = linkedSetOf(
     *gradleReleases6x,
 )
 
-private val compatibleVersions = filterCompatibleVersions()
+private val compatibleVersions = filterCompatibleVersions("6.0")
+private val compatibleVersionsConfigurationCache = filterCompatibleVersions("6.6")
 
 /**
  * Supported gradle versions per java
@@ -90,7 +91,9 @@ private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
         else -> false // no official information on Gradle compatibility with further versions of Java
     }
 
-private fun filterCompatibleVersions(): List<String> {
+private fun filterCompatibleVersions(minimumInternalVersionString: String): List<String> {
+    val minimumInternalVersion = ComparableGradleVersion(minimumInternalVersionString)
+
     val minVersion = System.getenv()[ENV_TEST_MIN]?.let { ComparableGradleVersion(it) }
     val maxVersion = System.getenv()[ENV_TEST_MAX]?.let { ComparableGradleVersion(it) }
     val exactVersion = System.getenv()[ENV_TEST_EXACT]?.let {
@@ -106,11 +109,13 @@ private fun filterCompatibleVersions(): List<String> {
             val version = ComparableGradleVersion(v)
 
             val supported = gradleSupported(version)
+            val isAboveMinInternal = version >= minimumInternalVersion.gradleVersion
+
             val isAboveMin = minVersion?.let { version >= it.gradleVersion } ?: true
             val isBelowMax = maxVersion?.let { version <= it.gradleVersion } ?: true
             val isExact = exactVersion?.let { version.gradleVersion == it.gradleVersion } ?: true
 
-            supported && isAboveMin && isBelowMax && isExact
+            supported && isAboveMinInternal && isAboveMin && isBelowMax && isExact
         }
         .toList()
 }
@@ -123,15 +128,19 @@ private fun filterCompatibleVersions(): List<String> {
 class GradleVersions private constructor() {
     companion object {
         @JvmStatic
-        fun gradleReleasesForTests(): List<Arguments> = compatibleVersions.map { Arguments.of(it) }
+        private fun argumentFilter(compatibleVersions: List<String>): List<Arguments> =
+            if (compatibleVersions.isNotEmpty()) {
+                compatibleVersions.map { Arguments.of(*arrayOf(it)) }
+            } else {
+                listOf(Arguments.of(*arrayOf(null)))
+            }
 
         @JvmStatic
-        fun configurationCacheCompatibleGradleReleasesForTests(): List<Arguments> = compatibleVersions
-            .filter {
-                ComparableGradleVersion(it) >= 6 to 6
-            }.map {
-                Arguments.of(it)
-            }
+        fun gradleReleasesForTests(): List<Arguments> = argumentFilter(compatibleVersions)
+
+        @JvmStatic
+        fun configurationCacheCompatibleGradleReleasesForTests(): List<Arguments> =
+            argumentFilter(compatibleVersionsConfigurationCache)
     }
 }
 
@@ -142,7 +151,11 @@ private class ComparableGradleVersion(
 
     init {
         val gradleVersionParts = gradleVersionString.split(".")
-        gradleVersion = gradleVersionParts[0].toInt() to gradleVersionParts[1].toInt()
+        gradleVersion = if (gradleVersionParts.size >= 2) {
+            gradleVersionParts[0].toInt() to gradleVersionParts[1].toInt()
+        } else {
+            gradleVersionParts[0].toInt() to 0
+        }
     }
 
     override fun compareTo(other: Pair<Int, Int>): Int {

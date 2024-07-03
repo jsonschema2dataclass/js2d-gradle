@@ -1,0 +1,63 @@
+---
+name: Build Plugin CI manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      gradleTest:
+        type: choice
+        description: Gradle versions to run tests on
+        options:
+        - all
+        - current
+        - '8'
+        - '7'
+        - '6'
+      java:
+        type: choice
+        description: Java versions to run tests with
+        options:
+        - '21'
+        - '17'
+        - '11'
+        - '8'
+      distribution:
+        type: choice
+        description: Java distribution to use
+        options:
+        - zulu
+
+concurrency:
+  # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
+  # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
+  group: ${{ github.ref == 'refs/heads/main' && format('plugin-build-ci-man-main-{0}', github.sha) || format('plugin-build-ci-man-{0}', github.ref) }}
+  cancel-in-progress: true
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
+
+jobs:
+  build-and-test:
+    name: Build Plugin
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK ${{ github.event.inputs.distribution }} ${{ github.event.inputs.java }} for gradle test ${{ github.event.inputs.gradleTest }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ github.event.inputs.distribution }}
+        java-version: ${{ github.event.inputs.java }}
+        cache: gradle
+
+    - name: Run build and tests
+      run: |
+        if [[ "${{ github.event.inputs.gradleTest }}" == "all" ]]; then
+          # DO NADA
+        elif  [[ "${{ github.event.inputs.gradleTest }}" == "current" ]]; then
+          export TEST_GRADLE_VER_EXACT=current
+        else
+          export TEST_GRADLE_VER_MIN=${{ github.event.inputs.gradleTest }}
+          export TEST_GRADLE_VER_MAX=$(( ${{ github.event.inputs.gradleTest }} + 1))
+        fi
+
+        ./gradlew build -S --scan --warning-mode all --no-daemon
