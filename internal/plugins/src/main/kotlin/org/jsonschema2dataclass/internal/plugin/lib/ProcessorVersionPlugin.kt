@@ -29,7 +29,11 @@ private const val DEFAULT_TARGET_FILENAME = "processor.properties"
 private val javaPlugins = listOf("java", "java-library")
 
 /**
- * Plugin to include processor path to metadata properties file
+ * Plugin to include processor path to metadata properties file.
+ *
+ * Used to put processor.properties into the output classpath of the library.
+ *
+ * This file is intended to be read by processor task impl to inject a runtime dependency to run processor.
  */
 @Suppress("unused")
 class ProcessorVersionPlugin : Plugin<Project> {

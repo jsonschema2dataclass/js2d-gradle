@@ -5,7 +5,11 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.jsonschema2dataclass.internal.plugin.publishing.PublishingPlugin
 
-/** Supporting library basic configuration */
+/**
+ * Support library basic configuration.
+ *
+ * Plugin configures Kotlin toolchain (Java version) and publishing to Maven Central
+ */
 @Suppress("unused")
 class LibraryPlugin : Plugin<Project> {
     override fun apply(project: Project) {

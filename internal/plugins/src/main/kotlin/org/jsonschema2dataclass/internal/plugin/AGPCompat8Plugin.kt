@@ -20,6 +20,7 @@ private val compatComponentsDefault = listOf(
 // build with this java version
 private const val TARGET_JAVA_VERSION = 8
 
+/**"Fix" metadata of certain libraries to make whole project buildable. */
 @Suppress("unused")
 class AGPCompat8Plugin : Plugin<Project> {
     override fun apply(project: Project) {

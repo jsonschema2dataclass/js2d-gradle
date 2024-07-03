@@ -42,6 +42,7 @@ abstract class Js2dGeneratorTaskBase<ConfigType> @Inject constructor(
         val workerClassPath = js2dConfiguration.get() + js2dConfigurationPlugins
         val workQueue = workerExecutor.processIsolation {
             // Set encoding (work-around for https://github.com/gradle/gradle/issues/13843)
+            // TODO: fixed in Gradle 8.3
             forkOptions.environment("LANG", System.getenv("LANG") ?: "C.UTF-8")
 
             classpath.from(workerClassPath)

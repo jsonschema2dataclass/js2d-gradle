@@ -6,6 +6,11 @@ import org.gradle.kotlin.dsl.apply
 import org.jsonschema2dataclass.internal.plugin.publishing.applySigning
 import pluginIds
 
+/**
+ * Gradle Plugin basic configuration.
+ *
+ * Plugin configures Kotlin toolchain (Java version), and publishing
+ */
 @Suppress("unused")
 class GradlePlugin : Plugin<Project> {
     override fun apply(project: Project) {

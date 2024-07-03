@@ -14,6 +14,7 @@ import org.gradle.plugin.devel.GradlePluginDevelopmentExtension
  * Disable automated publishing [completed feature
  * request](https://github.com/gradle/gradle/issues/11611) -
  * not working with gradle-publish plugin version 1.0 and above
+ *
  */
 class PublishingPlugin : Plugin<Project> {
     override fun apply(project: Project) {

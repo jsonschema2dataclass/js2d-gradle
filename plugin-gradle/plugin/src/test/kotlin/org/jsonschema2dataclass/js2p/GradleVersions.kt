@@ -13,8 +13,14 @@ const val ENV_TEST_EXACT_CURRENT = "current"
 // M.B. current (Running) release will always be tested even it's not listed here.
 private val gradleReleases8x = arrayOf(
     "8.8",
-    "8.7", "8.6", "8.5", "8.4",
-    "8.3", "8.2.1", "8.1.1", "8.0.2",
+    "8.7",
+    "8.6",
+    "8.5",
+    "8.4",
+    "8.3",
+    "8.2.1",
+    "8.1.1",
+    "8.0.2",
 )
 private val gradleReleases7x = arrayOf(
     "7.6.4",
@@ -26,9 +32,17 @@ private val gradleReleases7x = arrayOf(
     "7.0.2",
 )
 private val gradleReleases6x = arrayOf(
-    "6.9.1", "6.8.3", "6.7.1", "6.6.1",
-    "6.5.1", "6.4.1", "6.3",
-    "6.2.2", "6.2.1", "6.1.1", "6.0.1",
+    "6.9.1",
+    "6.8.3",
+    "6.7.1",
+    "6.6.1",
+    "6.5.1",
+    "6.4.1",
+    "6.3",
+    "6.2.2",
+    "6.2.1",
+    "6.1.1",
+    "6.0.1",
 )
 
 private val gradleReleases = linkedSetOf(
