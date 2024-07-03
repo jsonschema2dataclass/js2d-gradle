@@ -20,6 +20,70 @@ import org.gradle.kotlin.dsl.invoke
 import java.io.FileFilter
 import javax.inject.Inject
 
+/** Jsonschema2pojo extension */
+abstract class Js2pExtension {
+    abstract val executions: NamedDomainObjectContainer<Js2pConfiguration>
+
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val targetDirectoryPrefix: DirectoryProperty
+}
+
+/** Jsonschema2pojo single configuration */
+abstract class Js2pConfiguration @Inject constructor(
+    private val name: String,
+) : Named {
+    @Internal
+    override fun getName(): String = name
+
+    @get:Nested
+    @get:Optional
+    abstract val constructors: PluginConfigJs2pConstructor
+
+    @get:Nested
+    @get:Optional
+    abstract val dateTime: PluginConfigJs2pDateTime
+
+    @get:Nested
+    @get:Optional
+    abstract val fields: PluginConfigJs2pField
+
+    @get:Nested
+    @get:Optional
+    abstract val io: PluginConfigJs2pIO
+
+    @get:Nested
+    @get:Optional
+    abstract val klass: PluginConfigJs2pClass
+
+    @get:Nested
+    @get:Optional
+    abstract val methods: PluginConfigJs2pMethod
+
+    fun io(action: Action<PluginConfigJs2pIO>) {
+        action(io)
+    }
+
+    fun klass(action: Action<PluginConfigJs2pClass>) {
+        action(klass)
+    }
+
+    fun constructors(action: Action<PluginConfigJs2pConstructor>) {
+        action(constructors)
+    }
+
+    fun methods(action: Action<PluginConfigJs2pMethod>) {
+        action(methods)
+    }
+
+    fun fields(action: Action<PluginConfigJs2pField>) {
+        action(fields)
+    }
+
+    fun dateTime(action: Action<PluginConfigJs2pDateTime>) {
+        action(dateTime)
+    }
+}
+
 /** Input-output parameters */
 abstract class PluginConfigJs2pIO {
     @get:Input
@@ -268,66 +332,4 @@ abstract class PluginConfigJs2pDateTime {
     @get:Input
     @get:Optional
     abstract val timeType: Property<String>
-}
-
-abstract class Js2pConfiguration @Inject constructor(
-    private val name: String,
-) : Named {
-    @Internal
-    override fun getName(): String = name
-
-    @get:Nested
-    @get:Optional
-    abstract val constructors: PluginConfigJs2pConstructor
-
-    @get:Nested
-    @get:Optional
-    abstract val dateTime: PluginConfigJs2pDateTime
-
-    @get:Nested
-    @get:Optional
-    abstract val fields: PluginConfigJs2pField
-
-    @get:Nested
-    @get:Optional
-    abstract val io: PluginConfigJs2pIO
-
-    @get:Nested
-    @get:Optional
-    abstract val klass: PluginConfigJs2pClass
-
-    @get:Nested
-    @get:Optional
-    abstract val methods: PluginConfigJs2pMethod
-
-    fun io(action: Action<PluginConfigJs2pIO>) {
-        action(io)
-    }
-
-    fun klass(action: Action<PluginConfigJs2pClass>) {
-        action(klass)
-    }
-
-    fun constructors(action: Action<PluginConfigJs2pConstructor>) {
-        action(constructors)
-    }
-
-    fun methods(action: Action<PluginConfigJs2pMethod>) {
-        action(methods)
-    }
-
-    fun fields(action: Action<PluginConfigJs2pField>) {
-        action(fields)
-    }
-
-    fun dateTime(action: Action<PluginConfigJs2pDateTime>) {
-        action(dateTime)
-    }
-}
-
-abstract class Js2pExtension {
-    abstract val executions: NamedDomainObjectContainer<Js2pConfiguration>
-
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val targetDirectoryPrefix: DirectoryProperty
 }

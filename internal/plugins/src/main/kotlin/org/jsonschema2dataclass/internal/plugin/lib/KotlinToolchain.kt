@@ -8,12 +8,10 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.configure
 
-// build with this java version
+/** Target java version to build plugin code with. */
 private const val TARGET_JAVA_VERSION = 8
 
-/**
- * Configure Java 8 toolchain if not told otherwise
- */
+/** Configure Java 8 toolchain for build Java versions >= 11. */
 @Suppress("unused")
 class KotlinToolchain : Plugin<Project> {
     override fun apply(project: Project) {

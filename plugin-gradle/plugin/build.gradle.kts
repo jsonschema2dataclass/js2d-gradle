@@ -21,9 +21,20 @@ gradlePlugin {
 
             tags.set(
                 listOf(
-                    "json-schema", "jsonschema", "generator", "pojo", "jsonschema2pojo",
-                    "dataclass", "data", "json", "generation", "jsonschema2dataclass", "java",
-                    "kotlin", "groovy", "android",
+                    "json-schema",
+                    "jsonschema",
+                    "generator",
+                    "pojo",
+                    "jsonschema2pojo",
+                    "dataclass",
+                    "data",
+                    "json",
+                    "generation",
+                    "jsonschema2dataclass",
+                    "java",
+                    "kotlin",
+                    "groovy",
+                    "android",
                 ),
             )
         }
