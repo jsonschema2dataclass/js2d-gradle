@@ -1,0 +1,25 @@
+---
+name: Verify Quality Checks
+
+on:
+
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+    paths:
+    - .github/renovate.json
+    - .github/workflows/renovate-verify.yml
+
+concurrency:
+  # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
+  # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
+  group: ${{ github.ref == 'refs/heads/main' && format('quality-renovate-main-{0}', github.sha) || format('quality-renovate-{0}', github.ref) }}
+  cancel-in-progress: true
+
+jobs:
+  verify-renovate:
+    name: Renovate official check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+    - run: npx --package renovate -c 'renovate-config-validator'
