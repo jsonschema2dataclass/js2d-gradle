@@ -28,7 +28,7 @@ repos:
   - id: check-github-workflows
   - id: check-renovate
 - repo: https://github.com/eirnym/language-formatters-pre-commit-hooks
-  rev: ev2.13.0
+  rev: ev2.14.0
   hooks:
   - id: pretty-format-kotlin
     args: [--autofix]

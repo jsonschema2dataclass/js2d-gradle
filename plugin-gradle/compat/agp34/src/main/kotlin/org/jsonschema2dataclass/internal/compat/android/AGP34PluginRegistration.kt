@@ -1,3 +1,4 @@
+// TODO: drop this module as AGP 3.x doesn't really used anymore
 package org.jsonschema2dataclass.internal.compat.android
 
 import com.android.build.gradle.AppExtension
@@ -19,9 +20,7 @@ import org.jsonschema2dataclass.internal.GradlePluginRegistration
 import org.jsonschema2dataclass.internal.ProcessorRegistrationCallback
 import java.nio.file.Path
 
-/**
- * Register a processor task using AGP 3 API
- */
+/** Register a processor task for Android Gradle Plugin 3.x & 4.x using AGP 3 API. */
 class AGP34PluginRegistration : GradlePluginRegistration {
     override fun defaultSchemaPathInternal(project: Project): Path? =
         project.extensions

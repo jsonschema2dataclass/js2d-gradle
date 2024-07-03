@@ -13,7 +13,9 @@ import org.jsonschema2dataclass.internal.ProcessorRegistrationCallback
 import java.nio.file.Path
 
 /**
- * Registers a processor task using AGP34 API
+ * Registers a processor task using Java & Kotlin plugins.
+ *
+ * Additionally, this handles Lombok compatibility
  */
 class JavaPluginRegistration : GradlePluginRegistration {
     private fun mainSourceSet(project: Project): SourceSet =
@@ -51,23 +53,20 @@ class JavaPluginRegistration : GradlePluginRegistration {
 
 // TODO: split this out to have better compatibility
 
-/**
- * Obtain java source sets in Gradle 6.0 - 7.0.2
- */
+/** Obtain java source sets in Gradle 6.0 - 7.0.2 */
 @Suppress("DEPRECATION")
 private fun obtainJavaSourceSetContainerV6(project: Project): SourceSet =
     obtainSourceSetContainer(project.convention.plugins["java"]!!)
         .named("main")
         .get()
 
+/** Call `getSourceSets` method existed in Gradle 6.0 - 7.0.2. */
 private fun obtainSourceSetContainer(value: Any): SourceSetContainer {
     val method = value::class.java.getDeclaredMethod("getSourceSets")
     return method.invoke(value) as SourceSetContainer
 }
 
-/**
- * Obtain java source sets in Gradle 7.3+.
- */
+/** Obtain java source sets in Gradle 7.3 and above */
 private fun obtainJavaSourceSetContainerV7(project: Project): SourceSet =
     project
         .extensions

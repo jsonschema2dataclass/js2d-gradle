@@ -24,9 +24,7 @@ import org.jsonschema2dataclass.internal.GradlePluginRegistration
 import org.jsonschema2dataclass.internal.ProcessorRegistrationCallback
 import java.nio.file.Path
 
-/**
- * Register a processor task using AGP 3 API
- */
+/**  Register a processor task for Android Gradle Plugin 7.x using AGP 3 API. */
 @Suppress("unused")
 class AGP347PluginRegistration : GradlePluginRegistration {
     override fun defaultSchemaPathInternal(project: Project): Path? =

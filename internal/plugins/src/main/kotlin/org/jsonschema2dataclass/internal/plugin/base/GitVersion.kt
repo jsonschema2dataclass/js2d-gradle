@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit
 private val regex = Regex("""^v?([0-9.]*(?:-rc\d+)?)-(\d+)-g([0-9a-f]+)(-dirty)?$""")
 private const val DEFAULT_VERSION = "-.-.--0-g00000000-dirty"
 
+/** Obtain git versions or generate one. */
 fun gitVersion(project: Project): String {
     val versionOverride = project.extraValue(EXTRA_GIT_VERSION_OVERRIDE)
     if (versionOverride != null) {
@@ -28,6 +29,11 @@ fun gitVersion(project: Project): String {
     return processVersionString(commandVersion ?: DEFAULT_VERSION)
 }
 
+/**
+ * Process version string and return a valid version.
+ *
+ * If valid version can't be found, one will be generated.
+ */
 private fun processVersionString(value: String): String {
     val match = regex.find(value)
     if (match == null) {
@@ -50,6 +56,11 @@ private fun processVersionString(value: String): String {
 
 private const val ONE_MINUTE = 60L
 
+/**
+ * Wait for `git` process for at most 1 minute to get a version by tag and state.
+ *
+ * Returns null if waited too long or execution wasn't successful
+ */
 private fun commandVersion(project: Project): String? {
     try {
         val process = ProcessBuilder()

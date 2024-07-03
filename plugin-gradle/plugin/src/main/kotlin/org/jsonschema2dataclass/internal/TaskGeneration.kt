@@ -68,7 +68,7 @@ internal fun <ConfigClass : Named> registrationTasksMachinery(
             this.uuid = UUID.randomUUID()
             this.targetDirectory.set(targetDirectoryPrefix.dir(configuration.name))
 
-            // TODO: hack
+            // TODO: ask processor to extract source file collection from configuration
             val source = (configuration as Js2pConfiguration).io.source
 
             val newSource = source.filter { it.exists() && (!it.isDirectory || it.list()?.isNotEmpty() == true) }
@@ -103,7 +103,7 @@ private fun <T : Named> generateTasks(
     configurations: NamedDomainObjectCollection<T>,
     createSubTask: SubtaskGeneratorFunction<T>,
 ) {
-    // create primary task first :P
+    // create primary task first to declare task dependencies
     val primaryTask = createPrimaryTask(JS2D_TASK_NAME, BASE_TASK_DESCRIPTION, project)
 
     registration.registerPlugin(project) { suffixes: Map<String, String>, callback: RegisterDependenciesCallback ->
