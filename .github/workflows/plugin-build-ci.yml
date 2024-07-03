@@ -12,6 +12,8 @@ on:
     - gradle/wrapper/**
     - gradle/agp.dependencies.toml
     - gradle/libs.dependencies.toml
+    - gradle/processors.toml
+    - gradle/plugins.dependencies.toml
     - gradlew*
     - internal/plugins/**
     - internal/common/**
@@ -27,6 +29,8 @@ on:
     - gradle/wrapper/**
     - gradle/agp.dependencies.toml
     - gradle/libs.dependencies.toml
+    - gradle/processors.toml
+    - gradle/plugins.dependencies.toml
     - gradlew*
     - internal/plugins/**
     - internal/common/**
@@ -53,15 +57,24 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
+        gradleTest: [current, 8, 7, 6]
         java: [21, 17, 11, 8]
         distribution: [zulu]
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }}
+    - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }} for gradle test ${{ matrix.gradleTest }}
       uses: actions/setup-java@v4
       with:
         distribution: ${{ matrix.distribution }}
         java-version: ${{ matrix.java }}
         cache: gradle
-    - run: |
+
+    - name: Run build and tests
+      run: |
+        if [[ "${{ matrix.gradleTest }}" == "current" ]]; then
+          export TEST_GRADLE_VER_EXACT=current
+        else
+          export TEST_GRADLE_VER_MIN=${{ matrix.gradleTest }}
+          export TEST_GRADLE_VER_MAX=$(( ${{ matrix.gradleTest }} + 1))
+        fi
         ./gradlew build -S --scan --warning-mode all --no-daemon

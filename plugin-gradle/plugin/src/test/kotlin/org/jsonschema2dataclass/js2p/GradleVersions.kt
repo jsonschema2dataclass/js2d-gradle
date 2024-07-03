@@ -128,7 +128,11 @@ private class ComparableGradleVersion(
 
     init {
         val gradleVersionParts = gradleVersionString.split(".")
-        gradleVersion = gradleVersionParts[0].toInt() to gradleVersionParts[1].toInt()
+        gradleVersion = if (gradleVersionParts.size >= 2) {
+            gradleVersionParts[0].toInt() to gradleVersionParts[1].toInt()
+        } else {
+            gradleVersionParts[0].toInt() to 0
+        }
     }
 
     override fun compareTo(other: Pair<Int, Int>): Int {
