@@ -57,8 +57,8 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        gradleTest: [current, 8, 7, 6]
-        java: [21, 17, 11, 8]
+        gradleTest: [current, 8, 7]
+        java: [21, 17]
         distribution: [zulu]
     steps:
     - uses: actions/checkout@v4
