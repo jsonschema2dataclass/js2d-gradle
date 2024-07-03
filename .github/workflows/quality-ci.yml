@@ -15,32 +15,6 @@ env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
-    outputs:
-      renovate: ${{ steps.filter.outputs.renovate }}
-    steps:
-    - uses: dorny/paths-filter@v3
-      id: filter
-      with:
-        filters: |
-          renovate:
-          - '.github/renovate.json'
-          - '.github/workflows/renovate-verify.yml'
-
-  verify-renovate:
-    needs: changes
-    if: ${{ needs.changes.outputs.renovate == 'true' }}
-
-    name: Renovate official check
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-    - run: npx --package renovate -c 'renovate-config-validator'
-
   pre-commit:
     name: Pre-commit checks
     runs-on: ubuntu-latest
@@ -51,7 +25,9 @@ jobs:
         python-version: '3.12'
         cache: pip
     - name: Install dependencies
-      run: pip install -U pip setuptools wheel pre-commit
+      run: |
+        pip install -U pip setuptools wheel
+        pip install -r .github/requirements.txt
     - uses: actions/cache@v4
       with:
         path: ~/.cache/pre-commit/
