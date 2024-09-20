@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    compileOnly("org.jsonschema2pojo:jsonschema2pojo-core:1.2.1")
+    compileOnly("org.jsonschema2pojo:jsonschema2pojo-core:1.2.2")
 }
