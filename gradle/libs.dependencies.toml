@@ -6,8 +6,8 @@ agp-tools = "31.7.0"
 
 # JUnit 5 = JUnit Platform ([junit-api]) + JUnit Launcher ([junit-launcher])
 # Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
-junit5 = "5.11.1"
-junit5-platform = "1.11.1"
+junit5 = "5.11.2"
+junit5-platform = "1.11.2"
 
 [libraries]
 
