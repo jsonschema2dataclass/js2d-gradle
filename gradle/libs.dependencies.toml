@@ -2,7 +2,7 @@
 # @see com.android.build.gradle.internal.plugins.BasePlugin.createLintClasspathConfiguration
 # @see builder-model//version.properties
 # Versions: https://maven.google.com/web/index.html#com.android.tools:common
-agp-tools = "31.7.0"
+agp-tools = "31.7.2"
 
 # JUnit 5 = JUnit Platform ([junit-api]) + JUnit Launcher ([junit-launcher])
 # Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
