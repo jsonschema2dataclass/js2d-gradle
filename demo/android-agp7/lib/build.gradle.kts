@@ -7,11 +7,11 @@ plugins {
 android {
     namespace = "org.jsonschema2dataclass.lib"
 
-    compileSdkVersion = "android-34"
+    compileSdkVersion = "android-35"
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
     }
     buildTypes {
         release {
