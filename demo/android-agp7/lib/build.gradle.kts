@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
 
     // Required for @Generated annotation
     implementation("org.glassfish:javax.annotation:10.0-b28")
