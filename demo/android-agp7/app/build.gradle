@@ -43,7 +43,7 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
-    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'com.google.code.gson:gson:2.12.1'
     // Required if generating JSR-303 annotations
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation "androidx.core:core-ktx:1.13.1"
