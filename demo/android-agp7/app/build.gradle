@@ -7,7 +7,7 @@ plugins {
 android {
     namespace "org.jsonschema2dataclass.android"
 
-    compileSdkVersion 34
+    compileSdkVersion 35
     sourceSets {
         debug.java.srcDirs +='build/generated/sources/js2d/main/debug'
         release.java.srcDirs +='build/generated/sources/js2d/main/release'
@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "org.jsonschema2dataclass.android"
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
     }
