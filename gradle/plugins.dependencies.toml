@@ -7,7 +7,7 @@ gradle-develocity = "4.0.1"
 gradle-publish = "1.3.1"
 
 # Version of Kotlin Gradle Plugin used for compilation.
-kotlin-build = "2.1.20"
+kotlin-build = "2.1.21"
 
 [libraries]
 # Plugins as libraries. Used as dependencies for other plugins. it's a bit hacky way, but serves the purpose
