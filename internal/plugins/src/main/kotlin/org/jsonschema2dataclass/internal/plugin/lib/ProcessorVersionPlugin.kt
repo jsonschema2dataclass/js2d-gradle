@@ -4,14 +4,12 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskAction
@@ -73,13 +71,13 @@ class ProcessorVersionPluginImpl : Plugin<Project> {
                         .findLibrary(libraryName)
                         .orElseThrow {
                             GradleException(
-                                "Unable resolve library for $libraryName in catalog $PROCESSOR_VERSION_CATALOG"
+                                "Unable resolve library for $libraryName in catalog $PROCESSOR_VERSION_CATALOG",
                             )
                         }
                         .get()
 
                     "${dependency.module.group}:${dependency.module.name}:${dependency.versionConstraint.requiredVersion}"
-                }
+                },
             )
         }
 
