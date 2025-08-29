@@ -4,7 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.MinimalExternalModuleDependency
+
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.Property
@@ -65,6 +65,19 @@ class ProcessorVersionPluginImpl : Plugin<Project> {
             this.fieldName.set(extension.fieldName)
             this.filename.set(extension.filename)
             this.outputFolder.set(extension.outputFolder)
+
+            val dependency = project.versionCatalogs
+                .named(PROCESSOR_VERSION_CATALOG)
+                .findLibrary(extension.library.get())
+                .orElseThrow {
+                    GradleException(
+                        "Unable resolve library for ${extension.library.get()} in catalog $PROCESSOR_VERSION_CATALOG",
+                    )
+                }
+                .get()
+
+            val identifier = "${dependency.module.group}:${dependency.module.name}:${dependency.versionConstraint.requiredVersion}"
+            this.library.set(identifier)
         }
 
         project.tasks.named("processResources").configure {
@@ -93,7 +106,6 @@ abstract class ProcessorVersionPExtension {
     @get:Optional
     abstract val filename: Property<String>
 
-    @get:OutputFile
     @get:Optional
     abstract val outputFolder: DirectoryProperty
 }
@@ -118,27 +130,12 @@ abstract class ProcessorVersionGeneratorTask : DefaultTask() {
             throw GradleException("filename path must not contain `..`")
         }
 
-        val dependency: MinimalExternalModuleDependency = project
-            .versionCatalogs
-            .named(PROCESSOR_VERSION_CATALOG)
-            .findLibrary(library.get())
-            .orElseThrow {
-                GradleException(
-                    "Unable resolve library for ${library.get()} in catalog $PROCESSOR_VERSION_CATALOG",
-                )
-            }
-            .get()
-
-        val requiredVersion = dependency.versionConstraint.requiredVersion
-        val group = dependency.module.group
-        val name = dependency.module.name
-
-        val identifier = "$group:$name:$requiredVersion"
+        val identifier = library.get()
 
         val outputFile = this.outputFolder.get().asFile.resolve(filename.get())
 
-        if (project.logger.isDebugEnabled) {
-            project.logger.debug("Found library with identifier `$identifier`, writing to ${outputFile.absolutePath}")
+        if (logger.isDebugEnabled) {
+            logger.debug("Found library with identifier `$identifier`, writing to ${outputFile.absolutePath}")
         }
         outputFile.ensureParentDirsCreated()
 
