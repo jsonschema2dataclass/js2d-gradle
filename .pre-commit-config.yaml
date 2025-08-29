@@ -23,7 +23,7 @@ repos:
   - id: yamlfmt
     args: [--mapping, '2', --sequence, '2', --offset, '0', --width, '150']
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.33.1
+  rev: 0.33.3
   hooks:
   - id: check-github-workflows
   - id: check-renovate
