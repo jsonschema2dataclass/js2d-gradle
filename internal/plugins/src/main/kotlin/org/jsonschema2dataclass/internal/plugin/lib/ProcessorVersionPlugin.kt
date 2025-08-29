@@ -66,18 +66,21 @@ class ProcessorVersionPluginImpl : Plugin<Project> {
             this.filename.set(extension.filename)
             this.outputFolder.set(extension.outputFolder)
 
-            val dependency = project.versionCatalogs
-                .named(PROCESSOR_VERSION_CATALOG)
-                .findLibrary(extension.library.get())
-                .orElseThrow {
-                    GradleException(
-                        "Unable resolve library for ${extension.library.get()} in catalog $PROCESSOR_VERSION_CATALOG",
-                    )
-                }
-                .get()
+            this.resolvedIdentifier.set(
+                extension.library.map { libraryName ->
+                    val dependency = project.versionCatalogs
+                        .named(PROCESSOR_VERSION_CATALOG)
+                        .findLibrary(libraryName)
+                        .orElseThrow {
+                            GradleException(
+                                "Unable resolve library for $libraryName in catalog $PROCESSOR_VERSION_CATALOG"
+                            )
+                        }
+                        .get()
 
-            val identifier = "${dependency.module.group}:${dependency.module.name}:${dependency.versionConstraint.requiredVersion}"
-            this.library.set(identifier)
+                    "${dependency.module.group}:${dependency.module.name}:${dependency.versionConstraint.requiredVersion}"
+                }
+            )
         }
 
         project.tasks.named("processResources").configure {
@@ -124,13 +127,16 @@ abstract class ProcessorVersionGeneratorTask : DefaultTask() {
     @get:OutputDirectory
     abstract val outputFolder: DirectoryProperty
 
+    @get:Input
+    abstract val resolvedIdentifier: Property<String>
+
     @TaskAction
     fun action() {
         if (filename.get().contains("..")) {
             throw GradleException("filename path must not contain `..`")
         }
 
-        val identifier = library.get()
+        val identifier = resolvedIdentifier.get()
 
         val outputFile = this.outputFolder.get().asFile.resolve(filename.get())
 
