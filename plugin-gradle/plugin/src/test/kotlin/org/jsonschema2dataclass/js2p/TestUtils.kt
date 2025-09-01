@@ -20,11 +20,13 @@ fun createRunner(
     task: String = COLON_TASK_NAME,
     vararg arguments: String,
 ): GradleRunner =
-    GradleRunner.create()
+    GradleRunner
+        .create()
         .withDebug(debug)
         .withPluginClasspath()
         .withProjectDir(testProjectDir.toFile())
-        .withArguments(task, *arguments).apply {
+        .withArguments(task, *arguments)
+        .apply {
             if (gradleVersion != null) {
                 withGradleVersion(gradleVersion)
             }
@@ -39,7 +41,10 @@ fun GradleRunner.execute(shouldFail: Boolean = false): BuildResult =
         },
     )
 
-class BuildResult(val projectDir: Path, private val delegate: BuildResultGradle) : BuildResultGradle {
+class BuildResult(
+    val projectDir: Path,
+    private val delegate: BuildResultGradle,
+) : BuildResultGradle {
     override fun getOutput(): String = delegate.output
 
     override fun getTasks(): MutableList<BuildTask> = delegate.tasks

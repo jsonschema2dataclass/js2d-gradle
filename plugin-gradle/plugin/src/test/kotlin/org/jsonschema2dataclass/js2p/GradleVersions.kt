@@ -116,8 +116,7 @@ private fun filterCompatibleVersions(minimumInternalVersionString: String): List
             val isExact = exactVersion?.let { version.gradleVersion == it.gradleVersion } ?: true
 
             supported && isAboveMinInternal && isAboveMin && isBelowMax && isExact
-        }
-        .toList()
+        }.toList()
 }
 
 /**

@@ -107,7 +107,8 @@ private fun <T : Named> generateTasks(
     val primaryTask = createPrimaryTask(JS2D_TASK_NAME, BASE_TASK_DESCRIPTION, project)
 
     registration.registerPlugin(project) { suffixes: Map<String, String>, callback: RegisterDependenciesCallback ->
-        callback(primaryTask, null) { // register the main task
+        callback(primaryTask, null) {
+            // register the main task
             dependsOn(project, primaryTask, this)
         }
         configurations.configureEach {
@@ -118,7 +119,8 @@ private fun <T : Named> generateTasks(
 }
 
 private fun skipInputWhenEmpty(task: Task, sourceFiles: FileCollection) {
-    val input = task.inputs.files(sourceFiles)
+    val input = task.inputs
+        .files(sourceFiles)
         .skipWhenEmpty()
 
     if (GradleVersion.current() >= GradleVersion.version("6.8")) {

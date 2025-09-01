@@ -13,9 +13,9 @@ typealias ProcessorRegistrationCallback = (
 ) -> Unit
 
 interface GradlePluginRegistration {
-    fun defaultSchemaPath(project: Project): Path {
-        return defaultSchemaPathInternal(project) ?: project.file(DEFAULT_SCHEMA_PATH).toPath()
-    }
+    fun defaultSchemaPath(project: Project): Path = defaultSchemaPathInternal(
+        project,
+    ) ?: project.file(DEFAULT_SCHEMA_PATH).toPath()
 
     fun defaultSchemaPathInternal(project: Project): Path?
 

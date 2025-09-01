@@ -73,8 +73,7 @@ class ProcessorVersionPluginImpl : Plugin<Project> {
                             GradleException(
                                 "Unable resolve library for $libraryName in catalog $PROCESSOR_VERSION_CATALOG",
                             )
-                        }
-                        .get()
+                        }.get()
 
                     "${dependency.module.group}:${dependency.module.name}:${dependency.versionConstraint.requiredVersion}"
                 },
@@ -136,7 +135,10 @@ abstract class ProcessorVersionGeneratorTask : DefaultTask() {
 
         val identifier = resolvedIdentifier.get()
 
-        val outputFile = this.outputFolder.get().asFile.resolve(filename.get())
+        val outputFile = this.outputFolder
+            .get()
+            .asFile
+            .resolve(filename.get())
 
         if (logger.isDebugEnabled) {
             logger.debug("Found library with identifier `$identifier`, writing to ${outputFile.absolutePath}")
