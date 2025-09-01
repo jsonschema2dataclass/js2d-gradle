@@ -7,7 +7,6 @@ import org.gradle.kotlin.dsl.apply
 import org.jsonschema2dataclass.ext.Js2pExtension
 import org.jsonschema2dataclass.internal.GradlePluginRegistration
 import org.jsonschema2dataclass.internal.Js2dProcessor
-import org.jsonschema2dataclass.internal.compat.android.androidProcessorRegistrationSelector
 import org.jsonschema2dataclass.internal.compat.java.JavaPluginRegistration
 import org.jsonschema2dataclass.internal.defaultConfigurationSettings
 import org.jsonschema2dataclass.internal.js2p.Js2pProcessor
@@ -25,7 +24,6 @@ private val processors: MutableList<Js2dProcessor<*>> = mutableListOf()
 @Suppress("unused")
 class Js2dPlugin : Plugin<Project> {
     private val javaPlugins = listOf("java", "java-library")
-    private val androidPlugins = listOf("com.android.application", "com.android.library")
 
     override fun apply(project: Project) {
         verifyGradleVersion()
@@ -50,23 +48,12 @@ class Js2dPlugin : Plugin<Project> {
                 project.apply<Js2pJavaPlugin>()
             }
         }
-        for (pluginId in androidPlugins) {
-            project.plugins.withId(pluginId) {
-                project.apply<Js2pAndroidPlugin>()
-            }
-        }
     }
 }
 
 internal class Js2pJavaPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         applyPlugin(project, JavaPluginRegistration(), false)
-    }
-}
-
-internal class Js2pAndroidPlugin : Plugin<Project> {
-    override fun apply(project: Project) {
-        applyPlugin(project, androidProcessorRegistrationSelector(), true)
     }
 }
 

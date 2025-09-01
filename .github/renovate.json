@@ -4,22 +4,6 @@
   "extends": [
     "config:base"
   ],
-  "packageRules": [
-    {
-      "description": "Disable updating AGP compatibility dependencies. Allow changes in minor and patches.",
-      "enabled": false,
-      "matchFiles": [
-        "gradle/agp.dependencies.toml",
-        "demo/android-agp7/**"
-      ],
-      "matchPackageNames": [
-        "com.android.tools.build:gradle"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ]
-    }
-  ],
   "pre-commit": {
     "enabled": true
   },

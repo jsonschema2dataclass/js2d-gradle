@@ -1,5 +1,0 @@
-rootProject.name = "Jsonschema2dataclass Android AGP7 sample"
-
-include ':app'
-include ':lib'
-include ':lib2'

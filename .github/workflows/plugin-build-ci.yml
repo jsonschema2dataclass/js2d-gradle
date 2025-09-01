@@ -10,7 +10,6 @@ on:
     paths:
     - plugin-gradle/**
     - gradle/wrapper/**
-    - gradle/agp.dependencies.toml
     - gradle/libs.dependencies.toml
     - gradle/processors.toml
     - gradle/plugins.dependencies.toml
@@ -27,7 +26,6 @@ on:
     paths:
     - plugin-gradle/**
     - gradle/wrapper/**
-    - gradle/agp.dependencies.toml
     - gradle/libs.dependencies.toml
     - gradle/processors.toml
     - gradle/plugins.dependencies.toml

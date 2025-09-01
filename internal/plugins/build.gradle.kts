@@ -28,11 +28,6 @@ gradlePlugin {
                 compileOnly(pluginDeps.gradle.develocity)
             }
         }
-        create("agp-compat") {
-            id = "org.jsonschema2dataclass.internal.agpcompat"
-            implementationClass = "org.jsonschema2dataclass.internal.plugin.AGPCompat8Plugin"
-            description = "Rewrite metadata for AGP modules to be able to build with lower Java versions."
-        }
         create("library-plugin") {
             id = "org.jsonschema2dataclass.internal.library"
             implementationClass = "org.jsonschema2dataclass.internal.plugin.lib.LibraryPlugin"
