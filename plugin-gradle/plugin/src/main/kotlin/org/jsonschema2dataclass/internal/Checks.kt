@@ -43,7 +43,8 @@ private const val ERROR_NO_EXECUTION =
 
 /** Verify if executions are defined */
 internal fun <T> verifyExecutions(project: Project, executions: NamedDomainObjectContainer<T>) {
-    project.afterEvaluate { // this can be reported only after evaluation
+    project.afterEvaluate {
+        // this can be reported only after evaluation
         if (executions.size == 0) {
             throw InvalidUserDataException(ERROR_NO_EXECUTION)
         }

@@ -103,8 +103,7 @@ private fun MavenPublication.reorderNodes(project: Project) {
                     getChild("scm"),
                     getChild("developers"),
                     getChild("licenses"),
-                )
-                    .filterNotNull()
+                ).filterNotNull()
                     .toList()
 
 //                lastNodes.forEach { println("found node ${it.name()}") }

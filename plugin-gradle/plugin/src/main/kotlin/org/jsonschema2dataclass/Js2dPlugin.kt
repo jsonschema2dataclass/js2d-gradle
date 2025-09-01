@@ -77,12 +77,13 @@ private fun applyPlugin(project: Project, registration: GradlePluginRegistration
     )
 }
 
-private fun createConfiguration(project: Project, name: String): Configuration {
-    return project.configurations.maybeCreate(name).apply {
+private fun createConfiguration(project: Project, name: String): Configuration = project.configurations
+    .maybeCreate(
+        name,
+    ).apply {
         isCanBeConsumed = false
         isCanBeResolved = true
         isVisible = true
     }
-}
 
 private fun obtainProcessor(): Js2dProcessor<*> = Js2pProcessor()

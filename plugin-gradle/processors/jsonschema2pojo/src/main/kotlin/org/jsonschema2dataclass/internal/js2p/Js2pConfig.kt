@@ -24,7 +24,8 @@ internal data class Js2pConfig(
     private val fields: Js2pWorkerConfigFields,
     private val dateTime: Js2pWorkerConfigDateTime,
     private val def: GenerationConfig = DefaultGenerationConfig(),
-) : GenerationConfig, java.io.Serializable {
+) : GenerationConfig,
+    java.io.Serializable {
     override fun getAnnotationStyle(): AnnotationStyle = maybeDefaultEnum(klass.annotationStyle, def.annotationStyle)
 
     override fun getClassNamePrefix(): String? = klass.namePrefix ?: def.classNamePrefix
@@ -207,43 +208,33 @@ private fun <C> findClass(className: String?): Class<out C>? {
 private fun maybeDefaultChar(
     value: String?,
     defaultValue: CharArray,
-): String {
-    return if (value.isNullOrEmpty()) {
-        defaultValue.joinToString(separator = "")
-    } else {
-        value
-    }
+): String = if (value.isNullOrEmpty()) {
+    defaultValue.joinToString(separator = "")
+} else {
+    value
 }
 
 private inline fun <reified K> maybeDefaultClass(
     value: String?,
     defaultValue: Class<out K>,
-): Class<out K> {
-    return findClass(value) ?: defaultValue
-}
+): Class<out K> = findClass(value) ?: defaultValue
 
 private inline fun <reified V> maybeDefaultSet(
     value: Set<V>?,
     defaultValue: Array<V>,
-): Set<V> {
-    return if (value.isNullOrEmpty()) {
-        defaultValue.toSet()
-    } else {
-        value
-    }
+): Set<V> = if (value.isNullOrEmpty()) {
+    defaultValue.toSet()
+} else {
+    value
 }
 
-private fun <E : Enum<E>?> fromEnum(value: String?, enumClass: Class<E>): E? {
-    return if (value.isNullOrEmpty()) {
-        null
-    } else {
-        java.lang.Enum.valueOf(enumClass, value.asUppercase())
-    }
+private fun <E : Enum<E>?> fromEnum(value: String?, enumClass: Class<E>): E? = if (value.isNullOrEmpty()) {
+    null
+} else {
+    java.lang.Enum.valueOf(enumClass, value.asUppercase())
 }
 
 private inline fun <reified V : Enum<V>?> maybeDefaultEnum(
     value: String?,
     defaultValue: V,
-): V {
-    return fromEnum(value, V::class.java) ?: defaultValue
-}
+): V = fromEnum(value, V::class.java) ?: defaultValue

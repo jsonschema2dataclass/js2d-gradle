@@ -149,8 +149,7 @@ class JavaTaskFunctionalTest {
             gradleVersion = gradleVersion,
             testProjectDir = testProjectDir,
             arguments = arrayOf("--configuration-cache"),
-        )
-            .execute()
+        ).execute()
             .assertResultAndGeneratedClass()
     }
 }
