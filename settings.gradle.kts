@@ -5,7 +5,7 @@ pluginManagement {
 }
 
 plugins {
-    id("com.gradle.develocity") version "4.0.3"
+    id("com.gradle.develocity") version "4.1.1"
     id("org.jsonschema2dataclass.internal.settings-develocity")
 }
 
