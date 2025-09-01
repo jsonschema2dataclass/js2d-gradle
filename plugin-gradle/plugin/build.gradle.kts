@@ -34,7 +34,6 @@ gradlePlugin {
                     "java",
                     "kotlin",
                     "groovy",
-                    "android",
                 ),
             )
         }
@@ -54,7 +53,6 @@ dependencies {
 
     // Gradle plugin compatibility
     implementation(projects.pluginGradle.compat.java)
-    implementation(projects.pluginGradle.compat.android)
 
     testImplementation(libs.bundles.junit.tests)
     testRuntimeOnly(libs.bundles.junit.runtime)

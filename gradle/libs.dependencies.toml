@@ -1,19 +1,10 @@
 [versions]
-# @see com.android.build.gradle.internal.plugins.BasePlugin.createLintClasspathConfiguration
-# @see builder-model//version.properties
-# Versions: https://maven.google.com/web/index.html#com.android.tools:common
-agp-tools = "31.12.2"
-
 # JUnit 5 = JUnit Platform ([junit-api]) + JUnit Launcher ([junit-launcher])
 # Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
 junit5 = "5.13.4"
 junit5-platform = "1.13.4"
 
 [libraries]
-
-# Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
-# Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
-android-tools = { module = "com.android.tools:common", version.ref = "agp-tools" }
 
 # Junit for testing
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit5" }

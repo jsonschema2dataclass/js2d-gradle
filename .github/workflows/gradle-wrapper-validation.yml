@@ -7,7 +7,6 @@ on:
     - main
     paths:
     - gradle/wrapper/**
-    - demo/android-agp7/gradle/wrapper/**
     - demo/java/gradle/wrapper/**
     - .github/workflows/gradle-wrapper-validation.yml
   pull_request:
@@ -15,15 +14,11 @@ on:
     - main
     paths:
     - gradle/wrapper/**
-    - demo/android-agp7/gradle/**
     - demo/java/gradle/**
     - .github/workflows/gradle-wrapper-validation.yml
 
 concurrency:
-  # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
-  # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
-  group: ${{ github.ref == 'refs/heads/main' && format('gradle-wrapper-validation-main-{0}', github.sha) || format('gradle-wrapper-validation-{0}', github.ref)
-    }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 env:
@@ -44,17 +39,6 @@ jobs:
     defaults:
       run:
         working-directory: demo/java
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - uses: gradle/wrapper-validation-action@v3
-  validationAndroidAgp7Sample:
-    name: 'Wrapper validation: Android AGP 7 Demo'
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: demo/android-agp7
     steps:
     - uses: actions/checkout@v4
       with:
