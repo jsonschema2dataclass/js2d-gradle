@@ -1,6 +1,6 @@
 plugins {
     `maven-publish`
-    kotlin("jvm") version "2.2.10"
+    kotlin("jvm") version "2.2.20"
     id("org.jsonschema2dataclass")
 }
 
