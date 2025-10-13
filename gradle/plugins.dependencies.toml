@@ -3,7 +3,7 @@
 nexus = "2.0.0"
 
 # https://docs.gradle.com/enterprise/gradle-plugin/#release_history
-gradle-develocity = "4.2.1"
+gradle-develocity = "4.2.2"
 gradle-publish = "2.0.0"
 
 # Version of Kotlin Gradle Plugin used for compilation.
