@@ -6,7 +6,7 @@ plugins {
 dependencies {
     jsonschema2dataclassPlugins(project(":classpath:custom-rule-factory"))
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.1")
 }
 
 jsonSchema2Pojo {
