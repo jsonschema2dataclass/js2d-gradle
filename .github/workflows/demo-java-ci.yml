@@ -38,7 +38,7 @@ jobs:
         distribution: [zulu, temurin]
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
     - name: Install JDK ${{ matrix.distribution }} ${{ matrix.java_version }}
       uses: actions/setup-java@v5
       with:
