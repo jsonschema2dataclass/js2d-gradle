@@ -2,7 +2,6 @@ package org.jsonschema2dataclass.js2p
 
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -66,16 +65,34 @@ class IncrementalBuildTest {
     }
 
     @Test
-    @Disabled("Plugin has cache relocatability issues (absolute paths in cache key) - remove to verify fix")
     @DisplayName("build cache is relocatable to different directory")
     fun buildCacheIsRelocatable() {
         setupProjectWithBuildCache(testProjectDir)
-        runGradle(testProjectDir, JS2P_TASK_NAME, "--build-cache")
+        val firstResult = runGradle(testProjectDir, JS2P_TASK_NAME, "--build-cache", "--info")
+
+        // Extract cache key from first build
+        val firstCacheKey = Regex("Build cache key for task ':${JS2P_TASK_NAME}ConfigMain' is ([a-f0-9]+)")
+            .find(firstResult.output)?.groupValues?.get(1) ?: "NOT_FOUND"
 
         setupProjectWithBuildCache(secondProjectDir)
-        val result = runGradle(secondProjectDir, JS2P_TASK_NAME, "--build-cache")
+        val result = runGradle(secondProjectDir, JS2P_TASK_NAME, "--build-cache", "--info")
 
-        assertEquals(TaskOutcome.FROM_CACHE, result.task(":${JS2P_TASK_NAME}ConfigMain")?.outcome)
+        // Extract cache key from second build
+        val secondCacheKey = Regex("Build cache key for task ':${JS2P_TASK_NAME}ConfigMain' is ([a-f0-9]+)")
+            .find(result.output)?.groupValues?.get(1) ?: "NOT_FOUND"
+
+        assertEquals(
+            TaskOutcome.FROM_CACHE,
+            result.task(":${JS2P_TASK_NAME}ConfigMain")?.outcome,
+            """Build cache should be relocatable.
+              |First build task outcome: ${firstResult.task(":${JS2P_TASK_NAME}ConfigMain")?.outcome}
+              |Second build task outcome: ${result.task(":${JS2P_TASK_NAME}ConfigMain")?.outcome}
+              |First cache key: $firstCacheKey
+              |Second cache key: $secondCacheKey
+              |Keys match: ${firstCacheKey == secondCacheKey}
+              |Cache dir: $localBuildCacheDir
+            """.trimMargin()
+        )
     }
 
     @Test

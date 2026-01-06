@@ -9,6 +9,7 @@ import org.gradle.api.UnknownTaskException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.ext.Js2pConfiguration
 import org.jsonschema2dataclass.internal.compat.kotlin.capitalized
@@ -121,6 +122,7 @@ private fun <T : Named> generateTasks(
 private fun skipInputWhenEmpty(task: Task, sourceFiles: FileCollection) {
     val input = task.inputs
         .files(sourceFiles)
+        .withPathSensitivity(PathSensitivity.RELATIVE)
         .skipWhenEmpty()
 
     if (GradleVersion.current() >= GradleVersion.version("6.8")) {

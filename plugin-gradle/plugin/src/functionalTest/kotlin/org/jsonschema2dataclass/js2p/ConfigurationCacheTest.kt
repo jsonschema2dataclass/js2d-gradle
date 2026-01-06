@@ -4,7 +4,6 @@ package org.jsonschema2dataclass.js2p
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -35,18 +34,21 @@ class ConfigurationCacheTest {
     }
 
     @Test
-    @Disabled("Plugin has configuration cache issues - remove to verify fix")
     @DisplayName("task is compatible with configuration cache")
     fun taskIsCompatibleWithConfigurationCache() {
         setupMinimalProject()
 
-        runWithConfigCache() // First run - stores configuration cache
-        val result = runWithConfigCache() // Second run - should reuse
+        // First run without config cache to stabilize filesystem (processResources creates build/resources/main/json)
+        runGradle(testProjectDir, JS2P_TASK_NAME)
 
+        runWithConfigCache() // Second run - stores configuration cache
+        val result = runWithConfigCache() // Third run - should reuse
+
+        val isReused = result.output.contains("Reusing configuration cache") ||
+            result.output.contains("Configuration cache entry reused")
         assertTrue(
-            result.output.contains("Reusing configuration cache") ||
-                result.output.contains("Configuration cache entry reused"),
-            "Configuration cache should be reused on second run"
+            isReused,
+            "Configuration cache should be reused on second run. Output:\n${result.output}"
         )
     }
 
@@ -55,7 +57,10 @@ class ConfigurationCacheTest {
     fun configurationCacheInvalidatedWhenBuildScriptChanges() {
         setupMinimalProject()
 
-        runWithConfigCache() // First run - stores configuration cache
+        // First run without config cache to stabilize filesystem
+        runGradle(testProjectDir, JS2P_TASK_NAME)
+
+        runWithConfigCache() // Second run - stores configuration cache
 
         // Modify build script
         val newBuildGradle = buildGradle("""
