@@ -12,7 +12,6 @@ import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 
 class ConfigurationCacheTest {
-
     companion object {
         private val MIN_GRADLE_VERSION = GradleVersion.version("8.1")
     }
@@ -24,18 +23,21 @@ class ConfigurationCacheTest {
     fun checkGradleVersion() {
         assumeTrue(
             GradleVersion.current() >= MIN_GRADLE_VERSION,
-            "Configuration cache tests require Gradle ${MIN_GRADLE_VERSION.version}+ (current: ${GradleVersion.current().version})"
+            "Configuration cache tests require Gradle ${MIN_GRADLE_VERSION.version}+ (current: ${GradleVersion.current().version})",
         )
     }
 
-    private fun runWithConfigCache(): BuildResult = GradleRunner.create()
+    private fun runWithConfigCache(): BuildResult = GradleRunner
+        .create()
         .withPluginClasspath()
         .withProjectDir(testProjectDir.toFile())
         .withArguments("--configuration-cache", JS2P_TASK_NAME)
         .build()
 
     private fun setupMinimalProject() {
-        val buildGradle = buildGradle("""
+        val buildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    main {
@@ -43,7 +45,8 @@ class ConfigurationCacheTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
         setupBasicProject(testProjectDir, buildGradle)
     }
 
@@ -62,7 +65,7 @@ class ConfigurationCacheTest {
             result.output.contains("Configuration cache entry reused")
         assertTrue(
             isReused,
-            "Configuration cache should be reused on second run. Output:\n${result.output}"
+            "Configuration cache should be reused on second run. Output:\n${result.output}",
         )
     }
 
@@ -77,7 +80,9 @@ class ConfigurationCacheTest {
         runWithConfigCache() // Second run - stores configuration cache
 
         // Modify build script
-        val newBuildGradle = buildGradle("""
+        val newBuildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    main {
@@ -86,7 +91,8 @@ class ConfigurationCacheTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
         testProjectDir.resolve("build.gradle").toFile().writeText(newBuildGradle)
 
         val result = runWithConfigCache() // Third run - should NOT reuse cache
@@ -97,7 +103,7 @@ class ConfigurationCacheTest {
 
         assertTrue(
             cacheNotReused,
-            "Configuration cache should be invalidated when build script changes. Output:\n${result.output}"
+            "Configuration cache should be invalidated when build script changes. Output:\n${result.output}",
         )
 
         // Verify invalidation was due to build script change (not some other reason)
@@ -106,7 +112,7 @@ class ConfigurationCacheTest {
 
         assertTrue(
             invalidatedDueToBuildScript,
-            "Configuration cache should be invalidated specifically because build.gradle changed. Output:\n${result.output}"
+            "Configuration cache should be invalidated specifically because build.gradle changed. Output:\n${result.output}",
         )
     }
 }

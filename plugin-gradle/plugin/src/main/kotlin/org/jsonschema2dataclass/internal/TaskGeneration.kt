@@ -8,8 +8,8 @@ import org.gradle.api.Task
 import org.gradle.api.UnknownTaskException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.util.GradleVersion
 import org.jsonschema2dataclass.ext.Js2pConfiguration
 import org.jsonschema2dataclass.internal.compat.kotlin.capitalized

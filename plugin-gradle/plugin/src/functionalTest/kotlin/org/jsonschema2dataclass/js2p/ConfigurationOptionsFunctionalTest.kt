@@ -9,14 +9,15 @@ import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 
 class ConfigurationOptionsFunctionalTest {
-
     @TempDir
     lateinit var testProjectDir: Path
 
     @Test
     @DisplayName("generates Java class from JSON schema")
     fun smokeTestGenerationWorks() {
-        val buildGradle = buildGradle("""
+        val buildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    main {
@@ -24,7 +25,8 @@ class ConfigurationOptionsFunctionalTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
 
         setupBasicProject(testProjectDir, buildGradle)
         val result = runGradle(testProjectDir, JS2P_TASK_NAME)
@@ -42,7 +44,9 @@ class ConfigurationOptionsFunctionalTest {
     @Test
     @DisplayName("klass.targetPackage sets output package")
     fun klassTargetPackage() {
-        val buildGradle = buildGradle("""
+        val buildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    main {
@@ -50,7 +54,8 @@ class ConfigurationOptionsFunctionalTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
 
         setupBasicProject(testProjectDir, buildGradle)
         val result = runGradle(testProjectDir, JS2P_TASK_NAME)

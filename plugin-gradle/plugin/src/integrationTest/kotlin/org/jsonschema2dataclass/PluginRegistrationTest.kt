@@ -17,7 +17,6 @@ private const val JS2P_TASK_NAME = "generateJsonSchema2DataClass"
  * Tests plugin application without running full builds.
  */
 class PluginRegistrationTest {
-
     @Test
     @DisplayName("plugin registers jsonSchema2Pojo extension")
     fun pluginRegistersExtension() {

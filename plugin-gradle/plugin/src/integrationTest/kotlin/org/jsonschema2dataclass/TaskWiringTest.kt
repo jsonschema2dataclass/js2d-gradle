@@ -16,7 +16,6 @@ private const val JS2P_TASK_NAME = "generateJsonSchema2DataClass"
  * Tests task registration and dependencies without running full builds.
  */
 class TaskWiringTest {
-
     @Test
     @DisplayName("java plugin triggers task registration")
     fun javaPluginTriggersTaskRegistration() {

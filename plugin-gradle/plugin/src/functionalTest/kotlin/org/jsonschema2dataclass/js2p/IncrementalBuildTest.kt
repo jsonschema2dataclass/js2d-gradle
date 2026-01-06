@@ -17,7 +17,6 @@ import java.nio.file.Path
  * - Input changes (schema files, configuration) trigger re-execution
  */
 class IncrementalBuildTest {
-
     @TempDir
     lateinit var testProjectDir: Path
 
@@ -27,7 +26,9 @@ class IncrementalBuildTest {
     @TempDir
     lateinit var localBuildCacheDir: Path
 
-    private val minimalBuildGradle = buildGradle("""
+    private val minimalBuildGradle =
+        buildGradle(
+            """
         |jsonSchema2Pojo {
         |  executions {
         |    main {
@@ -35,7 +36,8 @@ class IncrementalBuildTest {
         |    }
         |  }
         |}
-    """.trimMargin())
+            """.trimMargin(),
+        )
 
     private fun buildCacheSettings() = """
         buildCache {
@@ -43,7 +45,7 @@ class IncrementalBuildTest {
                 directory = '${localBuildCacheDir.toUri()}'
             }
         }
-    """.trimIndent()
+        """.trimIndent()
 
     private fun setupProjectWithBuildCache(projectDir: Path) {
         setupBasicProject(projectDir, minimalBuildGradle)
@@ -84,14 +86,18 @@ class IncrementalBuildTest {
 
         // Extract cache key from first build
         val firstCacheKey = Regex("Build cache key for task ':${JS2P_TASK_NAME}ConfigMain' is ([a-f0-9]+)")
-            .find(firstResult.output)?.groupValues?.get(1) ?: "NOT_FOUND"
+            .find(firstResult.output)
+            ?.groupValues
+            ?.get(1) ?: "NOT_FOUND"
 
         setupProjectWithBuildCache(secondProjectDir)
         val result = runGradle(secondProjectDir, JS2P_TASK_NAME, "--build-cache", "--info")
 
         // Extract cache key from second build
         val secondCacheKey = Regex("Build cache key for task ':${JS2P_TASK_NAME}ConfigMain' is ([a-f0-9]+)")
-            .find(result.output)?.groupValues?.get(1) ?: "NOT_FOUND"
+            .find(result.output)
+            ?.groupValues
+            ?.get(1) ?: "NOT_FOUND"
 
         assertEquals(
             TaskOutcome.FROM_CACHE,
@@ -103,7 +109,7 @@ class IncrementalBuildTest {
               |Second cache key: $secondCacheKey
               |Keys match: ${firstCacheKey == secondCacheKey}
               |Cache dir: $localBuildCacheDir
-            """.trimMargin()
+            """.trimMargin(),
         )
     }
 
@@ -128,7 +134,9 @@ class IncrementalBuildTest {
 
         runGradle(testProjectDir, JS2P_TASK_NAME)
 
-        val newBuildGradle = buildGradle("""
+        val newBuildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    main {
@@ -137,7 +145,8 @@ class IncrementalBuildTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
         testProjectDir.resolve("build.gradle").toFile().writeText(newBuildGradle)
 
         val result = runGradle(testProjectDir, JS2P_TASK_NAME)

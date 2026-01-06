@@ -51,7 +51,8 @@ internal fun runGradle(
     vararg arguments: String,
     shouldFail: Boolean = false,
 ): BuildResult {
-    val runner = GradleRunner.create()
+    val runner = GradleRunner
+        .create()
         .withPluginClasspath()
         .withProjectDir(projectDir.toFile())
         .withArguments(*arguments, "--stacktrace")
@@ -71,8 +72,6 @@ internal fun buildGradle(pluginConfig: String): String = """
     |  implementation "com.fasterxml.jackson.core:jackson-annotations:2.11.2"
     |}
     |$pluginConfig
-""".trimMargin()
+    """.trimMargin()
 
-internal fun File.containsText(text: String): Boolean {
-    return this.readText().contains(text)
-}
+internal fun File.containsText(text: String): Boolean = this.readText().contains(text)

@@ -14,14 +14,15 @@ import java.nio.file.Path
  * Tests that the plugin fails gracefully with clear messages.
  */
 class ErrorHandlingFunctionalTest {
-
     @TempDir
     lateinit var testProjectDir: Path
 
     @Test
     @DisplayName("invalid config name with hyphen fails with clear message")
     fun invalidConfigNameWithHyphenFails() {
-        val buildGradle = buildGradle("""
+        val buildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    "my-config" {
@@ -29,7 +30,8 @@ class ErrorHandlingFunctionalTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
 
         setupBasicProject(testProjectDir, buildGradle)
 
@@ -38,14 +40,16 @@ class ErrorHandlingFunctionalTest {
         // Error should mention the problematic config name
         assertTrue(
             result.output.contains("my-config"),
-            "Error should reference the invalid config name 'my-config'. Output:\n${result.output.takeLast(500)}"
+            "Error should reference the invalid config name 'my-config'. Output:\n${result.output.takeLast(500)}",
         )
     }
 
     @Test
     @DisplayName("config name starting with uppercase fails")
     fun configNameStartingWithUppercaseFails() {
-        val buildGradle = buildGradle("""
+        val buildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    Main {
@@ -53,7 +57,8 @@ class ErrorHandlingFunctionalTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
 
         setupBasicProject(testProjectDir, buildGradle)
 
@@ -62,14 +67,16 @@ class ErrorHandlingFunctionalTest {
         // Error should mention the problematic config name
         assertTrue(
             result.output.contains("Main"),
-            "Error should reference the invalid config name 'Main'. Output:\n${result.output.takeLast(500)}"
+            "Error should reference the invalid config name 'Main'. Output:\n${result.output.takeLast(500)}",
         )
     }
 
     @Test
     @DisplayName("nonexistent source directory results in NO_SOURCE")
     fun nonexistentSourceDirectoryResultsInNoSource() {
-        val buildGradle = buildGradle("""
+        val buildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    main {
@@ -78,7 +85,8 @@ class ErrorHandlingFunctionalTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
 
         // Don't create schema files - only build config
         testProjectDir.resolve("build.gradle").toFile().writeText(buildGradle)
@@ -99,7 +107,9 @@ class ErrorHandlingFunctionalTest {
     @Test
     @DisplayName("malformed JSON schema fails build")
     fun malformedJsonSchemaFailsBuild() {
-        val buildGradle = buildGradle("""
+        val buildGradle =
+            buildGradle(
+                """
             |jsonSchema2Pojo {
             |  executions {
             |    main {
@@ -107,7 +117,8 @@ class ErrorHandlingFunctionalTest {
             |    }
             |  }
             |}
-        """.trimMargin())
+                """.trimMargin(),
+            )
 
         val malformedSchema = "{ this is not valid json }"
         setupBasicProject(testProjectDir, buildGradle, malformedSchema)
