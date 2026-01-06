@@ -7,6 +7,15 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 
+/**
+ * Tests for incremental build and caching behavior.
+ *
+ * Verifies that:
+ * - Tasks are UP_TO_DATE when inputs don't change
+ * - Build cache can restore outputs from previous builds
+ * - Build cache is relocatable (path-independent)
+ * - Input changes (schema files, configuration) trigger re-execution
+ */
 class IncrementalBuildTest {
 
     @TempDir
@@ -47,9 +56,12 @@ class IncrementalBuildTest {
         setupBasicProject(testProjectDir, minimalBuildGradle)
 
         runGradle(testProjectDir, JS2P_TASK_NAME)
-        val result = runGradle(testProjectDir, JS2P_TASK_NAME)
+        val result2 = runGradle(testProjectDir, JS2P_TASK_NAME)
+        val result3 = runGradle(testProjectDir, JS2P_TASK_NAME)
 
-        assertEquals(TaskOutcome.UP_TO_DATE, result.task(":${JS2P_TASK_NAME}ConfigMain")?.outcome)
+        // Verify UP_TO_DATE is stable across multiple runs
+        assertEquals(TaskOutcome.UP_TO_DATE, result2.task(":${JS2P_TASK_NAME}ConfigMain")?.outcome)
+        assertEquals(TaskOutcome.UP_TO_DATE, result3.task(":${JS2P_TASK_NAME}ConfigMain")?.outcome)
     }
 
     @Test

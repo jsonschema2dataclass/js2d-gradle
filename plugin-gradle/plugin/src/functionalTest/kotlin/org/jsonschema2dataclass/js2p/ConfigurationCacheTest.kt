@@ -1,9 +1,11 @@
 package org.jsonschema2dataclass.js2p
 
-
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.util.GradleVersion
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assumptions.assumeTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -11,8 +13,20 @@ import java.nio.file.Path
 
 class ConfigurationCacheTest {
 
+    companion object {
+        private val MIN_GRADLE_VERSION = GradleVersion.version("8.1")
+    }
+
     @TempDir
     lateinit var testProjectDir: Path
+
+    @BeforeEach
+    fun checkGradleVersion() {
+        assumeTrue(
+            GradleVersion.current() >= MIN_GRADLE_VERSION,
+            "Configuration cache tests require Gradle ${MIN_GRADLE_VERSION.version}+ (current: ${GradleVersion.current().version})"
+        )
+    }
 
     private fun runWithConfigCache(): BuildResult = GradleRunner.create()
         .withPluginClasspath()
@@ -75,12 +89,24 @@ class ConfigurationCacheTest {
         """.trimMargin())
         testProjectDir.resolve("build.gradle").toFile().writeText(newBuildGradle)
 
-        val result = runWithConfigCache() // Second run - should NOT reuse cache
+        val result = runWithConfigCache() // Third run - should NOT reuse cache
 
-        val cacheNotReused = !result.output.contains("Reusing configuration cache") ||
-            result.output.contains("Calculating task graph") ||
-            result.output.contains("Configuration cache entry stored")
+        // Cache should NOT be reused - verify neither reuse message appears
+        val cacheNotReused = !result.output.contains("Reusing configuration cache") &&
+            !result.output.contains("Configuration cache entry reused")
 
-        assertTrue(cacheNotReused, "Configuration cache should be invalidated when build script changes")
+        assertTrue(
+            cacheNotReused,
+            "Configuration cache should be invalidated when build script changes. Output:\n${result.output}"
+        )
+
+        // Verify invalidation was due to build script change (not some other reason)
+        val invalidatedDueToBuildScript = result.output.contains("build.gradle' has changed") ||
+            result.output.contains("build.gradle has changed")
+
+        assertTrue(
+            invalidatedDueToBuildScript,
+            "Configuration cache should be invalidated specifically because build.gradle changed. Output:\n${result.output}"
+        )
     }
 }
