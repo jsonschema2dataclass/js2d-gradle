@@ -11,6 +11,9 @@ const val ENV_TEST_EXACT_CURRENT = "current"
 
 // Gradle releases can be found at https://gradle.org/releases/
 // M.B. current (Running) release will always be tested even it's not listed here.
+private val gradleReleases9x = arrayOf(
+    "9.2.1",
+)
 private val gradleReleases8x = arrayOf(
     "8.8",
     "8.7",
@@ -47,6 +50,7 @@ private val gradleReleases6x = arrayOf(
 
 private val gradleReleases = linkedSetOf(
     GradleVersion.current().version,
+    *gradleReleases9x,
     *gradleReleases8x,
     *gradleReleases7x,
     *gradleReleases6x,
@@ -61,23 +65,30 @@ private val compatibleVersionsConfigurationCache = filterCompatibleVersions("6.6
  * Information can be found here: https://docs.gradle.org/current/userguide/compatibility.html
  * N.B. "Support for running Gradle" is the only thing is important
  *
- * | Java version | Gradle version |
- * |--------------|----------------|
- * | 1.8 - 13     | >= 6.0         |
- * | 14           | >= 6.3         |
- * | 15           | >= 6.7         |
- * | 16           | >= 7.0         |
- * | 17           | >= 7.3         |
- * | 18           | >= 7.5         |
- * | 19           | >= 7.6         |
- * | 20           | >= 8.3         |
- * | 21           | >= 8.5         |
- * | 22           | >= 8.8         |
- * | 22           | >= ?.?         |
- * | other        | not supported  |
+ * | Java version | Gradle version      |
+ * |--------------|---------------------|
+ * | 1.8 - 13     | 6.0 - 8.x           |
+ * | 14           | 6.3 - 8.x           |
+ * | 15           | 6.7 - 8.x           |
+ * | 16           | 7.0 - 8.x           |
+ * | 17+          | 7.3+ (incl. 9.x)    |
+ * | 18           | >= 7.5              |
+ * | 19           | >= 7.6              |
+ * | 20           | >= 8.3              |
+ * | 21           | >= 8.5              |
+ * | 22           | >= 8.8              |
+ * | 23           | >= 8.10             |
+ * | other        | not supported       |
+ *
+ * Note: Gradle 9.x requires Java 17+ minimum
  */
-private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
-    when (JavaVersion.current()) {
+private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean {
+    // Gradle 9.x requires Java 17+
+    if (gradleVersion >= 9 to 0 && JavaVersion.current() < JavaVersion.VERSION_17) {
+        return false
+    }
+
+    return when (JavaVersion.current()) {
         in JavaVersion.VERSION_1_8..JavaVersion.VERSION_13 -> gradleVersion >= 6 to 0
         JavaVersion.VERSION_14 -> gradleVersion >= 6 to 3
         JavaVersion.VERSION_15 -> gradleVersion >= 6 to 7
@@ -88,8 +99,10 @@ private fun gradleSupported(gradleVersion: ComparableGradleVersion): Boolean =
         JavaVersion.VERSION_20 -> gradleVersion >= 8 to 3
         JavaVersion.VERSION_21 -> gradleVersion >= 8 to 5
         JavaVersion.VERSION_22 -> gradleVersion >= 8 to 8
-        else -> false // no official information on Gradle compatibility with further versions of Java
+        JavaVersion.VERSION_23 -> gradleVersion >= 8 to 10
+        else -> gradleVersion >= 8 to 10 // assume newer Java needs latest Gradle
     }
+}
 
 private fun filterCompatibleVersions(minimumInternalVersionString: String): List<String> {
     val minimumInternalVersion = ComparableGradleVersion(minimumInternalVersionString)
