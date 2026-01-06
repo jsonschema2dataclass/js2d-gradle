@@ -4,13 +4,12 @@ plugins {
     id("org.jsonschema2dataclass.internal.gradle-plugin")
 }
 
-@Suppress("UnstableApiUsage")
 gradlePlugin {
     website.set("https://github.com/jsonschema2dataclass/js2d-gradle")
     vcsUrl.set("https://github.com/jsonschema2dataclass/js2d-gradle.git")
 
     plugins {
-        create("jsonschema2dataclassPlugin") {
+        register("jsonschema2dataclassPlugin") {
             id = "org.jsonschema2dataclass"
 
             implementationClass = "org.jsonschema2dataclass.Js2dPlugin"
