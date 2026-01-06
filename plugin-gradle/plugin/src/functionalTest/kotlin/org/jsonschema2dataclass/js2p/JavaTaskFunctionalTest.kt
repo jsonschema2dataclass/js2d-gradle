@@ -128,7 +128,7 @@ class JavaTaskFunctionalTest {
 
     @ParameterizedTest(name = "[{index}] {displayName} - {0}")
     @MethodSource(PARAM_SOURCE)
-    @DisplayName("jarring sources does not fail after code generation")
+    @DisplayName("generated sources can be packaged into source jar")
     fun sourceJarCompatibility(gradleVersion: String?, @TempDir testProjectDir: Path) {
         assumeFalse(gradleVersion == null)
         createBuildFilesWithSourcesJar(testProjectDir)

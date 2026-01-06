@@ -4,13 +4,12 @@ plugins {
     id("org.jsonschema2dataclass.internal.gradle-plugin")
 }
 
-@Suppress("UnstableApiUsage")
 gradlePlugin {
     website.set("https://github.com/jsonschema2dataclass/js2d-gradle")
     vcsUrl.set("https://github.com/jsonschema2dataclass/js2d-gradle.git")
 
     plugins {
-        create("jsonschema2dataclassPlugin") {
+        register("jsonschema2dataclassPlugin") {
             id = "org.jsonschema2dataclass"
 
             implementationClass = "org.jsonschema2dataclass.Js2dPlugin"
@@ -66,4 +65,61 @@ tasks.test {
     useJUnitPlatform()
     systemProperty("junit.jupiter.testinstance.lifecycle.default", "per_method")
     systemProperty("junit.jupiter.execution.parallel.enabled", "true")
+}
+
+// Integration tests using ProjectBuilder
+val integrationTest by sourceSets.creating {
+    compileClasspath += sourceSets.main.get().output
+    runtimeClasspath += sourceSets.main.get().output
+}
+
+val integrationTestImplementation by configurations.getting {
+    extendsFrom(configurations.testImplementation.get())
+}
+
+val integrationTestRuntimeOnly by configurations.getting {
+    extendsFrom(configurations.testRuntimeOnly.get())
+}
+
+// Functional tests using Gradle TestKit
+val functionalTest by sourceSets.creating {
+    compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+    runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+}
+
+val functionalTestImplementation by configurations.getting {
+    extendsFrom(configurations.testImplementation.get())
+}
+
+val functionalTestRuntimeOnly by configurations.getting {
+    extendsFrom(configurations.testRuntimeOnly.get())
+}
+
+// Register with java-gradle-plugin for automatic withPluginClasspath() support
+gradlePlugin {
+    testSourceSets(functionalTest)
+}
+
+val integrationTestTask = tasks.register<Test>("integrationTest") {
+    description = "Runs integration tests."
+    group = "verification"
+    testClassesDirs = integrationTest.output.classesDirs
+    classpath = integrationTest.runtimeClasspath
+    mustRunAfter(tasks.test)
+    useJUnitPlatform()
+}
+
+val functionalTestTask = tasks.register<Test>("functionalTest") {
+    description = "Runs functional tests."
+    group = "verification"
+    testClassesDirs = functionalTest.output.classesDirs
+    classpath = functionalTest.runtimeClasspath
+    mustRunAfter(integrationTestTask)
+    useJUnitPlatform()
+
+    // No parallelism for TestKit - file contention makes it slower (see gradle/gradle#13421)
+}
+
+tasks.check {
+    dependsOn(integrationTestTask, functionalTestTask)
 }
