@@ -19,7 +19,7 @@ repos:
     exclude: .*gradlew.bat
   - id: forbid-tabs
 - repo: https://github.com/crate-ci/typos
-  rev: v1.19.0
+  rev: v1.42.0
   hooks:
   - id: typos
     args: []
