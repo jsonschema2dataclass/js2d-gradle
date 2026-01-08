@@ -18,7 +18,7 @@ This plugin is aiming to take raw JSON or YAML raw files or schemas and convert 
 (Plain Old Java Object).
 
 At the moment of writing documentation, it uses
-https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] 1.2.1 library to generate classes.
+https://github.com/joelittlejohn/jsonschema2pojo[jsonschema2pojo] 1.2.2 library to generate classes.
 
 The `org.jsonschema2dataclass` plugin feature highlight:
 
@@ -30,7 +30,7 @@ Additionally, plugin has beta support for Gradle 8.0 and AGP 8.
 
 * Possibility natively write Gradle scripts in Groovy and Kotlin DSLs.
 * Support for projects written in Kotlin and Groovy and which are using Lombok.
-* Possibility to run multiple executions withing a single project.
+* Possibility to run multiple executions within a single project.
 +
 This is important for some use cases to generate different sets of models within a single project.
 * Some parameters are more human-writable and using native features provided by Gradle.
