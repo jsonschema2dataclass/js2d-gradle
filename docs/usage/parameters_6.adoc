@@ -181,7 +181,7 @@ a| The sort order to be applied when recursively processing the source files.
 | `#/.`
 // ------------------------------
 | fileExtensions
-| List<String>
+| Set<String>
 |
 // ------------------------------
 | fileFilter
@@ -519,7 +519,7 @@ Any Java fields which are an object or array of objects will be annotated with @
 | boolean
 | true
 // ------------------------------
-| annotateJakartaValidation
+| annotateJsr303Jakarta
 | boolean
 | false
 // ------------------------------
@@ -567,13 +567,13 @@ Any Java fields which are an object or array of objects will be annotated with @
 | boolean
 | false
 // ------------------------------
-| toStringExcludes
-| boolean
-| true
-// ------------------------------
 | toStringMethod
 | boolean
 | false
+// ------------------------------
+| toStringExcludes
+| boolean
+| true
 // ------------------------------
 |====
 ====
@@ -718,7 +718,7 @@ Any Java fields which are an object or array of objects will be annotated with @
 | Name | Type | Default
 // ------------------------------
 | dateFormat
-| String
+| boolean
 |
 // ------------------------------
 | datePattern
@@ -726,7 +726,7 @@ Any Java fields which are an object or array of objects will be annotated with @
 |
 // ------------------------------
 | dateTimeFormat
-| String
+| boolean
 |
 // ------------------------------
 | dateTimePattern
@@ -754,7 +754,7 @@ Any Java fields which are an object or array of objects will be annotated with @
 | false
 // ------------------------------
 | timeFormat
-| String
+| boolean
 |
 // ------------------------------
 | timePattern
