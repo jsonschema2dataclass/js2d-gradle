@@ -13,17 +13,7 @@ plugins {
 enableFeaturePreviewQuietly("TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
 
 // Main plugin
-include(":plugin-gradle:plugin")
-// common interfaces
-include(":plugin-gradle:common")
-
-// Kotlin language compatibility along Gradle versions
-include(":plugin-gradle:compat:kotlin")
-// Gradle plugin compatibility
-include(":plugin-gradle:compat:java")
-
-// processors:
-include(":plugin-gradle:processors:jsonschema2pojo")
+include(":plugin-gradle")
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
