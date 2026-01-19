@@ -16,14 +16,14 @@ dependencies {
     implementation("joda-time:joda-time:2.14.0")
 }
 
-val sourceJar = tasks.create<Jar>("sourceJar") {
+val sourceJar = tasks.register<Jar>("sourceJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(sourceSets.main.get().allJava)
     archiveClassifier.set("sources")
     dependsOn("build")
 }
 
-val schemasJar = tasks.create<Jar>("schemasJar") {
+val schemasJar = tasks.register<Jar>("schemasJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(targetJSONBaseDir)
     archiveClassifier.set("schemas")
