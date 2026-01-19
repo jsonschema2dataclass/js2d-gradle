@@ -32,7 +32,7 @@ jobs:
     - uses: actions/checkout@v6
       with:
         fetch-depth: 0
-    - uses: gradle/wrapper-validation-action@v3
+    - uses: gradle/actions/wrapper-validation@v5
   validationJavaKotlinSample:
     name: 'Wrapper validation: Java Demo'
     runs-on: ubuntu-latest
@@ -43,4 +43,4 @@ jobs:
     - uses: actions/checkout@v6
       with:
         fetch-depth: 0
-    - uses: gradle/wrapper-validation-action@v3
+    - uses: gradle/actions/wrapper-validation@v5
