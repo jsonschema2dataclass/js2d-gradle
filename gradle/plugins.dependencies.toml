@@ -26,6 +26,6 @@ kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = 
 
 [plugins]
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus" }
-gradle-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-publish"}
-kotlin-build = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-build"}
+gradle-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-publish" }
+kotlin-build = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-build" }
 # Note: internal plugins cannot be used with `alias(libs.plugins....)`, because they don't have version.

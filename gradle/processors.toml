@@ -5,4 +5,4 @@ processor-jsonschema2pojo = "1.2.2"
 
 [libraries]
 # Plugin Schema processors
-jsonschema2pojo = {module = "org.jsonschema2pojo:jsonschema2pojo-core", version.ref="processor-jsonschema2pojo"}
+jsonschema2pojo = { module = "org.jsonschema2pojo:jsonschema2pojo-core", version.ref = "processor-jsonschema2pojo" }

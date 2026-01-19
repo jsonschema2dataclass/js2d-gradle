@@ -18,5 +18,5 @@ junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref 
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit5-platform" }
 
 [bundles]
-junit-tests =  ["junit-api", "junit-params"]
-junit-runtime =  ["junit-engine", "junit-launcher"]
+junit-tests = ["junit-api", "junit-params"]
+junit-runtime = ["junit-engine", "junit-launcher"]

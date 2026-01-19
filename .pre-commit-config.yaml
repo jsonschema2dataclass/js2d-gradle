@@ -1,23 +1,46 @@
 ---
 default_install_hook_types: [pre-commit, commit-msg]
 repos:
+- repo: builtin
+  hooks:
+  - id: trailing-whitespace
+  - id: check-added-large-files
+  - id: check-case-conflict
+  - id: check-merge-conflict
+  - id: end-of-file-fixer
+  - id: fix-byte-order-marker
+  - id: check-json
+  - id: check-toml
+  - id: check-yaml
+  - id: check-xml
+  - id: check-symlinks
+  - id: detect-private-key
+  - id: mixed-line-ending
+    args: [--fix=lf]
+    exclude_types: [batch]
+  - id: check-executables-have-shebangs
+  - id: no-commit-to-branch
+    args: [--branch, main]
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v6.0.0
   hooks:
-  - id: check-case-conflict
-  - id: check-merge-conflict
-  - id: check-json
-  - id: check-symlinks
-  - id: end-of-file-fixer
   - id: pretty-format-json
     args: [--autofix]
-  - id: trailing-whitespace
 - repo: https://github.com/Lucas-C/pre-commit-hooks
   rev: v1.5.6
   hooks:
   - id: forbid-crlf
-    exclude: .*gradlew.bat
+    exclude_types: [batch]
   - id: forbid-tabs
+- repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
+  rev: 0.2.3
+  hooks:
+  - id: yamlfmt
+    args: [--mapping, '2', --sequence, '2', --offset, '0', --width, '150']
+- repo: https://github.com/ComPWA/taplo-pre-commit
+  rev: v0.9.3
+  hooks:
+  - id: taplo-format
 - repo: https://github.com/crate-ci/typos
   rev: v1.42.0
   hooks:
@@ -27,16 +50,13 @@ repos:
   - id: typos
     name: commit-msg-typos
     stages: [commit-msg]
-- repo: https://github.com/jumanjihouse/pre-commit-hook-yamlfmt
-  rev: 0.2.3
-  hooks:
-  - id: yamlfmt
-    args: [--mapping, '2', --sequence, '2', --offset, '0', --width, '150']
 - repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.36.0
   hooks:
   - id: check-github-workflows
+    args: [--verbose]
   - id: check-renovate
+    args: [--verbose]
 - repo: https://github.com/eirnym/language-formatters-pre-commit-hooks
   rev: 2.14.2
   hooks:
