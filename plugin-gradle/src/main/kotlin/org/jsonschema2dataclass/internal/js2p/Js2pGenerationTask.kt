@@ -1,6 +1,7 @@
 package org.jsonschema2dataclass.internal.js2p
 
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Nested
 import org.gradle.workers.WorkQueue
 import org.gradle.workers.WorkerExecutor
 import org.jsonschema2dataclass.ext.Js2pConfiguration
@@ -11,6 +12,12 @@ import javax.inject.Inject
 internal abstract class Js2pGenerationTask @Inject constructor(
     workerExecutor: WorkerExecutor,
 ) : Js2dGeneratorTaskBase<Js2pConfiguration>(workerExecutor) {
+    // Expose configuration as @Nested with concrete type
+    // Base class uses @Internal because @Nested on generic types causes reflection NPE in Gradle 9 / IntelliJ sync
+    @get:Nested
+    val nestedConfiguration: Js2pConfiguration
+        get() = configuration
+
     override fun submit(workQueue: WorkQueue) {
         val js2pConfig = Js2pWorkerConfig.fromConfig(uuid, targetDirectory.asFile.get(), configuration)
         workQueue.submit(Js2pWorker::class.java) {
