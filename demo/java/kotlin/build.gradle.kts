@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     implementation("javax.validation:validation-api:2.0.1.Final")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.21.0")
 
     // see src/main/resources/json/external_dependencies.json
     implementation("joda-time:joda-time:2.14.0")
