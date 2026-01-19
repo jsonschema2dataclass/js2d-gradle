@@ -45,6 +45,8 @@ jobs:
       run: >-
         ./gradlew build --no-daemon
         -Porg.jsonschema2dataclass.internal.git-version-override=${{ inputs.version }}
+      env:
+        TEST_GRADLE_VER_EXACT: current
   publish-github:
     permissions:
       contents: write
