@@ -42,12 +42,19 @@ on:
         description: Logs simulated changes, no deletions are performed
         required: false
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+permissions: {}
 jobs:
-  del_runs:
+  delete:
+    name: run
     runs-on: ubuntu-latest
     permissions:
-      actions: write
-      contents: read
+      actions: write # remove old actions
+      contents: read # ?
     steps:
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@v2

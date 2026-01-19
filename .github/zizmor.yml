@@ -1,0 +1,12 @@
+---
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        actions/*: ref-pin
+        gradle/actions/setup-gradle: ref-pin
+        Mattraks/delete-workflow-runs: ref-pin
+        j178/prek-action: ref-pin
+        poseidon/wait-for-status-checks: ref-pin
+  cache-poisoning:
+    disable: true

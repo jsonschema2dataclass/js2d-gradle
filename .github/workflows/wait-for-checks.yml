@@ -9,11 +9,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
+permissions: {}
 jobs:
   wait-all-checks:
     runs-on: ubuntu-latest
+    name: wait-all-checks
     permissions:
-      checks: read
+      checks: read # wait for them
     steps:
     - name: Wait all GitHub checks
       uses: poseidon/wait-for-status-checks@v0.6.0

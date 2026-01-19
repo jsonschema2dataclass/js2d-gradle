@@ -12,12 +12,17 @@ concurrency:
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
+permissions: {}
 jobs:
   pre-commit:
+    permissions:
+      contents: read
     name: Pre-commit checks
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
     - uses: j178/prek-action@v1.0.12
       with:
         prek-version: 0.2.29

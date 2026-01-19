@@ -39,16 +39,18 @@ on:
     - .github/workflows/plugin-build-ci.yml
 
 concurrency:
-  # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
-  # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
-  group: ${{ github.ref == 'refs/heads/main' && format('plugin-build-ci-main-{0}', github.sha) || format('plugin-build-ci-{0}', github.ref) }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 env:
   GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
 
+permissions: {}
+
 jobs:
   build-and-test:
+    permissions:
+      contents: read
     name: Build Plugin
     runs-on: ubuntu-latest
     strategy:
@@ -60,19 +62,23 @@ jobs:
         distribution: [zulu]
     steps:
     - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
     - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }} for gradle test ${{ matrix.gradleTest }}
       uses: actions/setup-java@v5
       with:
         distribution: ${{ matrix.distribution }}
         java-version: ${{ matrix.java }}
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v5
+      uses: gradle/actions/setup-gradle@v5.0.0
     - name: Run build and tests
       run: |
-        if [[ "${{ matrix.gradleTest }}" == "current" ]]; then
+        if [[ "$TEST_GRADLE_VER" == "current" ]]; then
           export TEST_GRADLE_VER_EXACT=current
         else
-          export TEST_GRADLE_VER_MIN=${{ matrix.gradleTest }}
-          export TEST_GRADLE_VER_MAX=$(( ${{ matrix.gradleTest }} + 1))
+          export TEST_GRADLE_VER_MIN=$TEST_GRADLE_VER
+          export TEST_GRADLE_VER_MAX=$(( $TEST_GRADLE_VER + 1))
         fi
         ./gradlew build -S --scan --warning-mode all --no-daemon
+      env:
+        TEST_GRADLE_VER: ${{ matrix.gradleTest }}
