@@ -18,17 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
-    - uses: actions/setup-python@v6
+    - uses: j178/prek-action@v1.0.12
       with:
-        python-version: '3.14'
-        cache: pip
-    - name: Install dependencies
-      run: |
-        pip install -U pip setuptools wheel
-        pip install -r .github/requirements.txt
-    - uses: actions/cache@v5
-      with:
-        path: ~/.cache/pre-commit/
-        key: pre-commit-4|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
-    - name: Run pre-commit hooks
-      run: pre-commit run --all-files --show-diff-on-failure
+        prek-version: 0.2.29
