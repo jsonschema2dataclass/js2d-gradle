@@ -23,7 +23,6 @@ jobs:
       contents: read
     name: Pre-release check
     runs-on: ubuntu-latest
-    environment: production
     steps:
     - name: Version check
       run: |
@@ -38,7 +37,6 @@ jobs:
       with:
         distribution: temurin
         java-version: 17
-        cache: gradle
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
     - name: Build project
@@ -91,7 +89,6 @@ jobs:
       with:
         distribution: temurin
         java-version: 17
-        cache: gradle
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
     - name: Publish

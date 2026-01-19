@@ -65,8 +65,8 @@ jobs:
       with:
         distribution: ${{ matrix.distribution }}
         java-version: ${{ matrix.java }}
-        cache: gradle
-
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v5
     - name: Run build and tests
       run: |
         if [[ "${{ matrix.gradleTest }}" == "current" ]]; then
