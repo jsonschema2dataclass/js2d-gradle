@@ -26,12 +26,16 @@ jobs:
     steps:
     - name: Version check
       run: |
-        if ! [[ ${{ inputs.version }} =~ ^[0-9]+\.[0-9]+\.[0-9]+(-(rc|alpha|beta)[0-9]+)?$ ]]; then
-          echo "[ERROR]: Input version doesn't follow semver:" ${{ inputs.version }}
+        if ! [[ "$PLUGIN_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-(rc|alpha|beta)[0-9]+)?$ ]]; then
+          echo "[ERROR]: Input version doesn't follow semver: $PLUGIN_VERSION"
           exit 1
         fi
+      env:
+        PLUGIN_VERSION: ${{ inputs.version }}
     - name: Checkout
       uses: actions/checkout@v6
+      with:
+        persist-credentials: false
     - name: Install JDK 17
       uses: actions/setup-java@v5
       with:
@@ -42,13 +46,14 @@ jobs:
     - name: Build project
       run: >-
         ./gradlew build --no-daemon
-        -Porg.jsonschema2dataclass.internal.git-version-override=${{ inputs.version }}
+        "-Porg.jsonschema2dataclass.internal.git-version-override=$PLUGIN_VERSION"
       env:
         TEST_GRADLE_VER_EXACT: current
+        PLUGIN_VERSION: ${{ inputs.version }}
   publish-github:
     permissions:
-      contents: write
-    name: Publish GitHub
+      contents: write  # publish GitHub release
+    name: Publish GitHub (draft)
     runs-on: ubuntu-latest
     environment: production
     needs:
@@ -56,25 +61,29 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v6
+      with:
+        persist-credentials: false
 
     - name: Create Github release
       run: |
         PRE_RELEASE=""
-        if [[ ${{ inputs.version }} == *"beta"* ]]; then
+        if [[ "$PLUGIN_VERSION" == *"beta"* ]]; then
           PRE_RELEASE="-p"
         fi
-        if [[ ${{ inputs.version }} == *"alpha"* ]]; then
+        if [[ "$PLUGIN_VERSION" == *"alpha"* ]]; then
           PRE_RELEASE="-p"
         fi
-        if [[ ${{ inputs.version }} == *"rc"* ]]; then
+        if [[ "$PLUGIN_VERSION" == *"rc"* ]]; then
           PRE_RELEASE="-p"
         fi
 
         set -x
-        gh release create --draft $PRE_RELEASE "v${{ inputs.version }}" --fail-on-no-commits --generate-notes
+        gh release create --draft $PRE_RELEASE "v$PLUGIN_VERSION" --fail-on-no-commits --generate-notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PLUGIN_VERSION: ${{ inputs.version }}
   publish-gradle:
+    name: Publish Gradle plugin
     needs:
     - publish-github
     permissions:
@@ -84,6 +93,8 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v6
+      with:
+        persist-credentials: false
     - name: Install JDK 17
       uses: actions/setup-java@v5
       with:
@@ -94,21 +105,29 @@ jobs:
     - name: Publish
       run: >-
         ./gradlew publishPlugins -s --scan --no-daemon
-        -Pgradle.publish.key=${{ secrets.GRADLE_PUBLISH_KEY }}
-        -Pgradle.publish.secret=${{ secrets.GRADLE_PUBLISH_SECRET }}
-        -Porg.jsonschema2dataclass.internal.git-version-override=${{ inputs.version }}
+        "-Pgradle.publish.key=$GRADLE_PUBLISH_KEY"
+        "-Pgradle.publish.secret=$GRADLE_PUBLISH_SECRET"
+        "-Porg.jsonschema2dataclass.internal.git-version-override=$PLUGIN_VERSION"
+      env:
+        GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+        GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+        PLUGIN_VERSION: ${{ inputs.version }}
   finalise-github-release:
+    name: Publish GitHub
     needs:
     - publish-gradle
     permissions:
-      contents: write
+      contents: write  # publish GitHub release
     runs-on: ubuntu-latest
     environment: production
     steps:
     - name: Checkout repo
       uses: actions/checkout@v6
+      with:
+        persist-credentials: false
     - name: Finalise Github release
       run: |
-        gh release edit "v${{ inputs.version }}" --draft=false
+        gh release edit "v$PLUGIN_VERSION" --draft=false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PLUGIN_VERSION: ${{ inputs.version }}
