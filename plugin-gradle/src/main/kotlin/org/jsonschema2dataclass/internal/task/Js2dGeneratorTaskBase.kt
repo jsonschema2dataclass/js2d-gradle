@@ -6,7 +6,6 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.workers.WorkQueue
@@ -17,8 +16,8 @@ import javax.inject.Inject
 abstract class Js2dGeneratorTaskBase<ConfigType> @Inject constructor(
     private val workerExecutor: WorkerExecutor,
 ) : DefaultTask() {
-    @get:Nested
-    abstract var configuration: ConfigType // Should not be
+    @get:Internal // Cannot use @Nested on generic type - causes reflection NPE in Gradle 9 / IntelliJ sync
+    abstract var configuration: ConfigType
 
     @get:OutputDirectory
     abstract val targetDirectory: DirectoryProperty
