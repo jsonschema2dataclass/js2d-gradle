@@ -1,7 +1,7 @@
-/** Kotlin compatibility shims to smooth version differences */
+// Kotlin compatibility shims to smooth version differences
 package org.jsonschema2dataclass.internal.compat.kotlin
 
-/** Kotlin version independent functions as we support quite wide range of Gradle. */
+// Kotlin version independent functions as we support quite wide range of Gradle.
 
 import java.util.Locale
 
