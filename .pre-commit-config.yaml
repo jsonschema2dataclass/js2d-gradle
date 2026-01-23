@@ -61,8 +61,8 @@ repos:
   rev: v1.22.0
   hooks:
   - id: zizmor
-- repo: https://github.com/eirnym/language-formatters-pre-commit-hooks
-  rev: 2.14.2
+- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.16.0
   hooks:
   - id: pretty-format-kotlin
     args: [--autofix]

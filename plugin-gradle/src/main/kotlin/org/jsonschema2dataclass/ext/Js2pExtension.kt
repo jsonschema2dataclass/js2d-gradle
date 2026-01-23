@@ -1,4 +1,4 @@
-/** JsonSchema 2 Pojo configuration extension */
+// JsonSchema 2 Pojo configuration extension
 package org.jsonschema2dataclass.ext
 
 import org.gradle.api.Action
