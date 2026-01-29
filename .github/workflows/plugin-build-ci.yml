@@ -70,7 +70,7 @@ jobs:
         distribution: ${{ matrix.distribution }}
         java-version: ${{ matrix.java }}
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v5.0.0
+      uses: gradle/actions/setup-gradle@v5.0.1
     - name: Run build and tests
       run: |
         if [[ "$TEST_GRADLE_VER" == "current" ]]; then
