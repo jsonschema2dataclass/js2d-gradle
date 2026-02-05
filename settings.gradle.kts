@@ -7,7 +7,7 @@ pluginManagement {
 plugins {
     id("com.gradle.develocity") version "4.3.2"
     id("org.jsonschema2dataclass.internal.settings-develocity")
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 enableFeaturePreviewQuietly("TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
