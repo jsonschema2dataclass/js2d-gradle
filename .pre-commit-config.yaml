@@ -58,7 +58,7 @@ repos:
   - id: check-renovate
     args: [--verbose]
 - repo: https://github.com/zizmorcore/zizmor-pre-commit
-  rev: v1.23.0
+  rev: v1.23.1
   hooks:
   - id: zizmor
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
