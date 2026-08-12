@@ -51,7 +51,7 @@ repos:
     name: commit-msg-typos
     stages: [commit-msg]
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.37.1
+  rev: 0.37.4
   hooks:
   - id: check-github-workflows
     args: [--verbose]
