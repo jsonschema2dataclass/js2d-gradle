@@ -61,7 +61,7 @@ jobs:
         java: [21, 17]
         distribution: [zulu]
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         persist-credentials: false
     - name: Set up JDK ${{ matrix.distribution }} ${{ matrix.java }} for gradle test ${{ matrix.gradleTest }}
