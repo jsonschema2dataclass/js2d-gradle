@@ -25,4 +25,4 @@ jobs:
         persist-credentials: false
     - uses: j178/prek-action@v3.0.0
       with:
-        prek-version: 0.2.29
+        prek-version: v0.2.30
